@@ -1,0 +1,34 @@
+#print axioms, from the lake build of 5 October 2026
+Lean 4.35.0-rc3, mathlib 7d6757bc18680044fc0ff6efc8ee20494b408556
+
+CausalSpectrum.one_seed_shannon
+  depends on axioms: [propext, choice, Quot.sound]
+
+CausalSpectrum.exact_tree_minimax
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.strategyFloor_isLeast_leaves
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.policyCeil_isGreatest_leaves
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.greedy_step
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.greedy_count_decreases
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.finite_flow_decomposition
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.exact_finite_seed
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.greedyTrace_exists
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.greedyTrace_properties
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.greedy_cutoff
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.aDelta_le_majorant
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.greedy_advanced_bound
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.greedy_refined_bound
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.exact_seed_with_refined_cutoffs
+  depends on axioms: [propext, choice, Quot.sound]

@@ -1,0 +1,4549 @@
+From: <Saved by Blink>
+Snapshot-Content-Location: https://one-seed.grok.me/lean
+Subject: =?utf-8?Q?One=20Seed=20=E2=80=94=20one=20seed,=20every=20adaptive=20policy?=
+Date: Mon, 05 Oct 2026 12:51:30 GMT
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----MultipartBoundary--hNLiLHLeywliAKYn32etrKmLOveYoy1gQc1wmQp5ad----"
+
+
+------MultipartBoundary--hNLiLHLeywliAKYn32etrKmLOveYoy1gQc1wmQp5ad----
+Content-Type: text/html
+Content-ID: <frame-B96A5108E35EB8896AE8ACC3D053D2CD@mhtml.blink>
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://one-seed.grok.me/lean
+
+<!DOCTYPE html><html lang=3D"en"><head><meta http-equiv=3D"Content-Type" co=
+ntent=3D"text/html; charset=3DUTF-8"><meta name=3D"twitter:card" content=3D=
+"summary_large_image"><meta property=3D"og:title" content=3D"One Seed"><met=
+a property=3D"og:image" content=3D"https://one-seed.grok.me/og.jpg"><meta p=
+roperty=3D"og:image:width" content=3D"1200"><meta property=3D"og:image:heig=
+ht" content=3D"630"><meta property=3D"x:game:image" content=3D"https://one-=
+seed.grok.me/x-banner.jpg"><meta property=3D"x:game:image:width" content=3D=
+"1200"><meta property=3D"x:game:image:height" content=3D"264"><meta name=3D=
+"viewport" content=3D"width=3Ddevice-width, initial-scale=3D1"><link rel=3D=
+"stylesheet" href=3D"https://one-seed.grok.me/assets/styles-BVFD6Uyp.css" d=
+ata-precedence=3D"default"><link rel=3D"stylesheet" href=3D"https://fonts.g=
+oogleapis.com/css2?family=3DNewsreader:ital,opsz,wght@0,6..72,500;0,6..72,6=
+00;0,6..72,700;1,6..72,500&amp;family=3DSource+Sans+3:ital,wght@0,400;0,600=
+;1,400&amp;display=3Dswap" data-precedence=3D"default"><title>One Seed =E2=
+=80=94 one seed, every adaptive policy</title><meta name=3D"description" co=
+ntent=3D"An exact realization of any finite controlled tree, with an entrop=
+y overhead of less than 1.222 bits above the spectral lower bound."><meta n=
+ame=3D"theme-color" content=3D"#f4f0e6"><link rel=3D"modulepreload" href=3D=
+"https://one-seed.grok.me/assets/index-DpwbXHyS.js"><link rel=3D"moduleprel=
+oad" href=3D"https://one-seed.grok.me/assets/lean-DtZkUtU_.js"><link rel=3D=
+"icon" type=3D"image/svg+xml" href=3D"https://one-seed.grok.me/favicon.svg"=
+><link rel=3D"manifest" href=3D"https://one-seed.grok.me/__grok/manifest.we=
+bmanifest"><link rel=3D"apple-touch-icon" href=3D"https://one-seed.grok.me/=
+__grok/icon-180.png"><link rel=3D"preconnect" href=3D"https://fonts.googlea=
+pis.com/"><link rel=3D"preconnect" href=3D"https://fonts.gstatic.com/" cros=
+sorigin=3D"anonymous"><meta name=3D"apple-mobile-web-app-title" content=3D"=
+One Seed"><meta name=3D"apple-mobile-web-app-status-bar-style" content=3D"b=
+lack"><meta name=3D"grok-project-id" content=3D"01a10acb-338b-77e1-809a-8e9=
+d1b65ea39"><meta property=3D"grok:app_id" content=3D"01a10acb-338b-77e1-809=
+a-8e9d1b65ea39"><meta property=3D"x:creator" content=3D"@JanMikulik62801"><=
+meta property=3D"x:creator:id" content=3D"2032696221790515205"></head><body=
+><!--$--><main class=3D"mx-auto w-full min-w-0 max-w-3xl px-5 py-10 sm:px-8=
+ sm:py-16"><p class=3D"font-sans text-sm font-semibold tracking-wide text-a=
+ccent uppercase"><a class=3D"underline-offset-4 hover:underline" href=3D"ht=
+tps://one-seed.grok.me/">One Seed</a></p><h1 class=3D"mt-4 font-serif text-=
+4xl leading-tight font-semibold text-balance text-ink sm:text-5xl">The Lean=
+ source</h1><p class=3D"mt-5 leading-relaxed text-pretty text-ink">Two file=
+s. <span class=3D"font-semibold">Entropy.lean</span> is the finite Shannon =
+theorem, <span class=3D"font-semibold">one_seed_shannon</span>.<!-- --> <sp=
+an class=3D"font-semibold">Spectrum.lean</span> is the kernel it imports. L=
+ean 4.35.0-rc3, mathlib 7d6757bc. No unfinished proof. The square-root asym=
+ptotic, the R=C3=A9nyi bounds, and W=E2=82=81 are not here.</p><section cla=
+ss=3D"mt-10 min-w-0" aria-labelledby=3D"Entropy-lean"><h2 id=3D"Entropy-lea=
+n" class=3D"font-serif text-2xl font-semibold text-ink">Entropy.lean</h2><d=
+iv class=3D"mt-4 max-w-full overflow-x-auto border border-line bg-chip"><pr=
+e class=3D"w-max min-w-full p-4 font-mono text-[13px] leading-relaxed text-=
+ink"><code>/-
+Finite Shannon theorem for one exact causal seed.
+Depends on the compiled kernel in `Spectrum.lean`.
+-/
+import CausalSeed.Spectrum
+import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
+import Mathlib.Analysis.SpecialFunctions.Log.Base
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
+import Mathlib.Data.List.Dedup
+import Mathlib.Data.List.Sort
+import Mathlib.Data.Fintype.BigOperators
+import Mathlib.MeasureTheory.Integral.Bochner.Set
+import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+
+noncomputable section
+open Classical
+namespace CausalSpectrum
+
+noncomputable instance : DecidableEq =E2=84=9D :=3D fun a b =3D&gt; propDec=
+idable (a =3D b)
+
+noncomputable instance : DecidableRel ((=C2=B7 =E2=89=A4 =C2=B7) : =E2=84=
+=9D =E2=86=92 =E2=84=9D =E2=86=92 Prop) :=3D
+  fun a b =3D&gt; propDecidable (a =E2=89=A4 b)
+
+noncomputable instance : DecidableRel ((=C2=B7 &lt; =C2=B7) : =E2=84=9D =E2=
+=86=92 =E2=84=9D =E2=86=92 Prop) :=3D
+  fun a b =3D&gt; propDecidable (a &lt; b)
+
+/-! Policies are finite, by the same structural recursion as leaves. -/
+
+noncomputable instance policyFintype : (T : Tree) =E2=86=92 Fintype (Policy=
+ T)
+  | .leaf =3D&gt; by
+      unfold Policy
+      exact Fintype.ofSubsingleton PUnit.unit
+  | .node nA hA nY hY K Kpos Ksum child =3D&gt; by
+      letI : =E2=88=80 a y, Fintype (Policy (child a y)) :=3D
+        fun a y =3D&gt; policyFintype (child a y)
+      unfold Policy
+      infer_instance
+
+def defaultPolicy : (T : Tree) =E2=86=92 Policy T
+  | .leaf =3D&gt; PUnit.unit
+  | .node nA hA nY hY _ _ _ child =3D&gt;
+      (=E2=9F=A80, hA=E2=9F=A9, fun a y =3D&gt; defaultPolicy (child a y))
+
+def defaultLeaf : (T : Tree) =E2=86=92 Leaf T
+  | .leaf =3D&gt; PUnit.unit
+  | .node nA hA nY hY _ _ _ child =3D&gt;
+      let a : Fin nA :=3D =E2=9F=A80, hA=E2=9F=A9
+      =E2=9F=A8a, =E2=9F=A80, hY a=E2=9F=A9, defaultLeaf (child a =E2=9F=A8=
+0, hY a=E2=9F=A9)=E2=9F=A9
+
+/-! Self-information and the ordered list of values that actually occur. -/
+
+noncomputable def infoMass (q : =E2=84=9D) : =E2=84=9D :=3D -Real.logb 2 q
+
+theorem leafMass_le_one {T : Tree} (=E2=84=93 : Leaf T) : leafMass =E2=84=
+=93 =E2=89=A4 1 :=3D by
+  have h :=3D leafValue_le_root (Field.p T) (Field.p_isFlow T) (Field.p_non=
+neg T) =E2=84=93
+  have hp : leafValue (Field.p T) =E2=84=93 =3D leafMass =E2=84=93 :=3D by
+    simpa [Field.p] using leafValue_probability T 1 =E2=84=93
+  simpa [hp, Field.root_p] using h
+
+theorem infoMass_nonneg {T : Tree} (=E2=84=93 : Leaf T) : 0 =E2=89=A4 infoM=
+ass (leafMass =E2=84=93) :=3D by
+  have hlog :=3D Real.logb_le_logb_of_le (b :=3D 2) (by norm_num : (1 : =E2=
+=84=9D) &lt; 2)
+    (leafMass_pos =E2=84=93) (leafMass_le_one =E2=84=93)
+  rw [Real.logb_one] at hlog
+  simpa [infoMass] using neg_nonneg.mpr hlog
+
+theorem div_eq_rpow_info {p : =E2=84=9D} (hp : 0 &lt; p) (=CE=B4 : =E2=84=
+=9D) :
+    =CE=B4 / p =3D =CE=B4 * (2 : =E2=84=9D) ^ infoMass p :=3D by
+  unfold infoMass
+  rw [Real.rpow_neg (by norm_num : (0 : =E2=84=9D) =E2=89=A4 2),
+    Real.rpow_logb (by norm_num : (0 : =E2=84=9D) &lt; 2) (by norm_num : (2=
+ : =E2=84=9D) =E2=89=A0 1) hp,
+    div_eq_mul_inv]
+
+noncomputable def infoValues (T : Tree) : List =E2=84=9D :=3D
+  (((Finset.univ : Finset (Leaf T)).toList).map (fun =E2=84=93 =3D&gt; info=
+Mass (leafMass =E2=84=93))).dedup.insertionSort
+    (=C2=B7 =E2=89=A4 =C2=B7)
+
+theorem mem_infoValues {T : Tree} {z : =E2=84=9D} :
+    z =E2=88=88 infoValues T =E2=86=94 =E2=88=83 =E2=84=93 : Leaf T, infoMa=
+ss (leafMass =E2=84=93) =3D z :=3D by
+  unfold infoValues
+  rw [List.mem_insertionSort, List.mem_dedup, List.mem_map]
+  constructor
+  =C2=B7 rintro =E2=9F=A8=E2=84=93, h=E2=84=93, rfl=E2=9F=A9
+    exact =E2=9F=A8=E2=84=93, rfl=E2=9F=A9
+  =C2=B7 rintro =E2=9F=A8=E2=84=93, rfl=E2=9F=A9
+    exact =E2=9F=A8=E2=84=93, Finset.mem_toList.mpr (Finset.mem_univ =E2=84=
+=93), rfl=E2=9F=A9
+
+theorem nodup_infoValues (T : Tree) : (infoValues T).Nodup :=3D by
+  unfold infoValues
+  exact (List.perm_insertionSort _ _).nodup_iff.mpr (List.nodup_dedup _)
+
+theorem sortedLE_infoValues (T : Tree) : (infoValues T).SortedLE :=3D by
+  unfold infoValues
+  exact List.sortedLE_insertionSort
+    (l :=3D ((((Finset.univ : Finset (Leaf T)).toList).map
+      (fun =E2=84=93 =3D&gt; infoMass (leafMass =E2=84=93))).dedup))
+
+theorem sortedLT_infoValues (T : Tree) : (infoValues T).SortedLT :=3D
+  (List.sortedLT_iff_nodup_and_sortedLE).2 =E2=9F=A8nodup_infoValues T, sor=
+tedLE_infoValues T=E2=9F=A9
+
+theorem infoValues_ne_nil (T : Tree) : infoValues T =E2=89=A0 [] :=3D by
+  intro h
+  have hmem : infoMass (leafMass (defaultLeaf T)) =E2=88=88 infoValues T :=
+=3D
+    (mem_infoValues).2 =E2=9F=A8defaultLeaf T, rfl=E2=9F=A9
+  simp [h] at hmem
+
+theorem infoValues_length_pos (T : Tree) : 0 &lt; (infoValues T).length :=
+=3D
+  List.length_pos_of_ne_nil (infoValues_ne_nil T)
+
+theorem info_get_strictMono (T : Tree) {i j : =E2=84=95}
+    (hi : i &lt; (infoValues T).length) (hj : j &lt; (infoValues T).length)=
+ (hij : i &lt; j) :
+    (infoValues T)[i] &lt; (infoValues T)[j] :=3D
+  (List.sortedLT_iff_getElem_lt_getElem_of_lt (l :=3D infoValues T)).1
+    (sortedLT_infoValues T) hij
+
+/-! Linear combinations of a policy sum. -/
+
+theorem policySum_zero : =E2=88=80 {T : Tree} (=CF=80 : Policy T),
+    policySum (fun _ : Leaf T =3D&gt; (0 : =E2=84=9D)) =CF=80 =3D 0 :=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt; intro =CF=80; rfl
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+      intro =CF=80
+      simp only [policySum]
+      apply Finset.sum_eq_zero
+      intro y _
+      exact ih =CF=80.1 y (=CF=80.2 =CF=80.1 y)
+
+theorem policySum_add : =E2=88=80 {T : Tree} (f g : Leaf T =E2=86=92 =E2=84=
+=9D) (=CF=80 : Policy T),
+    policySum (fun =E2=84=93 =3D&gt; f =E2=84=93 + g =E2=84=93) =CF=80 =3D =
+policySum f =CF=80 + policySum g =CF=80 :=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt; intro f g =CF=80; rfl
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+      intro f g =CF=80
+      simp only [policySum]
+      have h :=3D fun y =3D&gt;
+        ih =CF=80.1 y (fun =E2=84=93 =3D&gt; f =E2=9F=A8=CF=80.1, y, =E2=84=
+=93=E2=9F=A9) (fun =E2=84=93 =3D&gt; g =E2=9F=A8=CF=80.1, y, =E2=84=93=E2=
+=9F=A9) (=CF=80.2 =CF=80.1 y)
+      simp_rw [h]
+      exact Finset.sum_add_distrib
+
+theorem policySum_mul : =E2=88=80 {T : Tree} (c : =E2=84=9D) (f : Leaf T =
+=E2=86=92 =E2=84=9D) (=CF=80 : Policy T),
+    policySum (fun =E2=84=93 =3D&gt; c * f =E2=84=93) =CF=80 =3D c * policy=
+Sum f =CF=80 :=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt; intro c f =CF=80; rfl
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+      intro c f =CF=80
+      simp only [policySum]
+      have h :=3D fun y =3D&gt;
+        ih =CF=80.1 y c (fun =E2=84=93 =3D&gt; f =E2=9F=A8=CF=80.1, y, =E2=
+=84=93=E2=9F=A9) (=CF=80.2 =CF=80.1 y)
+      simp_rw [h, Finset.mul_sum]
+
+theorem policySum_range : =E2=88=80 {T : Tree} (n : =E2=84=95) (f : =E2=84=
+=95 =E2=86=92 Leaf T =E2=86=92 =E2=84=9D) (=CF=80 : Policy T),
+    policySum (fun =E2=84=93 =3D&gt; (Finset.range n).sum (fun i =3D&gt; f =
+i =E2=84=93)) =CF=80 =3D
+      (Finset.range n).sum (fun i =3D&gt; policySum (f i) =CF=80) :=3D by
+  intro T n
+  induction n with
+  | zero =3D&gt;
+      intro f =CF=80
+      simp [policySum_zero]
+  | succ n ih =3D&gt;
+      intro f =CF=80
+      simp only [Finset.sum_range_succ]
+      rw [policySum_add, ih]
+
+theorem policySum_nonneg : =E2=88=80 {T : Tree} (f : Leaf T =E2=86=92 =E2=
+=84=9D) (=CF=80 : Policy T),
+    (=E2=88=80 =E2=84=93, 0 =E2=89=A4 f =E2=84=93) =E2=86=92 0 =E2=89=A4 po=
+licySum f =CF=80 :=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt; intro f =CF=80 hf; exact hf _
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+      intro f =CF=80 hf
+      simp only [policySum]
+      apply Finset.sum_nonneg
+      intro y _
+      exact ih =CF=80.1 y (fun =E2=84=93 =3D&gt; f =E2=9F=A8=CF=80.1, y, =
+=E2=84=93=E2=9F=A9) (=CF=80.2 =CF=80.1 y) (fun =E2=84=93 =3D&gt; hf _)
+
+theorem policySum_leafMass {T : Tree} (=CF=80 : Policy T) :
+    policySum (fun =E2=84=93 : Leaf T =3D&gt; leafMass =E2=84=93) =CF=80 =
+=3D 1 :=3D by
+  have h :=3D policySum_flow (Field.p T) =CF=80 (Field.p_isFlow T)
+  have hfun : (fun =E2=84=93 =3D&gt; leafValue (Field.p T) =E2=84=93) =3D f=
+un =E2=84=93 =3D&gt; leafMass =E2=84=93 :=3D by
+    funext =E2=84=93
+    simpa [Field.p] using leafValue_probability T 1 =E2=84=93
+  simpa [hfun, Field.root_p] using h
+
+/-! Transcript CDFs and their lower envelope. -/
+
+noncomputable def policyCDF (T : Tree) (=CF=80 : Policy T) (t : =E2=84=9D) =
+: =E2=84=9D :=3D
+  policySum (fun =E2=84=93 =3D&gt; if infoMass (leafMass =E2=84=93) =E2=89=
+=A4 t then leafMass =E2=84=93 else 0) =CF=80
+
+noncomputable def levelMass (T : Tree) (=CF=80 : Policy T) (z : =E2=84=9D) =
+: =E2=84=9D :=3D
+  policySum (fun =E2=84=93 =3D&gt; if infoMass (leafMass =E2=84=93) =3D z t=
+hen leafMass =E2=84=93 else 0) =CF=80
+
+theorem policyCDF_mono {T : Tree} (=CF=80 : Policy T) : Monotone (policyCDF=
+ T =CF=80) :=3D by
+  intro s t hst
+  apply policySum_mono
+  intro =E2=84=93 _
+  by_cases hs : infoMass (leafMass =E2=84=93) =E2=89=A4 s
+  =C2=B7 have ht : infoMass (leafMass =E2=84=93) =E2=89=A4 t :=3D le_trans =
+hs hst
+    simp [hs, ht]
+  =C2=B7 simp only [hs, ite_false]
+    split_ifs with ht
+    =C2=B7 exact (leafMass_pos =E2=84=93).le
+    =C2=B7 exact le_rfl
+
+theorem policyCDF_nonneg {T : Tree} (=CF=80 : Policy T) (t : =E2=84=9D) : 0=
+ =E2=89=A4 policyCDF T =CF=80 t :=3D by
+  apply policySum_nonneg
+  intro =E2=84=93
+  split_ifs
+  =C2=B7 exact (leafMass_pos =E2=84=93).le
+  =C2=B7 exact le_rfl
+
+theorem exists_min_policy (T : Tree) (t : =E2=84=9D) :
+    =E2=88=83 =CF=80 : Policy T, =E2=88=80 =CF=83 : Policy T, policyCDF T =
+=CF=80 t =E2=89=A4 policyCDF T =CF=83 t :=3D by
+  have hne : (Finset.univ : Finset (Policy T)).Nonempty :=3D
+    =E2=9F=A8defaultPolicy T, Finset.mem_univ _=E2=9F=A9
+  obtain =E2=9F=A8=CF=80, -, h=CF=80=E2=9F=A9 :=3D
+    Finset.exists_min_image (Finset.univ : Finset (Policy T)) (fun =CF=83 =
+=3D&gt; policyCDF T =CF=83 t) hne
+  exact =E2=9F=A8=CF=80, fun =CF=83 =3D&gt; h=CF=80 =CF=83 (Finset.mem_univ=
+ _)=E2=9F=A9
+
+noncomputable def envelopePolicy (T : Tree) (t : =E2=84=9D) : Policy T :=3D
+  Classical.choose (exists_min_policy T t)
+
+noncomputable def Fstar (T : Tree) (t : =E2=84=9D) : =E2=84=9D :=3D
+  policyCDF T (envelopePolicy T t) t
+
+theorem Fstar_le (T : Tree) (t : =E2=84=9D) (=CF=80 : Policy T) : Fstar T t=
+ =E2=89=A4 policyCDF T =CF=80 t :=3D
+  Classical.choose_spec (exists_min_policy T t) =CF=80
+
+theorem Fstar_nonneg (T : Tree) (t : =E2=84=9D) : 0 =E2=89=A4 Fstar T t :=
+=3D
+  policyCDF_nonneg _ _
+
+theorem Fstar_mono (T : Tree) : Monotone (Fstar T) :=3D by
+  intro s t hst
+  exact le_trans (Fstar_le T s (envelopePolicy T t))
+    (policyCDF_mono (envelopePolicy T t) hst)
+
+theorem policyCDF_last {T : Tree} (=CF=80 : Policy T) :
+    policyCDF T =CF=80 ((infoValues T)[(infoValues T).length - 1]'(by
+      have h :=3D infoValues_length_pos T
+      omega)) =3D 1 :=3D by
+  have hz : =E2=88=80 =E2=84=93 : Leaf T,
+      infoMass (leafMass =E2=84=93) =E2=89=A4
+        (infoValues T)[(infoValues T).length - 1]'(by
+          have h :=3D infoValues_length_pos T
+          omega) :=3D by
+    intro =E2=84=93
+    have hmem : infoMass (leafMass =E2=84=93) =E2=88=88 infoValues T :=3D
+      (mem_infoValues).2 =E2=9F=A8=E2=84=93, rfl=E2=9F=A9
+    obtain =E2=9F=A8j, hj, hjz=E2=9F=A9 :=3D List.mem_iff_getElem.mp hmem
+    have hlast : j =E2=89=A4 (infoValues T).length - 1 :=3D by
+      have h :=3D infoValues_length_pos T
+      omega
+    by_cases hje : j =3D (infoValues T).length - 1
+    =C2=B7 subst hje
+      exact le_of_eq hjz.symm
+    =C2=B7 rw [=E2=86=90 hjz]
+      exact le_of_lt (info_get_strictMono T hj (by
+        have h :=3D infoValues_length_pos T
+        omega) (by omega))
+  have hfun : (fun =E2=84=93 : Leaf T =3D&gt;
+      if infoMass (leafMass =E2=84=93) =E2=89=A4
+          (infoValues T)[(infoValues T).length - 1]'(by
+            have h :=3D infoValues_length_pos T
+            omega)
+        then leafMass =E2=84=93 else 0) =3D fun =E2=84=93 =3D&gt; leafMass =
+=E2=84=93 :=3D by
+    funext =E2=84=93
+    simp [hz =E2=84=93]
+  simpa [policyCDF, hfun] using policySum_leafMass =CF=80
+
+theorem Fstar_last (T : Tree) :
+    Fstar T ((infoValues T)[(infoValues T).length - 1]'(by
+      have h :=3D infoValues_length_pos T
+      omega)) =3D 1 :=3D by
+  simpa [Fstar] using policyCDF_last
+    (envelopePolicy T ((infoValues T)[(infoValues T).length - 1]'(by
+      have h :=3D infoValues_length_pos T
+      omega)))
+
+/-! Abel summation for a nondecreasing weight. -/
+
+def cumsum (=CE=BC : =E2=84=95 =E2=86=92 =E2=84=9D) : =E2=84=95 =E2=86=92 =
+=E2=84=9D
+  | 0 =3D&gt; 0
+  | n + 1 =3D&gt; cumsum =CE=BC n + =CE=BC n
+
+theorem abel_identity (m : =E2=84=95) (G =CE=BC : =E2=84=95 =E2=86=92 =E2=
+=84=9D) :
+    (Finset.range m).sum (fun i =3D&gt; =CE=BC i * G i) =3D
+      cumsum =CE=BC m * (if m =3D 0 then 0 else G (m - 1)) -
+        (Finset.range (m - 1)).sum (fun k =3D&gt;
+          cumsum =CE=BC (k + 1) * (G (k + 1) - G k)) :=3D by
+  induction m with
+  | zero =3D&gt;
+      simp [cumsum]
+  | succ m ih =3D&gt;
+      by_cases hm : m =3D 0
+      =C2=B7 subst hm
+        simp [cumsum, Finset.sum_range_succ, Finset.sum_range_zero]
+      =C2=B7 rw [Finset.sum_range_succ, ih]
+        have hif : (if m =3D 0 then 0 else G (m - 1)) =3D G (m - 1) :=3D by=
+ simp [hm]
+        have hif2 : (if m + 1 =3D 0 then 0 else G (m + 1 - 1)) =3D G m :=3D=
+ by simp
+        have hrng : Finset.range (m + 1 - 1) =3D Finset.range m :=3D by
+          congr 1
+        simp only [hif, hif2, hrng]
+        have hsplit :
+            (Finset.range m).sum (fun k =3D&gt; cumsum =CE=BC (k + 1) * (G =
+(k + 1) - G k)) =3D
+              (Finset.range (m - 1)).sum
+                (fun k =3D&gt; cumsum =CE=BC (k + 1) * (G (k + 1) - G k)) +
+              cumsum =CE=BC m * (G m - G (m - 1)) :=3D by
+          have ihm : m =3D (m - 1) + 1 :=3D by omega
+          conv_lhs =3D&gt; rw [ihm]
+          rw [Finset.sum_range_succ]
+          simp [show (m - 1) + 1 =3D m from by omega]
+        rw [cumsum, hsplit]
+        ring
+
+theorem sum_le_of_larger_partials (m : =E2=84=95) (G =CE=BC =CE=BD : =E2=84=
+=95 =E2=86=92 =E2=84=9D)
+    (hG : =E2=88=80 i, i + 1 &lt; m =E2=86=92 G i =E2=89=A4 G (i + 1))
+    (hpart : =E2=88=80 k, k =E2=89=A4 m =E2=86=92 cumsum =CE=BD k =E2=89=A4=
+ cumsum =CE=BC k)
+    (hend : cumsum =CE=BC m =3D cumsum =CE=BD m) :
+    (Finset.range m).sum (fun i =3D&gt; =CE=BC i * G i) =E2=89=A4
+      (Finset.range m).sum (fun i =3D&gt; =CE=BD i * G i) :=3D by
+  rw [abel_identity m G =CE=BC, abel_identity m G =CE=BD, hend]
+  have hterm : =E2=88=80 k, k &lt; m - 1 =E2=86=92
+      cumsum =CE=BC (k + 1) * (G (k + 1) - G k) =E2=89=A5
+        cumsum =CE=BD (k + 1) * (G (k + 1) - G k) :=3D by
+    intro k hk
+    have h=CE=94 : 0 =E2=89=A4 G (k + 1) - G k :=3D by
+      have hlt : k + 1 &lt; m :=3D by omega
+      linarith [hG k hlt]
+    have hS : cumsum =CE=BD (k + 1) =E2=89=A4 cumsum =CE=BC (k + 1) :=3D hp=
+art (k + 1) (by omega)
+    exact mul_le_mul_of_nonneg_right hS h=CE=94
+  have hsum :
+      (Finset.range (m - 1)).sum (fun k =3D&gt; cumsum =CE=BD (k + 1) * (G =
+(k + 1) - G k)) =E2=89=A4
+        (Finset.range (m - 1)).sum (fun k =3D&gt; cumsum =CE=BC (k + 1) * (=
+G (k + 1) - G k)) :=3D by
+    apply Finset.sum_le_sum
+    intro k hk
+    exact hterm k (Finset.mem_range.mp hk)
+  linarith
+
+/-! Increments of the envelope, and the policy masses at the same points. -=
+/
+
+noncomputable def envInc (T : Tree) (i : =E2=84=95) : =E2=84=9D :=3D
+  if h : i &lt; (infoValues T).length then
+    Fstar T ((infoValues T)[i]) -
+      (if hi : i =3D 0 then 0 else
+        Fstar T ((infoValues T)[i - 1]'(by omega)))
+  else 0
+
+noncomputable def levelAt (T : Tree) (=CF=80 : Policy T) (i : =E2=84=95) : =
+=E2=84=9D :=3D
+  if h : i &lt; (infoValues T).length then levelMass T =CF=80 ((infoValues =
+T)[i]) else 0
+
+theorem envInc_nonneg (T : Tree) (i : =E2=84=95) : 0 =E2=89=A4 envInc T i :=
+=3D by
+  unfold envInc
+  by_cases h : i &lt; (infoValues T).length
+  =C2=B7 rw [dif_pos h]
+    by_cases hi : i =3D 0
+    =C2=B7 rw [dif_pos hi]
+      simpa using Fstar_nonneg T ((infoValues T)[i])
+    =C2=B7 rw [dif_neg hi]
+      have hpred : i - 1 &lt; (infoValues T).length :=3D by omega
+      have hlt : i - 1 &lt; i :=3D by omega
+      exact sub_nonneg.mpr (Fstar_mono T (le_of_lt (info_get_strictMono T h=
+pred h hlt)))
+  =C2=B7 rw [dif_neg h]
+
+theorem cumsum_envInc (T : Tree) (k : =E2=84=95) (hk : k =E2=89=A4 (infoVal=
+ues T).length) :
+    cumsum (envInc T) k =3D
+      if k =3D 0 then 0 else
+        Fstar T ((infoValues T)[k - 1]'(by
+          have hlen :=3D infoValues_length_pos T
+          omega)) :=3D by
+  induction k with
+  | zero =3D&gt; simp [cumsum]
+  | succ k ih =3D&gt;
+      have hk' : k =E2=89=A4 (infoValues T).length :=3D by omega
+      rw [cumsum, ih hk']
+      by_cases hk0 : k =3D 0
+      =C2=B7 subst hk0
+        have hlt : 0 &lt; (infoValues T).length :=3D by omega
+        simp [envInc, hlt]
+      =C2=B7 have hlt : k &lt; (infoValues T).length :=3D by omega
+        simp [envInc, hlt]
+
+theorem cumsum_envInc_last (T : Tree) :
+    cumsum (envInc T) (infoValues T).length =3D 1 :=3D by
+  rw [cumsum_envInc T _ le_rfl]
+  have hpos :=3D infoValues_length_pos T
+  simp only [if_neg (by omega : (infoValues T).length =E2=89=A0 0)]
+  simpa using Fstar_last T
+
+theorem cumsum_eq_sum (=CE=BC : =E2=84=95 =E2=86=92 =E2=84=9D) (n : =E2=84=
+=95) :
+    cumsum =CE=BC n =3D (Finset.range n).sum =CE=BC :=3D by
+  induction n with
+  | zero =3D&gt; simp [cumsum]
+  | succ n ih =3D&gt; rw [cumsum, ih, Finset.sum_range_succ]
+
+noncomputable def infoIndex (T : Tree) (=E2=84=93 : Leaf T) : =E2=84=95 :=
+=3D
+  (infoValues T).idxOf (infoMass (leafMass =E2=84=93))
+
+theorem infoIndex_lt (T : Tree) (=E2=84=93 : Leaf T) :
+    infoIndex T =E2=84=93 &lt; (infoValues T).length :=3D
+  List.idxOf_lt_length_of_mem ((mem_infoValues).2 =E2=9F=A8=E2=84=93, rfl=
+=E2=9F=A9)
+
+theorem infoValues_get_index (T : Tree) (=E2=84=93 : Leaf T) :
+    (infoValues T)[infoIndex T =E2=84=93]'(infoIndex_lt T =E2=84=93) =3D in=
+foMass (leafMass =E2=84=93) :=3D by
+  simpa [infoIndex] using (List.getElem_idxOf (infoIndex_lt T =E2=84=93))
+
+theorem info_get_le_iff (T : Tree) {i j : =E2=84=95}
+    (hi : i &lt; (infoValues T).length) (hj : j &lt; (infoValues T).length)=
+ :
+    (infoValues T)[i] =E2=89=A4 (infoValues T)[j] =E2=86=94 i =E2=89=A4 j :=
+=3D by
+  constructor
+  =C2=B7 intro h
+    by_contra hlt
+    have : j &lt; i :=3D by omega
+    exact not_le_of_gt (info_get_strictMono T hj hi this) h
+  =C2=B7 intro hij
+    rcases lt_or_eq_of_le hij with hlt | rfl
+    =C2=B7 exact (info_get_strictMono T hi hj hlt).le
+    =C2=B7 exact le_rfl
+
+theorem level_term_eq (T : Tree) (=E2=84=93 : Leaf T) (i : =E2=84=95) :
+    (if hi : i &lt; (infoValues T).length then
+        if infoMass (leafMass =E2=84=93) =3D (infoValues T)[i] then leafMas=
+s =E2=84=93 else 0
+      else 0) =3D
+    if i =3D infoIndex T =E2=84=93 then leafMass =E2=84=93 else 0 :=3D by
+  by_cases hi : i &lt; (infoValues T).length
+  =C2=B7 simp only [hi, dite_true]
+    by_cases he : infoMass (leafMass =E2=84=93) =3D (infoValues T)[i]
+    =C2=B7 have hinj : i =3D infoIndex T =E2=84=93 :=3D
+        (List.Nodup.getElem_inj_iff (nodup_infoValues T) (hi :=3D hi)
+          (hj :=3D infoIndex_lt T =E2=84=93)).1 &lt;| by
+            calc
+              (infoValues T)[i] =3D infoMass (leafMass =E2=84=93) :=3D he.s=
+ymm
+              _ =3D (infoValues T)[infoIndex T =E2=84=93]'(infoIndex_lt T =
+=E2=84=93) :=3D
+                (infoValues_get_index T =E2=84=93).symm
+      simp [he, hinj]
+    =C2=B7 have hne : i =E2=89=A0 infoIndex T =E2=84=93 :=3D by
+        intro h
+        subst h
+        exact he (infoValues_get_index T =E2=84=93).symm
+      simp [he, hne]
+  =C2=B7 have hne : i =E2=89=A0 infoIndex T =E2=84=93 :=3D by
+      intro h
+      exact hi (h =E2=96=B8 infoIndex_lt T =E2=84=93)
+    simp [hi, hne]
+
+theorem leaf_prefix_sum (T : Tree) (=E2=84=93 : Leaf T) (k : =E2=84=95)
+    (hk : k =E2=89=A4 (infoValues T).length) (hk0 : k =E2=89=A0 0) :
+    (Finset.range k).sum (fun i =3D&gt;
+        if hi : i &lt; (infoValues T).length then
+          if infoMass (leafMass =E2=84=93) =3D (infoValues T)[i] then leafM=
+ass =E2=84=93 else 0
+        else 0) =3D
+      if infoMass (leafMass =E2=84=93) =E2=89=A4
+          (infoValues T)[k - 1]'(by
+            have hlen :=3D infoValues_length_pos T
+            omega)
+        then leafMass =E2=84=93 else 0 :=3D by
+  have hterm : =E2=88=80 i, (if hi : i &lt; (infoValues T).length then
+      if infoMass (leafMass =E2=84=93) =3D (infoValues T)[i] then leafMass =
+=E2=84=93 else 0 else 0) =3D
+      if i =3D infoIndex T =E2=84=93 then leafMass =E2=84=93 else 0 :=3D
+    fun i =3D&gt; level_term_eq T =E2=84=93 i
+  simp_rw [hterm]
+  rw [Finset.sum_ite_eq']
+  have hj : infoIndex T =E2=84=93 &lt; (infoValues T).length :=3D infoIndex=
+_lt T =E2=84=93
+  have hlast : k - 1 &lt; (infoValues T).length :=3D by
+    have hlen :=3D infoValues_length_pos T
+    omega
+  by_cases hjk : infoIndex T =E2=84=93 &lt; k
+  =C2=B7 have hmem : infoIndex T =E2=84=93 =E2=88=88 Finset.range k :=3D Fi=
+nset.mem_range.mpr hjk
+    simp only [hmem, ite_true]
+    have hle : infoMass (leafMass =E2=84=93) =E2=89=A4 (infoValues T)[k - 1=
+] :=3D by
+      rw [=E2=86=90 infoValues_get_index]
+      exact (info_get_le_iff T hj hlast).2 (by omega)
+    simp [hle]
+  =C2=B7 have hnot : infoIndex T =E2=84=93 =E2=88=89 Finset.range k :=3D by
+      simpa [Finset.mem_range] using hjk
+    simp only [hnot, ite_false]
+    have hgt : =C2=AC infoMass (leafMass =E2=84=93) =E2=89=A4 (infoValues T=
+)[k - 1] :=3D by
+      rw [=E2=86=90 infoValues_get_index]
+      exact not_le_of_gt &lt;| info_get_strictMono T hlast hj (by omega)
+    simp [hgt]
+
+theorem cumsum_levelAt {T : Tree} (=CF=80 : Policy T) (k : =E2=84=95)
+    (hk : k =E2=89=A4 (infoValues T).length) :
+    cumsum (levelAt T =CF=80) k =3D
+      if k =3D 0 then 0 else
+        policyCDF T =CF=80 ((infoValues T)[k - 1]'(by
+          have hlen :=3D infoValues_length_pos T
+          omega)) :=3D by
+  rw [cumsum_eq_sum]
+  by_cases hk0 : k =3D 0
+  =C2=B7 simp [hk0]
+  =C2=B7 rw [if_neg hk0]
+    unfold policyCDF
+    calc
+      (Finset.range k).sum (levelAt T =CF=80)
+          =3D (Finset.range k).sum (fun i =3D&gt;
+              policySum (fun =E2=84=93 =3D&gt;
+                if hi : i &lt; (infoValues T).length then
+                  if infoMass (leafMass =E2=84=93) =3D (infoValues T)[i] th=
+en leafMass =E2=84=93 else 0
+                else 0) =CF=80) :=3D by
+            apply Finset.sum_congr rfl
+            intro i hi
+            have hik : i &lt; k :=3D Finset.mem_range.mp hi
+            have hi' : i &lt; (infoValues T).length :=3D by omega
+            simp [levelAt, levelMass, hi']
+      _ =3D policySum (fun =E2=84=93 =3D&gt;
+            (Finset.range k).sum (fun i =3D&gt;
+              if hi : i &lt; (infoValues T).length then
+                if infoMass (leafMass =E2=84=93) =3D (infoValues T)[i] then=
+ leafMass =E2=84=93 else 0
+              else 0)) =CF=80 :=3D by
+          symm
+          exact policySum_range k (fun i =E2=84=93 =3D&gt;
+            if hi : i &lt; (infoValues T).length then
+              if infoMass (leafMass =E2=84=93) =3D (infoValues T)[i] then l=
+eafMass =E2=84=93 else 0
+            else 0) =CF=80
+      _ =3D policySum (fun =E2=84=93 =3D&gt;
+            if infoMass (leafMass =E2=84=93) =E2=89=A4
+                (infoValues T)[k - 1]'(by
+                  have hlen :=3D infoValues_length_pos T
+                  omega)
+              then leafMass =E2=84=93 else 0) =CF=80 :=3D by
+          apply congrArg (fun f =3D&gt; policySum f =CF=80)
+          funext =E2=84=93
+          exact leaf_prefix_sum T =E2=84=93 k hk hk0
+
+theorem psi_scaled_mono (=CE=B4 : =E2=84=9D) (h=CE=B4 : 0 =E2=89=A4 =CE=B4)=
+ :
+    Monotone (fun x : =E2=84=9D =3D&gt; psi (=CE=B4 * (2 : =E2=84=9D) ^ x))=
+ :=3D by
+  intro x y hxy
+  apply psi_mono
+  apply mul_le_mul_of_nonneg_left _ h=CE=B4
+  rw [Real.rpow_def_of_pos (by norm_num : (0 : =E2=84=9D) &lt; 2) x,
+    Real.rpow_def_of_pos (by norm_num : (0 : =E2=84=9D) &lt; 2) y]
+  exact (Real.exp_le_exp).2 &lt;|
+    mul_le_mul_of_nonneg_left hxy (Real.log_nonneg (by norm_num : (1 : =E2=
+=84=9D) =E2=89=A4 2))
+
+noncomputable def majorantAt (T : Tree) (=CE=B4 : =E2=84=9D) (i : =E2=84=95=
+) : =E2=84=9D :=3D
+  if h : i &lt; (infoValues T).length then
+    psi (=CE=B4 * (2 : =E2=84=9D) ^ ((infoValues T)[i]))
+  else 0
+
+theorem leaf_majorant_split (T : Tree) (=E2=84=93 : Leaf T) (=CE=B4 : =E2=
+=84=9D) :
+    leafMass =E2=84=93 * psi (=CE=B4 / leafMass =E2=84=93) =3D
+      (Finset.range (infoValues T).length).sum (fun i =3D&gt;
+        (if hi : i &lt; (infoValues T).length then
+            if infoMass (leafMass =E2=84=93) =3D (infoValues T)[i] then lea=
+fMass =E2=84=93 else 0
+          else 0) * majorantAt T =CE=B4 i) :=3D by
+  have hdiv : =CE=B4 / leafMass =E2=84=93 =3D =CE=B4 * (2 : =E2=84=9D) ^ in=
+foMass (leafMass =E2=84=93) :=3D
+    div_eq_rpow_info (leafMass_pos =E2=84=93) =CE=B4
+  have hterm : =E2=88=80 i,
+      (if hi : i &lt; (infoValues T).length then
+          if infoMass (leafMass =E2=84=93) =3D (infoValues T)[i] then leafM=
+ass =E2=84=93 else 0
+        else 0) * majorantAt T =CE=B4 i =3D
+      if i =3D infoIndex T =E2=84=93 then
+        leafMass =E2=84=93 * psi (=CE=B4 * (2 : =E2=84=9D) ^ infoMass (leaf=
+Mass =E2=84=93)) else 0 :=3D by
+    intro i
+    rw [level_term_eq]
+    by_cases h : i =3D infoIndex T =E2=84=93
+    =C2=B7 subst h
+      have hj :=3D infoIndex_lt T =E2=84=93
+      rw [if_pos rfl]
+      simp only [majorantAt, hj, dite_true]
+      rw [infoValues_get_index]
+      simp
+    =C2=B7 rw [if_neg h, if_neg h, zero_mul]
+  simp_rw [hterm, Finset.sum_ite_eq']
+  have hmem : infoIndex T =E2=84=93 =E2=88=88 Finset.range (infoValues T).l=
+ength :=3D
+    Finset.mem_range.mpr (infoIndex_lt T =E2=84=93)
+  simp only [hmem, ite_true]
+  rw [=E2=86=90 hdiv]
+
+theorem policy_majorant_levels {T : Tree} (=CF=80 : Policy T) (=CE=B4 : =E2=
+=84=9D) :
+    policySum (fun =E2=84=93 =3D&gt; leafMass =E2=84=93 * psi (=CE=B4 / lea=
+fMass =E2=84=93)) =CF=80 =3D
+      (Finset.range (infoValues T).length).sum
+        (fun i =3D&gt; levelAt T =CF=80 i * majorantAt T =CE=B4 i) :=3D by
+  calc
+    policySum (fun =E2=84=93 =3D&gt; leafMass =E2=84=93 * psi (=CE=B4 / lea=
+fMass =E2=84=93)) =CF=80
+      =3D policySum (fun =E2=84=93 =3D&gt;
+          (Finset.range (infoValues T).length).sum (fun i =3D&gt;
+            (if hi : i &lt; (infoValues T).length then
+                if infoMass (leafMass =E2=84=93) =3D (infoValues T)[i] then=
+ leafMass =E2=84=93 else 0
+              else 0) * majorantAt T =CE=B4 i)) =CF=80 :=3D by
+        apply congrArg (fun f =3D&gt; policySum f =CF=80)
+        funext =E2=84=93
+        exact leaf_majorant_split T =E2=84=93 =CE=B4
+    _ =3D (Finset.range (infoValues T).length).sum (fun i =3D&gt;
+          policySum (fun =E2=84=93 =3D&gt;
+            (if hi : i &lt; (infoValues T).length then
+                if infoMass (leafMass =E2=84=93) =3D (infoValues T)[i] then=
+ leafMass =E2=84=93 else 0
+              else 0) * majorantAt T =CE=B4 i) =CF=80) :=3D by
+        rw [policySum_range]
+    _ =3D (Finset.range (infoValues T).length).sum
+          (fun i =3D&gt; levelAt T =CF=80 i * majorantAt T =CE=B4 i) :=3D b=
+y
+        apply Finset.sum_congr rfl
+        intro i hi
+        have hi' : i &lt; (infoValues T).length :=3D Finset.mem_range.mp hi
+        have hcomm : (fun =E2=84=93 : Leaf T =3D&gt;
+            (if hi : i &lt; (infoValues T).length then
+                if infoMass (leafMass =E2=84=93) =3D (infoValues T)[i] then=
+ leafMass =E2=84=93 else 0
+              else 0) * majorantAt T =CE=B4 i) =3D
+            fun =E2=84=93 =3D&gt; majorantAt T =CE=B4 i *
+              (if hi : i &lt; (infoValues T).length then
+                if infoMass (leafMass =E2=84=93) =3D (infoValues T)[i] then=
+ leafMass =E2=84=93 else 0
+              else 0) :=3D by
+          funext =E2=84=93; ring
+        rw [hcomm, policySum_mul]
+        simp only [levelAt, hi', levelMass]
+        rw [mul_comm]
+        apply congrArg (fun s =3D&gt; s * majorantAt T =CE=B4 i)
+        apply congrArg (fun f =3D&gt; policySum f =CF=80)
+        funext =E2=84=93
+        simp [hi']
+
+theorem smallWeight_le_envelope {T : Tree} {atoms : List (Atom T)}
+    (ht : GreedyTrace (Field.p T) atoms) (=CE=B4 : =E2=84=9D) (h=CE=B4 : 0 =
+=E2=89=A4 =CE=B4) :
+    smallWeight atoms =CE=B4 =E2=89=A4
+      (Finset.range (infoValues T).length).sum
+        (fun i =3D&gt; envInc T i * majorantAt T =CE=B4 i) :=3D by
+  obtain =E2=9F=A8=CF=80, h=CF=80=E2=9F=A9 :=3D greedy_refined_bound ht =CE=
+=B4 h=CE=B4
+  rw [policy_majorant_levels] at h=CF=80
+  refine le_trans h=CF=80 ?_
+  apply sum_le_of_larger_partials (infoValues T).length (majorantAt T =CE=
+=B4)
+      (levelAt T =CF=80) (envInc T)
+  =C2=B7 intro i hi
+    have hi0 : i &lt; (infoValues T).length :=3D by omega
+    have hi1 : i + 1 &lt; (infoValues T).length :=3D hi
+    have hle : (infoValues T)[i] =E2=89=A4 (infoValues T)[i + 1] :=3D
+      (info_get_le_iff T hi0 hi1).2 (by omega)
+    simpa [majorantAt, hi0, hi1] using psi_scaled_mono =CE=B4 h=CE=B4 hle
+  =C2=B7 intro k hk
+    rw [cumsum_envInc T k hk, cumsum_levelAt =CF=80 k hk]
+    by_cases hk0 : k =3D 0
+    =C2=B7 simp [hk0]
+    =C2=B7 rw [if_neg hk0, if_neg hk0]
+      exact Fstar_le T _ =CF=80
+  =C2=B7 rw [cumsum_levelAt =CF=80 (infoValues T).length le_rfl, cumsum_env=
+Inc_last]
+    have hlen :=3D infoValues_length_pos T
+    rw [if_neg (by omega : (infoValues T).length =E2=89=A0 0)]
+    exact policyCDF_last =CF=80
+
+/-! One-dimensional integrals. The overhead is the integral of `=CF=88`. -/
+
+open MeasureTheory Set
+
+noncomputable def shannonOverhead : =E2=84=9D :=3D (1 + 1 / Real.log 2) / 2
+
+noncomputable def seedShannon {T : Tree} (atoms : List (Atom T)) : =E2=84=
+=9D :=3D
+  (atoms.map (fun a =3D&gt; a.1 * infoMass a.1)).sum
+
+noncomputable def envelopeMean (T : Tree) : =E2=84=9D :=3D
+  (Finset.range (infoValues T).length).sum (fun i =3D&gt;
+    envInc T i * if h : i &lt; (infoValues T).length then (infoValues T)[i]=
+ else 0)
+
+theorem weight_le_dyadic_iff {w t : =E2=84=9D} (hw : 0 &lt; w) :
+    w =E2=89=A4 (2 : =E2=84=9D) ^ (-t) =E2=86=94 t =E2=89=A4 infoMass w :=
+=3D by
+  have hpow : 0 &lt; (2 : =E2=84=9D) ^ (-t) :=3D Real.rpow_pos_of_pos (by n=
+orm_num) (-t)
+  have hlog : Real.logb 2 ((2 : =E2=84=9D) ^ (-t)) =3D -t :=3D
+    Real.logb_rpow (by norm_num : (0 : =E2=84=9D) &lt; 2) (by norm_num : (2=
+ : =E2=84=9D) =E2=89=A0 1) (x :=3D -t)
+  rw [=E2=86=90 Real.logb_le_logb (b :=3D 2) (by norm_num : (1 : =E2=84=9D)=
+ &lt; 2) hw hpow, hlog]
+  unfold infoMass
+  constructor &lt;;&gt; intro h &lt;;&gt; linarith
+
+theorem weight_lt_dyadic_iff {w t : =E2=84=9D} (hw : 0 &lt; w) :
+    w &lt; (2 : =E2=84=9D) ^ (-t) =E2=86=94 t &lt; infoMass w :=3D by
+  have hpow : 0 &lt; (2 : =E2=84=9D) ^ (-t) :=3D Real.rpow_pos_of_pos (by n=
+orm_num) (-t)
+  have hlog : Real.logb 2 ((2 : =E2=84=9D) ^ (-t)) =3D -t :=3D
+    Real.logb_rpow (by norm_num : (0 : =E2=84=9D) &lt; 2) (by norm_num : (2=
+ : =E2=84=9D) =E2=89=A0 1) (x :=3D -t)
+  rw [=E2=86=90 Real.logb_lt_logb_iff (b :=3D 2) (by norm_num : (1 : =E2=84=
+=9D) &lt; 2) hw hpow, hlog]
+  unfold infoMass
+  constructor &lt;;&gt; intro h &lt;;&gt; linarith
+
+theorem infoMass_of_unit_interval {w : =E2=84=9D} (hw : 0 &lt; w) (hw1 : w =
+=E2=89=A4 1) :
+    0 =E2=89=A4 infoMass w :=3D by
+  have hlog :=3D Real.logb_le_logb_of_le (b :=3D 2) (by norm_num : (1 : =E2=
+=84=9D) &lt; 2) hw hw1
+  rw [Real.logb_one] at hlog
+  simpa [infoMass] using neg_nonneg.mpr hlog
+
+theorem infoMass_anti {w p : =E2=84=9D} (hw : 0 &lt; w) (hp : 0 &lt; p) (hw=
+le : w =E2=89=A4 p) :
+    infoMass p =E2=89=A4 infoMass w :=3D by
+  have hlog :=3D Real.logb_le_logb_of_le (b :=3D 2) (by norm_num : (1 : =E2=
+=84=9D) &lt; 2) hw hwle
+  simpa [infoMass] using neg_le_neg hlog
+
+theorem integrableOn_le_cutoff {z c : =E2=84=9D} (hz : 0 =E2=89=A4 z) :
+    IntegrableOn (fun t : =E2=84=9D =3D&gt; if t =E2=89=A4 z then c else 0)=
+ (Ioi (0 : =E2=84=9D)) :=3D by
+  have hU : Ioc 0 z =E2=88=AA Ioi z =3D Ioi 0 :=3D Ioc_union_Ioi_eq_Ioi hz
+  rw [=E2=86=90 hU]
+  refine IntegrableOn.union ?_ ?_
+  =C2=B7 have hvol : volume (Ioc (0 : =E2=84=9D) z) =E2=89=A0 =E2=8A=A4 :=
+=3D by
+      rw [Real.volume_Ioc]
+      exact ENNReal.ofReal_ne_top
+    refine (integrableOn_const (s :=3D Ioc (0 : =E2=84=9D) z) (C :=3D c) hv=
+ol).congr_fun ?_
+      measurableSet_Ioc
+    intro t ht
+    simp [ht.2]
+  =C2=B7 refine (integrableOn_zero (s :=3D Ioi z) (=CE=BC :=3D volume)).con=
+gr_fun ?_ measurableSet_Ioi
+    intro t ht
+    simp [not_le.mpr (mem_Ioi.mp ht)]
+
+theorem integral_le_cutoff {z c : =E2=84=9D} (hz : 0 =E2=89=A4 z) :
+    =E2=88=AB t in Ioi (0 : =E2=84=9D), (if t =E2=89=A4 z then c else 0) =
+=3D c * z :=3D by
+  have hint :=3D integrableOn_le_cutoff (c :=3D c) hz
+  have hU : Ioc 0 z =E2=88=AA Ioi z =3D Ioi 0 :=3D Ioc_union_Ioi_eq_Ioi hz
+  have hdis : Disjoint (Ioc 0 z) (Ioi z) :=3D Ioc_disjoint_Ioi_same
+  have hf1 : IntegrableOn (fun t : =E2=84=9D =3D&gt; if t =E2=89=A4 z then =
+c else 0) (Ioc 0 z) :=3D
+    hint.mono_set (by rw [=E2=86=90 hU]; exact subset_union_left)
+  have hf2 : IntegrableOn (fun t : =E2=84=9D =3D&gt; if t =E2=89=A4 z then =
+c else 0) (Ioi z) :=3D
+    hint.mono_set (by rw [=E2=86=90 hU]; exact subset_union_right)
+  rw [=E2=86=90 hU, setIntegral_union hdis measurableSet_Ioi hf1 hf2]
+  have h1 : =E2=88=AB t in Ioc 0 z, (if t =E2=89=A4 z then c else 0) =3D =
+=E2=88=AB _t in Ioc 0 z, c :=3D by
+    refine setIntegral_congr_fun measurableSet_Ioc ?_
+    intro t ht
+    simp [ht.2]
+  have h2 : =E2=88=AB t in Ioi z, (if t =E2=89=A4 z then c else 0) =3D 0 :=
+=3D by
+    rw [setIntegral_congr_fun measurableSet_Ioi (fun t ht =3D&gt; ?_), inte=
+gral_zero]
+    simp [not_le.mpr (mem_Ioi.mp ht)]
+  rw [h1, h2, setIntegral_const, Real.volume_real_Ioc_of_le hz, smul_eq_mul=
+]
+  ring
+
+theorem integrableOn_lt_cutoff {z c : =E2=84=9D} (hz : 0 =E2=89=A4 z) :
+    IntegrableOn (fun t : =E2=84=9D =3D&gt; if t &lt; z then c else 0) (Ioi=
+ (0 : =E2=84=9D)) :=3D by
+  rcases hz.eq_or_lt with rfl | hz
+  =C2=B7 refine (integrableOn_zero (s :=3D Ioi (0 : =E2=84=9D))).congr_fun =
+?_ measurableSet_Ioi
+    intro t ht
+    simp [not_lt.mpr (le_of_lt (mem_Ioi.mp ht))]
+  =C2=B7 have hU : Ioo 0 z =E2=88=AA Ici z =3D Ioi 0 :=3D Ioo_union_Ici_eq_=
+Ioi hz
+    rw [=E2=86=90 hU]
+    refine IntegrableOn.union ?_ ?_
+    =C2=B7 have hvol : volume (Ioo (0 : =E2=84=9D) z) =E2=89=A0 =E2=8A=A4 :=
+=3D by
+        rw [Real.volume_Ioo]
+        exact ENNReal.ofReal_ne_top
+      refine (integrableOn_const (s :=3D Ioo (0 : =E2=84=9D) z) (C :=3D c) =
+hvol).congr_fun ?_
+        measurableSet_Ioo
+      intro t ht
+      simp [ht.2]
+    =C2=B7 refine (integrableOn_zero (s :=3D Ici z)).congr_fun ?_ measurabl=
+eSet_Ici
+      intro t ht
+      simp [not_lt.mpr (mem_Ici.mp ht)]
+
+theorem integral_lt_cutoff {z c : =E2=84=9D} (hz : 0 =E2=89=A4 z) :
+    =E2=88=AB t in Ioi (0 : =E2=84=9D), (if t &lt; z then c else 0) =3D c *=
+ z :=3D by
+  rcases hz.eq_or_lt with rfl | hz
+  =C2=B7 have hzero : EqOn (fun t : =E2=84=9D =3D&gt; if t &lt; (0 : =E2=84=
+=9D) then c else 0) (fun _ =3D&gt; (0 : =E2=84=9D)) (Ioi 0) :=3D by
+      intro t ht
+      simp [not_lt.mpr (le_of_lt (mem_Ioi.mp ht))]
+    rw [setIntegral_congr_fun measurableSet_Ioi hzero, integral_zero, mul_z=
+ero]
+  =C2=B7 have hint :=3D integrableOn_lt_cutoff (c :=3D c) hz.le
+    have hU : Ioo 0 z =E2=88=AA Ici z =3D Ioi 0 :=3D Ioo_union_Ici_eq_Ioi h=
+z
+    have hdis : Disjoint (Ioo (0 : =E2=84=9D) z) (Ici z) :=3D
+      (Iio_disjoint_Ici (le_refl z)).mono Ioo_subset_Iio_self le_rfl
+    have hf1 : IntegrableOn (fun t : =E2=84=9D =3D&gt; if t &lt; z then c e=
+lse 0) (Ioo 0 z) :=3D
+      hint.mono_set (by rw [=E2=86=90 hU]; exact subset_union_left)
+    have hf2 : IntegrableOn (fun t : =E2=84=9D =3D&gt; if t &lt; z then c e=
+lse 0) (Ici z) :=3D
+      hint.mono_set (by rw [=E2=86=90 hU]; exact subset_union_right)
+    rw [=E2=86=90 hU, setIntegral_union hdis measurableSet_Ici hf1 hf2]
+    have h1 : =E2=88=AB t in Ioo 0 z, (if t &lt; z then c else 0) =3D =E2=
+=88=AB _t in Ioo 0 z, c :=3D by
+      refine setIntegral_congr_fun measurableSet_Ioo ?_
+      intro t ht
+      simp [ht.2]
+    have h2 : =E2=88=AB t in Ici z, (if t &lt; z then c else 0) =3D 0 :=3D =
+by
+      have hzero : EqOn (fun t : =E2=84=9D =3D&gt; if t &lt; z then c else =
+0) (fun _ =3D&gt; (0 : =E2=84=9D)) (Ici z) :=3D by
+        intro t ht
+        simp [not_lt.mpr (mem_Ici.mp ht)]
+      rw [setIntegral_congr_fun measurableSet_Ici hzero, integral_zero]
+    rw [h1, h2, setIntegral_const, Real.volume_real_Ioo_of_le hz.le, smul_e=
+q_mul]
+    ring
+
+theorem integral_atom (w : =E2=84=9D) (hw : 0 &lt; w) (hw1 : w =E2=89=A4 1)=
+ :
+    =E2=88=AB t in Ioi (0 : =E2=84=9D), (if w =E2=89=A4 (2 : =E2=84=9D) ^ (=
+-t) then w else 0) =3D w * infoMass w :=3D by
+  rw [setIntegral_congr_fun measurableSet_Ioi (fun t _ =3D&gt; ?eq)]
+  =C2=B7 exact integral_le_cutoff (c :=3D w) (infoMass_of_unit_interval hw =
+hw1)
+  case eq =3D&gt;
+    by_cases h : w =E2=89=A4 (2 : =E2=84=9D) ^ (-t)
+    =C2=B7 simp [h, (weight_le_dyadic_iff hw).1 h]
+    =C2=B7 have hnot : =C2=AC t =E2=89=A4 infoMass w :=3D by
+        intro ht
+        exact h ((weight_le_dyadic_iff hw).2 ht)
+      simp [h, hnot]
+
+theorem integrableOn_atom (w : =E2=84=9D) (hw : 0 &lt; w) (hw1 : w =E2=89=
+=A4 1) :
+    IntegrableOn (fun t : =E2=84=9D =3D&gt; if w =E2=89=A4 (2 : =E2=84=9D) =
+^ (-t) then w else 0) (Ioi (0 : =E2=84=9D)) :=3D by
+  refine (integrableOn_le_cutoff (c :=3D w) (infoMass_of_unit_interval hw h=
+w1)).congr_fun
+    ?_ measurableSet_Ioi
+  intro t _
+  by_cases h : w =E2=89=A4 (2 : =E2=84=9D) ^ (-t)
+  =C2=B7 simp [h, (weight_le_dyadic_iff hw).1 h]
+  =C2=B7 have hnot : =C2=AC t =E2=89=A4 infoMass w :=3D by
+      intro ht
+      exact h ((weight_le_dyadic_iff hw).2 ht)
+    simp [h, hnot]
+
+theorem smallWeight_cons {T : Tree} (a : Atom T) (tail : List (Atom T)) (=
+=CE=B4 : =E2=84=9D) :
+    smallWeight (a :: tail) =CE=B4 =3D (if a.1 =E2=89=A4 =CE=B4 then a.1 el=
+se 0) + smallWeight tail =CE=B4 :=3D by
+  simp [smallWeight]
+
+theorem seedShannon_cons {T : Tree} (a : Atom T) (tail : List (Atom T)) :
+    seedShannon (a :: tail) =3D a.1 * infoMass a.1 + seedShannon tail :=3D =
+by
+  simp [seedShannon]
+
+theorem integrableOn_smallWeight {T : Tree} (atoms : List (Atom T))
+    (hpos : =E2=88=80 a =E2=88=88 atoms, 0 &lt; a.1) (hle : =E2=88=80 a =E2=
+=88=88 atoms, a.1 =E2=89=A4 1) :
+    IntegrableOn (fun t : =E2=84=9D =3D&gt; smallWeight atoms ((2 : =E2=84=
+=9D) ^ (-t))) (Ioi (0 : =E2=84=9D)) :=3D by
+  induction atoms with
+  | nil =3D&gt; simp [smallWeight, integrableOn_zero]
+  | cons a tail ih =3D&gt;
+      simp_rw [smallWeight_cons]
+      exact (integrableOn_atom a.1 (hpos a (by simp)) (hle a (by simp))).ad=
+d
+        (ih (fun b hb =3D&gt; hpos b (by simp [hb])) (fun b hb =3D&gt; hle =
+b (by simp [hb])))
+
+theorem seedShannon_eq_integral {T : Tree} (atoms : List (Atom T))
+    (hpos : =E2=88=80 a =E2=88=88 atoms, 0 &lt; a.1) (hle : =E2=88=80 a =E2=
+=88=88 atoms, a.1 =E2=89=A4 1) :
+    seedShannon atoms =3D
+      =E2=88=AB t in Ioi (0 : =E2=84=9D), smallWeight atoms ((2 : =E2=84=9D=
+) ^ (-t)) :=3D by
+  induction atoms with
+  | nil =3D&gt;
+      simp [seedShannon, smallWeight, integral_zero]
+  | cons a tail ih =3D&gt;
+      have hpos' : =E2=88=80 b =E2=88=88 tail, 0 &lt; b.1 :=3D fun b hb =3D=
+&gt; hpos b (by simp [hb])
+      have hle' : =E2=88=80 b =E2=88=88 tail, b.1 =E2=89=A4 1 :=3D fun b hb=
+ =3D&gt; hle b (by simp [hb])
+      have ha0 : 0 &lt; a.1 :=3D hpos a (by simp)
+      have ha1 : a.1 =E2=89=A4 1 :=3D hle a (by simp)
+      simp_rw [seedShannon_cons, smallWeight_cons, ih hpos' hle']
+      rw [integral_add (integrableOn_atom a.1 ha0 ha1).integrable
+          (integrableOn_smallWeight tail hpos' hle').integrable,
+        integral_atom a.1 ha0 ha1]
+
+theorem psi_rpow_piece (z t : =E2=84=9D) :
+    psi ((2 : =E2=84=9D) ^ (z - t)) =3D
+      if t =E2=89=A4 z then (1 : =E2=84=9D)
+      else if t =E2=89=A4 z + 1 then 1 / 2
+      else (2 : =E2=84=9D) ^ (z - t) :=3D by
+  unfold psi
+  set u : =E2=84=9D :=3D (2 : =E2=84=9D) ^ (z - t)
+  by_cases h1 : t =E2=89=A4 z
+  =C2=B7 have hone : (1 : =E2=84=9D) =E2=89=A4 u :=3D
+      Real.one_le_rpow (by norm_num : (1 : =E2=84=9D) =E2=89=A4 2) (by lina=
+rith : (0 : =E2=84=9D) =E2=89=A4 z - t)
+    have hhalf : =C2=AC u =E2=89=A4 (1 : =E2=84=9D) / 2 :=3D by
+      have : (1 : =E2=84=9D) / 2 &lt; 1 :=3D by norm_num
+      linarith
+    have hlt : =C2=AC u &lt; 1 :=3D not_lt.mpr hone
+    rw [if_pos h1, if_neg hhalf, if_neg hlt]
+  =C2=B7 rw [if_neg h1]
+    by_cases h2 : t =E2=89=A4 z + 1
+    =C2=B7 have hlt1 : u &lt; 1 :=3D
+        Real.rpow_lt_one_of_one_lt_of_neg (by norm_num : (1 : =E2=84=9D) &l=
+t; 2)
+          (by linarith : z - t &lt; 0)
+      have hge : (1 : =E2=84=9D) / 2 =E2=89=A4 u :=3D by
+        have hpow : (2 : =E2=84=9D) ^ (-1 : =E2=84=9D) =E2=89=A4 u :=3D
+          Real.rpow_le_rpow_of_exponent_le (by norm_num : (1 : =E2=84=9D) =
+=E2=89=A4 2)
+            (by linarith : (-1 : =E2=84=9D) =E2=89=A4 z - t)
+        rw [Real.rpow_neg_one] at hpow
+        have hinv : (2 : =E2=84=9D)=E2=81=BB=C2=B9 =3D (1 : =E2=84=9D) / 2 =
+:=3D by norm_num
+        linarith
+      rw [if_pos h2]
+      by_cases hh : u =E2=89=A4 (1 : =E2=84=9D) / 2
+      =C2=B7 have heq : u =3D (1 : =E2=84=9D) / 2 :=3D le_antisymm hh hge
+        rw [if_pos hh, heq]
+      =C2=B7 rw [if_neg hh, if_pos hlt1]
+    =C2=B7 have hpow : u &lt; (2 : =E2=84=9D) ^ (-1 : =E2=84=9D) :=3D
+        Real.rpow_lt_rpow_of_exponent_lt (by norm_num : (1 : =E2=84=9D) &lt=
+; 2)
+          (by linarith : z - t &lt; -1)
+      rw [Real.rpow_neg_one] at hpow
+      have hinv : (2 : =E2=84=9D)=E2=81=BB=C2=B9 =3D (1 : =E2=84=9D) / 2 :=
+=3D by norm_num
+      have hh : u =E2=89=A4 (1 : =E2=84=9D) / 2 :=3D by linarith
+      rw [if_neg h2, if_pos hh]
+
+theorem shannonOverhead_expand :
+    shannonOverhead =3D 1 / 2 + 1 / (2 * Real.log 2) :=3D by
+  have hlog : Real.log 2 =E2=89=A0 0 :=3D (Real.log_pos (by norm_num : (1 :=
+ =E2=84=9D) &lt; 2)).ne'
+  unfold shannonOverhead
+  field_simp [hlog]
+
+theorem integral_exp_tail (z : =E2=84=9D) :
+    =E2=88=AB t in Ioi (z + 1), (2 : =E2=84=9D) ^ (z - t) =3D 1 / (2 * Real=
+.log 2) :=3D by
+  have hlogpos : 0 &lt; Real.log 2 :=3D Real.log_pos (by norm_num : (1 : =
+=E2=84=9D) &lt; 2)
+  have ha : -Real.log 2 &lt; 0 :=3D neg_lt_zero.mpr hlogpos
+  have hfun : EqOn (fun t : =E2=84=9D =3D&gt; (2 : =E2=84=9D) ^ (z - t))
+      (fun t =3D&gt; (2 : =E2=84=9D) ^ z * Real.exp (-Real.log 2 * t)) (Ioi=
+ (z + 1)) :=3D by
+    intro t _
+    dsimp
+    rw [Real.rpow_def_of_pos (by norm_num : (0 : =E2=84=9D) &lt; 2) (z - t)=
+]
+    rw [show Real.log 2 * (z - t) =3D Real.log 2 * z + (-Real.log 2) * t by=
+ ring]
+    rw [Real.exp_add]
+    rw [=E2=86=90 Real.rpow_def_of_pos (by norm_num : (0 : =E2=84=9D) &lt; =
+2) z]
+  rw [setIntegral_congr_fun measurableSet_Ioi hfun]
+  rw [integral_const_mul ((2 : =E2=84=9D) ^ z) (fun t : =E2=84=9D =3D&gt; R=
+eal.exp (-Real.log 2 * t))
+    (=CE=BC :=3D volume.restrict (Ioi (z + 1)))]
+  rw [integral_exp_mul_Ioi ha (z + 1)]
+  have hneg : -Real.log 2 =E2=89=A0 0 :=3D ne_of_lt ha
+  have hrewrite : -Real.exp ((-Real.log 2) * (z + 1)) / (-Real.log 2) =3D
+      Real.exp ((-Real.log 2) * (z + 1)) / Real.log 2 :=3D by
+    field_simp [hneg]
+  rw [hrewrite]
+  have hexp : Real.exp ((-Real.log 2) * (z + 1)) =3D (2 : =E2=84=9D) ^ (-(z=
+ + 1)) :=3D by
+    rw [Real.rpow_def_of_pos (by norm_num : (0 : =E2=84=9D) &lt; 2)]
+    congr 1
+    ring
+  rw [hexp]
+  have hmul : (2 : =E2=84=9D) ^ z * ((2 : =E2=84=9D) ^ (-(z + 1)) / Real.lo=
+g 2) =3D
+      ((2 : =E2=84=9D) ^ z * (2 : =E2=84=9D) ^ (-(z + 1))) / Real.log 2 :=
+=3D by
+    field_simp [hlogpos.ne']
+  rw [hmul, =E2=86=90 Real.rpow_add (by norm_num : (0 : =E2=84=9D) &lt; 2)]
+  have hadd : z + -(z + 1) =3D -1 :=3D by ring
+  rw [hadd, Real.rpow_neg_one]
+  field_simp [hlogpos.ne']
+
+theorem integrableOn_psi_ray {z : =E2=84=9D} (hz : 0 =E2=89=A4 z) :
+    IntegrableOn (fun t : =E2=84=9D =3D&gt; psi ((2 : =E2=84=9D) ^ (z - t))=
+) (Ioi (0 : =E2=84=9D)) :=3D by
+  let f : =E2=84=9D =E2=86=92 =E2=84=9D :=3D fun t =3D&gt; psi ((2 : =E2=84=
+=9D) ^ (z - t))
+  have hA : EqOn f (fun _ =3D&gt; (1 : =E2=84=9D)) (Ioc 0 z) :=3D by
+    intro t ht
+    have ht' : t =E2=89=A4 z :=3D ht.2
+    simp [f, psi_rpow_piece, ht']
+  have hB : EqOn f (fun _ =3D&gt; (1 : =E2=84=9D) / 2) (Ioc z (z + 1)) :=3D=
+ by
+    intro t ht
+    have hnot : =C2=AC t =E2=89=A4 z :=3D not_le.mpr ht.1
+    have hle : t =E2=89=A4 z + 1 :=3D ht.2
+    simp [f, psi_rpow_piece, hnot, hle]
+  have hC : EqOn f (fun t =3D&gt; (2 : =E2=84=9D) ^ (z - t)) (Ioi (z + 1)) =
+:=3D by
+    intro t ht
+    have ht' : z + 1 &lt; t :=3D mem_Ioi.mp ht
+    have hnot1 : =C2=AC t =E2=89=A4 z :=3D by linarith
+    have hnot2 : =C2=AC t =E2=89=A4 z + 1 :=3D not_le.mpr ht'
+    simp [f, psi_rpow_piece, hnot1, hnot2]
+  have hvolA : volume (Ioc (0 : =E2=84=9D) z) =E2=89=A0 =E2=8A=A4 :=3D by
+    rw [Real.volume_Ioc]; exact ENNReal.ofReal_ne_top
+  have hvolB : volume (Ioc z (z + 1)) =E2=89=A0 =E2=8A=A4 :=3D by
+    rw [Real.volume_Ioc]; exact ENNReal.ofReal_ne_top
+  have hintA : IntegrableOn f (Ioc 0 z) :=3D
+    (integrableOn_const (s :=3D Ioc (0 : =E2=84=9D) z) (C :=3D (1 : =E2=84=
+=9D)) hvolA).congr_fun
+      hA.symm measurableSet_Ioc
+  have hintB : IntegrableOn f (Ioc z (z + 1)) :=3D
+    (integrableOn_const (s :=3D Ioc z (z + 1)) (C :=3D (1 : =E2=84=9D) / 2)=
+ hvolB).congr_fun
+      hB.symm measurableSet_Ioc
+  have hintExp : IntegrableOn (fun t : =E2=84=9D =3D&gt; Real.exp (-Real.lo=
+g 2 * t)) (Ioi (z + 1)) :=3D
+    integrableOn_exp_mul_Ioi (by
+      have :=3D Real.log_pos (by norm_num : (1 : =E2=84=9D) &lt; 2)
+      linarith) (z + 1)
+  have hintPow : IntegrableOn (fun t : =E2=84=9D =3D&gt; (2 : =E2=84=9D) ^ =
+(z - t)) (Ioi (z + 1)) :=3D by
+    have hmul : Integrable (fun t : =E2=84=9D =3D&gt; (2 : =E2=84=9D) ^ z *=
+ Real.exp (-Real.log 2 * t))
+        (volume.restrict (Ioi (z + 1))) :=3D
+      Integrable.const_mul hintExp.integrable ((2 : =E2=84=9D) ^ z)
+    refine IntegrableOn.congr_fun (by simpa [IntegrableOn] using hmul) ?_ m=
+easurableSet_Ioi
+    intro t _
+    dsimp
+    rw [Real.rpow_def_of_pos (by norm_num : (0 : =E2=84=9D) &lt; 2) (z - t)=
+,
+      Real.rpow_def_of_pos (by norm_num : (0 : =E2=84=9D) &lt; 2) z]
+    rw [show Real.log 2 * (z - t) =3D Real.log 2 * z + (-Real.log 2) * t by=
+ ring,
+      Real.exp_add]
+    ring
+  have hintC : IntegrableOn f (Ioi (z + 1)) :=3D
+    hintPow.congr_fun hC.symm measurableSet_Ioi
+  have hU1 : Ioc 0 z =E2=88=AA Ioc z (z + 1) =3D Ioc 0 (z + 1) :=3D
+    Ioc_union_Ioc_eq_Ioc hz (by linarith)
+  have hU2 : Ioc 0 (z + 1) =E2=88=AA Ioi (z + 1) =3D Ioi 0 :=3D
+    Ioc_union_Ioi_eq_Ioi (by linarith : (0 : =E2=84=9D) =E2=89=A4 z + 1)
+  have hintAB : IntegrableOn f (Ioc 0 (z + 1)) :=3D by
+    rw [=E2=86=90 hU1]
+    exact hintA.union hintB
+  rw [=E2=86=90 hU2]
+  exact hintAB.union hintC
+
+theorem integral_psi_ray {z : =E2=84=9D} (hz : 0 =E2=89=A4 z) :
+    =E2=88=AB t in Ioi (0 : =E2=84=9D), psi ((2 : =E2=84=9D) ^ (z - t)) =3D=
+ z + shannonOverhead :=3D by
+  let f : =E2=84=9D =E2=86=92 =E2=84=9D :=3D fun t =3D&gt; psi ((2 : =E2=84=
+=9D) ^ (z - t))
+  have hA : EqOn f (fun _ =3D&gt; (1 : =E2=84=9D)) (Ioc 0 z) :=3D by
+    intro t ht
+    simp [f, psi_rpow_piece, ht.2]
+  have hB : EqOn f (fun _ =3D&gt; (1 : =E2=84=9D) / 2) (Ioc z (z + 1)) :=3D=
+ by
+    intro t ht
+    simp [f, psi_rpow_piece, not_le.mpr ht.1, ht.2]
+  have hC : EqOn f (fun t =3D&gt; (2 : =E2=84=9D) ^ (z - t)) (Ioi (z + 1)) =
+:=3D by
+    intro t ht
+    have ht' : z + 1 &lt; t :=3D mem_Ioi.mp ht
+    simp [f, psi_rpow_piece, (by linarith : =C2=AC t =E2=89=A4 z), not_le.m=
+pr ht']
+  have hintA : IntegrableOn f (Ioc 0 z) :=3D
+    (integrableOn_psi_ray hz).mono_set Ioc_subset_Ioi_self
+  have hintB : IntegrableOn f (Ioc z (z + 1)) :=3D
+    (integrableOn_psi_ray hz).mono_set (fun t ht =3D&gt; by
+      have : 0 &lt; t :=3D lt_of_le_of_lt hz ht.1
+      exact mem_Ioi.mpr this)
+  have hintC : IntegrableOn f (Ioi (z + 1)) :=3D
+    (integrableOn_psi_ray hz).mono_set (fun t ht =3D&gt; by
+      have ht' : z + 1 &lt; t :=3D mem_Ioi.mp ht
+      exact mem_Ioi.mpr (by linarith))
+  have hU1 : Ioc 0 z =E2=88=AA Ioc z (z + 1) =3D Ioc 0 (z + 1) :=3D
+    Ioc_union_Ioc_eq_Ioc hz (by linarith)
+  have hU2 : Ioc 0 (z + 1) =E2=88=AA Ioi (z + 1) =3D Ioi 0 :=3D
+    Ioc_union_Ioi_eq_Ioi (by linarith : (0 : =E2=84=9D) =E2=89=A4 z + 1)
+  have hdis1 : Disjoint (Ioc 0 z) (Ioc z (z + 1)) :=3D Ioc_disjoint_Ioc_of_=
+le le_rfl
+  have hdis2 : Disjoint (Ioc 0 (z + 1)) (Ioi (z + 1)) :=3D Ioc_disjoint_Ioi=
+_same
+  have hintIoc : IntegrableOn f (Ioc 0 (z + 1)) :=3D by
+    rw [=E2=86=90 hU1]
+    exact hintA.union hintB
+  rw [=E2=86=90 hU2, setIntegral_union hdis2 measurableSet_Ioi hintIoc hint=
+C, =E2=86=90 hU1,
+    setIntegral_union hdis1 measurableSet_Ioc hintA hintB]
+  have iA : =E2=88=AB t in Ioc 0 z, f t =3D z :=3D by
+    rw [setIntegral_congr_fun measurableSet_Ioc hA, setIntegral_const,
+      Real.volume_real_Ioc_of_le hz, smul_eq_mul]
+    ring
+  have iB : =E2=88=AB t in Ioc z (z + 1), f t =3D 1 / 2 :=3D by
+    rw [setIntegral_congr_fun measurableSet_Ioc hB, setIntegral_const,
+      Real.volume_real_Ioc_of_le (by linarith : z =E2=89=A4 z + 1), smul_eq=
+_mul]
+    ring
+  have iC : =E2=88=AB t in Ioi (z + 1), f t =3D 1 / (2 * Real.log 2) :=3D b=
+y
+    rw [setIntegral_congr_fun measurableSet_Ioi hC, integral_exp_tail]
+  rw [iA, iB, iC, shannonOverhead_expand]
+  ring
+
+theorem info_nonneg_get (T : Tree) {i : =E2=84=95} (hi : i &lt; (infoValues=
+ T).length) :
+    0 =E2=89=A4 (infoValues T)[i] :=3D by
+  have hmem : (infoValues T)[i] =E2=88=88 infoValues T :=3D
+    List.mem_iff_getElem.mpr =E2=9F=A8i, hi, rfl=E2=9F=A9
+  obtain =E2=9F=A8=E2=84=93, h=E2=84=93=E2=9F=A9 :=3D (mem_infoValues).1 hm=
+em
+  rw [=E2=86=90 h=E2=84=93]
+  exact infoMass_nonneg =E2=84=93
+
+theorem majorant_dyadic (T : Tree) (t : =E2=84=9D) {i : =E2=84=95} (hi : i =
+&lt; (infoValues T).length) :
+    majorantAt T ((2 : =E2=84=9D) ^ (-t)) i =3D
+      psi ((2 : =E2=84=9D) ^ ((infoValues T)[i] - t)) :=3D by
+  simp only [majorantAt, hi, dite_true]
+  congr 1
+  rw [mul_comm, =E2=86=90 Real.rpow_add (by norm_num : (0 : =E2=84=9D) &lt;=
+ 2)]
+  ring
+
+theorem greedy_atom_bounds {T : Tree} {atoms : List (Atom T)}
+    (ht : GreedyTrace (Field.p T) atoms) :
+    (=E2=88=80 a =E2=88=88 atoms, 0 &lt; a.1) =E2=88=A7 (=E2=88=80 a =E2=88=
+=88 atoms, a.1 =E2=89=A4 1) :=3D by
+  have hp :=3D greedyTrace_properties ht (Field.p_isFlow T) (Field.p_nonneg=
+ T)
+  refine =E2=9F=A8fun a ha =3D&gt; (hp.1 a ha).1, fun a ha =3D&gt; ?_=E2=9F=
+=A9
+  exact le_trans (hp.1 a ha).2
+    (by simpa [Field.root_p] using
+      bottleneck_le_root (Field.p_isFlow T) (Field.p_nonneg T))
+
+noncomputable def envPiece (T : Tree) (i : =E2=84=95) (t : =E2=84=9D) : =E2=
+=84=9D :=3D
+  if h : i &lt; (infoValues T).length then
+    envInc T i * psi ((2 : =E2=84=9D) ^ ((infoValues T)[i] - t))
+  else 0
+
+theorem integrableOn_envPiece (T : Tree) (i : =E2=84=95) :
+    IntegrableOn (envPiece T i) (Ioi (0 : =E2=84=9D)) :=3D by
+  by_cases hi : i &lt; (infoValues T).length
+  =C2=B7 refine IntegrableOn.congr_fun
+      (by simpa [IntegrableOn] using
+        Integrable.const_mul (integrableOn_psi_ray (info_nonneg_get T hi)).=
+integrable (envInc T i))
+      ?_ measurableSet_Ioi
+    intro t _
+    simp [envPiece, hi]
+  =C2=B7 refine (integrableOn_zero (s :=3D Ioi (0 : =E2=84=9D))).congr_fun =
+?_ measurableSet_Ioi
+    intro t _
+    simp [envPiece, hi]
+
+theorem seedShannon_le_envelope {T : Tree} {atoms : List (Atom T)}
+    (ht : GreedyTrace (Field.p T) atoms)
+    (hpos : =E2=88=80 a =E2=88=88 atoms, 0 &lt; a.1) (hle : =E2=88=80 a =E2=
+=88=88 atoms, a.1 =E2=89=A4 1) :
+    seedShannon atoms =E2=89=A4 envelopeMean T + shannonOverhead :=3D by
+  let n :=3D (infoValues T).length
+  rw [seedShannon_eq_integral atoms hpos hle]
+  have hpoint : =E2=88=80 t =E2=88=88 Ioi (0 : =E2=84=9D),
+      smallWeight atoms ((2 : =E2=84=9D) ^ (-t)) =E2=89=A4
+        (Finset.range n).sum (fun i =3D&gt; envPiece T i t) :=3D by
+    intro t _
+    have h=CE=B4 : 0 =E2=89=A4 (2 : =E2=84=9D) ^ (-t) :=3D (Real.rpow_pos_o=
+f_pos (by norm_num) (-t)).le
+    refine le_trans (smallWeight_le_envelope ht _ h=CE=B4) ?_
+    refine Finset.sum_le_sum ?_
+    intro i hi
+    have hi' : i &lt; (infoValues T).length :=3D by
+      simpa [n] using Finset.mem_range.mp hi
+    rw [majorant_dyadic T t hi']
+    unfold envPiece
+    rw [dif_pos hi']
+  have hintSW : IntegrableOn (fun t : =E2=84=9D =3D&gt; smallWeight atoms (=
+(2 : =E2=84=9D) ^ (-t))) (Ioi (0 : =E2=84=9D)) :=3D
+    integrableOn_smallWeight atoms hpos hle
+  have hintSum : IntegrableOn
+      (fun t : =E2=84=9D =3D&gt; (Finset.range n).sum (fun i =3D&gt; envPie=
+ce T i t)) (Ioi (0 : =E2=84=9D)) :=3D by
+    simpa [IntegrableOn] using
+      integrable_finsetSum (=CE=BC :=3D volume.restrict (Ioi (0 : =E2=84=9D=
+))) (Finset.range n)
+        (f :=3D fun i (t : =E2=84=9D) =3D&gt; envPiece T i t)
+        (fun i _ =3D&gt; (integrableOn_envPiece T i).integrable)
+  have hmono :
+      (=E2=88=AB t in Ioi (0 : =E2=84=9D), smallWeight atoms ((2 : =E2=84=
+=9D) ^ (-t))) =E2=89=A4
+        =E2=88=AB t in Ioi (0 : =E2=84=9D), (Finset.range n).sum (fun i =3D=
+&gt; envPiece T i t) :=3D
+    setIntegral_mono_on hintSW hintSum measurableSet_Ioi hpoint
+  have hinter :
+      (=E2=88=AB t in Ioi (0 : =E2=84=9D), (Finset.range n).sum (fun i =3D&=
+gt; envPiece T i t)) =3D
+        (Finset.range n).sum (fun i =3D&gt; =E2=88=AB t in Ioi (0 : =E2=84=
+=9D), envPiece T i t) :=3D by
+    simpa using integral_finsetSum (=CE=BC :=3D volume.restrict (Ioi (0 : =
+=E2=84=9D))) (Finset.range n)
+      (f :=3D fun i (t : =E2=84=9D) =3D&gt; envPiece T i t)
+      (fun i _ =3D&gt; (integrableOn_envPiece T i).integrable)
+  have hsum :
+      (Finset.range n).sum (fun i =3D&gt; =E2=88=AB t in Ioi (0 : =E2=84=9D=
+), envPiece T i t) =3D
+        envelopeMean T + shannonOverhead :=3D by
+    have hterm : (Finset.range n).sum (fun i =3D&gt; =E2=88=AB t in Ioi (0 =
+: =E2=84=9D), envPiece T i t) =3D
+        (Finset.range n).sum (fun i =3D&gt;
+          envInc T i * (if h : i &lt; (infoValues T).length then (infoValue=
+s T)[i] else 0) +
+            shannonOverhead * envInc T i) :=3D by
+      refine Finset.sum_congr rfl ?_
+      intro i hi
+      have hi' : i &lt; (infoValues T).length :=3D by
+        simpa [n] using Finset.mem_range.mp hi
+      simp only [envPiece, hi', dite_true]
+      rw [integral_const_mul (envInc T i)
+          (fun t : =E2=84=9D =3D&gt; psi ((2 : =E2=84=9D) ^ ((infoValues T)=
+[i] - t)))
+          (=CE=BC :=3D volume.restrict (Ioi (0 : =E2=84=9D))),
+        integral_psi_ray (info_nonneg_get T hi')]
+      ring
+    rw [hterm, Finset.sum_add_distrib]
+    have hem : (Finset.range n).sum (fun i =3D&gt;
+        envInc T i * (if h : i &lt; (infoValues T).length then (infoValues =
+T)[i] else 0)) =3D
+        envelopeMean T :=3D by
+      unfold envelopeMean
+      dsimp [n]
+    have hov : (Finset.range n).sum (fun i =3D&gt; shannonOverhead * envInc=
+ T i) =3D
+        shannonOverhead :=3D by
+      rw [=E2=86=90 Finset.mul_sum]
+      dsimp [n]
+      rw [=E2=86=90 cumsum_eq_sum, cumsum_envInc_last, mul_one]
+    rw [hem, hov]
+  linarith
+
+/-! Lower bound: the envelope mean is the layer-cake integral of `1 - F=E2=
+=8B=86`. -/
+
+theorem policyCDF_le_one {T : Tree} (=CF=80 : Policy T) (t : =E2=84=9D) : p=
+olicyCDF T =CF=80 t =E2=89=A4 1 :=3D by
+  have hle : policyCDF T =CF=80 t =E2=89=A4 policySum (fun =E2=84=93 =3D&gt=
+; leafMass =E2=84=93) =CF=80 :=3D by
+    apply policySum_mono
+    intro =E2=84=93 _
+    split_ifs
+    =C2=B7 exact le_rfl
+    =C2=B7 exact (leafMass_pos =E2=84=93).le
+  simpa [policySum_leafMass] using hle
+
+noncomputable def countLe : List =E2=84=9D =E2=86=92 =E2=84=9D =E2=86=92 =
+=E2=84=95
+  | [], _ =3D&gt; 0
+  | a :: l, t =3D&gt; countLe l t + if a =E2=89=A4 t then 1 else 0
+
+theorem countLe_zero_of_gt (l : List =E2=84=9D) (t : =E2=84=9D) (h : =E2=88=
+=80 x =E2=88=88 l, t &lt; x) : countLe l t =3D 0 :=3D by
+  induction l with
+  | nil =3D&gt; rfl
+  | cons a as ih =3D&gt;
+      have ha : =C2=AC a =E2=89=A4 t :=3D not_le.mpr (h a (by simp))
+      simp [countLe, ha, ih (fun x hx =3D&gt; h x (by simp [hx]))]
+
+theorem countLe_iff (l : List =E2=84=9D)
+    (hl : =E2=88=80 {i j : =E2=84=95} (hi : i &lt; l.length) (hj : j &lt; l=
+.length), i &lt; j =E2=86=92 l[i] &lt; l[j])
+    (t : =E2=84=9D) {i : =E2=84=95} (hi : i &lt; l.length) :
+    l[i] =E2=89=A4 t =E2=86=94 i &lt; countLe l t :=3D by
+  induction l generalizing i with
+  | nil =3D&gt; simp at hi
+  | cons a as ih =3D&gt;
+      have htail : =E2=88=80 {i j : =E2=84=95} (hi : i &lt; as.length) (hj =
+: j &lt; as.length),
+          i &lt; j =E2=86=92 as[i] &lt; as[j] :=3D by
+        intro i j hi hj hij
+        have hlt :=3D hl (i :=3D i + 1) (j :=3D j + 1)
+          (hi :=3D by simp; omega) (hj :=3D by simp; omega) (by omega)
+        simpa [List.getElem_cons_succ] using hlt
+      have ha_lt : =E2=88=80 {j : =E2=84=95} (hj : j &lt; as.length), a &lt=
+; as[j] :=3D by
+        intro j hj
+        have hlt :=3D hl (i :=3D 0) (j :=3D j + 1)
+          (hi :=3D by simp) (hj :=3D by simp; omega) (by omega)
+        simpa [List.getElem_cons_zero, List.getElem_cons_succ] using hlt
+      cases i with
+      | zero =3D&gt;
+          simp only [List.getElem_cons_zero, countLe]
+          by_cases ha : a =E2=89=A4 t
+          =C2=B7 simp [ha]
+          =C2=B7 have hgt : =E2=88=80 x =E2=88=88 as, t &lt; x :=3D by
+              intro x hx
+              obtain =E2=9F=A8j, hj, rfl=E2=9F=A9 :=3D List.mem_iff_getElem=
+.mp hx
+              have : a &lt; as[j] :=3D ha_lt hj
+              exact lt_trans (lt_of_not_ge ha) this
+            simp [ha, countLe_zero_of_gt as t hgt]
+      | succ i =3D&gt;
+          have hi' : i &lt; as.length :=3D by simp at hi; omega
+          simp only [List.getElem_cons_succ, countLe]
+          by_cases ha : a =E2=89=A4 t
+          =C2=B7 simp [ha, ih htail hi']
+          =C2=B7 have hgt : =E2=88=80 x =E2=88=88 as, t &lt; x :=3D by
+              intro x hx
+              obtain =E2=9F=A8j, hj, rfl=E2=9F=A9 :=3D List.mem_iff_getElem=
+.mp hx
+              have : a &lt; as[j] :=3D ha_lt hj
+              exact lt_trans (lt_of_not_ge ha) this
+            have hzero :=3D countLe_zero_of_gt as t hgt
+            have hnot : =C2=AC as[i] =E2=89=A4 t :=3D not_le.mpr (hgt _ (Li=
+st.getElem_mem hi'))
+            simp [ha, hzero, hnot]
+
+noncomputable def infoRank (T : Tree) (t : =E2=84=9D) : =E2=84=95 :=3D coun=
+tLe (infoValues T) t
+
+theorem info_rank_iff (T : Tree) (t : =E2=84=9D) {i : =E2=84=95} (hi : i &l=
+t; (infoValues T).length) :
+    (infoValues T)[i] =E2=89=A4 t =E2=86=94 i &lt; infoRank T t :=3D by
+  simpa [infoRank] using countLe_iff (infoValues T)
+    (fun hi hj hij =3D&gt; info_get_strictMono T hi hj hij) t hi
+
+theorem infoRank_le_length (T : Tree) (t : =E2=84=9D) :
+    infoRank T t =E2=89=A4 (infoValues T).length :=3D by
+  have h :=3D fun i (hi : i &lt; (infoValues T).length) =3D&gt; (info_rank_=
+iff T t hi)
+  -- every index counted is &lt; length, so the count is =E2=89=A4 length
+  suffices countLe (infoValues T) t =E2=89=A4 (infoValues T).length by simp=
+a [infoRank] using this
+  induction (infoValues T) with
+  | nil =3D&gt; simp [countLe]
+  | cons a as ih =3D&gt;
+      simp only [countLe, List.length_cons]
+      have : countLe as t =E2=89=A4 as.length :=3D by
+        -- not the same induction hypothesis; prove a direct bound instead
+        clear ih h
+        induction as with
+        | nil =3D&gt; simp [countLe]
+        | cons b bs ihb =3D&gt;
+            simp only [countLe, List.length_cons]
+            split_ifs &lt;;&gt; omega
+      split_ifs &lt;;&gt; omega
+
+theorem Fstar_eq_cumsum (T : Tree) (t : =E2=84=9D) :
+    Fstar T t =3D cumsum (envInc T) (infoRank T t) :=3D by
+  set n :=3D (infoValues T).length
+  set k :=3D infoRank T t
+  have hk : k =E2=89=A4 n :=3D infoRank_le_length T t
+  have hiff : =E2=88=80 {i : =E2=84=95} (hi : i &lt; n), (infoValues T)[i] =
+=E2=89=A4 t =E2=86=94 i &lt; k :=3D
+    fun hi =3D&gt; by simpa [n, k] using info_rank_iff T t hi
+  by_cases hk0 : k =3D 0
+  =C2=B7 rw [hk0, cumsum]
+    have hzero : =E2=88=80 =E2=84=93 : Leaf T, =C2=AC infoMass (leafMass =
+=E2=84=93) =E2=89=A4 t :=3D by
+      intro =E2=84=93
+      have hj :=3D infoIndex_lt T =E2=84=93
+      rw [=E2=86=90 infoValues_get_index T =E2=84=93]
+      exact (hiff hj).not.mpr (by simp [hk0])
+    have hfun : (fun =E2=84=93 : Leaf T =3D&gt;
+        if infoMass (leafMass =E2=84=93) =E2=89=A4 t then leafMass =E2=84=
+=93 else 0) =3D fun _ =3D&gt; 0 :=3D by
+      funext =E2=84=93
+      simp [hzero =E2=84=93]
+    simp [Fstar, policyCDF, hfun, policySum_zero]
+  =C2=B7 by_cases hlast : k =3D n
+    =C2=B7 rw [hlast, cumsum_envInc_last]
+      have hz : (infoValues T)[n - 1]'(by
+          have :=3D infoValues_length_pos T
+          omega) =E2=89=A4 t :=3D by
+        have hi : n - 1 &lt; n :=3D by
+          have :=3D infoValues_length_pos T
+          omega
+        exact (hiff hi).2 (by simp [hlast, k]; omega)
+      have hge : 1 =E2=89=A4 Fstar T t :=3D by
+        have hmono :=3D Fstar_mono T hz
+        simpa [Fstar_last, n] using hmono
+      have hle : Fstar T t =E2=89=A4 1 :=3D by
+        simpa [Fstar] using policyCDF_le_one (envelopePolicy T t) t
+      linarith
+    =C2=B7 have hkpos : 0 &lt; k :=3D by omega
+      have hklt : k &lt; n :=3D by omega
+      have hzlo : (infoValues T)[k - 1]'(by omega) =E2=89=A4 t :=3D
+        (hiff (by omega)).2 (by omega)
+      have hconst : =E2=88=80 =CF=80, policyCDF T =CF=80 t =3D
+          policyCDF T =CF=80 ((infoValues T)[k - 1]'(by omega)) :=3D by
+        intro =CF=80
+        unfold policyCDF
+        apply congrArg (fun f =3D&gt; policySum f =CF=80)
+        funext =E2=84=93
+        have hj :=3D infoIndex_lt T =E2=84=93
+        have hiff=E2=84=93 : infoMass (leafMass =E2=84=93) =E2=89=A4 t =E2=
+=86=94
+            infoMass (leafMass =E2=84=93) =E2=89=A4 (infoValues T)[k - 1]'(=
+by omega) :=3D by
+          rw [=E2=86=90 infoValues_get_index T =E2=84=93]
+          constructor
+          =C2=B7 intro hle
+            have hi : infoIndex T =E2=84=93 &lt; k :=3D (hiff hj).1 hle
+            exact (info_get_le_iff T hj (by omega)).2 (by omega)
+          =C2=B7 intro hle
+            exact le_trans hle hzlo
+        by_cases h : infoMass (leafMass =E2=84=93) =E2=89=A4 t
+        =C2=B7 simp [h, (hiff=E2=84=93.1 h)]
+        =C2=B7 have h' : =C2=AC infoMass (leafMass =E2=84=93) =E2=89=A4 (in=
+foValues T)[k - 1] :=3D by
+            intro hle
+            exact h (hiff=E2=84=93.2 hle)
+          simp [h, h']
+      have hF : Fstar T t =3D Fstar T ((infoValues T)[k - 1]'(by omega)) :=
+=3D by
+        have h1 : Fstar T t =E2=89=A4 Fstar T ((infoValues T)[k - 1]'(by om=
+ega)) :=3D by
+          have hle1 :=3D Fstar_le T t (envelopePolicy T ((infoValues T)[k -=
+ 1]'(by omega)))
+          rw [hconst] at hle1
+          simpa [Fstar] using hle1
+        have h2 : Fstar T ((infoValues T)[k - 1]'(by omega)) =E2=89=A4 Fsta=
+r T t :=3D by
+          have hle2 :=3D Fstar_le T ((infoValues T)[k - 1]'(by omega)) (env=
+elopePolicy T t)
+          rw [=E2=86=90 hconst] at hle2
+          simpa [Fstar] using hle2
+        linarith
+      rw [cumsum_envInc T k hk, if_neg hk0, hF]
+
+theorem sum_range_sub (=CE=BC : =E2=84=95 =E2=86=92 =E2=84=9D) {k n : =E2=
+=84=95} (hk : k =E2=89=A4 n) :
+    (Finset.range n).sum =CE=BC - (Finset.range k).sum =CE=BC =3D
+      (Finset.range n).sum (fun i =3D&gt; if i &lt; k then 0 else =CE=BC i)=
+ :=3D by
+  induction n with
+  | zero =3D&gt;
+      have : k =3D 0 :=3D by omega
+      simp [this]
+  | succ n ih =3D&gt;
+      by_cases hkn : k =E2=89=A4 n
+      =C2=B7 have hnk : =C2=AC n &lt; k :=3D by omega
+        calc
+          (Finset.range (n + 1)).sum =CE=BC - (Finset.range k).sum =CE=BC
+              =3D (Finset.range n).sum =CE=BC + =CE=BC n - (Finset.range k)=
+.sum =CE=BC :=3D by
+                rw [Finset.sum_range_succ]
+          _ =3D (Finset.range n).sum (fun i =3D&gt; if i &lt; k then 0 else=
+ =CE=BC i) + =CE=BC n :=3D by
+                rw [=E2=86=90 ih hkn]
+                ring
+          _ =3D (Finset.range (n + 1)).sum (fun i =3D&gt; if i &lt; k then =
+0 else =CE=BC i) :=3D by
+                rw [Finset.sum_range_succ]
+                simp [hnk]
+      =C2=B7 have hk' : k =3D n + 1 :=3D by omega
+        subst hk'
+        simp only [sub_self]
+        symm
+        apply Finset.sum_eq_zero
+        intro i hi
+        simp [Finset.mem_range.mp hi]
+
+noncomputable def envTail (T : Tree) (i : =E2=84=95) (t : =E2=84=9D) : =E2=
+=84=9D :=3D
+  if h : i &lt; (infoValues T).length then
+    if t &lt; (infoValues T)[i] then envInc T i else 0
+  else 0
+
+theorem one_sub_Fstar_sum (T : Tree) (t : =E2=84=9D) :
+    1 - Fstar T t =3D
+      (Finset.range (infoValues T).length).sum (fun i =3D&gt; envTail T i t=
+) :=3D by
+  set n :=3D (infoValues T).length
+  set k :=3D infoRank T t
+  have hk : k =E2=89=A4 n :=3D infoRank_le_length T t
+  have hiff : =E2=88=80 {i : =E2=84=95} (hi : i &lt; n), t &lt; (infoValues=
+ T)[i] =E2=86=94 =C2=AC i &lt; k :=3D by
+    intro i hi
+    rw [=E2=86=90 not_le]
+    exact (info_rank_iff T t hi).not
+  rw [Fstar_eq_cumsum, cumsum_eq_sum]
+  have hone : (1 : =E2=84=9D) =3D (Finset.range n).sum (envInc T) :=3D by
+    rw [=E2=86=90 cumsum_eq_sum, cumsum_envInc_last]
+  rw [hone, sum_range_sub (envInc T) hk]
+  refine Finset.sum_congr rfl ?_
+  intro i hi
+  have hi' : i &lt; n :=3D Finset.mem_range.mp hi
+  by_cases hik : i &lt; k
+  =C2=B7 have hnot : =C2=AC t &lt; (infoValues T)[i] :=3D by
+      intro hlt
+      exact (hiff hi').mp hlt hik
+    unfold envTail
+    rw [dif_pos hi', if_neg hnot, if_pos hik]
+  =C2=B7 have hlt : t &lt; (infoValues T)[i] :=3D (hiff hi').mpr hik
+    unfold envTail
+    rw [dif_pos hi', if_pos hlt, if_neg hik]
+
+theorem integrableOn_envTail (T : Tree) (i : =E2=84=95) :
+    IntegrableOn (envTail T i) (Ioi (0 : =E2=84=9D)) :=3D by
+  by_cases hi : i &lt; (infoValues T).length
+  =C2=B7 refine IntegrableOn.congr_fun
+      (integrableOn_lt_cutoff (c :=3D envInc T i) (info_nonneg_get T hi)) ?=
+_ measurableSet_Ioi
+    intro t _
+    simp [envTail, hi]
+  =C2=B7 refine (integrableOn_zero (s :=3D Ioi (0 : =E2=84=9D))).congr_fun =
+?_ measurableSet_Ioi
+    intro t _
+    simp [envTail, hi]
+
+theorem integral_envTail (T : Tree) {i : =E2=84=95} (hi : i &lt; (infoValue=
+s T).length) :
+    =E2=88=AB t in Ioi (0 : =E2=84=9D), envTail T i t =3D envInc T i * (inf=
+oValues T)[i] :=3D by
+  have hfun : EqOn (envTail T i)
+      (fun t : =E2=84=9D =3D&gt; if t &lt; (infoValues T)[i] then envInc T =
+i else 0) (Ioi 0) :=3D by
+    intro t _
+    simp [envTail, hi]
+  rw [setIntegral_congr_fun measurableSet_Ioi hfun,
+    integral_lt_cutoff (c :=3D envInc T i) (info_nonneg_get T hi)]
+
+theorem integral_one_sub_Fstar (T : Tree) :
+    =E2=88=AB t in Ioi (0 : =E2=84=9D), (1 - Fstar T t) =3D envelopeMean T =
+:=3D by
+  let n :=3D (infoValues T).length
+  have hfun : EqOn (fun t : =E2=84=9D =3D&gt; 1 - Fstar T t)
+      (fun t =3D&gt; (Finset.range n).sum (fun i =3D&gt; envTail T i t)) (I=
+oi 0) :=3D by
+    intro t _
+    simpa [n] using one_sub_Fstar_sum T t
+  rw [setIntegral_congr_fun measurableSet_Ioi hfun]
+  have hinter :
+      (=E2=88=AB t in Ioi (0 : =E2=84=9D), (Finset.range n).sum (fun i =3D&=
+gt; envTail T i t)) =3D
+        (Finset.range n).sum (fun i =3D&gt; =E2=88=AB t in Ioi (0 : =E2=84=
+=9D), envTail T i t) :=3D by
+    simpa using integral_finsetSum (=CE=BC :=3D volume.restrict (Ioi (0 : =
+=E2=84=9D))) (Finset.range n)
+      (f :=3D fun i (t : =E2=84=9D) =3D&gt; envTail T i t)
+      (fun i _ =3D&gt; (integrableOn_envTail T i).integrable)
+  rw [hinter]
+  have hterm : (Finset.range n).sum (fun i =3D&gt; =E2=88=AB t in Ioi (0 : =
+=E2=84=9D), envTail T i t) =3D
+      (Finset.range n).sum (fun i =3D&gt;
+        envInc T i * (if h : i &lt; n then (infoValues T)[i] else 0)) :=3D =
+by
+    refine Finset.sum_congr rfl ?_
+    intro i hi
+    have hi' : i &lt; n :=3D Finset.mem_range.mp hi
+    rw [integral_envTail T hi']
+    simp [hi']
+  rw [hterm]
+  unfold envelopeMean
+  dsimp [n]
+
+/-! The same layer cake for the seed, and the comparison `seedCDF =E2=89=A4=
+ F=E2=8B=86`. -/
+
+noncomputable def seedCDF {T : Tree} (atoms : List (Atom T)) (t : =E2=84=9D=
+) : =E2=84=9D :=3D
+  (atoms.map (fun a =3D&gt; if infoMass a.1 =E2=89=A4 t then a.1 else 0)).s=
+um
+
+noncomputable def seedTail {T : Tree} (atoms : List (Atom T)) (t : =E2=84=
+=9D) : =E2=84=9D :=3D
+  (atoms.map (fun a =3D&gt; if t &lt; infoMass a.1 then a.1 else 0)).sum
+
+theorem seed_partition {T : Tree} (atoms : List (Atom T)) (t : =E2=84=9D) :
+    seedCDF atoms t + seedTail atoms t =3D totalWeight atoms :=3D by
+  induction atoms with
+  | nil =3D&gt; simp [seedCDF, seedTail, totalWeight]
+  | cons a tail ih =3D&gt;
+      have hc : seedCDF (a :: tail) t =3D
+          (if infoMass a.1 =E2=89=A4 t then a.1 else 0) + seedCDF tail t :=
+=3D by
+        simp [seedCDF, List.map_cons, List.sum_cons]
+      have ht : seedTail (a :: tail) t =3D
+          (if t &lt; infoMass a.1 then a.1 else 0) + seedTail tail t :=3D b=
+y
+        simp [seedTail, List.map_cons, List.sum_cons]
+      have hw : totalWeight (a :: tail) =3D a.1 + totalWeight tail :=3D by
+        simp [totalWeight, List.map_cons, List.sum_cons]
+      rw [hc, ht, hw]
+      have hdisj : (if infoMass a.1 =E2=89=A4 t then a.1 else 0) +
+          (if t &lt; infoMass a.1 then a.1 else 0) =3D a.1 :=3D by
+        by_cases h : infoMass a.1 =E2=89=A4 t
+        =C2=B7 simp [h, not_lt.mpr h]
+        =C2=B7 simp [h, lt_of_not_ge h]
+      calc
+        (if infoMass a.1 =E2=89=A4 t then a.1 else 0) + seedCDF tail t +
+            ((if t &lt; infoMass a.1 then a.1 else 0) + seedTail tail t)
+          =3D ((if infoMass a.1 =E2=89=A4 t then a.1 else 0) +
+              (if t &lt; infoMass a.1 then a.1 else 0)) +
+              (seedCDF tail t + seedTail tail t) :=3D by ring
+        _ =3D a.1 + totalWeight tail :=3D by rw [hdisj, ih]
+
+theorem seedTail_cons {T : Tree} (a : Atom T) (tail : List (Atom T)) (t : =
+=E2=84=9D) :
+    seedTail (a :: tail) t =3D
+      (if t &lt; infoMass a.1 then a.1 else 0) + seedTail tail t :=3D by
+  simp [seedTail, List.map_cons, List.sum_cons]
+
+theorem integrableOn_seedTail {T : Tree} (atoms : List (Atom T))
+    (hpos : =E2=88=80 a =E2=88=88 atoms, 0 &lt; a.1) (hle : =E2=88=80 a =E2=
+=88=88 atoms, a.1 =E2=89=A4 1) :
+    IntegrableOn (seedTail atoms) (Ioi (0 : =E2=84=9D)) :=3D by
+  induction atoms with
+  | nil =3D&gt;
+      rw [show seedTail ([] : List (Atom T)) =3D fun _ =3D&gt; 0 by
+        funext t
+        simp [seedTail]]
+      exact integrableOn_zero
+  | cons a tail ih =3D&gt;
+      have ha0 : 0 &lt; a.1 :=3D hpos a (by simp)
+      have ha1 : a.1 =E2=89=A4 1 :=3D hle a (by simp)
+      refine IntegrableOn.congr_fun
+        ((integrableOn_lt_cutoff (c :=3D a.1) (infoMass_of_unit_interval ha=
+0 ha1)).add
+          (ih (fun b hb =3D&gt; hpos b (by simp [hb])) (fun b hb =3D&gt; hl=
+e b (by simp [hb]))))
+        ?_ measurableSet_Ioi
+      intro t _
+      simp [seedTail_cons]
+
+theorem integral_seedTail {T : Tree} (atoms : List (Atom T))
+    (hpos : =E2=88=80 a =E2=88=88 atoms, 0 &lt; a.1) (hle : =E2=88=80 a =E2=
+=88=88 atoms, a.1 =E2=89=A4 1) :
+    =E2=88=AB t in Ioi (0 : =E2=84=9D), seedTail atoms t =3D seedShannon at=
+oms :=3D by
+  induction atoms with
+  | nil =3D&gt; simp [seedTail, seedShannon, integral_zero]
+  | cons a tail ih =3D&gt;
+      have hpos' : =E2=88=80 b =E2=88=88 tail, 0 &lt; b.1 :=3D fun b hb =3D=
+&gt; hpos b (by simp [hb])
+      have hle' : =E2=88=80 b =E2=88=88 tail, b.1 =E2=89=A4 1 :=3D fun b hb=
+ =3D&gt; hle b (by simp [hb])
+      have ha0 : 0 &lt; a.1 :=3D hpos a (by simp)
+      have ha1 : a.1 =E2=89=A4 1 :=3D hle a (by simp)
+      have hfun : EqOn (seedTail (a :: tail))
+          (fun t : =E2=84=9D =3D&gt; (if t &lt; infoMass a.1 then a.1 else =
+0) + seedTail tail t) (Ioi 0) :=3D by
+        intro t _
+        simp [seedTail_cons]
+      rw [setIntegral_congr_fun measurableSet_Ioi hfun,
+        integral_add (integrableOn_lt_cutoff (c :=3D a.1)
+          (infoMass_of_unit_interval ha0 ha1)).integrable
+          (integrableOn_seedTail tail hpos' hle').integrable,
+        integral_lt_cutoff (c :=3D a.1) (infoMass_of_unit_interval ha0 ha1)=
+,
+        ih hpos' hle', seedShannon_cons]
+
+noncomputable instance {T : Tree} : DecidableEq (Leaf T) :=3D Classical.dec=
+Eq _
+
+theorem sum_psigma {=CE=B1 : Type*} {=CF=83 : =CE=B1 =E2=86=92 Type*} [Fint=
+ype =CE=B1] [=E2=88=80 a, Fintype (=CF=83 a)]
+    (g : (=CE=A3' a, =CF=83 a) =E2=86=92 =E2=84=9D) :
+    (=E2=88=91 x : =CE=A3' a, =CF=83 a, g x) =3D =E2=88=91 a, =E2=88=91 s, =
+g =E2=9F=A8a, s=E2=9F=A9 :=3D by
+  let e : (=CE=A3' a, =CF=83 a) =E2=89=83 =CE=A3 a, =CF=83 a :=3D Equiv.psi=
+gmaEquivSigma =CF=83
+  have h :=3D e.sum_comp (fun s =3D&gt; g (e.symm s))
+  simp only [Equiv.symm_apply_apply] at h
+  rw [h]
+  rw [=E2=86=90 Finset.univ_sigma_univ]
+  rw [Finset.sum_sigma]
+  refine Finset.sum_congr rfl ?_
+  intro a _
+  refine Finset.sum_congr rfl ?_
+  intro s _
+  rfl
+
+def leafPair
+    {nA : =E2=84=95} {hA : 0 &lt; nA} {nY : Fin nA =E2=86=92 =E2=84=95} {hY=
+ : =E2=88=80 a, 0 &lt; nY a}
+    {K : (a : Fin nA) =E2=86=92 Fin (nY a) =E2=86=92 =E2=84=9D} {Kpos : =E2=
+=88=80 a y, 0 &lt; K a y}
+    {Ksum : =E2=88=80 a, =E2=88=91 y, K a y =3D 1}
+    {child : (a : Fin nA) =E2=86=92 Fin (nY a) =E2=86=92 Tree}
+    (a : Fin nA) (s : (y : Fin (nY a)) =C3=97' Leaf (child a y)) :
+    Leaf (.node nA hA nY hY K Kpos Ksum child) :=3D
+  =E2=9F=A8a, s=E2=9F=A9
+
+/-! A policy sum is exactly the sum over the histories compatible with that=
+ policy. -/
+
+theorem policySum_eq_finset :
+    =E2=88=80 (T : Tree) (f : Leaf T =E2=86=92 =E2=84=9D) (=CF=80 : Policy =
+T),
+      policySum f =CF=80 =3D =E2=88=91 =E2=84=93 : Leaf T, if CompatiblePol=
+icy =E2=84=93 =CF=80 then f =E2=84=93 else 0 :=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt;
+      intro f =CF=80
+      unfold policySum
+      have hsum : (=E2=88=91 =E2=84=93 : Leaf Tree.leaf, if CompatiblePolic=
+y =E2=84=93 =CF=80 then f =E2=84=93 else 0) =3D
+          if CompatiblePolicy (defaultLeaf Tree.leaf) =CF=80 then f (defaul=
+tLeaf Tree.leaf) else 0 :=3D by
+        refine Finset.sum_eq_single_of_mem (defaultLeaf Tree.leaf) (Finset.=
+mem_univ _) ?_
+        intro =E2=84=93 _ hne
+        cases =E2=84=93
+        unfold defaultLeaf at hne
+        exact (hne rfl).elim
+      simpa [CompatiblePolicy, defaultLeaf] using hsum.symm
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+      intro f =CF=80
+      have hsplit :=3D sum_psigma
+        (fun p : Leaf (.node nA hA nY hY K Kpos Ksum child) =3D&gt; if Comp=
+atiblePolicy p =CF=80 then f p else 0)
+      have hIH : =E2=88=80 y : Fin (nY =CF=80.1),
+          policySum (fun =E2=84=93 =3D&gt; f =E2=9F=A8=CF=80.1, y, =E2=84=
+=93=E2=9F=A9) (=CF=80.2 =CF=80.1 y) =3D
+            =E2=88=91 =E2=84=93 : Leaf (child =CF=80.1 y),
+              if CompatiblePolicy =E2=84=93 (=CF=80.2 =CF=80.1 y) then f =
+=E2=9F=A8=CF=80.1, y, =E2=84=93=E2=9F=A9 else 0 :=3D
+        fun y =3D&gt; ih =CF=80.1 y (fun =E2=84=93 =3D&gt; f =E2=9F=A8=CF=
+=80.1, y, =E2=84=93=E2=9F=A9) (=CF=80.2 =CF=80.1 y)
+      have hzero : =E2=88=80 b : Fin nA, b =E2=89=A0 =CF=80.1 =E2=86=92
+          (=E2=88=91 s : (y : Fin (nY b)) =C3=97' Leaf (child b y),
+            if CompatiblePolicy (leafPair b s) =CF=80 then f (leafPair b s)=
+ else 0) =3D 0 :=3D by
+        intro b hb
+        apply Finset.sum_eq_zero
+        intro s _
+        rcases s with =E2=9F=A8y, =E2=84=93=E2=9F=A9
+        have hbad : =C2=AC CompatiblePolicy (leafPair b =E2=9F=A8y, =E2=84=
+=93=E2=9F=A9) =CF=80 :=3D by
+          intro hcomp
+          dsimp [leafPair] at hcomp
+          simp [CompatiblePolicy] at hcomp
+          exact hb hcomp.1
+        simp [hbad]
+      have hsingle :=3D Finset.sum_eq_single_of_mem (s :=3D Finset.univ)
+        (f :=3D fun a : Fin nA =3D&gt;
+          =E2=88=91 s : (y : Fin (nY a)) =C3=97' Leaf (child a y),
+            if CompatiblePolicy (leafPair a s) =CF=80 then f (leafPair a s)=
+ else 0)
+        =CF=80.1 (Finset.mem_univ _) (fun b _ hb =3D&gt; hzero b hb)
+      have hsig :=3D sum_psigma
+        (fun s : (y : Fin (nY =CF=80.1)) =C3=97' Leaf (child =CF=80.1 y) =
+=3D&gt;
+          if CompatiblePolicy (leafPair =CF=80.1 s) =CF=80 then f (leafPair=
+ =CF=80.1 s) else 0)
+      have hpoint :
+          (=E2=88=91 y, =E2=88=91 =E2=84=93, if CompatiblePolicy =E2=84=93 =
+(=CF=80.2 =CF=80.1 y) then f =E2=9F=A8=CF=80.1, y, =E2=84=93=E2=9F=A9 else =
+0) =3D
+            =E2=88=91 y, =E2=88=91 =E2=84=93,
+              if CompatiblePolicy (leafPair =CF=80.1 =E2=9F=A8y, =E2=84=93=
+=E2=9F=A9) =CF=80 then f (leafPair =CF=80.1 =E2=9F=A8y, =E2=84=93=E2=9F=A9)=
+ else 0 :=3D by
+        refine Finset.sum_congr rfl ?_
+        intro y _
+        refine Finset.sum_congr rfl ?_
+        intro =E2=84=93 _
+        dsimp [leafPair]
+        simp [CompatiblePolicy]
+      have hpol : policySum f =CF=80 =3D
+          =E2=88=91 y, =E2=88=91 =E2=84=93, if CompatiblePolicy =E2=84=93 (=
+=CF=80.2 =CF=80.1 y) then f =E2=9F=A8=CF=80.1, y, =E2=84=93=E2=9F=A9 else 0=
+ :=3D by
+        simp only [policySum]
+        simp_rw [hIH]
+      exact hpol.trans (hpoint.trans (hsig.symm.trans (hsingle.symm.trans h=
+split.symm)))
+
+theorem policyCDF_eq_finset (T : Tree) (=CF=80 : Policy T) (t : =E2=84=9D) =
+:
+    policyCDF T =CF=80 t =3D
+      =E2=88=91 =E2=84=93 : Leaf T,
+        if CompatiblePolicy =E2=84=93 =CF=80 =E2=88=A7 infoMass (leafMass =
+=E2=84=93) =E2=89=A4 t then leafMass =E2=84=93 else 0 :=3D by
+  rw [policyCDF, policySum_eq_finset]
+  refine Finset.sum_congr rfl ?_
+  intro =E2=84=93 _
+  by_cases hc : CompatiblePolicy =E2=84=93 =CF=80 &lt;;&gt; by_cases hi : i=
+nfoMass (leafMass =E2=84=93) =E2=89=A4 t &lt;;&gt;
+    simp [hc, hi]
+
+theorem transcriptWeight_cons {T : Tree} (a : Atom T) (tail : List (Atom T)=
+)
+    (=CF=80 : Policy T) (=E2=84=93 : Leaf T) :
+    transcriptWeight (a :: tail) =CF=80 =E2=84=93 =3D
+      (if run a.2 =CF=80 =3D =E2=84=93 then a.1 else 0) + transcriptWeight =
+tail =CF=80 =E2=84=93 :=3D by
+  simp [transcriptWeight, List.map_cons, List.sum_cons]
+
+theorem transcript_nonneg {T : Tree} (atoms : List (Atom T)) (=CF=80 : Poli=
+cy T) (=E2=84=93 : Leaf T)
+    (hnn : =E2=88=80 a =E2=88=88 atoms, 0 =E2=89=A4 a.1) : 0 =E2=89=A4 tran=
+scriptWeight atoms =CF=80 =E2=84=93 :=3D by
+  induction atoms with
+  | nil =3D&gt; simp [transcriptWeight]
+  | cons a tail ih =3D&gt;
+      rw [transcriptWeight_cons]
+      have h0 : 0 =E2=89=A4 (if run a.2 =CF=80 =3D =E2=84=93 then a.1 else =
+0) :=3D by
+        by_cases hr : run a.2 =CF=80 =3D =E2=84=93
+        =C2=B7 simp [hr, hnn a (by simp)]
+        =C2=B7 simp [hr]
+      exact add_nonneg h0 (ih (fun b hb =3D&gt; hnn b (by simp [hb])))
+
+theorem atom_le_transcript {T : Tree} (atoms : List (Atom T)) (=CF=80 : Pol=
+icy T) (=E2=84=93 : Leaf T)
+    (a : Atom T) (ha : a =E2=88=88 atoms) (hr : run a.2 =CF=80 =3D =E2=84=
+=93) (hnn : =E2=88=80 b =E2=88=88 atoms, 0 =E2=89=A4 b.1) :
+    a.1 =E2=89=A4 transcriptWeight atoms =CF=80 =E2=84=93 :=3D by
+  induction atoms generalizing a with
+  | nil =3D&gt; simp at ha
+  | cons b tail ih =3D&gt;
+      rw [transcriptWeight_cons]
+      simp only [List.mem_cons] at ha
+      have hnn' : =E2=88=80 c =E2=88=88 tail, 0 =E2=89=A4 c.1 :=3D fun c hc=
+ =3D&gt; hnn c (by simp [hc])
+      have h0 : 0 =E2=89=A4 (if run b.2 =CF=80 =3D =E2=84=93 then b.1 else =
+0) :=3D by
+        by_cases hb : run b.2 =CF=80 =3D =E2=84=93
+        =C2=B7 simp [hb, hnn b (by simp)]
+        =C2=B7 simp [hb]
+      rcases ha with rfl | ha
+      =C2=B7 rw [if_pos hr]
+        exact le_add_of_nonneg_right (transcript_nonneg tail =CF=80 =E2=84=
+=93 hnn')
+      =C2=B7 exact le_trans (ih a ha hr hnn') (le_add_of_nonneg_left h0)
+
+theorem filtered_le_transcript {T : Tree} (atoms : List (Atom T)) (=CF=80 :=
+ Policy T)
+    (=E2=84=93 : Leaf T) (t : =E2=84=9D) (hnn : =E2=88=80 a =E2=88=88 atoms=
+, 0 =E2=89=A4 a.1) :
+    (atoms.map (fun a =3D&gt; if run a.2 =CF=80 =3D =E2=84=93 =E2=88=A7 inf=
+oMass a.1 =E2=89=A4 t then a.1 else 0)).sum =E2=89=A4
+      transcriptWeight atoms =CF=80 =E2=84=93 :=3D by
+  induction atoms with
+  | nil =3D&gt; simp [transcriptWeight]
+  | cons a tail ih =3D&gt;
+      rw [transcriptWeight_cons]
+      simp only [List.map_cons, List.sum_cons]
+      have hnn' : =E2=88=80 b =E2=88=88 tail, 0 =E2=89=A4 b.1 :=3D fun b hb=
+ =3D&gt; hnn b (by simp [hb])
+      have h0 : 0 =E2=89=A4 (if run a.2 =CF=80 =3D =E2=84=93 then a.1 else =
+0) :=3D by
+        by_cases hr : run a.2 =CF=80 =3D =E2=84=93
+        =C2=B7 simp [hr, hnn a (by simp)]
+        =C2=B7 simp [hr]
+      by_cases h : run a.2 =CF=80 =3D =E2=84=93 =E2=88=A7 infoMass a.1 =E2=
+=89=A4 t
+      =C2=B7 rw [if_pos h, if_pos h.1]
+        have htail :=3D add_le_add_left (ih hnn') a.1
+        simpa [add_comm] using htail
+      =C2=B7 rw [if_neg h, zero_add]
+        exact le_trans (ih hnn') (le_add_of_nonneg_left h0)
+
+theorem map_ite_sum_zero {T : Tree} (l : List (Atom T)) (=CF=80 : Policy T)=
+ (=E2=84=93 : Leaf T) (t : =E2=84=9D)
+    (h : =E2=88=80 a =E2=88=88 l, (if run a.2 =CF=80 =3D =E2=84=93 =E2=88=
+=A7 infoMass a.1 =E2=89=A4 t then a.1 else 0) =3D 0) :
+    (l.map (fun a =3D&gt; if run a.2 =CF=80 =3D =E2=84=93 =E2=88=A7 infoMas=
+s a.1 =E2=89=A4 t then a.1 else 0)).sum =3D 0 :=3D by
+  induction l with
+  | nil =3D&gt; simp
+  | cons a tail ih =3D&gt;
+      simp only [List.map_cons, List.sum_cons]
+      rw [h a (by simp), ih (fun b hb =3D&gt; h b (by simp [hb])), zero_add=
+]
+
+theorem leaf_contrib_le {T : Tree} (atoms : List (Atom T)) (=CF=80 : Policy=
+ T) (=E2=84=93 : Leaf T) (t : =E2=84=9D)
+    (hexact : transcriptWeight atoms =CF=80 =E2=84=93 =3D
+      if CompatiblePolicy =E2=84=93 =CF=80 then leafMass =E2=84=93 else 0)
+    (hpos : =E2=88=80 a =E2=88=88 atoms, 0 &lt; a.1) :
+    (atoms.map (fun a =3D&gt; if run a.2 =CF=80 =3D =E2=84=93 =E2=88=A7 inf=
+oMass a.1 =E2=89=A4 t then a.1 else 0)).sum =E2=89=A4
+      if CompatiblePolicy =E2=84=93 =CF=80 =E2=88=A7 infoMass (leafMass =E2=
+=84=93) =E2=89=A4 t then leafMass =E2=84=93 else 0 :=3D by
+  have hnn : =E2=88=80 a =E2=88=88 atoms, 0 =E2=89=A4 a.1 :=3D fun a ha =3D=
+&gt; (hpos a ha).le
+  have hle :=3D filtered_le_transcript atoms =CF=80 =E2=84=93 t hnn
+  rw [hexact] at hle
+  by_cases hc : CompatiblePolicy =E2=84=93 =CF=80 =E2=88=A7 infoMass (leafM=
+ass =E2=84=93) =E2=89=A4 t
+  =C2=B7 rcases hc with =E2=9F=A8hcomp, hinfo=E2=9F=A9
+    simp only [hcomp, ite_true] at hle
+    simpa [hcomp, hinfo] using hle
+  =C2=B7 by_cases hcomp : CompatiblePolicy =E2=84=93 =CF=80
+    =C2=B7 have hgt : t &lt; infoMass (leafMass =E2=84=93) :=3D
+        lt_of_not_ge (fun hinfo =3D&gt; hc =E2=9F=A8hcomp, hinfo=E2=9F=A9)
+      have hterm : =E2=88=80 a =E2=88=88 atoms,
+          (if run a.2 =CF=80 =3D =E2=84=93 =E2=88=A7 infoMass a.1 =E2=89=A4=
+ t then a.1 else 0) =3D 0 :=3D by
+        intro a ha
+        by_cases hrun : run a.2 =CF=80 =3D =E2=84=93 =E2=88=A7 infoMass a.1=
+ =E2=89=A4 t
+        =C2=B7 exfalso
+          have ha_le : a.1 =E2=89=A4 transcriptWeight atoms =CF=80 =E2=84=
+=93 :=3D
+            atom_le_transcript atoms =CF=80 =E2=84=93 a ha hrun.1 hnn
+          rw [hexact, if_pos hcomp] at ha_le
+          exact lt_irrefl t (lt_of_lt_of_le hgt
+            (le_trans (infoMass_anti (hpos a ha) (leafMass_pos =E2=84=93) h=
+a_le) hrun.2))
+        =C2=B7 simp [hrun]
+      simpa [hc] using le_of_eq (map_ite_sum_zero atoms =CF=80 =E2=84=93 t =
+hterm)
+    =C2=B7 simp only [hcomp, ite_false] at hle
+      simpa [hc] using hle
+
+theorem seedCDF_leafSum {T : Tree} (atoms : List (Atom T)) (=CF=80 : Policy=
+ T) (t : =E2=84=9D) :
+    seedCDF atoms t =3D
+      =E2=88=91 =E2=84=93 : Leaf T,
+        (atoms.map (fun a =3D&gt; if run a.2 =CF=80 =3D =E2=84=93 =E2=88=A7=
+ infoMass a.1 =E2=89=A4 t then a.1 else 0)).sum :=3D by
+  induction atoms with
+  | nil =3D&gt; simp [seedCDF]
+  | cons a tail ih =3D&gt;
+      have hc : seedCDF (a :: tail) t =3D
+          (if infoMass a.1 =E2=89=A4 t then a.1 else 0) + seedCDF tail t :=
+=3D by
+        simp [seedCDF, List.map_cons, List.sum_cons]
+      have hcons : =E2=88=80 =E2=84=93,
+          ((a :: tail).map (fun b =3D&gt;
+            if run b.2 =CF=80 =3D =E2=84=93 =E2=88=A7 infoMass b.1 =E2=89=
+=A4 t then b.1 else 0)).sum =3D
+            (if run a.2 =CF=80 =3D =E2=84=93 =E2=88=A7 infoMass a.1 =E2=89=
+=A4 t then a.1 else 0) +
+              (tail.map (fun b =3D&gt;
+                if run b.2 =CF=80 =3D =E2=84=93 =E2=88=A7 infoMass b.1 =E2=
+=89=A4 t then b.1 else 0)).sum :=3D by
+        intro =E2=84=93
+        simp [List.map_cons, List.sum_cons]
+      have hhead : (if infoMass a.1 =E2=89=A4 t then a.1 else 0) =3D
+          =E2=88=91 =E2=84=93 : Leaf T, if run a.2 =CF=80 =3D =E2=84=93 =E2=
+=88=A7 infoMass a.1 =E2=89=A4 t then a.1 else 0 :=3D by
+        by_cases hinfo : infoMass a.1 =E2=89=A4 t
+        =C2=B7 simp only [hinfo, true_and, ite_true]
+          have hsum :=3D Finset.sum_eq_single_of_mem (s :=3D Finset.univ)
+            (f :=3D fun =E2=84=93 : Leaf T =3D&gt; if run a.2 =CF=80 =3D =
+=E2=84=93 then a.1 else 0)
+            (run a.2 =CF=80) (Finset.mem_univ _) (fun =E2=84=93 _ hne =3D&g=
+t; by simp [Ne.symm hne])
+          simpa using hsum.symm
+        =C2=B7 simp only [hinfo, ite_false]
+          symm
+          apply Finset.sum_eq_zero
+          intro =E2=84=93 _
+          simp [hinfo]
+      rw [hc, ih, hhead]
+      simp_rw [hcons]
+      rw [Finset.sum_add_distrib]
+
+theorem seedCDF_le_Fstar {T : Tree} {atoms : List (Atom T)}
+    (hexact : =E2=88=80 (=CF=80 : Policy T) (=E2=84=93 : Leaf T),
+      transcriptWeight atoms =CF=80 =E2=84=93 =3D if CompatiblePolicy =E2=
+=84=93 =CF=80 then leafMass =E2=84=93 else 0)
+    (hpos : =E2=88=80 a =E2=88=88 atoms, 0 &lt; a.1) (t : =E2=84=9D) : seed=
+CDF atoms t =E2=89=A4 Fstar T t :=3D by
+  let =CF=80 :=3D envelopePolicy T t
+  calc
+    seedCDF atoms t
+        =3D =E2=88=91 =E2=84=93, (atoms.map (fun a =3D&gt;
+            if run a.2 =CF=80 =3D =E2=84=93 =E2=88=A7 infoMass a.1 =E2=89=
+=A4 t then a.1 else 0)).sum :=3D
+          seedCDF_leafSum atoms =CF=80 t
+    _ =E2=89=A4 =E2=88=91 =E2=84=93, if CompatiblePolicy =E2=84=93 =CF=80 =
+=E2=88=A7 infoMass (leafMass =E2=84=93) =E2=89=A4 t then leafMass =E2=84=93=
+ else 0 :=3D by
+          apply Finset.sum_le_sum
+          intro =E2=84=93 _
+          exact leaf_contrib_le atoms =CF=80 =E2=84=93 t (hexact =CF=80 =E2=
+=84=93) hpos
+    _ =3D policyCDF T =CF=80 t :=3D (policyCDF_eq_finset T =CF=80 t).symm
+    _ =3D Fstar T t :=3D rfl
+
+theorem one_sub_seedCDF {T : Tree} (atoms : List (Atom T)) (t : =E2=84=9D)
+    (h : totalWeight atoms =3D 1) : 1 - seedCDF atoms t =3D seedTail atoms =
+t :=3D by
+  linarith [seed_partition atoms t, h]
+
+theorem integrableOn_one_sub_Fstar (T : Tree) :
+    IntegrableOn (fun t : =E2=84=9D =3D&gt; 1 - Fstar T t) (Ioi (0 : =E2=84=
+=9D)) :=3D by
+  let n :=3D (infoValues T).length
+  have hint : IntegrableOn
+      (fun t : =E2=84=9D =3D&gt; (Finset.range n).sum (fun i =3D&gt; envTai=
+l T i t)) (Ioi (0 : =E2=84=9D)) :=3D by
+    simpa [IntegrableOn] using
+      integrable_finsetSum (=CE=BC :=3D volume.restrict (Ioi (0 : =E2=84=9D=
+))) (Finset.range n)
+        (f :=3D fun i (t : =E2=84=9D) =3D&gt; envTail T i t)
+        (fun i _ =3D&gt; (integrableOn_envTail T i).integrable)
+  refine hint.congr_fun ?_ measurableSet_Ioi
+  intro t _
+  simpa [n] using (one_sub_Fstar_sum T t).symm
+
+theorem integrableOn_one_sub_seed {T : Tree} (atoms : List (Atom T))
+    (hpos : =E2=88=80 a =E2=88=88 atoms, 0 &lt; a.1) (hle : =E2=88=80 a =E2=
+=88=88 atoms, a.1 =E2=89=A4 1)
+    (htot : totalWeight atoms =3D 1) :
+    IntegrableOn (fun t : =E2=84=9D =3D&gt; 1 - seedCDF atoms t) (Ioi (0 : =
+=E2=84=9D)) :=3D by
+  refine IntegrableOn.congr_fun (integrableOn_seedTail atoms hpos hle) ?_ m=
+easurableSet_Ioi
+  intro t _
+  exact (one_sub_seedCDF atoms t htot).symm
+
+theorem integral_one_sub_seed {T : Tree} (atoms : List (Atom T))
+    (hpos : =E2=88=80 a =E2=88=88 atoms, 0 &lt; a.1) (hle : =E2=88=80 a =E2=
+=88=88 atoms, a.1 =E2=89=A4 1)
+    (htot : totalWeight atoms =3D 1) :
+    =E2=88=AB t in Ioi (0 : =E2=84=9D), (1 - seedCDF atoms t) =3D seedShann=
+on atoms :=3D by
+  have hfun : EqOn (fun t : =E2=84=9D =3D&gt; 1 - seedCDF atoms t) (seedTai=
+l atoms) (Ioi 0) :=3D by
+    intro t _
+    exact one_sub_seedCDF atoms t htot
+  rw [setIntegral_congr_fun measurableSet_Ioi hfun, integral_seedTail atoms=
+ hpos hle]
+
+theorem envelope_le_seedShannon {T : Tree} {atoms : List (Atom T)}
+    (hexact : =E2=88=80 (=CF=80 : Policy T) (=E2=84=93 : Leaf T),
+      transcriptWeight atoms =CF=80 =E2=84=93 =3D if CompatiblePolicy =E2=
+=84=93 =CF=80 then leafMass =E2=84=93 else 0)
+    (hpos : =E2=88=80 a =E2=88=88 atoms, 0 &lt; a.1) (hle : =E2=88=80 a =E2=
+=88=88 atoms, a.1 =E2=89=A4 1)
+    (htot : totalWeight atoms =3D 1) : envelopeMean T =E2=89=A4 seedShannon=
+ atoms :=3D by
+  have hpoint : =E2=88=80 t =E2=88=88 Ioi (0 : =E2=84=9D), 1 - Fstar T t =
+=E2=89=A4 1 - seedCDF atoms t :=3D by
+    intro t _
+    linarith [seedCDF_le_Fstar hexact hpos t]
+  have hmono :=3D setIntegral_mono_on (integrableOn_one_sub_Fstar T)
+    (integrableOn_one_sub_seed atoms hpos hle htot) measurableSet_Ioi hpoin=
+t
+  rw [integral_one_sub_Fstar, integral_one_sub_seed atoms hpos hle htot] at=
+ hmono
+  exact hmono
+
+theorem one_seed_shannon (T : Tree) :
+    =E2=88=83 atoms : List (Atom T),
+      GreedyTrace (Field.p T) atoms =E2=88=A7
+      (=E2=88=80 a =E2=88=88 atoms, 0 &lt; a.1) =E2=88=A7
+      totalWeight atoms =3D 1 =E2=88=A7
+      (=E2=88=80 (=CF=80 : Policy T) (=E2=84=93 : Leaf T),
+        transcriptWeight atoms =CF=80 =E2=84=93 =3D
+          if CompatiblePolicy =E2=84=93 =CF=80 then leafMass =E2=84=93 else=
+ 0) =E2=88=A7
+      envelopeMean T =E2=89=A4 seedShannon atoms =E2=88=A7
+      seedShannon atoms =E2=89=A4 envelopeMean T + shannonOverhead :=3D by
+  obtain =E2=9F=A8atoms, ht=E2=9F=A9 :=3D
+    greedyTrace_exists (Field.p T) (Field.p_isFlow T) (Field.p_nonneg T)
+  have hbounds :=3D greedy_atom_bounds ht
+  obtain =E2=9F=A8-, -, hsum, hrep=E2=9F=A9 :=3D
+    greedyTrace_properties ht (Field.p_isFlow T) (Field.p_nonneg T)
+  have htot : totalWeight atoms =3D 1 :=3D by simpa using hsum
+  have hexact : =E2=88=80 (=CF=80 : Policy T) (=E2=84=93 : Leaf T),
+      transcriptWeight atoms =CF=80 =E2=84=93 =3D
+        if CompatiblePolicy =E2=84=93 =CF=80 then leafMass =E2=84=93 else 0=
+ :=3D by
+    intro =CF=80 =E2=84=93
+    rw [transcriptWeight_eq, hrep]
+    have hp : leafValue (Field.p T) =E2=84=93 =3D leafMass =E2=84=93 :=3D b=
+y
+      simpa [Field.p] using leafValue_probability T 1 =E2=84=93
+    rw [hp]
+  refine =E2=9F=A8atoms, ht, hbounds.1, htot, hexact, ?_, ?_=E2=9F=A9
+  =C2=B7 exact envelope_le_seedShannon hexact hbounds.1 hbounds.2 htot
+  =C2=B7 exact seedShannon_le_envelope ht hbounds.1 hbounds.2
+
+#print axioms one_seed_shannon
+
+end CausalSpectrum
+</code></pre></div></section><section class=3D"mt-10 min-w-0" aria-labelled=
+by=3D"Spectrum-lean"><h2 id=3D"Spectrum-lean" class=3D"font-serif text-2xl =
+font-semibold text-ink">Spectrum.lean</h2><div class=3D"mt-4 max-w-full ove=
+rflow-x-auto border border-line bg-chip"><pre class=3D"w-max min-w-full p-4=
+ font-mono text-[13px] leading-relaxed text-ink"><code>/- Kernel certificat=
+e through the refined cutoff. No Shannon, R=C3=A9nyi, or Wasserstein claim.=
+ -/
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib.Algebra.Order.BigOperators.Group.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finset.Max
+import Mathlib.Data.Fintype.Basic
+import Mathlib.Data.Fintype.Sigma
+import Mathlib.Order.Bounds.Basic
+import Mathlib.Tactic
+noncomputable section
+open Classical
+namespace CausalSpectrum
+/-
+Finite full-history tree.
+Every finite alphabet is represented by a `Fin n`; the arities `nA` and `nY=
+ a`
+may vary from node to node and from action to action.  This is only a
+relabeling of arbitrary finite nonempty alphabets.
+Kernels are arbitrary positive real numbers, not rationals/dyadics.
+-/
+inductive Tree : Type
+  | leaf : Tree
+  | node
+      (nA : =E2=84=95)
+      (hA : 0 &lt; nA)
+      (nY : Fin nA =E2=86=92 =E2=84=95)
+      (hY : =E2=88=80 a, 0 &lt; nY a)
+      (K : (a : Fin nA) =E2=86=92 Fin (nY a) =E2=86=92 =E2=84=9D)
+      (Kpos : =E2=88=80 a y, 0 &lt; K a y)
+      (Ksum : =E2=88=80 a, =E2=88=91 y, K a y =3D 1)
+      (child : (a : Fin nA) =E2=86=92 Fin (nY a) =E2=86=92 Tree) : Tree
+/-- A real field on all vertices of a full-history tree. -/
+@[reducible] def Field : Tree =E2=86=92 Type
+  | .leaf =3D&gt; =E2=84=9D
+  | .node nA _ nY _ _ _ _ child =3D&gt;
+      =E2=84=9D =C3=97 ((a : Fin nA) =E2=86=92 (y : Fin (nY a)) =E2=86=92 F=
+ield (child a y))
+namespace Field
+/-- Value at the root of a field. -/
+def root : {T : Tree} =E2=86=92 Field T =E2=86=92 =E2=84=9D
+  | .leaf, r =3D&gt; r
+  | .node _ _ _ _ _ _ _ _, r =3D&gt; r.1
+@[simp] theorem root_leaf (r : Field Tree.leaf) : root r =3D r :=3D rfl
+/-- Flow conservation, separately for each action. -/
+def IsFlow : {T : Tree} =E2=86=92 Field T =E2=86=92 Prop
+  | .leaf, _ =3D&gt; True
+  | .node _ _ _ _ _ _ _ _, r =3D&gt;
+      (=E2=88=80 a, (=E2=88=91 y, root (r.2 a y)) =3D r.1) =E2=88=A7
+      (=E2=88=80 a y, IsFlow (r.2 a y))
+/-- Nonnegativity at every vertex. -/
+def Nonneg : {T : Tree} =E2=86=92 Field T =E2=86=92 Prop
+  | .leaf, r =3D&gt; 0 =E2=89=A4 r
+  | .node _ _ _ _ _ _ _ _, r =3D&gt;
+      0 =E2=89=A4 r.1 =E2=88=A7 =E2=88=80 a y, Nonneg (r.2 a y)
+/-- Pointwise order of fields. -/
+def LE : {T : Tree} =E2=86=92 Field T =E2=86=92 Field T =E2=86=92 Prop
+  | .leaf, r, s =3D&gt; r =E2=89=A4 s
+  | .node _ _ _ _ _ _ _ _, r, s =3D&gt;
+      r.1 =E2=89=A4 s.1 =E2=88=A7 =E2=88=80 a y, LE (r.2 a y) (s.2 a y)
+theorem Nonneg.root_nonneg {T : Tree} {r : Field T} (h : Nonneg r) :
+    0 =E2=89=A4 root r :=3D by
+  cases T with
+  | leaf =3D&gt;
+      exact h
+  | node =3D&gt;
+      exact h.1
+theorem Nonneg.child
+    {nA : =E2=84=95} {hA : 0 &lt; nA}
+    {nY : Fin nA =E2=86=92 =E2=84=95} {hY : =E2=88=80 a, 0 &lt; nY a}
+    {K : (a : Fin nA) =E2=86=92 Fin (nY a) =E2=86=92 =E2=84=9D}
+    {Kpos : =E2=88=80 a y, 0 &lt; K a y}
+    {Ksum : =E2=88=80 a, =E2=88=91 y, K a y =3D 1}
+    {child : (a : Fin nA) =E2=86=92 Fin (nY a) =E2=86=92 Tree}
+    {r : Field (.node nA hA nY hY K Kpos Ksum child)}
+    (h : Nonneg r) (a : Fin nA) (y : Fin (nY a)) :
+    Nonneg (r.2 a y) :=3D
+  h.2 a y
+/-- The probability cylinder field with prescribed root mass `q`. -/
+def probability : (T : Tree) =E2=86=92 =E2=84=9D =E2=86=92 Field T
+  | .leaf, q =3D&gt; q
+  | .node _ _ _ _ K _ _ child, q =3D&gt;
+      (q, fun a y =3D&gt; probability (child a y) (q * K a y))
+@[simp] theorem root_probability (T : Tree) (q : =E2=84=9D) :
+    root (probability T q) =3D q :=3D by
+  cases T &lt;;&gt; rfl
+theorem probability_isFlow (T : Tree) (q : =E2=84=9D) :
+    IsFlow (probability T q) :=3D by
+  induction T generalizing q with
+  | leaf =3D&gt;
+      trivial
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+      constructor
+      =C2=B7 intro a
+        simp only [probability, root_probability]
+        rw [=E2=86=90 Finset.mul_sum, Ksum a, mul_one]
+      =C2=B7 intro a y
+        exact ih a y (q * K a y)
+theorem probability_nonneg (T : Tree) {q : =E2=84=9D} (hq : 0 =E2=89=A4 q) =
+:
+    Nonneg (probability T q) :=3D by
+  induction T generalizing q with
+  | leaf =3D&gt;
+      simpa [Nonneg, probability]
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+      constructor
+      =C2=B7 exact hq
+      =C2=B7 intro a y
+        exact ih a y (mul_nonneg hq (le_of_lt (Kpos a y)))
+/-- The original cylinder-probability flow. -/
+def p (T : Tree) : Field T :=3D probability T 1
+theorem p_isFlow (T : Tree) : IsFlow (p T) :=3D
+  probability_isFlow T 1
+theorem p_nonneg (T : Tree) : Nonneg (p T) :=3D
+  probability_nonneg T zero_le_one
+@[simp] theorem root_p (T : Tree) : root (p T) =3D 1 :=3D
+  root_probability T 1
+end Field
+/-!
+## Policies, response strategies, terminal histories
+-/
+/--
+A deterministic adaptive policy.
+At a node it chooses one current action, but its continuation is total:
+it is specified on every child history, including histories not reached
+under its own current choice.
+-/
+def Policy : Tree =E2=86=92 Type
+  | .leaf =3D&gt; PUnit
+  | .node nA _ nY _ _ _ _ child =3D&gt;
+      Fin nA =C3=97 ((a : Fin nA) =E2=86=92 (y : Fin (nY a)) =E2=86=92 Poli=
+cy (child a y))
+/--
+A deterministic total response strategy.
+At every history it chooses one output separately for every action, and
+is also specified recursively on all histories it may never visit.
+-/
+def Strategy : Tree =E2=86=92 Type
+  | .leaf =3D&gt; PUnit
+  | .node nA _ nY _ _ _ _ child =3D&gt;
+      ((a : Fin nA) =E2=86=92 Fin (nY a)) =C3=97
+      ((a : Fin nA) =E2=86=92 (y : Fin (nY a)) =E2=86=92 Strategy (child a =
+y))
+/-- Full-tree terminal histories. -/
+def Leaf : Tree =E2=86=92 Type
+  | .leaf =3D&gt; PUnit
+  | .node nA _ nY _ _ _ _ child =3D&gt;
+      (a : Fin nA) =C3=97' ((y : Fin (nY a)) =C3=97' Leaf (child a y))
+/-- Probability of a terminal history. -/
+def leafMass : {T : Tree} =E2=86=92 Leaf T =E2=86=92 =E2=84=9D
+  | .leaf, _ =3D&gt; 1
+  | .node _ _ _ _ K _ _ _, =E2=9F=A8a, y, =E2=84=93=E2=9F=A9 =3D&gt;
+      K a y * leafMass =E2=84=93
+/-- Compatibility of a terminal history with a policy. -/
+def CompatiblePolicy : {T : Tree} =E2=86=92 Leaf T =E2=86=92 Policy T =E2=
+=86=92 Prop
+  | .leaf, _, _ =3D&gt; True
+  | .node _ _ _ _ _ _ _ _, =E2=9F=A8a, y, =E2=84=93=E2=9F=A9, =CF=80 =3D&gt=
+;
+      a =3D =CF=80.1 =E2=88=A7 CompatiblePolicy =E2=84=93 (=CF=80.2 a y)
+/-- Compatibility of a terminal history with a response strategy. -/
+def CompatibleStrategy : {T : Tree} =E2=86=92 Leaf T =E2=86=92 Strategy T =
+=E2=86=92 Prop
+  | .leaf, _, _ =3D&gt; True
+  | .node _ _ _ _ _ _ _ _, =E2=9F=A8a, y, =E2=84=93=E2=9F=A9, d =3D&gt;
+      y =3D d.1 a =E2=88=A7 CompatibleStrategy =E2=84=93 (d.2 a y)
+/-- The unique transcript obtained by running deterministic `=CF=80` agains=
+t deterministic `d`. -/
+def run : {T : Tree} =E2=86=92 Strategy T =E2=86=92 Policy T =E2=86=92 Leaf=
+ T
+  | .leaf, _, _ =3D&gt; PUnit.unit
+  | .node _ _ _ _ _ _ _ _, d, =CF=80 =3D&gt;
+      let a :=3D =CF=80.1
+      let y :=3D d.1 a
+      =E2=9F=A8a, y, run (d.2 a y) (=CF=80.2 a y)=E2=9F=A9
+theorem run_compatible_policy :
+    =E2=88=80 {T : Tree} (d : Strategy T) (=CF=80 : Policy T),
+      CompatiblePolicy (run d =CF=80) =CF=80 :=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt;
+      intro d =CF=80
+      trivial
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+      intro d =CF=80
+      constructor
+      =C2=B7 rfl
+      =C2=B7 exact ih =CF=80.1 (d.1 =CF=80.1) (d.2 =CF=80.1 (d.1 =CF=80.1))
+          (=CF=80.2 =CF=80.1 (d.1 =CF=80.1))
+theorem run_compatible_strategy :
+    =E2=88=80 {T : Tree} (d : Strategy T) (=CF=80 : Policy T),
+      CompatibleStrategy (run d =CF=80) d :=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt;
+      intro d =CF=80
+      trivial
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+      intro d =CF=80
+      constructor
+      =C2=B7 rfl
+      =C2=B7 exact ih =CF=80.1 (d.1 =CF=80.1) (d.2 =CF=80.1 (d.1 =CF=80.1))
+          (=CF=80.2 =CF=80.1 (d.1 =CF=80.1))
+/--
+For every pair `(d,=CF=80)` there is exactly one compatible terminal histor=
+y.
+This is the combinatorial bridge needed to turn a strategy mixture into
+one causal seed valid for every policy.
+-/
+theorem compatible_leaf_unique :
+    =E2=88=80 {T : Tree} (d : Strategy T) (=CF=80 : Policy T) (=E2=84=93 : =
+Leaf T),
+      CompatibleStrategy =E2=84=93 d =E2=86=92
+      CompatiblePolicy =E2=84=93 =CF=80 =E2=86=92
+      =E2=84=93 =3D run d =CF=80 :=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt;
+      intro d =CF=80 =E2=84=93 hd h=CF=80
+      cases =E2=84=93
+      rfl
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+      intro d =CF=80 =E2=84=93 hd h=CF=80
+      rcases =E2=84=93 with =E2=9F=A8a, y, =E2=84=93=E2=9F=A9
+      rcases hd with =E2=9F=A8hy, hd=E2=9F=A9
+      rcases h=CF=80 with =E2=9F=A8ha, h=CF=80=E2=9F=A9
+      subst a
+      subst y
+      change
+        (=E2=9F=A8=CF=80.1, d.1 =CF=80.1, =E2=84=93=E2=9F=A9 :
+          Leaf (.node nA hA nY hY K Kpos Ksum child))
+        =3D
+        =E2=9F=A8=CF=80.1, d.1 =CF=80.1,
+          run (d.2 =CF=80.1 (d.1 =CF=80.1)) (=CF=80.2 =CF=80.1 (d.1 =CF=80.=
+1))=E2=9F=A9
+      congr
+      exact ih =CF=80.1 (d.1 =CF=80.1) (d.2 =CF=80.1 (d.1 =CF=80.1))
+        (=CF=80.2 =CF=80.1 (d.1 =CF=80.1)) =E2=84=93 hd h=CF=80
+/-!
+## Finite extrema with explicit witnesses
+-/
+private theorem fin_exists_min {n : =E2=84=95} (hn : 0 &lt; n) (f : Fin n =
+=E2=86=92 =E2=84=9D) :
+    =E2=88=83 i : Fin n, =E2=88=80 j : Fin n, f i =E2=89=A4 f j :=3D by
+  have hne : (Finset.univ : Finset (Fin n)).Nonempty :=3D =E2=9F=A8=E2=9F=
+=A80, hn=E2=9F=A9, Finset.mem_univ _=E2=9F=A9
+  obtain =E2=9F=A8i, -, hi=E2=9F=A9 :=3D Finset.exists_min_image (Finset.un=
+iv : Finset (Fin n)) f hne
+  exact =E2=9F=A8i, fun j =3D&gt; hi j (Finset.mem_univ _)=E2=9F=A9
+
+private theorem fin_exists_max {n : =E2=84=95} (hn : 0 &lt; n) (f : Fin n =
+=E2=86=92 =E2=84=9D) :
+    =E2=88=83 i : Fin n, =E2=88=80 j : Fin n, f j =E2=89=A4 f i :=3D by
+  have hne : (Finset.univ : Finset (Fin n)).Nonempty :=3D =E2=9F=A8=E2=9F=
+=A80, hn=E2=9F=A9, Finset.mem_univ _=E2=9F=A9
+  obtain =E2=9F=A8i, -, hi=E2=9F=A9 :=3D Finset.exists_max_image (Finset.un=
+iv : Finset (Fin n)) f hne
+  exact =E2=9F=A8i, fun j =3D&gt; hi j (Finset.mem_univ _)=E2=9F=A9
+
+private noncomputable def finArgmin {n : =E2=84=95} (hn : 0 &lt; n) (f : Fi=
+n n =E2=86=92 =E2=84=9D) : Fin n :=3D
+  Classical.choose (fin_exists_min hn f)
+
+private theorem finArgmin_spec {n : =E2=84=95} (hn : 0 &lt; n) (f : Fin n =
+=E2=86=92 =E2=84=9D) (i : Fin n) :
+    f (finArgmin hn f) =E2=89=A4 f i :=3D
+  Classical.choose_spec (fin_exists_min hn f) i
+
+private noncomputable def finArgmax {n : =E2=84=95} (hn : 0 &lt; n) (f : Fi=
+n n =E2=86=92 =E2=84=9D) : Fin n :=3D
+  Classical.choose (fin_exists_max hn f)
+
+private theorem finArgmax_spec {n : =E2=84=95} (hn : 0 &lt; n) (f : Fin n =
+=E2=86=92 =E2=84=9D) (i : Fin n) :
+    f i =E2=89=A4 f (finArgmax hn f) :=3D
+  Classical.choose_spec (fin_exists_max hn f) i
+private noncomputable def finMin {n : =E2=84=95} (hn : 0 &lt; n) (f : Fin n=
+ =E2=86=92 =E2=84=9D) : =E2=84=9D :=3D
+  f (finArgmin hn f)
+private noncomputable def finMax {n : =E2=84=95} (hn : 0 &lt; n) (f : Fin n=
+ =E2=86=92 =E2=84=9D) : =E2=84=9D :=3D
+  f (finArgmax hn f)
+private theorem finMin_le {n : =E2=84=95} (hn : 0 &lt; n) (f : Fin n =E2=86=
+=92 =E2=84=9D) (i : Fin n) :
+    finMin hn f =E2=89=A4 f i :=3D
+  finArgmin_spec hn f i
+private theorem le_finMax {n : =E2=84=95} (hn : 0 &lt; n) (f : Fin n =E2=86=
+=92 =E2=84=9D) (i : Fin n) :
+    f i =E2=89=A4 finMax hn f :=3D
+  finArgmax_spec hn f i
+private theorem finMin_mono {n : =E2=84=95} (hn : 0 &lt; n)
+    {f g : Fin n =E2=86=92 =E2=84=9D} (h : =E2=88=80 i, f i =E2=89=A4 g i) =
+:
+    finMin hn f =E2=89=A4 finMin hn g :=3D by
+  calc
+    finMin hn f =E2=89=A4 f (finArgmin hn g) :=3D finMin_le hn f _
+    _ =E2=89=A4 g (finArgmin hn g) :=3D h _
+    _ =3D finMin hn g :=3D rfl
+private theorem finMax_mono {n : =E2=84=95} (hn : 0 &lt; n)
+    {f g : Fin n =E2=86=92 =E2=84=9D} (h : =E2=88=80 i, f i =E2=89=A4 g i) =
+:
+    finMax hn f =E2=89=A4 finMax hn g :=3D by
+  calc
+    finMax hn f =3D f (finArgmax hn f) :=3D rfl
+    _ =E2=89=A4 g (finArgmax hn f) :=3D h _
+    _ =E2=89=A4 finMax hn g :=3D le_finMax hn g _
+private theorem finMax_le_of_forall {n : =E2=84=95} (hn : 0 &lt; n)
+    (f : Fin n =E2=86=92 =E2=84=9D) {c : =E2=84=9D} (h : =E2=88=80 i, f i =
+=E2=89=A4 c) :
+    finMax hn f =E2=89=A4 c :=3D by
+  exact h (finArgmax hn f)
+private theorem finMin_pos_of_forall {n : =E2=84=95} (hn : 0 &lt; n)
+    (f : Fin n =E2=86=92 =E2=84=9D) (h : =E2=88=80 i, 0 &lt; f i) :
+    0 &lt; finMin hn f :=3D by
+  exact h (finArgmin hn f)
+private theorem finMax_pos_of_exists {n : =E2=84=95} (hn : 0 &lt; n)
+    (f : Fin n =E2=86=92 =E2=84=9D) (h : =E2=88=83 i, 0 &lt; f i) :
+    0 &lt; finMax hn f :=3D by
+  rcases h with =E2=9F=A8i, hi=E2=9F=A9
+  exact lt_of_lt_of_le hi (le_finMax hn f i)
+/-!
+## Bottleneck recursion and exact tree minimax identity
+-/
+/-- Bellman bottleneck `B_r`. -/
+def bottleneck : {T : Tree} =E2=86=92 Field T =E2=86=92 =E2=84=9D
+  | .leaf, r =3D&gt; r
+  | .node nA hA nY hY _ _ _ _, r =3D&gt;
+      finMin hA (fun a =3D&gt;
+        finMax (hY a) (fun y =3D&gt; bottleneck (r.2 a y)))
+/--
+For a fixed response strategy, minimum residual over all compatible
+terminal histories (all possible action choices).
+-/
+def strategyFloor : {T : Tree} =E2=86=92 Field T =E2=86=92 Strategy T =E2=
+=86=92 =E2=84=9D
+  | .leaf, r, _ =3D&gt; r
+  | .node _ hA _ _ _ _ _ _, r, d =3D&gt;
+      finMin hA (fun a =3D&gt;
+        strategyFloor (r.2 a (d.1 a)) (d.2 a (d.1 a)))
+/--
+For a fixed policy, maximum residual over all terminal histories reachable
+under that policy (all possible outputs).
+-/
+def policyCeil : {T : Tree} =E2=86=92 Field T =E2=86=92 Policy T =E2=86=92 =
+=E2=84=9D
+  | .leaf, r, _ =3D&gt; r
+  | .node _ _ _ hY _ _ _ _, r, =CF=80 =3D&gt;
+      finMax (hY =CF=80.1) (fun y =3D&gt;
+        policyCeil (r.2 =CF=80.1 y) (=CF=80.2 =CF=80.1 y))
+theorem strategyFloor_le_bottleneck :
+    =E2=88=80 {T : Tree} (r : Field T) (d : Strategy T),
+      strategyFloor r d =E2=89=A4 bottleneck r :=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt;
+      intro r d
+      exact le_rfl
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+      intro r d
+      dsimp [strategyFloor, bottleneck]
+      apply finMin_mono hA
+      intro a
+      calc
+        strategyFloor (r.2 a (d.1 a)) (d.2 a (d.1 a))
+            =E2=89=A4 bottleneck (r.2 a (d.1 a)) :=3D
+          ih a (d.1 a) (r.2 a (d.1 a)) (d.2 a (d.1 a))
+        _ =E2=89=A4 finMax (hY a) (fun y =3D&gt; bottleneck (r.2 a y)) :=3D
+          le_finMax (hY a) (fun y =3D&gt; bottleneck (r.2 a y)) (d.1 a)
+theorem bottleneck_le_policyCeil :
+    =E2=88=80 {T : Tree} (r : Field T) (=CF=80 : Policy T),
+      bottleneck r =E2=89=A4 policyCeil r =CF=80 :=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt;
+      intro r =CF=80
+      exact le_rfl
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+      intro r =CF=80
+      dsimp [bottleneck, policyCeil]
+      calc
+        finMin hA (fun a =3D&gt;
+            finMax (hY a) (fun y =3D&gt; bottleneck (r.2 a y)))
+          =E2=89=A4 finMax (hY =CF=80.1) (fun y =3D&gt; bottleneck (r.2 =CF=
+=80.1 y)) :=3D
+            finMin_le hA _ =CF=80.1
+        _ =E2=89=A4 finMax (hY =CF=80.1) (fun y =3D&gt;
+            policyCeil (r.2 =CF=80.1 y) (=CF=80.2 =CF=80.1 y)) :=3D by
+              apply finMax_mono (hY =CF=80.1)
+              intro y
+              exact ih =CF=80.1 y (r.2 =CF=80.1 y) (=CF=80.2 =CF=80.1 y)
+/--
+A maximizing response strategy: for every current action, choose a child
+with maximal child bottleneck; continue recursively everywhere.
+-/
+def maximizingStrategy : {T : Tree} =E2=86=92 Field T =E2=86=92 Strategy T
+  | .leaf, _ =3D&gt; PUnit.unit
+  | .node _ _ _ hY _ _ _ _, r =3D&gt;
+      let out :=3D fun a =3D&gt;
+        finArgmax (hY a) (fun y =3D&gt; bottleneck (r.2 a y))
+      (out, fun a y =3D&gt; maximizingStrategy (r.2 a y))
+/--
+A minimizing policy: choose a current action minimizing the maximum
+child bottleneck; continue recursively everywhere.
+-/
+def minimizingPolicy : {T : Tree} =E2=86=92 Field T =E2=86=92 Policy T
+  | .leaf, _ =3D&gt; PUnit.unit
+  | .node _ hA _ hY _ _ _ _, r =3D&gt;
+      let a0 :=3D finArgmin hA (fun a =3D&gt;
+        finMax (hY a) (fun y =3D&gt; bottleneck (r.2 a y)))
+      (a0, fun a y =3D&gt; minimizingPolicy (r.2 a y))
+theorem maximizingStrategy_attains :
+    =E2=88=80 {T : Tree} (r : Field T),
+      strategyFloor r (maximizingStrategy r) =3D bottleneck r :=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt;
+      intro r
+      rfl
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+      intro r
+      dsimp [maximizingStrategy, strategyFloor, bottleneck]
+      apply congrArg (fun f : Fin nA =E2=86=92 =E2=84=9D =3D&gt; finMin hA =
+f)
+      funext a
+      rw [ih a (finArgmax (hY a) (fun y =3D&gt; bottleneck (r.2 a y)))
+          (r.2 a (finArgmax (hY a) (fun y =3D&gt; bottleneck (r.2 a y))))]
+      rfl
+theorem minimizingPolicy_attains :
+    =E2=88=80 {T : Tree} (r : Field T),
+      policyCeil r (minimizingPolicy r) =3D bottleneck r :=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt;
+      intro r
+      rfl
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+      intro r
+      dsimp [minimizingPolicy, policyCeil, bottleneck]
+      let a0 :=3D finArgmin hA (fun a =3D&gt;
+        finMax (hY a) (fun y =3D&gt; bottleneck (r.2 a y)))
+      change
+        finMax (hY a0) (fun y =3D&gt;
+          policyCeil (r.2 a0 y) (minimizingPolicy (r.2 a0 y)))
+        =3D
+        finMin hA (fun a =3D&gt;
+          finMax (hY a) (fun y =3D&gt; bottleneck (r.2 a y)))
+      have hchild :
+          finMax (hY a0) (fun y =3D&gt;
+            policyCeil (r.2 a0 y) (minimizingPolicy (r.2 a0 y)))
+          =3D
+          finMax (hY a0) (fun y =3D&gt; bottleneck (r.2 a0 y)) :=3D by
+        apply congrArg (fun f : Fin (nY a0) =E2=86=92 =E2=84=9D =3D&gt; fin=
+Max (hY a0) f)
+        funext y
+        exact ih a0 y (r.2 a0 y)
+      rw [hchild]
+      rfl
+/--
+Exact strategy side:
+`B_r(root)` is the greatest value attained by
+`d =E2=86=A6 min_{compatible leaves} r(leaf)`.
+-/
+theorem bottleneck_isGreatest_strategyFloor {T : Tree} (r : Field T) :
+    IsGreatest (Set.range (strategyFloor r)) (bottleneck r) :=3D by
+  constructor
+  =C2=B7 refine =E2=9F=A8maximizingStrategy r, ?_=E2=9F=A9
+    exact maximizingStrategy_attains r
+  =C2=B7 intro x hx
+    rcases hx with =E2=9F=A8d, rfl=E2=9F=A9
+    exact strategyFloor_le_bottleneck r d
+/--
+Exact policy side:
+`B_r(root)` is the least value attained by
+`=CF=80 =E2=86=A6 max_{=CF=80-reachable leaves} r(leaf)`.
+-/
+theorem bottleneck_isLeast_policyCeil {T : Tree} (r : Field T) :
+    IsLeast (Set.range (policyCeil r)) (bottleneck r) :=3D by
+  constructor
+  =C2=B7 refine =E2=9F=A8minimizingPolicy r, ?_=E2=9F=A9
+    exact minimizingPolicy_attains r
+  =C2=B7 intro x hx
+    rcases hx with =E2=9F=A8=CF=80, rfl=E2=9F=A9
+    exact bottleneck_le_policyCeil r =CF=80
+/--
+This pair of `IsGreatest`/`IsLeast` statements is the formal exact minimax
+identity
+  max_d min_{=E2=84=93=E2=88=88L(d)} r(=E2=84=93)
+    =3D B_r(root)
+    =3D min_=CF=80 max_{=E2=84=93=E2=88=88L_=CF=80} r(=E2=84=93).
+-/
+theorem exact_tree_minimax {T : Tree} (r : Field T) :
+    IsGreatest (Set.range (strategyFloor r)) (bottleneck r) =E2=88=A7
+    IsLeast (Set.range (policyCeil r)) (bottleneck r) :=3D
+  =E2=9F=A8bottleneck_isGreatest_strategyFloor r,
+   bottleneck_isLeast_policyCeil r=E2=9F=A9
+/-!
+## Positivity of the bottleneck
+-/
+private theorem child_root_le_root
+    {nA : =E2=84=95} {hA : 0 &lt; nA}
+    {nY : Fin nA =E2=86=92 =E2=84=95} {hY : =E2=88=80 a, 0 &lt; nY a}
+    {K : (a : Fin nA) =E2=86=92 Fin (nY a) =E2=86=92 =E2=84=9D}
+    {Kpos : =E2=88=80 a y, 0 &lt; K a y}
+    {Ksum : =E2=88=80 a, =E2=88=91 y, K a y =3D 1}
+    {child : (a : Fin nA) =E2=86=92 Fin (nY a) =E2=86=92 Tree}
+    {r : Field (.node nA hA nY hY K Kpos Ksum child)}
+    (hf : Field.IsFlow r) (hn : Field.Nonneg r)
+    (a : Fin nA) (y : Fin (nY a)) :
+    Field.root (r.2 a y) =E2=89=A4 Field.root r :=3D by
+  have hs :
+      Field.root (r.2 a y) =E2=89=A4 =E2=88=91 z : Fin (nY a), Field.root (=
+r.2 a z) :=3D by
+    refine Finset.single_le_sum (f :=3D fun z =3D&gt; Field.root (r.2 a z))=
+ ?_ (Finset.mem_univ y)
+    intro z _
+    exact (hn.2 a z).root_nonneg
+  rw [hf.1 a] at hs
+  exact hs
+theorem bottleneck_le_root :
+    =E2=88=80 {T : Tree} {r : Field T},
+      Field.IsFlow r =E2=86=92 Field.Nonneg r =E2=86=92
+      bottleneck r =E2=89=A4 Field.root r :=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt;
+      intro r hf hn
+      exact le_rfl
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+      intro r hf hn
+      let a0 : Fin nA :=3D =E2=9F=A80, hA=E2=9F=A9
+      calc
+        bottleneck r
+            =E2=89=A4 finMax (hY a0) (fun y =3D&gt; bottleneck (r.2 a0 y)) =
+:=3D by
+              exact finMin_le hA _ a0
+        _ =E2=89=A4 Field.root r :=3D by
+              apply finMax_le_of_forall (hY a0)
+              intro y
+              calc
+                bottleneck (r.2 a0 y)
+                    =E2=89=A4 Field.root (r.2 a0 y) :=3D
+                      ih a0 y (r :=3D r.2 a0 y) (hf.2 a0 y) (hn.2 a0 y)
+                _ =E2=89=A4 Field.root r :=3D
+                      child_root_le_root hf hn a0 y
+theorem bottleneck_pos :
+    =E2=88=80 {T : Tree} {r : Field T},
+      Field.IsFlow r =E2=86=92 Field.Nonneg r =E2=86=92
+      0 &lt; Field.root r =E2=86=92
+      0 &lt; bottleneck r :=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt;
+      intro r hf hn hr
+      exact hr
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+      intro r hf hn hr
+      apply finMin_pos_of_forall hA
+      intro a
+      apply finMax_pos_of_exists (hY a)
+      have hex : =E2=88=83 y : Fin (nY a), 0 &lt; Field.root (r.2 a y) :=3D=
+ by
+        by_contra h
+        simp only [not_exists, not_lt] at h
+        have hz : =E2=88=80 y : Fin (nY a), Field.root (r.2 a y) =3D 0 :=3D=
+ by
+          intro y
+          exact le_antisymm (h y) ((hn.2 a y).root_nonneg)
+        have hsum0 : (=E2=88=91 y, Field.root (r.2 a y)) =3D 0 :=3D by
+          simp [hz]
+        rw [hf.1 a] at hsum0
+        simp only [Field.root] at hr
+        linarith
+      rcases hex with =E2=9F=A8y, hy=E2=9F=A9
+      refine =E2=9F=A8y, ?_=E2=9F=A9
+      exact ih a y (r :=3D r.2 a y) (hf.2 a y) (hn.2 a y) hy
+/-- Required positivity consequence for a residual flow. -/
+theorem positive_root_implies_positive_bottleneck
+    {T : Tree} {r : Field T}
+    (hf : Field.IsFlow r) (hn : Field.Nonneg r)
+    (hr : 0 &lt; Field.root r) :
+    0 &lt; bottleneck r :=3D
+  bottleneck_pos hf hn hr
+/-!
+## Leaf count
+Used later as the well-founded measure for greedy extraction.
+-/
+def terminalCount : Tree =E2=86=92 =E2=84=95
+  | .leaf =3D&gt; 1
+  | .node _ _ _ _ _ _ _ child =3D&gt;
+      =E2=88=91 a, =E2=88=91 y, terminalCount (child a y)
+theorem terminalCount_pos : =E2=88=80 T : Tree, 0 &lt; terminalCount T :=3D=
+ by
+  intro T
+  induction T with
+  | leaf =3D&gt;
+      simp [terminalCount]
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+      have ha : =E2=88=83 a : Fin nA, True :=3D =E2=9F=A8=E2=9F=A80, hA=E2=
+=9F=A9, trivial=E2=9F=A9
+      rcases ha with =E2=9F=A8a, -=E2=9F=A9
+      have hy : =E2=88=83 y : Fin (nY a), True :=3D =E2=9F=A8=E2=9F=A80, hY=
+ a=E2=9F=A9, trivial=E2=9F=A9
+      rcases hy with =E2=9F=A8y, -=E2=9F=A9
+      have hpos : 0 &lt; terminalCount (child a y) :=3D ih a y
+      have h1 :
+          terminalCount (child a y)
+            =E2=89=A4 =E2=88=91 z : Fin (nY a), terminalCount (child a z) :=
+=3D by
+        refine Finset.single_le_sum
+          (f :=3D fun z : Fin (nY a) =3D&gt; terminalCount (child a z)) ?_ =
+(Finset.mem_univ y)
+        intro _ _
+        exact Nat.zero_le _
+      have h2 :
+          (=E2=88=91 z : Fin (nY a), terminalCount (child a z))
+            =E2=89=A4 =E2=88=91 b : Fin nA, =E2=88=91 z : Fin (nY b), termi=
+nalCount (child b z) :=3D by
+        refine Finset.single_le_sum
+          (f :=3D fun b : Fin nA =3D&gt; =E2=88=91 z : Fin (nY b), terminal=
+Count (child b z)) ?_
+          (Finset.mem_univ a)
+        intro _ _
+        exact Nat.zero_le _
+      exact lt_of_lt_of_le hpos (le_trans h1 h2)
+
+/-! Semantic bridge from recursive extrema to actual terminal histories. -/
+def leafValue : {T : Tree} =E2=86=92 Field T =E2=86=92 Leaf T =E2=86=92 =E2=
+=84=9D
+  | .leaf, r, _ =3D&gt; r
+  | .node _ _ _ _ _ _ _ _, r, =E2=9F=A8a, y, =E2=84=93=E2=9F=A9 =3D&gt;
+      leafValue (r.2 a y) =E2=84=93
+
+theorem strategyFloor_le_leaf : =E2=88=80 {T : Tree} (r : Field T)
+    (d : Strategy T) (=E2=84=93 : Leaf T), CompatibleStrategy =E2=84=93 d =
+=E2=86=92
+    strategyFloor r d =E2=89=A4 leafValue r =E2=84=93 :=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt; intro r d =E2=84=93 h; exact le_rfl
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+    intro r d =E2=84=93 h
+    rcases =E2=84=93 with =E2=9F=A8a, y, =E2=84=93=E2=9F=A9
+    rcases h with =E2=9F=A8hy, h=E2=84=93=E2=9F=A9
+    subst y
+    exact le_trans (finMin_le hA _ a)
+      (ih a (d.1 a) (r.2 a (d.1 a)) (d.2 a (d.1 a)) =E2=84=93 h=E2=84=93)
+
+theorem strategyFloor_attained_leaf : =E2=88=80 {T : Tree} (r : Field T)
+    (d : Strategy T), =E2=88=83 =E2=84=93 : Leaf T,
+    CompatibleStrategy =E2=84=93 d =E2=88=A7 leafValue r =E2=84=93 =3D stra=
+tegyFloor r d :=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt; intro r d; exact =E2=9F=A8PUnit.unit, trivial, rfl=E2=9F=
+=A9
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+    intro r d
+    let a :=3D finArgmin hA (fun a =3D&gt;
+      strategyFloor (r.2 a (d.1 a)) (d.2 a (d.1 a)))
+    obtain =E2=9F=A8=E2=84=93, hc, he=E2=9F=A9 :=3D ih a (d.1 a)
+      (r.2 a (d.1 a)) (d.2 a (d.1 a))
+    refine =E2=9F=A8=E2=9F=A8a, d.1 a, =E2=84=93=E2=9F=A9, =E2=9F=A8rfl, hc=
+=E2=9F=A9, ?_=E2=9F=A9
+    exact he
+
+theorem leaf_le_policyCeil : =E2=88=80 {T : Tree} (r : Field T)
+    (=CF=80 : Policy T) (=E2=84=93 : Leaf T), CompatiblePolicy =E2=84=93 =
+=CF=80 =E2=86=92
+    leafValue r =E2=84=93 =E2=89=A4 policyCeil r =CF=80 :=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt; intro r =CF=80 =E2=84=93 h; exact le_rfl
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+    intro r =CF=80 =E2=84=93 h
+    rcases =E2=84=93 with =E2=9F=A8a, y, =E2=84=93=E2=9F=A9
+    rcases h with =E2=9F=A8ha, h=E2=84=93=E2=9F=A9
+    subst a
+    exact le_trans (ih =CF=80.1 y (r.2 =CF=80.1 y) (=CF=80.2 =CF=80.1 y) =
+=E2=84=93 h=E2=84=93)
+      (le_finMax (hY =CF=80.1) (fun y =3D&gt; policyCeil (r.2 =CF=80.1 y) (=
+=CF=80.2 =CF=80.1 y)) y)
+
+theorem policyCeil_attained_leaf : =E2=88=80 {T : Tree} (r : Field T)
+    (=CF=80 : Policy T), =E2=88=83 =E2=84=93 : Leaf T,
+    CompatiblePolicy =E2=84=93 =CF=80 =E2=88=A7 leafValue r =E2=84=93 =3D p=
+olicyCeil r =CF=80 :=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt; intro r =CF=80; exact =E2=9F=A8PUnit.unit, trivial, rfl=E2=
+=9F=A9
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+    intro r =CF=80
+    let y :=3D finArgmax (hY =CF=80.1) (fun y =3D&gt;
+      policyCeil (r.2 =CF=80.1 y) (=CF=80.2 =CF=80.1 y))
+    obtain =E2=9F=A8=E2=84=93, hc, he=E2=9F=A9 :=3D ih =CF=80.1 y (r.2 =CF=
+=80.1 y) (=CF=80.2 =CF=80.1 y)
+    exact =E2=9F=A8=E2=9F=A8=CF=80.1, y, =E2=84=93=E2=9F=A9, =E2=9F=A8rfl, =
+hc=E2=9F=A9, he=E2=9F=A9
+
+theorem strategyFloor_isLeast_leaves {T : Tree} (r : Field T)
+    (d : Strategy T) :
+    IsLeast {x : =E2=84=9D | =E2=88=83 =E2=84=93 : Leaf T,
+      CompatibleStrategy =E2=84=93 d =E2=88=A7 leafValue r =E2=84=93 =3D x}
+      (strategyFloor r d) :=3D by
+  constructor
+  =C2=B7 exact strategyFloor_attained_leaf r d
+  =C2=B7 rintro x =E2=9F=A8=E2=84=93, hc, rfl=E2=9F=A9
+    exact strategyFloor_le_leaf r d =E2=84=93 hc
+
+theorem policyCeil_isGreatest_leaves {T : Tree} (r : Field T)
+    (=CF=80 : Policy T) :
+    IsGreatest {x : =E2=84=9D | =E2=88=83 =E2=84=93 : Leaf T,
+      CompatiblePolicy =E2=84=93 =CF=80 =E2=88=A7 leafValue r =E2=84=93 =3D=
+ x}
+      (policyCeil r =CF=80) :=3D by
+  constructor
+  =C2=B7 exact policyCeil_attained_leaf r =CF=80
+  =C2=B7 rintro x =E2=9F=A8=E2=84=93, hc, rfl=E2=9F=A9
+    exact leaf_le_policyCeil r =CF=80 =E2=84=93 hc
+
+theorem leafValue_nonneg : =E2=88=80 {T : Tree} (r : Field T),
+    Field.Nonneg r =E2=86=92 =E2=88=80 =E2=84=93 : Leaf T, 0 =E2=89=A4 leaf=
+Value r =E2=84=93 :=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt; intro r hn =E2=84=93; exact hn
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+    intro r hn =E2=84=93
+    rcases =E2=84=93 with =E2=9F=A8a, y, =E2=84=93=E2=9F=A9
+    exact ih a y (r.2 a y) (hn.2 a y) =E2=84=93
+
+/-! Subtract a strategy atom on all compatible vertices. -/
+def extract : {T : Tree} =E2=86=92 Field T =E2=86=92 Strategy T =E2=86=92 =
+=E2=84=9D =E2=86=92 Field T
+  | .leaf, r, _, w =3D&gt; r - w
+  | .node _ _ _ _ _ _ _ _, r, d, w =3D&gt;
+    (r.1 - w, fun a y =3D&gt;
+      if y =3D d.1 a then extract (r.2 a y) (d.2 a y) w else r.2 a y)
+
+@[simp] theorem root_extract {T : Tree} (r : Field T)
+    (d : Strategy T) (w : =E2=84=9D) :
+    Field.root (extract r d w) =3D Field.root r - w :=3D by
+  cases T &lt;;&gt; rfl
+
+theorem extract_isFlow : =E2=88=80 {T : Tree} (r : Field T)
+    (d : Strategy T) (w : =E2=84=9D), Field.IsFlow r =E2=86=92
+    Field.IsFlow (extract r d w) :=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt; intro r d w hf; trivial
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+    intro r d w hf
+    constructor
+    =C2=B7 intro a
+      change (=E2=88=91 y, Field.root
+        (if y =3D d.1 a then extract (r.2 a y) (d.2 a y) w
+         else r.2 a y)) =3D r.1 - w
+      have he : =E2=88=80 y : Fin (nY a),
+          Field.root (if y =3D d.1 a then extract (r.2 a y) (d.2 a y) w
+            else r.2 a y) =3D
+          Field.root (r.2 a y) - (if y =3D d.1 a then w else 0) :=3D by
+        intro y
+        by_cases hy : y =3D d.1 a &lt;;&gt; simp [hy]
+      simp_rw [he]
+      rw [Finset.sum_sub_distrib, hf.1 a]
+      simp
+    =C2=B7 intro a y
+      change Field.IsFlow
+        (if y =3D d.1 a then extract (r.2 a y) (d.2 a y) w else r.2 a y)
+      split_ifs
+      =C2=B7 exact ih a y (r.2 a y) (d.2 a y) w (hf.2 a y)
+      =C2=B7 exact hf.2 a y
+
+theorem extract_nonneg : =E2=88=80 {T : Tree} (r : Field T)
+    (d : Strategy T) (w : =E2=84=9D), Field.IsFlow r =E2=86=92 Field.Nonneg=
+ r =E2=86=92
+    w =E2=89=A4 strategyFloor r d =E2=86=92 Field.Nonneg (extract r d w) :=
+=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt; intro r d w hf hn hw; exact sub_nonneg.mpr hw
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+    intro r d w hf hn hw
+    constructor
+    =C2=B7 exact sub_nonneg.mpr (le_trans hw
+        (le_trans (strategyFloor_le_bottleneck r d) (bottleneck_le_root hf =
+hn)))
+    =C2=B7 intro a y
+      change Field.Nonneg
+        (if y =3D d.1 a then extract (r.2 a y) (d.2 a y) w else r.2 a y)
+      split_ifs with hy
+      =C2=B7 subst y
+        exact ih a (d.1 a) (r.2 a (d.1 a)) (d.2 a (d.1 a)) w
+          (hf.2 a (d.1 a)) (hn.2 a (d.1 a))
+          (le_trans hw (finMin_le hA _ a))
+      =C2=B7 exact hn.2 a y
+
+theorem leafValue_extract : =E2=88=80 {T : Tree} (r : Field T)
+    (d : Strategy T) (w : =E2=84=9D) (=E2=84=93 : Leaf T),
+    leafValue (extract r d w) =E2=84=93 =3D
+      leafValue r =E2=84=93 - (if CompatibleStrategy =E2=84=93 d then w els=
+e 0) :=3D by
+  classical
+  intro T
+  induction T with
+  | leaf =3D&gt; intro r d w =E2=84=93; simp [extract, leafValue, Compatibl=
+eStrategy]
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+    intro r d w =E2=84=93
+    rcases =E2=84=93 with =E2=9F=A8a, y, =E2=84=93=E2=9F=A9
+    by_cases hy : y =3D d.1 a
+    =C2=B7 simpa [extract, leafValue, CompatibleStrategy, hy] using
+        ih a y (r.2 a y) (d.2 a y) w =E2=84=93
+    =C2=B7 simp [extract, leafValue, CompatibleStrategy, hy]
+
+/-- The exact one-step extraction certificate, with a leaf killed by this s=
+tep. -/
+theorem greedy_step {T : Tree} (r : Field T)
+    (hf : Field.IsFlow r) (hn : Field.Nonneg r)
+    (hr : 0 &lt; Field.root r) :
+    let w :=3D bottleneck r
+    let d :=3D maximizingStrategy r
+    let r' :=3D extract r d w
+    0 &lt; w =E2=88=A7 Field.IsFlow r' =E2=88=A7 Field.Nonneg r' =E2=88=A7
+    Field.root r' =3D Field.root r - w =E2=88=A7
+    =E2=88=83 =E2=84=93 : Leaf T, CompatibleStrategy =E2=84=93 d =E2=88=A7
+      leafValue r =E2=84=93 =3D w =E2=88=A7 0 &lt; leafValue r =E2=84=93 =
+=E2=88=A7 leafValue r' =E2=84=93 =3D 0 :=3D by
+  classical
+  dsimp only
+  have hw :=3D bottleneck_pos hf hn hr
+  obtain =E2=9F=A8=E2=84=93, hc, he=E2=9F=A9 :=3D strategyFloor_attained_le=
+af r (maximizingStrategy r)
+  rw [maximizingStrategy_attains] at he
+  refine =E2=9F=A8hw, extract_isFlow _ _ _ hf,
+    extract_nonneg _ _ _ hf hn (le_of_eq (maximizingStrategy_attains r).sym=
+m),
+    root_extract _ _ _, =E2=84=93, hc, he, ?_, ?_=E2=9F=A9
+  =C2=B7 rwa [he]
+  =C2=B7 rw [leafValue_extract, if_pos hc, he, sub_self]
+
+noncomputable instance leafFintype : (T : Tree) =E2=86=92 Fintype (Leaf T)
+  | .leaf =3D&gt; by
+      unfold Leaf
+      exact Fintype.ofSubsingleton PUnit.unit
+  | .node nA hA nY hY K Kpos Ksum child =3D&gt; by
+      letI : =E2=88=80 a y, Fintype (Leaf (child a y)) :=3D fun a y =3D&gt;=
+ leafFintype (child a y)
+      unfold Leaf
+      infer_instance
+
+noncomputable def positiveLeaves {T : Tree} (r : Field T) : Finset (Leaf T)=
+ :=3D by
+  classical
+  exact Finset.univ.filter (fun =E2=84=93 =3D&gt; 0 &lt; leafValue r =E2=84=
+=93)
+
+noncomputable def positiveLeafCount {T : Tree} (r : Field T) : =E2=84=95 :=
+=3D
+  (positiveLeaves r).card
+
+theorem greedy_count_decreases {T : Tree} (r : Field T)
+    (hf : Field.IsFlow r) (hn : Field.Nonneg r)
+    (hr : 0 &lt; Field.root r) :
+    positiveLeafCount (extract r (maximizingStrategy r) (bottleneck r)) &lt=
+;
+      positiveLeafCount r :=3D by
+  classical
+  obtain =E2=9F=A8hw, hflow, hnonneg, hroot, =E2=84=93, hc, he, hp, hz=E2=
+=9F=A9 :=3D greedy_step r hf hn hr
+  apply Finset.card_lt_card
+  apply Finset.ssubset_iff_subset_ne.mpr
+  constructor
+  =C2=B7 intro k hk
+    simp only [positiveLeaves, Finset.mem_filter, Finset.mem_univ, true_and=
+] at hk =E2=8A=A2
+    rw [leafValue_extract] at hk
+    split_ifs at hk
+    =C2=B7 linarith
+    =C2=B7 simpa using hk
+  =C2=B7 intro heq
+    have hmem : =E2=84=93 =E2=88=88 positiveLeaves r :=3D by
+      simpa [positiveLeaves] using hp
+    rw [=E2=86=90 heq] at hmem
+    have : 0 &lt; leafValue (extract r (maximizingStrategy r) (bottleneck r=
+)) =E2=84=93 :=3D by
+      simpa [positiveLeaves] using hmem
+    linarith
+
+theorem leafValue_le_root : =E2=88=80 {T : Tree} (r : Field T),
+    Field.IsFlow r =E2=86=92 Field.Nonneg r =E2=86=92 =E2=88=80 =E2=84=93 :=
+ Leaf T,
+    leafValue r =E2=84=93 =E2=89=A4 Field.root r :=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt; intro r hf hn =E2=84=93; exact le_rfl
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+    intro r hf hn =E2=84=93
+    rcases =E2=84=93 with =E2=9F=A8a, y, =E2=84=93=E2=9F=A9
+    exact le_trans (ih a y (r.2 a y) (hf.2 a y) (hn.2 a y) =E2=84=93)
+      (child_root_le_root hf hn a y)
+
+/-- Atom indices remain distinct even if their response strategies coincide=
+. -/
+abbrev Atom (T : Tree) :=3D =E2=84=9D =C3=97 Strategy T
+
+def totalWeight {T : Tree} (atoms : List (Atom T)) : =E2=84=9D :=3D
+  (atoms.map Prod.fst).sum
+
+noncomputable def representedLeaf {T : Tree} (atoms : List (Atom T))
+    (=E2=84=93 : Leaf T) : =E2=84=9D :=3D by
+  classical
+  exact (atoms.map (fun a =3D&gt; if CompatibleStrategy =E2=84=93 a.2 then =
+a.1 else 0)).sum
+
+/-- A finite positive strategy decomposition of a nonnegative flow. -/
+theorem finite_flow_decomposition {T : Tree} (r : Field T)
+    (hf : Field.IsFlow r) (hn : Field.Nonneg r) :
+    =E2=88=83 atoms : List (Atom T),
+      (=E2=88=80 a =E2=88=88 atoms, 0 &lt; a.1) =E2=88=A7
+      atoms.length =E2=89=A4 positiveLeafCount r =E2=88=A7
+      totalWeight atoms =3D Field.root r =E2=88=A7
+      =E2=88=80 =E2=84=93 : Leaf T, representedLeaf atoms =E2=84=93 =3D lea=
+fValue r =E2=84=93 :=3D by
+  classical
+  have aux : =E2=88=80 n : =E2=84=95, =E2=88=80 r : Field T,
+      positiveLeafCount r =3D n =E2=86=92 Field.IsFlow r =E2=86=92 Field.No=
+nneg r =E2=86=92
+      =E2=88=83 atoms : List (Atom T),
+        (=E2=88=80 a =E2=88=88 atoms, 0 &lt; a.1) =E2=88=A7
+        atoms.length =E2=89=A4 positiveLeafCount r =E2=88=A7
+        totalWeight atoms =3D Field.root r =E2=88=A7
+        =E2=88=80 =E2=84=93 : Leaf T, representedLeaf atoms =E2=84=93 =3D l=
+eafValue r =E2=84=93 :=3D by
+    intro n
+    induction n using Nat.strong_induction_on with
+    | h n ih =3D&gt;
+      intro r hcount hf hn
+      by_cases hr : 0 &lt; Field.root r
+      =C2=B7 let w :=3D bottleneck r
+        let d :=3D maximizingStrategy r
+        let r' :=3D extract r d w
+        have step :=3D greedy_step r hf hn hr
+        obtain =E2=9F=A8hw, hflow, hnonneg, hroot, hkilled=E2=9F=A9 :=3D st=
+ep
+        have hlt : positiveLeafCount r' &lt; n :=3D by
+          simpa [r', d, w, hcount] using greedy_count_decreases r hf hn hr
+        obtain =E2=9F=A8atoms, hpos, hlen, hsum, hrep=E2=9F=A9 :=3D
+          ih (positiveLeafCount r') hlt r' rfl hflow hnonneg
+        refine =E2=9F=A8(w, d) :: atoms, ?_, ?_, ?_, ?_=E2=9F=A9
+        =C2=B7 intro a ha
+          simp only [List.mem_cons] at ha
+          rcases ha with rfl | ha
+          =C2=B7 exact hw
+          =C2=B7 exact hpos a ha
+        =C2=B7 simp only [List.length_cons]
+          have : positiveLeafCount r' &lt; positiveLeafCount r :=3D by omeg=
+a
+          omega
+        =C2=B7 change w + totalWeight atoms =3D Field.root r
+          rw [hsum]
+          change w + Field.root (extract r d w) =3D Field.root r
+          rw [root_extract]
+          ring
+        =C2=B7 intro =E2=84=93
+          change (if CompatibleStrategy =E2=84=93 d then w else 0) +
+            representedLeaf atoms =E2=84=93 =3D leafValue r =E2=84=93
+          rw [hrep]
+          change (if CompatibleStrategy =E2=84=93 d then w else 0) +
+            leafValue (extract r d w) =E2=84=93 =3D leafValue r =E2=84=93
+          rw [leafValue_extract]
+          ring
+      =C2=B7 have hz : Field.root r =3D 0 :=3D
+          le_antisymm (le_of_not_gt hr) hn.root_nonneg
+        refine =E2=9F=A8[], ?_, ?_, ?_, ?_=E2=9F=A9
+        =C2=B7 simp
+        =C2=B7 simp
+        =C2=B7 simpa [totalWeight] using hz.symm
+        =C2=B7 intro =E2=84=93
+          have hl : leafValue r =E2=84=93 =3D 0 :=3D
+            le_antisymm (by simpa [hz] using leafValue_le_root r hf hn =E2=
+=84=93)
+              (leafValue_nonneg r hn =E2=84=93)
+          simp [representedLeaf, hl]
+  exact aux (positiveLeafCount r) r rfl hf hn
+
+theorem leafValue_probability : =E2=88=80 (T : Tree) (q : =E2=84=9D) (=E2=
+=84=93 : Leaf T),
+    leafValue (Field.probability T q) =E2=84=93 =3D q * leafMass =E2=84=93 =
+:=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt; intro q =E2=84=93; simp [Field.probability, leafValue, lea=
+fMass]
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+    intro q =E2=84=93
+    rcases =E2=84=93 with =E2=9F=A8a, y, =E2=84=93=E2=9F=A9
+    change leafValue (Field.probability (child a y) (q * K a y)) =E2=84=93 =
+=3D
+      q * (K a y * leafMass =E2=84=93)
+    rw [ih a y]
+    ring
+
+/-- Concrete seed semantics: choose a LIST INDEX with its positive atom wei=
+ght,
+then run that index's strategy. Equal strategies need not be merged. -/
+noncomputable def transcriptWeight {T : Tree} (atoms : List (Atom T))
+    (=CF=80 : Policy T) (=E2=84=93 : Leaf T) : =E2=84=9D :=3D by
+  classical
+  exact (atoms.map (fun a =3D&gt; if run a.2 =CF=80 =3D =E2=84=93 then a.1 =
+else 0)).sum
+
+theorem run_eq_iff {T : Tree} (d : Strategy T) (=CF=80 : Policy T) (=E2=84=
+=93 : Leaf T) :
+    run d =CF=80 =3D =E2=84=93 =E2=86=94 CompatibleStrategy =E2=84=93 d =E2=
+=88=A7 CompatiblePolicy =E2=84=93 =CF=80 :=3D by
+  constructor
+  =C2=B7 rintro rfl
+    exact =E2=9F=A8run_compatible_strategy d =CF=80, run_compatible_policy =
+d =CF=80=E2=9F=A9
+  =C2=B7 rintro =E2=9F=A8hd, hp=E2=9F=A9
+    exact (compatible_leaf_unique d =CF=80 =E2=84=93 hd hp).symm
+
+theorem transcriptWeight_eq {T : Tree} (atoms : List (Atom T))
+    (=CF=80 : Policy T) (=E2=84=93 : Leaf T) :
+    transcriptWeight atoms =CF=80 =E2=84=93 =3D
+      if CompatiblePolicy =E2=84=93 =CF=80 then representedLeaf atoms =E2=
+=84=93 else 0 :=3D by
+  classical
+  by_cases hp : CompatiblePolicy =E2=84=93 =CF=80
+  =C2=B7 simp only [transcriptWeight, representedLeaf, if_pos hp]
+    have he : (fun a : Atom T =3D&gt; if run a.2 =CF=80 =3D =E2=84=93 then =
+a.1 else 0) =3D
+        (fun a : Atom T =3D&gt; if CompatibleStrategy =E2=84=93 a.2 then a.=
+1 else 0) :=3D by
+      funext a
+      simp [run_eq_iff, hp]
+    rw [he]
+  =C2=B7 simp [transcriptWeight, run_eq_iff, hp]
+
+/-- Exact finite causal realization, simultaneously for EVERY deterministic=
+ policy.
+This theorem is a realization theorem ONLY; it contains no entropy bound. -=
+/
+theorem exact_finite_seed (T : Tree) :
+    =E2=88=83 atoms : List (Atom T),
+      (=E2=88=80 a =E2=88=88 atoms, 0 &lt; a.1) =E2=88=A7
+      atoms.length =E2=89=A4 Fintype.card (Leaf T) =E2=88=A7
+      totalWeight atoms =3D 1 =E2=88=A7
+      =E2=88=80 (=CF=80 : Policy T) (=E2=84=93 : Leaf T),
+        transcriptWeight atoms =CF=80 =E2=84=93 =3D
+          if CompatiblePolicy =E2=84=93 =CF=80 then leafMass =E2=84=93 else=
+ 0 :=3D by
+  classical
+  obtain =E2=9F=A8atoms, hpos, hlen, hsum, hrep=E2=9F=A9 :=3D
+    finite_flow_decomposition (Field.p T) (Field.p_isFlow T) (Field.p_nonne=
+g T)
+  refine =E2=9F=A8atoms, hpos, ?_, ?_, ?_=E2=9F=A9
+  =C2=B7 exact le_trans hlen (Finset.card_le_univ _)
+  =C2=B7 simpa using hsum
+  =C2=B7 intro =CF=80 =E2=84=93
+    rw [transcriptWeight_eq, hrep]
+    have hp : leafValue (Field.p T) =E2=84=93 =3D leafMass =E2=84=93 :=3D b=
+y
+      simpa [Field.p] using leafValue_probability T 1 =E2=84=93
+    rw [hp]
+
+#print axioms exact_tree_minimax
+#print axioms strategyFloor_isLeast_leaves
+#print axioms policyCeil_isGreatest_leaves
+#print axioms greedy_step
+#print axioms greedy_count_decreases
+#print axioms finite_flow_decomposition
+#print axioms exact_finite_seed
+
+
+/-! Greedy history: unlike an arbitrary decomposition this retains every
+    optimal extraction, and therefore supports a cutoff argument. -/
+inductive GreedyTrace {T : Tree} : Field T =E2=86=92 List (Atom T) =E2=86=
+=92 Prop
+  | done (r : Field T) (hz : Field.root r =3D 0) : GreedyTrace r []
+  | step (r : Field T) (tail : List (Atom T))
+      (hr : 0 &lt; Field.root r)
+      (next : GreedyTrace
+        (extract r (maximizingStrategy r) (bottleneck r)) tail) :
+      GreedyTrace r ((bottleneck r, maximizingStrategy r) :: tail)
+
+theorem greedyTrace_exists {T : Tree} (r : Field T)
+    (hf : Field.IsFlow r) (hn : Field.Nonneg r) :
+    =E2=88=83 atoms, GreedyTrace r atoms :=3D by
+  have aux : =E2=88=80 n : =E2=84=95, =E2=88=80 r : Field T, positiveLeafCo=
+unt r =3D n =E2=86=92
+      Field.IsFlow r =E2=86=92 Field.Nonneg r =E2=86=92 =E2=88=83 atoms, Gr=
+eedyTrace r atoms :=3D by
+    intro n
+    induction n using Nat.strong_induction_on with
+    | h n ih =3D&gt;
+      intro r hc hf hn
+      by_cases hr : 0 &lt; Field.root r
+      =C2=B7 obtain =E2=9F=A8hw, hf', hn', hroot, hk=E2=9F=A9 :=3D greedy_s=
+tep r hf hn hr
+        have hlt : positiveLeafCount
+            (extract r (maximizingStrategy r) (bottleneck r)) &lt; n :=3D b=
+y
+          simpa [hc] using greedy_count_decreases r hf hn hr
+        obtain =E2=9F=A8atoms, ht=E2=9F=A9 :=3D ih _ hlt _ rfl hf' hn'
+        exact =E2=9F=A8_, GreedyTrace.step r atoms hr ht=E2=9F=A9
+      =C2=B7 exact =E2=9F=A8[], GreedyTrace.done r
+          (le_antisymm (le_of_not_gt hr) hn.root_nonneg)=E2=9F=A9
+  exact aux _ r rfl hf hn
+
+theorem bottleneck_mono : =E2=88=80 {T : Tree} (r s : Field T),
+    Field.LE r s =E2=86=92 bottleneck r =E2=89=A4 bottleneck s :=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt; intro r s h; exact h
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+    intro r s h
+    apply finMin_mono hA
+    intro a
+    apply finMax_mono (hY a)
+    intro y
+    exact ih a y (r.2 a y) (s.2 a y) (h.2 a y)
+
+theorem extract_le : =E2=88=80 {T : Tree} (r : Field T) (d : Strategy T)
+    (w : =E2=84=9D), 0 =E2=89=A4 w =E2=86=92 Field.LE (extract r d w) r :=
+=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt; intro r d w hw; exact sub_le_self r hw
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+    intro r d w hw
+    constructor
+    =C2=B7 exact sub_le_self r.1 hw
+    =C2=B7 intro a y
+      change Field.LE
+        (if y =3D d.1 a then extract (r.2 a y) (d.2 a y) w else r.2 a y)
+        (r.2 a y)
+      split_ifs
+      =C2=B7 exact ih a y (r.2 a y) (d.2 a y) w hw
+      =C2=B7 have reflField : =E2=88=80 {U : Tree} (s : Field U), Field.LE =
+s s :=3D by
+          intro U
+          induction U with
+          | leaf =3D&gt; intro s; exact le_rfl
+          | node m hm ny hy k kp ks ch hi =3D&gt;
+            intro s
+            exact =E2=9F=A8le_rfl, fun b z =3D&gt; hi b z (s.2 b z)=E2=9F=
+=A9
+        exact reflField _
+
+theorem greedyTrace_properties {T : Tree} {r : Field T}
+    {atoms : List (Atom T)} (ht : GreedyTrace r atoms)
+    (hf : Field.IsFlow r) (hn : Field.Nonneg r) :
+    (=E2=88=80 a =E2=88=88 atoms, 0 &lt; a.1 =E2=88=A7 a.1 =E2=89=A4 bottle=
+neck r) =E2=88=A7
+    atoms.length =E2=89=A4 positiveLeafCount r =E2=88=A7
+    totalWeight atoms =3D Field.root r =E2=88=A7
+    =E2=88=80 =E2=84=93, representedLeaf atoms =E2=84=93 =3D leafValue r =
+=E2=84=93 :=3D by
+  classical
+  induction ht with
+  | done r hz =3D&gt;
+    refine =E2=9F=A8by simp, by simp, ?_, ?_=E2=9F=A9
+    =C2=B7 simpa [totalWeight] using hz.symm
+    =C2=B7 intro =E2=84=93
+      have hl : leafValue r =E2=84=93 =3D 0 :=3D
+        le_antisymm (by simpa [hz] using leafValue_le_root r hf hn =E2=84=
+=93)
+          (leafValue_nonneg r hn =E2=84=93)
+      simp [representedLeaf, hl]
+  | step r tail hr ht ih =3D&gt;
+    obtain =E2=9F=A8hw, hf', hn', hroot, hk=E2=9F=A9 :=3D greedy_step r hf =
+hn hr
+    obtain =E2=9F=A8ha, hlen, hsum, hrep=E2=9F=A9 :=3D ih hf' hn'
+    have hb : bottleneck (extract r (maximizingStrategy r) (bottleneck r)) =
+=E2=89=A4
+        bottleneck r :=3D bottleneck_mono _ _ (extract_le _ _ _ hw.le)
+    refine =E2=9F=A8?_, ?_, ?_, ?_=E2=9F=A9
+    =C2=B7 intro a ha'
+      simp only [List.mem_cons] at ha'
+      rcases ha' with rfl | ha'
+      =C2=B7 exact =E2=9F=A8hw, le_rfl=E2=9F=A9
+      =C2=B7 exact =E2=9F=A8(ha a ha').1, le_trans (ha a ha').2 hb=E2=9F=A9
+    =C2=B7 have hlt :=3D greedy_count_decreases r hf hn hr
+      simp only [List.length_cons]
+      omega
+    =C2=B7 change bottleneck r + totalWeight tail =3D Field.root r
+      rw [hsum, root_extract]
+      ring
+    =C2=B7 intro =E2=84=93
+      change (if CompatibleStrategy =E2=84=93 (maximizingStrategy r) then b=
+ottleneck r else 0)
+        + representedLeaf tail =E2=84=93 =3D leafValue r =E2=84=93
+      rw [hrep, leafValue_extract]
+      ring
+
+noncomputable def smallWeight {T : Tree} (atoms : List (Atom T)) (=CE=B4 : =
+=E2=84=9D) : =E2=84=9D :=3D by
+  classical
+  exact (atoms.map (fun a =3D&gt; if a.1 =E2=89=A4 =CE=B4 then a.1 else 0))=
+.sum
+
+/-- Residual relation after removing atoms each larger than the cutoff. -/
+def CutHistory {T : Tree} (=CE=B4 : =E2=84=9D) (p r : Field T) : Prop :=3D
+  =E2=88=80 =E2=84=93 : Leaf T, leafValue r =E2=84=93 =E2=89=A4 leafValue p=
+ =E2=84=93 =E2=88=A7
+    (leafValue r =E2=84=93 =3D leafValue p =E2=84=93 =E2=88=A8 leafValue r =
+=E2=84=93 =E2=89=A4 leafValue p =E2=84=93 - =CE=B4)
+
+theorem cutHistory_self {T : Tree} (=CE=B4 : =E2=84=9D) (p : Field T) : Cut=
+History =CE=B4 p p :=3D
+  fun _ =3D&gt; =E2=9F=A8le_rfl, Or.inl rfl=E2=9F=A9
+
+theorem cutHistory_extract {T : Tree} (=CE=B4 : =E2=84=9D) (p r : Field T)
+    (d : Strategy T) (w : =E2=84=9D) (h=CE=B4 : 0 =E2=89=A4 =CE=B4) (hw : =
+=CE=B4 &lt; w)
+    (hh : CutHistory =CE=B4 p r) : CutHistory =CE=B4 p (extract r d w) :=3D=
+ by
+  classical
+  intro =E2=84=93
+  rw [leafValue_extract]
+  by_cases hc : CompatibleStrategy =E2=84=93 d
+  =C2=B7 simp only [if_pos hc]
+    have hle :=3D (hh =E2=84=93).1
+    constructor
+    =C2=B7 linarith
+    =C2=B7 right; linarith
+  =C2=B7 simpa [hc] using hh =E2=84=93
+
+/-- Every cutoff has a residual flow of exactly the mass of the small atoms=
+;
+    its bottleneck is at most the cutoff and it remembers the removed atoms=
+. -/
+theorem greedy_cutoff {T : Tree} {r : Field T} {atoms : List (Atom T)}
+    (ht : GreedyTrace r atoms) (hf : Field.IsFlow r) (hn : Field.Nonneg r)
+    (=CE=B4 : =E2=84=9D) (h=CE=B4 : 0 =E2=89=A4 =CE=B4) (p : Field T) (hh :=
+ CutHistory =CE=B4 p r) :
+    =E2=88=83 s : Field T, Field.IsFlow s =E2=88=A7 Field.Nonneg s =E2=88=
+=A7
+      Field.root s =3D smallWeight atoms =CE=B4 =E2=88=A7 bottleneck s =E2=
+=89=A4 =CE=B4 =E2=88=A7 CutHistory =CE=B4 p s :=3D by
+  classical
+  induction ht with
+  | done r hz =3D&gt;
+    refine =E2=9F=A8r, hf, hn, ?_, ?_, hh=E2=9F=A9
+    =C2=B7 simpa [smallWeight] using hz
+    =C2=B7 exact le_trans (bottleneck_le_root hf hn) (by simpa [hz] using h=
+=CE=B4)
+  | step r tail hr ht ih =3D&gt;
+    obtain =E2=9F=A8hw, hf', hn', hroot, hk=E2=9F=A9 :=3D greedy_step r hf =
+hn hr
+    by_cases hsmall : bottleneck r =E2=89=A4 =CE=B4
+    =C2=B7 have hp :=3D greedyTrace_properties (GreedyTrace.step r tail hr =
+ht) hf hn
+      have he : smallWeight ((bottleneck r, maximizingStrategy r) :: tail) =
+=CE=B4 =3D
+          totalWeight ((bottleneck r, maximizingStrategy r) :: tail) :=3D b=
+y
+        unfold smallWeight totalWeight
+        congr 1
+        apply List.map_congr_left
+        intro a ha
+        exact if_pos (le_trans (hp.1 a ha).2 hsmall)
+      exact =E2=9F=A8r, hf, hn, (he.trans hp.2.2.1).symm, hsmall, hh=E2=9F=
+=A9
+    =C2=B7 have hlarge : =CE=B4 &lt; bottleneck r :=3D lt_of_not_ge hsmall
+      obtain =E2=9F=A8s, hsflow, hsnonneg, hsroot, hsbot, hshist=E2=9F=A9 :=
+=3D
+        ih hf' hn' (cutHistory_extract =CE=B4 p r (maximizingStrategy r)
+          (bottleneck r) h=CE=B4 hlarge hh)
+      refine =E2=9F=A8s, hsflow, hsnonneg, ?_, hsbot, hshist=E2=9F=A9
+      simpa [smallWeight, hsmall] using hsroot
+
+/-- Sum over the terminal histories compatible with one policy. -/
+def policySum : {T : Tree} =E2=86=92 (Leaf T =E2=86=92 =E2=84=9D) =E2=86=92=
+ Policy T =E2=86=92 =E2=84=9D
+  | .leaf, f, _ =3D&gt; f PUnit.unit
+  | .node _ _ _ _ _ _ _ _, f, =CF=80 =3D&gt;
+      =E2=88=91 y, policySum (fun =E2=84=93 =3D&gt; f =E2=9F=A8=CF=80.1, y,=
+ =E2=84=93=E2=9F=A9) (=CF=80.2 =CF=80.1 y)
+
+theorem policySum_mono : =E2=88=80 {T : Tree} (f g : Leaf T =E2=86=92 =E2=
+=84=9D) (=CF=80 : Policy T),
+    (=E2=88=80 =E2=84=93, CompatiblePolicy =E2=84=93 =CF=80 =E2=86=92 f =E2=
+=84=93 =E2=89=A4 g =E2=84=93) =E2=86=92 policySum f =CF=80 =E2=89=A4 policy=
+Sum g =CF=80 :=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt; intro f g =CF=80 h; exact h PUnit.unit trivial
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+    intro f g =CF=80 h
+    apply Finset.sum_le_sum
+    intro y hy
+    apply ih =CF=80.1 y
+    intro =E2=84=93 h=E2=84=93
+    exact h =E2=9F=A8=CF=80.1, y, =E2=84=93=E2=9F=A9 =E2=9F=A8rfl, h=E2=84=
+=93=E2=9F=A9
+
+theorem policySum_flow : =E2=88=80 {T : Tree} (r : Field T) (=CF=80 : Polic=
+y T),
+    Field.IsFlow r =E2=86=92 policySum (leafValue r) =CF=80 =3D Field.root =
+r :=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt; intro r =CF=80 hf; rfl
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+    intro r =CF=80 hf
+    change (=E2=88=91 y, policySum (leafValue (r.2 =CF=80.1 y)) (=CF=80.2 =
+=CF=80.1 y)) =3D r.1
+    have he : =E2=88=80 y, policySum (leafValue (r.2 =CF=80.1 y)) (=CF=80.2=
+ =CF=80.1 y) =3D
+        Field.root (r.2 =CF=80.1 y) :=3D fun y =3D&gt; ih =CF=80.1 y _ _ (h=
+f.2 =CF=80.1 y)
+    simp_rw [he]
+    exact hf.1 =CF=80.1
+
+noncomputable def aDelta (=CE=B4 p : =E2=84=9D) : =E2=84=9D :=3D
+  if p =E2=89=A4 =CE=B4 then p else min =CE=B4 (p - =CE=B4)
+
+noncomputable def psi (u : =E2=84=9D) : =E2=84=9D :=3D
+  if u =E2=89=A4 1 / 2 then u else if u &lt; 1 then 1 / 2 else 1
+
+theorem psi_mono : Monotone psi :=3D by
+  intro u v huv
+  unfold psi
+  split_ifs &lt;;&gt; linarith
+
+theorem aDelta_le_majorant (=CE=B4 p : =E2=84=9D) (h=CE=B4 : 0 =E2=89=A4 =
+=CE=B4) (hp : 0 &lt; p) :
+    aDelta =CE=B4 p =E2=89=A4 p * psi (=CE=B4 / p) :=3D by
+  unfold aDelta psi
+  by_cases hpd : p =E2=89=A4 =CE=B4
+  =C2=B7 rw [if_pos hpd]
+    have hu : 1 =E2=89=A4 =CE=B4 / p :=3D (le_div_iff=E2=82=80 hp).mpr (by =
+simpa using hpd)
+    rw [if_neg (by linarith), if_neg (by linarith)]
+    simp
+  =C2=B7 rw [if_neg hpd]
+    by_cases hh : =CE=B4 / p =E2=89=A4 1 / 2
+    =C2=B7 rw [if_pos hh]
+      have he : p * (=CE=B4 / p) =3D =CE=B4 :=3D by field_simp
+      rw [he]
+      exact min_le_left _ _
+    =C2=B7 rw [if_neg hh]
+      have hu : =CE=B4 / p &lt; 1 :=3D (div_lt_iff=E2=82=80 hp).mpr (by lin=
+arith)
+      rw [if_pos hu]
+      have hd : p / 2 &lt; =CE=B4 :=3D by
+        have :=3D (lt_div_iff=E2=82=80 hp).mp (lt_of_not_ge hh)
+        linarith
+      exact le_trans (min_le_right _ _) (by linarith)
+
+theorem leafMass_pos : =E2=88=80 {T : Tree} (=E2=84=93 : Leaf T), 0 &lt; le=
+afMass =E2=84=93 :=3D by
+  intro T
+  induction T with
+  | leaf =3D&gt; intro =E2=84=93; exact zero_lt_one
+  | node nA hA nY hY K Kpos Ksum child ih =3D&gt;
+    rintro =E2=9F=A8a, y, =E2=84=93=E2=9F=A9
+    exact mul_pos (Kpos a y) (ih a y =E2=84=93)
+
+/-- The strengthened finite cutoff bound, still before any logarithms or me=
+asures. -/
+theorem greedy_advanced_bound {T : Tree} {atoms : List (Atom T)}
+    (ht : GreedyTrace (Field.p T) atoms) (=CE=B4 : =E2=84=9D) (h=CE=B4 : 0 =
+=E2=89=A4 =CE=B4) :
+    =E2=88=83 =CF=80 : Policy T, smallWeight atoms =CE=B4 =E2=89=A4
+      policySum (fun =E2=84=93 =3D&gt; aDelta =CE=B4 (leafMass =E2=84=93)) =
+=CF=80 :=3D by
+  obtain =E2=9F=A8s, hf, hn, hroot, hb, hh=E2=9F=A9 :=3D
+    greedy_cutoff ht (Field.p_isFlow T) (Field.p_nonneg T) =CE=B4 h=CE=B4
+      (Field.p T) (cutHistory_self =CE=B4 (Field.p T))
+  let =CF=80 :=3D minimizingPolicy s
+  refine =E2=9F=A8=CF=80, ?_=E2=9F=A9
+  rw [=E2=86=90 hroot, =E2=86=90 policySum_flow s =CF=80 hf]
+  apply policySum_mono
+  intro =E2=84=93 hc
+  have hsmall : leafValue s =E2=84=93 =E2=89=A4 =CE=B4 :=3D by
+    have hl :=3D leaf_le_policyCeil s =CF=80 =E2=84=93 hc
+    have he : policyCeil s =CF=80 =3D bottleneck s :=3D minimizingPolicy_at=
+tains s
+    rw [he] at hl
+    exact le_trans hl hb
+  have hp : leafValue (Field.p T) =E2=84=93 =3D leafMass =E2=84=93 :=3D by
+    simpa [Field.p] using leafValue_probability T 1 =E2=84=93
+  obtain =E2=9F=A8hle, heq | hremoved=E2=9F=A9 :=3D hh =E2=84=93
+  =C2=B7 rw [hp] at hle heq
+    by_cases hpd : leafMass =E2=84=93 =E2=89=A4 =CE=B4
+    =C2=B7 simpa [aDelta, hpd] using hle
+    =C2=B7 exfalso; linarith
+  =C2=B7 rw [hp] at hle hremoved
+    by_cases hpd : leafMass =E2=84=93 =E2=89=A4 =CE=B4
+    =C2=B7 simpa [aDelta, hpd] using hle
+    =C2=B7 exact (by
+        rw [aDelta, if_neg hpd]
+        exact le_min hsmall hremoved)
+
+theorem greedy_refined_bound {T : Tree} {atoms : List (Atom T)}
+    (ht : GreedyTrace (Field.p T) atoms) (=CE=B4 : =E2=84=9D) (h=CE=B4 : 0 =
+=E2=89=A4 =CE=B4) :
+    =E2=88=83 =CF=80 : Policy T, smallWeight atoms =CE=B4 =E2=89=A4
+      policySum (fun =E2=84=93 =3D&gt; leafMass =E2=84=93 * psi (=CE=B4 / l=
+eafMass =E2=84=93)) =CF=80 :=3D by
+  obtain =E2=9F=A8=CF=80, h=CF=80=E2=9F=A9 :=3D greedy_advanced_bound ht =
+=CE=B4 h=CE=B4
+  refine =E2=9F=A8=CF=80, le_trans h=CF=80 ?_=E2=9F=A9
+  apply policySum_mono
+  intro =E2=84=93 hc
+  exact aDelta_le_majorant =CE=B4 (leafMass =E2=84=93) h=CE=B4 (leafMass_po=
+s =E2=84=93)
+
+/-- One and the same exact seed satisfies the refined bound at EVERY cutoff=
+.
+    This is stronger than choosing a different seed at each cutoff. -/
+theorem exact_seed_with_refined_cutoffs (T : Tree) :
+    =E2=88=83 atoms : List (Atom T),
+      GreedyTrace (Field.p T) atoms =E2=88=A7
+      (=E2=88=80 a =E2=88=88 atoms, 0 &lt; a.1) =E2=88=A7
+      atoms.length =E2=89=A4 Fintype.card (Leaf T) =E2=88=A7
+      totalWeight atoms =3D 1 =E2=88=A7
+      (=E2=88=80 (=CF=80 : Policy T) (=E2=84=93 : Leaf T), transcriptWeight=
+ atoms =CF=80 =E2=84=93 =3D
+        if CompatiblePolicy =E2=84=93 =CF=80 then leafMass =E2=84=93 else 0=
+) =E2=88=A7
+      (=E2=88=80 =CE=B4 : =E2=84=9D, 0 =E2=89=A4 =CE=B4 =E2=86=92 =E2=88=83=
+ =CF=80 : Policy T, smallWeight atoms =CE=B4 =E2=89=A4
+        policySum (fun =E2=84=93 =3D&gt; leafMass =E2=84=93 * psi (=CE=B4 /=
+ leafMass =E2=84=93)) =CF=80) :=3D by
+  classical
+  obtain =E2=9F=A8atoms, ht=E2=9F=A9 :=3D greedyTrace_exists (Field.p T)
+    (Field.p_isFlow T) (Field.p_nonneg T)
+  obtain =E2=9F=A8hpos, hlen, hsum, hrep=E2=9F=A9 :=3D greedyTrace_properti=
+es ht
+    (Field.p_isFlow T) (Field.p_nonneg T)
+  refine =E2=9F=A8atoms, ht, (fun a ha =3D&gt; (hpos a ha).1),
+    le_trans hlen (Finset.card_le_univ _), ?_, ?_, ?_=E2=9F=A9
+  =C2=B7 simpa using hsum
+  =C2=B7 intro =CF=80 =E2=84=93
+    rw [transcriptWeight_eq, hrep]
+    have hp : leafValue (Field.p T) =E2=84=93 =3D leafMass =E2=84=93 :=3D b=
+y
+      simpa [Field.p] using leafValue_probability T 1 =E2=84=93
+    rw [hp]
+  =C2=B7 intro =CE=B4 h=CE=B4
+    exact greedy_refined_bound ht =CE=B4 h=CE=B4
+
+/-! These are the new kernel-audit entry points. Running this file is requi=
+red
+before claiming certification. The probability-measure envelope constructio=
+n,
+stochastic sandwich, Shannon/Renyi inequalities and Wasserstein identity ar=
+e
+NOT proved in this file. No theorem below assumes them as hypotheses. -/
+#print axioms greedyTrace_exists
+#print axioms greedyTrace_properties
+#print axioms greedy_cutoff
+#print axioms aDelta_le_majorant
+#print axioms greedy_advanced_bound
+#print axioms greedy_refined_bound
+#print axioms exact_seed_with_refined_cutoffs
+
+end CausalSpectrum</code></pre></div></section></main><!--/$--></body></htm=
+l>
+------MultipartBoundary--hNLiLHLeywliAKYn32etrKmLOveYoy1gQc1wmQp5ad----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap
+
+@charset "utf-8";
+
+@font-face { font-family: Newsreader; font-style: italic; font-weight: 500;=
+ font-display: swap; src: url("https://fonts.gstatic.com/s/newsreader/v26/c=
+Y9XfjOCX1hbuyalUrK439vogqCz_goCYw7oReyJFYkzbBZD.woff2") format("woff2"); un=
+icode-range: U+102-103, U+110-111, U+128-129, U+168-169, U+1A0-1A1, U+1AF-1=
+B0, U+300-301, U+303-304, U+308-309, U+323, U+329, U+1EA0-1EF9, U+20AB; }
+
+@font-face { font-family: Newsreader; font-style: italic; font-weight: 500;=
+ font-display: swap; src: url("https://fonts.gstatic.com/s/newsreader/v26/c=
+Y9XfjOCX1hbuyalUrK439vogqCz_goCYw7oReyJFYgzbBZD.woff2") format("woff2"); un=
+icode-range: U+100-2BA, U+2BD-2C5, U+2C7-2CC, U+2CE-2D7, U+2DD-2FF, U+304, =
+U+308, U+329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U=
++20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+@font-face { font-family: Newsreader; font-style: italic; font-weight: 500;=
+ font-display: swap; src: url("https://fonts.gstatic.com/s/newsreader/v26/c=
+Y9XfjOCX1hbuyalUrK439vogqCz_goCYw7oReyJFYYzbA.woff2") format("woff2"); unic=
+ode-range: U+0-FF, U+131, U+152-153, U+2BB-2BC, U+2C6, U+2DA, U+2DC, U+304,=
+ U+308, U+329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,=
+ U+FEFF, U+FFFD; }
+
+@font-face { font-family: Newsreader; font-style: normal; font-weight: 500;=
+ font-display: swap; src: url("https://fonts.gstatic.com/s/newsreader/v26/c=
+Y9AfjOCX1hbuyalUrK439HyjJBG.woff2") format("woff2"); unicode-range: U+102-1=
+03, U+110-111, U+128-129, U+168-169, U+1A0-1A1, U+1AF-1B0, U+300-301, U+303=
+-304, U+308-309, U+323, U+329, U+1EA0-1EF9, U+20AB; }
+
+@font-face { font-family: Newsreader; font-style: normal; font-weight: 500;=
+ font-display: swap; src: url("https://fonts.gstatic.com/s/newsreader/v26/c=
+Y9AfjOCX1hbuyalUrK439DyjJBG.woff2") format("woff2"); unicode-range: U+100-2=
+BA, U+2BD-2C5, U+2C7-2CC, U+2CE-2D7, U+2DD-2FF, U+304, U+308, U+329, U+1D00=
+-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, =
+U+2C60-2C7F, U+A720-A7FF; }
+
+@font-face { font-family: Newsreader; font-style: normal; font-weight: 500;=
+ font-display: swap; src: url("https://fonts.gstatic.com/s/newsreader/v26/c=
+Y9AfjOCX1hbuyalUrK4397yjA.woff2") format("woff2"); unicode-range: U+0-FF, U=
++131, U+152-153, U+2BB-2BC, U+2C6, U+2DA, U+2DC, U+304, U+308, U+329, U+200=
+0-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+@font-face { font-family: Newsreader; font-style: normal; font-weight: 600;=
+ font-display: swap; src: url("https://fonts.gstatic.com/s/newsreader/v26/c=
+Y9AfjOCX1hbuyalUrK439HyjJBG.woff2") format("woff2"); unicode-range: U+102-1=
+03, U+110-111, U+128-129, U+168-169, U+1A0-1A1, U+1AF-1B0, U+300-301, U+303=
+-304, U+308-309, U+323, U+329, U+1EA0-1EF9, U+20AB; }
+
+@font-face { font-family: Newsreader; font-style: normal; font-weight: 600;=
+ font-display: swap; src: url("https://fonts.gstatic.com/s/newsreader/v26/c=
+Y9AfjOCX1hbuyalUrK439DyjJBG.woff2") format("woff2"); unicode-range: U+100-2=
+BA, U+2BD-2C5, U+2C7-2CC, U+2CE-2D7, U+2DD-2FF, U+304, U+308, U+329, U+1D00=
+-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, =
+U+2C60-2C7F, U+A720-A7FF; }
+
+@font-face { font-family: Newsreader; font-style: normal; font-weight: 600;=
+ font-display: swap; src: url("https://fonts.gstatic.com/s/newsreader/v26/c=
+Y9AfjOCX1hbuyalUrK4397yjA.woff2") format("woff2"); unicode-range: U+0-FF, U=
++131, U+152-153, U+2BB-2BC, U+2C6, U+2DA, U+2DC, U+304, U+308, U+329, U+200=
+0-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+@font-face { font-family: Newsreader; font-style: normal; font-weight: 700;=
+ font-display: swap; src: url("https://fonts.gstatic.com/s/newsreader/v26/c=
+Y9AfjOCX1hbuyalUrK439HyjJBG.woff2") format("woff2"); unicode-range: U+102-1=
+03, U+110-111, U+128-129, U+168-169, U+1A0-1A1, U+1AF-1B0, U+300-301, U+303=
+-304, U+308-309, U+323, U+329, U+1EA0-1EF9, U+20AB; }
+
+@font-face { font-family: Newsreader; font-style: normal; font-weight: 700;=
+ font-display: swap; src: url("https://fonts.gstatic.com/s/newsreader/v26/c=
+Y9AfjOCX1hbuyalUrK439DyjJBG.woff2") format("woff2"); unicode-range: U+100-2=
+BA, U+2BD-2C5, U+2C7-2CC, U+2CE-2D7, U+2DD-2FF, U+304, U+308, U+329, U+1D00=
+-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, =
+U+2C60-2C7F, U+A720-A7FF; }
+
+@font-face { font-family: Newsreader; font-style: normal; font-weight: 700;=
+ font-display: swap; src: url("https://fonts.gstatic.com/s/newsreader/v26/c=
+Y9AfjOCX1hbuyalUrK4397yjA.woff2") format("woff2"); unicode-range: U+0-FF, U=
++131, U+152-153, U+2BB-2BC, U+2C6, U+2DA, U+2DC, U+304, U+308, U+329, U+200=
+0-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+@font-face { font-family: "Source Sans 3"; font-style: italic; font-weight:=
+ 400; font-display: swap; src: url("https://fonts.gstatic.com/s/sourcesans3=
+/v20/nwpDtKy2OAdR1K-IwhWudF-R3woAa8opPOrG97lwqLlOxCQSmrfB.woff2") format("w=
+off2"); unicode-range: U+460-52F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-=
+A69F, U+FE2E-FE2F; }
+
+@font-face { font-family: "Source Sans 3"; font-style: italic; font-weight:=
+ 400; font-display: swap; src: url("https://fonts.gstatic.com/s/sourcesans3=
+/v20/nwpDtKy2OAdR1K-IwhWudF-R3woAa8opPOrG97lwqLlOxC0SmrfB.woff2") format("w=
+off2"); unicode-range: U+301, U+400-45F, U+490-491, U+4B0-4B1, U+2116; }
+
+@font-face { font-family: "Source Sans 3"; font-style: italic; font-weight:=
+ 400; font-display: swap; src: url("https://fonts.gstatic.com/s/sourcesans3=
+/v20/nwpDtKy2OAdR1K-IwhWudF-R3woAa8opPOrG97lwqLlOxCUSmrfB.woff2") format("w=
+off2"); unicode-range: U+1F00-1FFF; }
+
+@font-face { font-family: "Source Sans 3"; font-style: italic; font-weight:=
+ 400; font-display: swap; src: url("https://fonts.gstatic.com/s/sourcesans3=
+/v20/nwpDtKy2OAdR1K-IwhWudF-R3woAa8opPOrG97lwqLlOxCoSmrfB.woff2") format("w=
+off2"); unicode-range: U+370-377, U+37A-37F, U+384-38A, U+38C, U+38E-3A1, U=
++3A3-3FF; }
+
+@font-face { font-family: "Source Sans 3"; font-style: italic; font-weight:=
+ 400; font-display: swap; src: url("https://fonts.gstatic.com/s/sourcesans3=
+/v20/nwpDtKy2OAdR1K-IwhWudF-R3woAa8opPOrG97lwqLlOxCYSmrfB.woff2") format("w=
+off2"); unicode-range: U+102-103, U+110-111, U+128-129, U+168-169, U+1A0-1A=
+1, U+1AF-1B0, U+300-301, U+303-304, U+308-309, U+323, U+329, U+1EA0-1EF9, U=
++20AB; }
+
+@font-face { font-family: "Source Sans 3"; font-style: italic; font-weight:=
+ 400; font-display: swap; src: url("https://fonts.gstatic.com/s/sourcesans3=
+/v20/nwpDtKy2OAdR1K-IwhWudF-R3woAa8opPOrG97lwqLlOxCcSmrfB.woff2") format("w=
+off2"); unicode-range: U+100-2BA, U+2BD-2C5, U+2C7-2CC, U+2CE-2D7, U+2DD-2F=
+F, U+304, U+308, U+329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20=
+A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+@font-face { font-family: "Source Sans 3"; font-style: italic; font-weight:=
+ 400; font-display: swap; src: url("https://fonts.gstatic.com/s/sourcesans3=
+/v20/nwpDtKy2OAdR1K-IwhWudF-R3woAa8opPOrG97lwqLlOxCkSmg.woff2") format("wof=
+f2"); unicode-range: U+0-FF, U+131, U+152-153, U+2BB-2BC, U+2C6, U+2DA, U+2=
+DC, U+304, U+308, U+329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+221=
+2, U+2215, U+FEFF, U+FFFD; }
+
+@font-face { font-family: "Source Sans 3"; font-style: normal; font-weight:=
+ 400; font-display: swap; src: url("https://fonts.gstatic.com/s/sourcesans3=
+/v20/nwpStKy2OAdR1K-IwhWudF-R3wIaZfrc.woff2") format("woff2"); unicode-rang=
+e: U+460-52F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F; }
+
+@font-face { font-family: "Source Sans 3"; font-style: normal; font-weight:=
+ 400; font-display: swap; src: url("https://fonts.gstatic.com/s/sourcesans3=
+/v20/nwpStKy2OAdR1K-IwhWudF-R3wsaZfrc.woff2") format("woff2"); unicode-rang=
+e: U+301, U+400-45F, U+490-491, U+4B0-4B1, U+2116; }
+
+@font-face { font-family: "Source Sans 3"; font-style: normal; font-weight:=
+ 400; font-display: swap; src: url("https://fonts.gstatic.com/s/sourcesans3=
+/v20/nwpStKy2OAdR1K-IwhWudF-R3wMaZfrc.woff2") format("woff2"); unicode-rang=
+e: U+1F00-1FFF; }
+
+@font-face { font-family: "Source Sans 3"; font-style: normal; font-weight:=
+ 400; font-display: swap; src: url("https://fonts.gstatic.com/s/sourcesans3=
+/v20/nwpStKy2OAdR1K-IwhWudF-R3wwaZfrc.woff2") format("woff2"); unicode-rang=
+e: U+370-377, U+37A-37F, U+384-38A, U+38C, U+38E-3A1, U+3A3-3FF; }
+
+@font-face { font-family: "Source Sans 3"; font-style: normal; font-weight:=
+ 400; font-display: swap; src: url("https://fonts.gstatic.com/s/sourcesans3=
+/v20/nwpStKy2OAdR1K-IwhWudF-R3wAaZfrc.woff2") format("woff2"); unicode-rang=
+e: U+102-103, U+110-111, U+128-129, U+168-169, U+1A0-1A1, U+1AF-1B0, U+300-=
+301, U+303-304, U+308-309, U+323, U+329, U+1EA0-1EF9, U+20AB; }
+
+@font-face { font-family: "Source Sans 3"; font-style: normal; font-weight:=
+ 400; font-display: swap; src: url("https://fonts.gstatic.com/s/sourcesans3=
+/v20/nwpStKy2OAdR1K-IwhWudF-R3wEaZfrc.woff2") format("woff2"); unicode-rang=
+e: U+100-2BA, U+2BD-2C5, U+2C7-2CC, U+2CE-2D7, U+2DD-2FF, U+304, U+308, U+3=
+29, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0=
+, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+@font-face { font-family: "Source Sans 3"; font-style: normal; font-weight:=
+ 400; font-display: swap; src: url("https://fonts.gstatic.com/s/sourcesans3=
+/v20/nwpStKy2OAdR1K-IwhWudF-R3w8aZQ.woff2") format("woff2"); unicode-range:=
+ U+0-FF, U+131, U+152-153, U+2BB-2BC, U+2C6, U+2DA, U+2DC, U+304, U+308, U+=
+329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U=
++FFFD; }
+
+@font-face { font-family: "Source Sans 3"; font-style: normal; font-weight:=
+ 600; font-display: swap; src: url("https://fonts.gstatic.com/s/sourcesans3=
+/v20/nwpStKy2OAdR1K-IwhWudF-R3wIaZfrc.woff2") format("woff2"); unicode-rang=
+e: U+460-52F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F; }
+
+@font-face { font-family: "Source Sans 3"; font-style: normal; font-weight:=
+ 600; font-display: swap; src: url("https://fonts.gstatic.com/s/sourcesans3=
+/v20/nwpStKy2OAdR1K-IwhWudF-R3wsaZfrc.woff2") format("woff2"); unicode-rang=
+e: U+301, U+400-45F, U+490-491, U+4B0-4B1, U+2116; }
+
+@font-face { font-family: "Source Sans 3"; font-style: normal; font-weight:=
+ 600; font-display: swap; src: url("https://fonts.gstatic.com/s/sourcesans3=
+/v20/nwpStKy2OAdR1K-IwhWudF-R3wMaZfrc.woff2") format("woff2"); unicode-rang=
+e: U+1F00-1FFF; }
+
+@font-face { font-family: "Source Sans 3"; font-style: normal; font-weight:=
+ 600; font-display: swap; src: url("https://fonts.gstatic.com/s/sourcesans3=
+/v20/nwpStKy2OAdR1K-IwhWudF-R3wwaZfrc.woff2") format("woff2"); unicode-rang=
+e: U+370-377, U+37A-37F, U+384-38A, U+38C, U+38E-3A1, U+3A3-3FF; }
+
+@font-face { font-family: "Source Sans 3"; font-style: normal; font-weight:=
+ 600; font-display: swap; src: url("https://fonts.gstatic.com/s/sourcesans3=
+/v20/nwpStKy2OAdR1K-IwhWudF-R3wAaZfrc.woff2") format("woff2"); unicode-rang=
+e: U+102-103, U+110-111, U+128-129, U+168-169, U+1A0-1A1, U+1AF-1B0, U+300-=
+301, U+303-304, U+308-309, U+323, U+329, U+1EA0-1EF9, U+20AB; }
+
+@font-face { font-family: "Source Sans 3"; font-style: normal; font-weight:=
+ 600; font-display: swap; src: url("https://fonts.gstatic.com/s/sourcesans3=
+/v20/nwpStKy2OAdR1K-IwhWudF-R3wEaZfrc.woff2") format("woff2"); unicode-rang=
+e: U+100-2BA, U+2BD-2C5, U+2C7-2CC, U+2CE-2D7, U+2DD-2FF, U+304, U+308, U+3=
+29, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0=
+, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+@font-face { font-family: "Source Sans 3"; font-style: normal; font-weight:=
+ 600; font-display: swap; src: url("https://fonts.gstatic.com/s/sourcesans3=
+/v20/nwpStKy2OAdR1K-IwhWudF-R3w8aZQ.woff2") format("woff2"); unicode-range:=
+ U+0-FF, U+131, U+152-153, U+2BB-2BC, U+2C6, U+2DA, U+2DC, U+304, U+308, U+=
+329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U=
++FFFD; }
+------MultipartBoundary--hNLiLHLeywliAKYn32etrKmLOveYoy1gQc1wmQp5ad----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://one-seed.grok.me/assets/styles-BVFD6Uyp.css
+
+@charset "utf-8";
+
+@layer properties {
+  @supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((=
+-moz-orient:inline) and (not (color:rgb(from red r g b)))) {
+  *, ::before, ::after, ::backdrop { --tw-scale-x: 1; --tw-scale-y: 1; --tw=
+-scale-z: 1; --tw-rotate-x: initial; --tw-rotate-y: initial; --tw-rotate-z:=
+ initial; --tw-skew-x: initial; --tw-skew-y: initial; --tw-space-y-reverse:=
+ 0; --tw-divide-y-reverse: 0; --tw-border-style: solid; --tw-leading: initi=
+al; --tw-font-weight: initial; --tw-tracking: initial; --tw-ordinal: initia=
+l; --tw-slashed-zero: initial; --tw-numeric-figure: initial; --tw-numeric-s=
+pacing: initial; --tw-numeric-fraction: initial; --tw-shadow: 0 0 #0000; --=
+tw-shadow-color: initial; --tw-shadow-alpha: 100%; --tw-inset-shadow: 0 0 #=
+0000; --tw-inset-shadow-color: initial; --tw-inset-shadow-alpha: 100%; --tw=
+-ring-color: initial; --tw-ring-shadow: 0 0 #0000; --tw-inset-ring-color: i=
+nitial; --tw-inset-ring-shadow: 0 0 #0000; --tw-ring-inset: initial; --tw-r=
+ing-offset-width: 0px; --tw-ring-offset-color: #fff; --tw-ring-offset-shado=
+w: 0 0 #0000; --tw-outline-style: solid; --tw-blur: initial; --tw-brightnes=
+s: initial; --tw-contrast: initial; --tw-grayscale: initial; --tw-hue-rotat=
+e: initial; --tw-invert: initial; --tw-opacity: initial; --tw-saturate: ini=
+tial; --tw-sepia: initial; --tw-drop-shadow: initial; --tw-drop-shadow-colo=
+r: initial; --tw-drop-shadow-alpha: 100%; --tw-drop-shadow-size: initial; -=
+-tw-duration: initial; --tw-ease: initial; --tw-content: ""; --tw-translate=
+-x: 0; --tw-translate-y: 0; --tw-translate-z: 0; }
+}
+}
+
+@layer theme {
+  :root, :host { --font-sans: "Source Sans 3", "Segoe UI", sans-serif; --fo=
+nt-serif: "Newsreader", "Iowan Old Style", Palatino, "Palatino Linotype", s=
+erif; --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "=
+Liberation Mono", "Courier New", monospace; --color-red-500: oklch(63.7% .2=
+37 25.331); --color-zinc-50: oklch(98.5% 0 none); --color-zinc-100: oklch(9=
+6.7% .001 286.375); --color-zinc-400: oklch(70.5% .015 286.067); --color-zi=
+nc-500: oklch(55.2% .016 285.938); --color-zinc-900: oklch(21% .006 285.885=
+); --color-zinc-950: oklch(14.1% .005 285.823); --color-neutral-100: oklch(=
+97% 0 none); --color-neutral-300: oklch(87% 0 none); --color-neutral-500: o=
+klch(55.6% 0 none); --color-neutral-700: oklch(37.1% 0 none); --color-neutr=
+al-900: oklch(20.5% 0 none); --color-black: #000; --color-white: #fff; --sp=
+acing: .25rem; --container-sm: 24rem; --container-md: 28rem; --container-3x=
+l: 48rem; --text-xs: .75rem; --text-sm: .875rem; --text-sm--line-height: ca=
+lc(1.25 / .875); --text-base: 1rem; --text-base--line-height: calc(1.5 / 1)=
+; --text-lg: 1.125rem; --text-lg--line-height: calc(1.75 / 1.125); --text-x=
+l: 1.25rem; --text-xl--line-height: calc(1.75 / 1.25); --text-2xl: 1.5rem; =
+--text-2xl--line-height: calc(2 / 1.5); --text-3xl: 1.875rem; --text-4xl: 2=
+.25rem; --text-4xl--line-height: calc(2.5 / 2.25); --text-5xl: 3rem; --text=
+-5xl--line-height: 1; --font-weight-medium: 500; --font-weight-semibold: 60=
+0; --tracking-tight: -.025em; --tracking-wide: .025em; --leading-tight: 1.2=
+5; --leading-snug: 1.375; --leading-normal: 1.5; --leading-relaxed: 1.625; =
+--radius-xs: .125rem; --radius-sm: .25rem; --radius-md: .375rem; --radius-l=
+g: .5rem; --radius-xl: .75rem; --radius-2xl: 1rem; --ease-in: cubic-bezier(=
+.4, 0, 1, 1); --ease-out: cubic-bezier(0, 0, .2, 1); --ease-in-out: cubic-b=
+ezier(.4, 0, .2, 1); --animate-pulse: pulse 2s cubic-bezier(.4, 0, .6, 1) i=
+nfinite; --default-transition-duration: .15s; --default-transition-timing-f=
+unction: cubic-bezier(.4, 0, .2, 1); --default-font-family: var(--font-sans=
+); --default-mono-font-family: var(--font-mono); --color-paper: #f4f0e6; --=
+color-ink: #1c1915; --color-muted: #5e574c; --color-line: #d8d0c2; --color-=
+accent: #8c3a2f; --color-chip: #ebe4d4; }
+}
+
+@layer base {
+  *, ::after, ::before, ::backdrop { box-sizing: border-box; border: 0px so=
+lid; margin: 0px; padding: 0px; }
+  ::file-selector-button { box-sizing: border-box; border: 0px solid; margi=
+n: 0px; padding: 0px; }
+  html, :host { text-size-adjust: 100%; tab-size: 4; line-height: 1.5; font=
+-family: var(--default-font-family,-apple-system, BlinkMacSystemFont, "Sego=
+e UI", Roboto, "Helvetica Neue", "Noto Sans", Arial, sans-serif, "Apple Col=
+or Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"); font-f=
+eature-settings: var(--default-font-feature-settings,normal); font-variatio=
+n-settings: var(--default-font-variation-settings,normal); -webkit-tap-high=
+light-color: transparent; }
+  hr { height: 0px; color: inherit; border-top-width: 1px; }
+  abbr:where([title]) { text-decoration: underline dotted; }
+  h1, h2, h3, h4, h5, h6 { font-size: inherit; font-weight: inherit; }
+  a { color: inherit; text-decoration: inherit; }
+  b, strong { font-weight: bolder; }
+  code, kbd, samp, pre { font-family: var(--default-mono-font-family,ui-mon=
+ospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courie=
+r New", monospace); font-feature-settings: var(--default-mono-font-feature-=
+settings,normal); font-variation-settings: var(--default-mono-font-variatio=
+n-settings,normal); font-size: 1em; }
+  small { font-size: 80%; }
+  sub, sup { vertical-align: baseline; font-size: 75%; line-height: 0; posi=
+tion: relative; }
+  sub { bottom: -0.25em; }
+  sup { top: -0.5em; }
+  table { text-indent: 0px; border-color: inherit; border-collapse: collaps=
+e; }
+  progress { vertical-align: baseline; }
+  summary { display: list-item; }
+  ol, ul, menu { list-style: none; }
+  img, svg, video, canvas, audio, iframe, embed, object { vertical-align: m=
+iddle; display: block; }
+  img, video { max-width: 100%; height: auto; }
+  button, input, select, optgroup, textarea { font: inherit; letter-spacing=
+: inherit; color: inherit; opacity: 1; background-color: rgba(0, 0, 0, 0); =
+border-radius: 0px; }
+  ::file-selector-button { font: inherit; letter-spacing: inherit; color: i=
+nherit; opacity: 1; background-color: rgba(0, 0, 0, 0); border-radius: 0px;=
+ }
+  :where(select:is([multiple], [size])) optgroup { font-weight: bolder; }
+  :where(select:is([multiple], [size])) optgroup option { padding-inline-st=
+art: 20px; }
+  ::file-selector-button { margin-inline-end: 4px; }
+  ::placeholder { opacity: 1; }
+  @supports (not ((-webkit-appearance:-apple-pay-button))) or (contain-intr=
+insic-size:1px) {
+  ::placeholder { color: currentcolor; }
+  @supports (color:color-mix(in lab, red, red)) {
+  ::placeholder { color: color-mix(currentcolor, transparent); }
+}
+}
+  textarea { resize: vertical; }
+  ::-webkit-search-decoration { appearance: none; }
+  ::-webkit-date-and-time-value { min-height: 1lh; text-align: inherit; }
+  ::-webkit-datetime-edit { display: inline-flex; }
+  ::-webkit-datetime-edit-fields-wrapper { padding: 0px; }
+  ::-webkit-datetime-edit { padding-block: 0px; }
+  ::-webkit-datetime-edit-year-field { padding-block: 0px; }
+  ::-webkit-datetime-edit-month-field { padding-block: 0px; }
+  ::-webkit-datetime-edit-day-field { padding-block: 0px; }
+  ::-webkit-datetime-edit-hour-field { padding-block: 0px; }
+  ::-webkit-datetime-edit-minute-field { padding-block: 0px; }
+  ::-webkit-datetime-edit-second-field { padding-block: 0px; }
+  ::-webkit-datetime-edit-millisecond-field { padding-block: 0px; }
+  ::-webkit-datetime-edit-meridiem-field { padding-block: 0px; }
+  ::-webkit-calendar-picker-indicator { line-height: 1; }
+  button, input:where([type=3D"button"], [type=3D"reset"], [type=3D"submit"=
+]) { appearance: button; }
+  ::file-selector-button { appearance: button; }
+  ::-webkit-inner-spin-button { height: auto; }
+  ::-webkit-outer-spin-button { height: auto; }
+  [hidden]:where(:not([hidden=3D"until-found"])) { display: none !important=
+; }
+  html { background: var(--color-paper); color: var(--color-ink); font-fami=
+ly: var(--font-sans); -webkit-font-smoothing: antialiased; }
+  body { background: var(--color-paper); min-height: 100vh; color: var(--co=
+lor-ink); margin: 0px; }
+  button:not(:disabled), [role=3D"button"]:not(:disabled) { cursor: pointer=
+; }
+  ::selection { color: var(--color-ink); background: rgb(231, 207, 200); }
+}
+
+@layer components;
+
+@layer utilities {
+  .collapse { visibility: collapse; }
+  .invisible { visibility: hidden; }
+  .visible { visibility: visible; }
+  .sr-only { clip-path: inset(50%); white-space: nowrap; border-width: 0px;=
+ width: 1px; height: 1px; margin: -1px; padding: 0px; position: absolute; o=
+verflow: hidden; }
+  .absolute { position: absolute; }
+  .fixed { position: fixed; }
+  .relative { position: relative; }
+  .static { position: static; }
+  .sticky { position: sticky; }
+  .inset-0 { inset: 0px; }
+  .top-0 { top: 0px; }
+  .right-0 { right: 0px; }
+  .right-1 { right: var(--spacing); }
+  .right-2 { right: calc(var(--spacing) * 2); }
+  .right-3 { right: calc(var(--spacing) * 3); }
+  .right-4 { right: calc(var(--spacing) * 4); }
+  .left-1 { left: var(--spacing); }
+  .left-2 { left: calc(var(--spacing) * 2); }
+  .left-3 { left: calc(var(--spacing) * 3); }
+  .left-4 { left: calc(var(--spacing) * 4); }
+  .isolate { isolation: isolate; }
+  .container { width: 100%; }
+  @media (width >=3D 40rem) {
+  .container { max-width: 40rem; }
+}
+  @media (width >=3D 48rem) {
+  .container { max-width: 48rem; }
+}
+  @media (width >=3D 64rem) {
+  .container { max-width: 64rem; }
+}
+  @media (width >=3D 80rem) {
+  .container { max-width: 80rem; }
+}
+  @media (width >=3D 96rem) {
+  .container { max-width: 96rem; }
+}
+  .mx-auto { margin-inline: auto; }
+  .mt-1 { margin-top: var(--spacing); }
+  .mt-2 { margin-top: calc(var(--spacing) * 2); }
+  .mt-3 { margin-top: calc(var(--spacing) * 3); }
+  .mt-4 { margin-top: calc(var(--spacing) * 4); }
+  .mt-5 { margin-top: calc(var(--spacing) * 5); }
+  .mt-6 { margin-top: calc(var(--spacing) * 6); }
+  .mt-10 { margin-top: calc(var(--spacing) * 10); }
+  .mt-12 { margin-top: calc(var(--spacing) * 12); }
+  .ml-px { margin-left: 1px; }
+  .block { display: block; }
+  .contents { display: contents; }
+  .flex { display: flex; }
+  .flow-root { display: flow-root; }
+  .grid { display: grid; }
+  .hidden { display: none; }
+  .inline { display: inline; }
+  .inline-block { display: inline-block; }
+  .inline-flex { display: inline-flex; }
+  .table { display: table; }
+  .table-cell { display: table-cell; }
+  .size-1 { width: var(--spacing); height: var(--spacing); }
+  .size-4 { width: calc(var(--spacing) * 4); height: calc(var(--spacing) * =
+4); }
+  .size-5 { width: calc(var(--spacing) * 5); height: calc(var(--spacing) * =
+5); }
+  .size-10 { width: calc(var(--spacing) * 10); height: calc(var(--spacing) =
+* 10); }
+  .h-8 { height: calc(var(--spacing) * 8); }
+  .min-h-11 { min-height: calc(var(--spacing) * 11); }
+  .min-h-screen { min-height: 100vh; }
+  .w-8 { width: calc(var(--spacing) * 8); }
+  .w-50 { width: calc(var(--spacing) * 50); }
+  .w-full { width: 100%; }
+  .w-max { width: max-content; }
+  .max-w-3xl { max-width: var(--container-3xl); }
+  .max-w-full { max-width: 100%; }
+  .max-w-md { max-width: var(--container-md); }
+  .max-w-sm { max-width: var(--container-sm); }
+  .min-w-0 { min-width: 0px; }
+  .min-w-full { min-width: 100%; }
+  .shrink { flex-shrink: 1; }
+  .shrink-0 { flex-shrink: 0; }
+  .grow { flex-grow: 1; }
+  .scale-100 { --tw-scale-x: 100%; --tw-scale-y: 100%; --tw-scale-z: 100%; =
+scale: var(--tw-scale-x) var(--tw-scale-y); }
+  .scale-\[0\.25\] { scale: 0.25; }
+  .transform { transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-=
+rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,); }
+  .animate-pulse { animation: var(--animate-pulse); }
+  .cursor-pointer { cursor: pointer; }
+  .resize { resize: both; }
+  .flex-col { flex-direction: column; }
+  .place-items-center { place-items: center; }
+  .items-center { align-items: center; }
+  .justify-center { justify-content: center; }
+  .gap-2 { gap: calc(var(--spacing) * 2); }
+  .gap-3 { gap: calc(var(--spacing) * 3); }
+  :where(.space-y-3 > :not(:last-child)) { --tw-space-y-reverse: 0; margin-=
+block-start: calc(calc(var(--spacing) * 3) * var(--tw-space-y-reverse)); ma=
+rgin-block-end: calc(calc(var(--spacing) * 3) * calc(1 - var(--tw-space-y-r=
+everse))); }
+  :where(.divide-y > :not(:last-child)) { --tw-divide-y-reverse: 0; border-=
+bottom-style: var(--tw-border-style); border-top-style: var(--tw-border-sty=
+le); border-top-width: calc(1px * var(--tw-divide-y-reverse)); border-botto=
+m-width: calc(1px * calc(1 - var(--tw-divide-y-reverse))); }
+  :where(.divide-line > :not(:last-child)) { border-color: var(--color-line=
+); }
+  .truncate { text-overflow: ellipsis; white-space: nowrap; overflow: hidde=
+n; }
+  .overflow-x-auto { overflow-x: auto; }
+  .rounded { border-radius: 0.25rem; }
+  .rounded-2xl { border-radius: var(--radius-2xl); }
+  .rounded-full { border-radius: 2.14748e+09px; }
+  .rounded-lg { border-radius: var(--radius-lg); }
+  .rounded-md { border-radius: var(--radius-md); }
+  .rounded-xl { border-radius: var(--radius-xl); }
+  .border { border-style: var(--tw-border-style); border-width: 1px; }
+  .border-2 { border-style: var(--tw-border-style); border-width: 2px; }
+  .border-y { border-block-style: var(--tw-border-style); border-block-widt=
+h: 1px; }
+  .border-t { border-top-style: var(--tw-border-style); border-top-width: 1=
+px; }
+  .border-b { border-bottom-style: var(--tw-border-style); border-bottom-wi=
+dth: 1px; }
+  .border-ink { border-color: var(--color-ink); }
+  .border-line { border-color: var(--color-line); }
+  .border-neutral-300 { border-color: var(--color-neutral-300); }
+  .bg-black { background-color: var(--color-black); }
+  .bg-black\/10 { background-color: rgba(0, 0, 0, 0.1); }
+  @supports (color:color-mix(in lab, red, red)) {
+  .bg-black\/10 { background-color: color-mix(in oklab, var(--color-black) =
+10%, transparent); }
+}
+  .bg-chip { background-color: var(--color-chip); }
+  .bg-ink { background-color: var(--color-ink); }
+  .bg-zinc-50 { background-color: var(--color-zinc-50); }
+  .bg-zinc-900 { background-color: var(--color-zinc-900); }
+  .object-cover { object-fit: cover; }
+  .p-1 { padding: var(--spacing); }
+  .p-2 { padding: calc(var(--spacing) * 2); }
+  .p-4 { padding: calc(var(--spacing) * 4); }
+  .p-6 { padding: calc(var(--spacing) * 6); }
+  .p-8 { padding: calc(var(--spacing) * 8); }
+  .p-\[16px\] { padding: 16px; }
+  .px-4 { padding-inline: calc(var(--spacing) * 4); }
+  .px-5 { padding-inline: calc(var(--spacing) * 5); }
+  .px-6 { padding-inline: calc(var(--spacing) * 6); }
+  .py-2 { padding-block: calc(var(--spacing) * 2); }
+  .py-4 { padding-block: calc(var(--spacing) * 4); }
+  .py-5 { padding-block: calc(var(--spacing) * 5); }
+  .py-10 { padding-block: calc(var(--spacing) * 10); }
+  .pt-8 { padding-top: calc(var(--spacing) * 8); }
+  .pr-3\.5 { padding-right: calc(var(--spacing) * 3.5); }
+  .pb-8 { padding-bottom: calc(var(--spacing) * 8); }
+  .pl-4 { padding-left: calc(var(--spacing) * 4); }
+  .text-center { text-align: center; }
+  .font-mono { font-family: var(--font-mono); }
+  .font-sans { font-family: var(--font-sans); }
+  .font-serif { font-family: var(--font-serif); }
+  .text-2xl { font-size: var(--text-2xl); line-height: var(--tw-leading,var=
+(--text-2xl--line-height)); }
+  .text-4xl { font-size: var(--text-4xl); line-height: var(--tw-leading,var=
+(--text-4xl--line-height)); }
+  .text-base { font-size: var(--text-base); line-height: var(--tw-leading,v=
+ar(--text-base--line-height)); }
+  .text-lg { font-size: var(--text-lg); line-height: var(--tw-leading,var(-=
+-text-lg--line-height)); }
+  .text-sm { font-size: var(--text-sm); line-height: var(--tw-leading,var(-=
+-text-sm--line-height)); }
+  .text-xl { font-size: var(--text-xl); line-height: var(--tw-leading,var(-=
+-text-xl--line-height)); }
+  .text-\[13px\] { font-size: 13px; }
+  .leading-relaxed { --tw-leading: var(--leading-relaxed); line-height: var=
+(--leading-relaxed); }
+  .leading-snug { --tw-leading: var(--leading-snug); line-height: var(--lea=
+ding-snug); }
+  .leading-tight { --tw-leading: var(--leading-tight); line-height: var(--l=
+eading-tight); }
+  .font-medium { --tw-font-weight: var(--font-weight-medium); font-weight: =
+var(--font-weight-medium); }
+  .font-semibold { --tw-font-weight: var(--font-weight-semibold); font-weig=
+ht: var(--font-weight-semibold); }
+  .tracking-wide { --tw-tracking: var(--tracking-wide); letter-spacing: var=
+(--tracking-wide); }
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
+  .text-wrap { text-wrap: wrap; }
+  .break-words { overflow-wrap: break-word; }
+  .text-accent { color: var(--color-accent); }
+  .text-ink { color: var(--color-ink); }
+  .text-muted { color: var(--color-muted); }
+  .text-neutral-500 { color: var(--color-neutral-500); }
+  .text-paper { color: var(--color-paper); }
+  .text-red-500 { color: var(--color-red-500); }
+  .text-white { color: var(--color-white); }
+  .text-zinc-500 { color: var(--color-zinc-500); }
+  .text-zinc-900 { color: var(--color-zinc-900); }
+  .capitalize { text-transform: capitalize; }
+  .lowercase { text-transform: lowercase; }
+  .uppercase { text-transform: uppercase; }
+  .italic { font-style: italic; }
+  .ordinal { --tw-ordinal: ordinal; font-variant-numeric: var(--tw-ordinal,=
+) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(--tw-numeric-spacin=
+g,) var(--tw-numeric-fraction,); }
+  .tabular-nums { --tw-numeric-spacing: tabular-nums; font-variant-numeric:=
+ var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(-=
+-tw-numeric-spacing,) var(--tw-numeric-fraction,); }
+  .underline { text-decoration-line: underline; }
+  .underline-offset-4 { text-underline-offset: 4px; }
+  .antialiased { -webkit-font-smoothing: antialiased; }
+  .opacity-0 { opacity: 0; }
+  .opacity-70 { opacity: 0.7; }
+  .opacity-100 { opacity: 1; }
+  .shadow { --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color,#0000001a), 0 1p=
+x 2px -1px var(--tw-shadow-color,#0000001a); box-shadow: var(--tw-inset-sha=
+dow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-r=
+ing-shadow), var(--tw-shadow); }
+  .ring { --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(1px + var(--tw=
+-ring-offset-width)) var(--tw-ring-color,currentcolor); box-shadow: var(--t=
+w-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),=
+ var(--tw-ring-shadow), var(--tw-shadow); }
+  .ring\! { --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(1px + var(--=
+tw-ring-offset-width)) var(--tw-ring-color,currentcolor) !important; box-sh=
+adow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-of=
+fset-shadow), var(--tw-ring-shadow), var(--tw-shadow) !important; }
+  .outline, .outline-1 { outline-style: var(--tw-outline-style); outline-wi=
+dth: 1px; }
+  .-outline-offset-1 { outline-offset: calc(-1px); }
+  .outline-black\/10 { outline-color: rgba(0, 0, 0, 0.1); }
+  @supports (color:color-mix(in lab, red, red)) {
+  .outline-black\/10 { outline-color: color-mix(in oklab, var(--color-black=
+) 10%, transparent); }
+}
+  .blur { --tw-blur: blur(8px); filter: var(--tw-blur,) var(--tw-brightness=
+,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-=
+invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,); }
+  .blur-\[4px\] { --tw-blur: blur(4px); filter: var(--tw-blur,) var(--tw-br=
+ightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) v=
+ar(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,=
+); }
+  .blur-none { --tw-blur: ; filter: var(--tw-blur,) var(--tw-brightness,) v=
+ar(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-inve=
+rt,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,); }
+  .grayscale { --tw-grayscale: grayscale(100%); filter: var(--tw-blur,) var=
+(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-ro=
+tate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop=
+-shadow,); }
+  .invert { --tw-invert: invert(100%); filter: var(--tw-blur,) var(--tw-bri=
+ghtness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) va=
+r(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,)=
+; }
+  .sepia { --tw-sepia: sepia(100%); filter: var(--tw-blur,) var(--tw-bright=
+ness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(-=
+-tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,); }
+  .filter { filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast=
+,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-sa=
+turate,) var(--tw-sepia,) var(--tw-drop-shadow,); }
+  .transition { transition-property: color, background-color, border-color,=
+ outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --=
+tw-gradient-via, --tw-gradient-to, opacity, box-shadow, transform, translat=
+e, scale, rotate, filter, -webkit-backdrop-filter, backdrop-filter, display=
+, content-visibility, overlay, pointer-events; transition-timing-function: =
+var(--tw-ease,var(--default-transition-timing-function)); transition-durati=
+on: var(--tw-duration,var(--default-transition-duration)); }
+  .transition-\[box-shadow\] { transition-property: box-shadow; transition-=
+timing-function: var(--tw-ease,var(--default-transition-timing-function)); =
+transition-duration: var(--tw-duration,var(--default-transition-duration));=
+ }
+  .transition-\[opacity\,filter\,scale\] { transition-property: opacity, fi=
+lter, scale; transition-timing-function: var(--tw-ease,var(--default-transi=
+tion-timing-function)); transition-duration: var(--tw-duration,var(--defaul=
+t-transition-duration)); }
+  .transition-\[scale\,background-color\] { transition-property: scale, bac=
+kground-color; transition-timing-function: var(--tw-ease,var(--default-tran=
+sition-timing-function)); transition-duration: var(--tw-duration,var(--defa=
+ult-transition-duration)); }
+  .transition-\[scale\,opacity\,filter\] { transition-property: scale, opac=
+ity, filter; transition-timing-function: var(--tw-ease,var(--default-transi=
+tion-timing-function)); transition-duration: var(--tw-duration,var(--defaul=
+t-transition-duration)); }
+  .transition-transform { transition-property: transform, translate, scale,=
+ rotate; transition-timing-function: var(--tw-ease,var(--default-transition=
+-timing-function)); transition-duration: var(--tw-duration,var(--default-tr=
+ansition-duration)); }
+  .duration-150 { --tw-duration: .15s; transition-duration: 0.15s; }
+  .duration-300 { --tw-duration: .3s; transition-duration: 0.3s; }
+  .ease-\[cubic-bezier\(0\.2\,0\,0\,1\)\] { --tw-ease: cubic-bezier(.2,0,0,=
+1); transition-timing-function: cubic-bezier(0.2, 0, 0, 1); }
+  .ease-in { --tw-ease: var(--ease-in); transition-timing-function: var(--e=
+ase-in); }
+  .ease-in-out { --tw-ease: var(--ease-in-out); transition-timing-function:=
+ var(--ease-in-out); }
+  .ease-out { --tw-ease: var(--ease-out); transition-timing-function: var(-=
+-ease-out); }
+  .\[col\:m\] { }
+  .after\:absolute::after { content: var(--tw-content); position: absolute;=
+ }
+  .after\:top-1\/2::after { content: var(--tw-content); top: 50%; }
+  .after\:left-1\/2::after { content: var(--tw-content); left: 50%; }
+  .after\:size-10::after { content: var(--tw-content); width: calc(var(--sp=
+acing) * 10); height: calc(var(--spacing) * 10); }
+  .after\:-translate-1\/2::after { content: var(--tw-content); --tw-transla=
+te-x: calc(calc(1 / 2 * 100%) * -1); --tw-translate-y: calc(calc(1 / 2 * 10=
+0%) * -1); translate: var(--tw-translate-x) var(--tw-translate-y); }
+  @media (hover: hover) {
+  .hover\:bg-neutral-100:hover { background-color: var(--color-neutral-100)=
+; }
+  .hover\:underline:hover { text-decoration-line: underline; }
+}
+  .active\:scale-\[0\.96\]:active, .active\:not-disabled\:scale-\[0\.96\]:a=
+ctive:not(:disabled) { scale: 0.96; }
+  .disabled\:cursor-wait:disabled { cursor: wait; }
+  .disabled\:no-underline:disabled { text-decoration-line: none; }
+  @media (width >=3D 40rem) {
+  .sm\:flex-row { flex-direction: row; }
+  .sm\:items-center { align-items: center; }
+  .sm\:justify-between { justify-content: space-between; }
+  .sm\:px-8 { padding-inline: calc(var(--spacing) * 8); }
+  .sm\:py-16 { padding-block: calc(var(--spacing) * 16); }
+  .sm\:text-5xl { font-size: var(--text-5xl); line-height: var(--tw-leading=
+,var(--text-5xl--line-height)); }
+  .sm\:text-xl { font-size: var(--text-xl); line-height: var(--tw-leading,v=
+ar(--text-xl--line-height)); }
+}
+  @media (prefers-color-scheme: dark) {
+  .dark\:border-neutral-700 { border-color: var(--color-neutral-700); }
+  .dark\:bg-white\/20 { background-color: rgba(255, 255, 255, 0.2); }
+  @supports (color:color-mix(in lab, red, red)) {
+  .dark\:bg-white\/20 { background-color: color-mix(in oklab, var(--color-w=
+hite) 20%, transparent); }
+}
+  .dark\:bg-zinc-100 { background-color: var(--color-zinc-100); }
+  .dark\:bg-zinc-950 { background-color: var(--color-zinc-950); }
+  .dark\:text-zinc-50 { color: var(--color-zinc-50); }
+  .dark\:text-zinc-400 { color: var(--color-zinc-400); }
+  .dark\:text-zinc-900 { color: var(--color-zinc-900); }
+  .dark\:outline-white\/10 { outline-color: rgba(255, 255, 255, 0.1); }
+  @supports (color:color-mix(in lab, red, red)) {
+  .dark\:outline-white\/10 { outline-color: color-mix(in oklab, var(--color=
+-white) 10%, transparent); }
+}
+  @media (hover: hover) {
+  .dark\:hover\:bg-neutral-900:hover { background-color: var(--color-neutra=
+l-900); }
+}
+}
+}
+
+@font-face { font-family: Blackboard; src: url("/fonts/mathbb.woff2") forma=
+t("woff2"); font-weight: 100 900; font-style: normal; font-display: block; =
+unicode-range: U+1D53C; }
+
+.formula { font-family: Blackboard, Newsreader, Palatino, "Palatino Linotyp=
+e", serif; }
+
+@property --tw-scale-x { syntax: "*"; inherits: false; initial-value: 1; }
+
+@property --tw-scale-y { syntax: "*"; inherits: false; initial-value: 1; }
+
+@property --tw-scale-z { syntax: "*"; inherits: false; initial-value: 1; }
+
+@property --tw-rotate-x { syntax: "*"; inherits: false; }
+
+@property --tw-rotate-y { syntax: "*"; inherits: false; }
+
+@property --tw-rotate-z { syntax: "*"; inherits: false; }
+
+@property --tw-skew-x { syntax: "*"; inherits: false; }
+
+@property --tw-skew-y { syntax: "*"; inherits: false; }
+
+@property --tw-space-y-reverse { syntax: "*"; inherits: false; initial-valu=
+e: 0; }
+
+@property --tw-divide-y-reverse { syntax: "*"; inherits: false; initial-val=
+ue: 0; }
+
+@property --tw-border-style { syntax: "*"; inherits: false; initial-value: =
+solid; }
+
+@property --tw-leading { syntax: "*"; inherits: false; }
+
+@property --tw-font-weight { syntax: "*"; inherits: false; }
+
+@property --tw-tracking { syntax: "*"; inherits: false; }
+
+@property --tw-ordinal { syntax: "*"; inherits: false; }
+
+@property --tw-slashed-zero { syntax: "*"; inherits: false; }
+
+@property --tw-numeric-figure { syntax: "*"; inherits: false; }
+
+@property --tw-numeric-spacing { syntax: "*"; inherits: false; }
+
+@property --tw-numeric-fraction { syntax: "*"; inherits: false; }
+
+@property --tw-shadow { syntax: "*"; inherits: false; initial-value: 0 0 #0=
+000; }
+
+@property --tw-shadow-color { syntax: "*"; inherits: false; }
+
+@property --tw-shadow-alpha { syntax: "<percentage>"; inherits: false; init=
+ial-value: 100%; }
+
+@property --tw-inset-shadow { syntax: "*"; inherits: false; initial-value: =
+0 0 #0000; }
+
+@property --tw-inset-shadow-color { syntax: "*"; inherits: false; }
+
+@property --tw-inset-shadow-alpha { syntax: "<percentage>"; inherits: false=
+; initial-value: 100%; }
+
+@property --tw-ring-color { syntax: "*"; inherits: false; }
+
+@property --tw-ring-shadow { syntax: "*"; inherits: false; initial-value: 0=
+ 0 #0000; }
+
+@property --tw-inset-ring-color { syntax: "*"; inherits: false; }
+
+@property --tw-inset-ring-shadow { syntax: "*"; inherits: false; initial-va=
+lue: 0 0 #0000; }
+
+@property --tw-ring-inset { syntax: "*"; inherits: false; }
+
+@property --tw-ring-offset-width { syntax: "<length>"; inherits: false; ini=
+tial-value: 0; }
+
+@property --tw-ring-offset-color { syntax: "*"; inherits: false; initial-va=
+lue: #fff; }
+
+@property --tw-ring-offset-shadow { syntax: "*"; inherits: false; initial-v=
+alue: 0 0 #0000; }
+
+@property --tw-outline-style { syntax: "*"; inherits: false; initial-value:=
+ solid; }
+
+@property --tw-blur { syntax: "*"; inherits: false; }
+
+@property --tw-brightness { syntax: "*"; inherits: false; }
+
+@property --tw-contrast { syntax: "*"; inherits: false; }
+
+@property --tw-grayscale { syntax: "*"; inherits: false; }
+
+@property --tw-hue-rotate { syntax: "*"; inherits: false; }
+
+@property --tw-invert { syntax: "*"; inherits: false; }
+
+@property --tw-opacity { syntax: "*"; inherits: false; }
+
+@property --tw-saturate { syntax: "*"; inherits: false; }
+
+@property --tw-sepia { syntax: "*"; inherits: false; }
+
+@property --tw-drop-shadow { syntax: "*"; inherits: false; }
+
+@property --tw-drop-shadow-color { syntax: "*"; inherits: false; }
+
+@property --tw-drop-shadow-alpha { syntax: "<percentage>"; inherits: false;=
+ initial-value: 100%; }
+
+@property --tw-drop-shadow-size { syntax: "*"; inherits: false; }
+
+@property --tw-duration { syntax: "*"; inherits: false; }
+
+@property --tw-ease { syntax: "*"; inherits: false; }
+
+@property --tw-content { syntax: "*"; inherits: false; initial-value: ""; }
+
+@property --tw-translate-x { syntax: "*"; inherits: false; initial-value: 0=
+; }
+
+@property --tw-translate-y { syntax: "*"; inherits: false; initial-value: 0=
+; }
+
+@property --tw-translate-z { syntax: "*"; inherits: false; initial-value: 0=
+; }
+
+@keyframes pulse {=20
+  50% { opacity: 0.5; }
+}
+------MultipartBoundary--hNLiLHLeywliAKYn32etrKmLOveYoy1gQc1wmQp5ad------

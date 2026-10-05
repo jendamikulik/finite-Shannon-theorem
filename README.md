@@ -6,6 +6,15 @@ This archive is the import closure of one theorem. It is not the whole
 manuscript. The square-root asymptotic, the Rényi bounds, the W₁ identity,
 and any claim that the constant 1.221347… is optimal are not in these files.
 
+## Written notes
+
+Two notes accompany the certificate:
+
+- [causal_spectrum.pdf](causal_spectrum.pdf) defines the controlled tree, policies, strategies, and the greedy extraction of the probability flow.
+- [one_seed_entropy.pdf](one_seed_entropy.pdf) derives the Shannon sandwich and the constant `(1 + log₂ e) / 2`.
+
+These notes are explanatory. The checked statement is the Lean theorem below.
+
 ## The theorem
 
 `CausalSpectrum.one_seed_shannon` (in `CausalSeed/Entropy.lean`):

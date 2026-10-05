@@ -1,0 +1,16 @@
+name = "causal-seed"
+version = "0.1.0"
+defaultTargets = ["CausalSeed"]
+
+[leanOptions]
+pp.unicode.fun = true
+autoImplicit = false
+relaxedAutoImplicit = false
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "7d6757bc18680044fc0ff6efc8ee20494b408556"
+
+[[lean_lib]]
+name = "CausalSeed"

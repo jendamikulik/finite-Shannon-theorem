@@ -32,3 +32,14 @@ CausalSpectrum.greedy_refined_bound
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.exact_seed_with_refined_cutoffs
   depends on axioms: [propext, choice, Quot.sound]
+
+CausalSpectrum.integral_gaussTail
+  depends on axioms: [propext, Classical.choice, Quot.sound]
+CausalSpectrum.integral_normalTail_scale
+  depends on axioms: [propext, Classical.choice, Quot.sound]
+CausalSpectrum.profile_mean
+  depends on axioms: [propext, Classical.choice, Quot.sound]
+CausalSpectrum.profile_mean_zero
+  depends on axioms: [propext, Classical.choice, Quot.sound]
+CausalSpectrum.second_order_transfer
+  depends on axioms: [propext, Classical.choice, Quot.sound]

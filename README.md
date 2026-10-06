@@ -2,9 +2,14 @@
 
 Jan Mikulik, 5 October 2026.
 
-This archive is the import closure of one theorem. It is not the whole
-manuscript. The square-root asymptotic, the Rényi bounds, the W₁ identity,
-and any claim that the constant 1.221347… is optimal are not in these files.
+This archive checks the finite identities from the 5 October 2026 note,
+and the second-order coefficient of Theorem 1 as far as it does not use
+the Bellman limit. `CausalSeed/SecondOrder.lean` proves that the mean of
+profile (13) is `√(2/π) (a − b)`, including the half-normal case `b = 0`,
+and that an additive gap of at most `c⋆` does not change a `√n`
+coefficient. The identification `Gₙ(x√n) → F` (Lemmas 10–13), the
+Fan–Grama–Liu logarithm, the rigidity and moment statements that ride on
+that limit, and any claim that `c⋆` is optimal are not in these files.
 
 ## Written notes
 
@@ -72,6 +77,16 @@ They are the standard logical kernel of Lean, not unproved lemmas.
 | Residual mass after the cutoff `δ` | `CausalSpectrum.greedy_refined_bound` |
 | Exact seed together with the refined cutoffs | `CausalSpectrum.exact_seed_with_refined_cutoffs` |
 | Shannon sandwich, envelope mean plus the constant | `CausalSpectrum.one_seed_shannon` |
+| `W₁` equals the entropy gap | `CausalSpectrum.wasserstein_gap` |
+| `E[W] = c⋆` and `c⋆ < log₂ e` | `integral_wSurvival`, `shannonOverhead_lt_logb_exp` |
+| Strict gap on one finite tree | `CausalSpectrum.finite_gap_strict` |
+| Laplace identity and the Rényi scalars `θ₂`, `g̃₂` | `exp_moment`, `theta_two`, `gTilde_two` |
+| Min-entropy of a kernel repeated `n` times | `memory_min_entropy` |
+| Rational brackets of the crash pair | `crash_lower_pow`, `crash_C_bound` |
+| Entropy of the masses `1/3, 1/3, 1/6, 1/6` | `vertex_mass_entropy` |
+| `∫₀^∞ (1 − Φ(t/c)) dt = c/√(2π)` | `integral_gaussTail`, `integral_normalTail_scale` |
+| Mean of profile (13), including `b = 0` | `profile_mean`, `profile_mean_zero` |
+| Gap at most `c⋆` does not change the `√n` coefficient | `second_order_transfer` |
 
 `L` in the theorem is `envelopeMean`, the finite sum that defines the
 envelope in the written proof. It is not an appeal to an abstract law `Z`.

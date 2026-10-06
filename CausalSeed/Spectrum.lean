@@ -1288,4 +1288,142 @@ NOT proved in this file. No theorem below assumes them as hypotheses. -/
 #print axioms greedy_refined_bound
 #print axioms exact_seed_with_refined_cutoffs
 
+/-! Repeated kernel. Depth `n` uses the same finite list of laws at every round.
+`bottleneck (Field.p (repeat n)) = β ^ n`, where `β` is the one-round bottleneck.
+One round, `policyCeil` of the policy that selects action `a` is the maximum
+output mass of that action: it dominates every output and equals one of them. -/
+
+structure Kernel where
+  nA : ℕ
+  hA : 0 < nA
+  nY : Fin nA → ℕ
+  hY : ∀ a, 0 < nY a
+  K : (a : Fin nA) → Fin (nY a) → ℝ
+  Kpos : ∀ a y, 0 < K a y
+  Ksum : ∀ a, ∑ y, K a y = 1
+
+namespace Kernel
+
+def rounds (κ : Kernel) : ℕ → Tree
+  | 0 => .leaf
+  | n + 1 => .node κ.nA κ.hA κ.nY κ.hY κ.K κ.Kpos κ.Ksum (fun _ _ => κ.rounds n)
+
+end Kernel
+
+private theorem finMax_const_mul {n : ℕ} (hn : 0 < n) {q : ℝ} (hq : 0 ≤ q)
+    (f : Fin n → ℝ) :
+    finMax hn (fun i => q * f i) = q * finMax hn f := by
+  refine le_antisymm ?_ ?_
+  · apply finMax_le_of_forall
+    intro i
+    exact mul_le_mul_of_nonneg_left (le_finMax hn f i) hq
+  · calc
+      q * finMax hn f = q * f (finArgmax hn f) := by rw [finMax]
+      _ ≤ finMax hn (fun i => q * f i) :=
+        le_finMax hn (fun i => q * f i) (finArgmax hn f)
+
+private theorem finMin_const_mul {n : ℕ} (hn : 0 < n) {q : ℝ} (hq : 0 ≤ q)
+    (f : Fin n → ℝ) :
+    finMin hn (fun i => q * f i) = q * finMin hn f := by
+  refine le_antisymm ?_ ?_
+  · calc
+      finMin hn (fun i => q * f i) ≤ q * f (finArgmin hn f) :=
+        finMin_le hn (fun i => q * f i) (finArgmin hn f)
+      _ = q * finMin hn f := by rw [finMin]
+  · calc
+      q * finMin hn f ≤ q * f (finArgmin hn (fun i => q * f i)) :=
+        mul_le_mul_of_nonneg_left (finMin_le hn f _) hq
+      _ = finMin hn (fun i => q * f i) := by rw [finMin]
+
+private theorem finMin_finMax_const_mul {nA : ℕ} (hA : 0 < nA)
+    {nY : Fin nA → ℕ} (hY : ∀ a, 0 < nY a) {q : ℝ} (hq : 0 ≤ q)
+    (f : (a : Fin nA) → Fin (nY a) → ℝ) :
+    finMin hA (fun a => finMax (hY a) (fun y => q * f a y)) =
+      q * finMin hA (fun a => finMax (hY a) (f a)) := by
+  have hmax : ∀ a, finMax (hY a) (fun y => q * f a y) =
+      q * finMax (hY a) (f a) := fun a => finMax_const_mul (hY a) hq (f a)
+  simp_rw [hmax]
+  exact finMin_const_mul hA hq fun a => finMax (hY a) (f a)
+
+theorem bottleneck_probability (T : Tree) (q : ℝ) (hq : 0 ≤ q) :
+    bottleneck (Field.probability T q) = q * bottleneck (Field.probability T 1) := by
+  induction T generalizing q with
+  | leaf =>
+      simp [bottleneck, Field.probability]
+  | node nA hA nY hY K Kpos Ksum child ih =>
+      have hchild : ∀ a y,
+          bottleneck (Field.probability (child a y) (q * K a y)) =
+            (q * K a y) * bottleneck (Field.probability (child a y) 1) :=
+        fun a y => ih a y _ (mul_nonneg hq (le_of_lt (Kpos a y)))
+      have hscale : ∀ a y,
+          (q * K a y) * bottleneck (Field.probability (child a y) 1) =
+            q * (K a y * bottleneck (Field.probability (child a y) 1)) :=
+        fun _ _ => by ring
+      have hunit : ∀ a y,
+          bottleneck (Field.probability (child a y) ((1 : ℝ) * K a y)) =
+            K a y * bottleneck (Field.probability (child a y) 1) := by
+        intro a y
+        simpa [one_mul] using ih a y (K a y) (le_of_lt (Kpos a y))
+      change finMin hA (fun a => finMax (hY a) (fun y =>
+          bottleneck (Field.probability (child a y) (q * K a y)))) =
+        q * finMin hA (fun a => finMax (hY a) (fun y =>
+          bottleneck (Field.probability (child a y) ((1 : ℝ) * K a y))))
+      simp_rw [hchild, hscale, hunit]
+      exact finMin_finMax_const_mul hA hY hq
+        (fun a y => K a y * bottleneck (Field.probability (child a y) 1))
+
+theorem bottleneck_kernel_step (κ : Kernel) (n : ℕ) :
+    bottleneck (Field.p (κ.rounds (n + 1))) =
+      bottleneck (Field.p (κ.rounds n)) * bottleneck (Field.p (κ.rounds 1)) := by
+  have hB : 0 ≤ bottleneck (Field.p (κ.rounds n)) :=
+    le_of_lt (positive_root_implies_positive_bottleneck
+      (Field.p_isFlow _) (Field.p_nonneg _) (by simp [Field.root_p]))
+  have hchild : ∀ a y,
+      bottleneck (Field.probability (κ.rounds n) (κ.K a y)) =
+        κ.K a y * bottleneck (Field.p (κ.rounds n)) := by
+    intro a y
+    simpa [Field.p, one_mul] using
+      bottleneck_probability (κ.rounds n) (κ.K a y) (le_of_lt (κ.Kpos a y))
+  have hone : ∀ a y,
+      bottleneck (Field.probability (.leaf) (κ.K a y)) = κ.K a y := by
+    intro a y
+    simp [bottleneck, Field.probability]
+  change finMin κ.hA (fun a => finMax (κ.hY a) (fun y =>
+      bottleneck (Field.probability (κ.rounds n) ((1 : ℝ) * κ.K a y)))) =
+    bottleneck (Field.p (κ.rounds n)) *
+      finMin κ.hA (fun a => finMax (κ.hY a) (fun y =>
+        bottleneck (Field.probability (.leaf) ((1 : ℝ) * κ.K a y))))
+  simp_rw [one_mul, hchild, hone]
+  have hcomm := finMin_finMax_const_mul κ.hA κ.hY hB κ.K
+  simpa [mul_comm] using hcomm
+
+theorem bottleneck_kernelRepeat (κ : Kernel) :
+    ∀ n, bottleneck (Field.p (κ.rounds n)) =
+      bottleneck (Field.p (κ.rounds 1)) ^ n
+  | 0 => by simp [Kernel.rounds, bottleneck, Field.p, Field.probability]
+  | n + 1 => by
+      rw [bottleneck_kernel_step, bottleneck_kernelRepeat κ n, pow_succ, mul_comm]
+
+/-- One round: the policy that has already chosen its action sees `policyCeil`
+equal to one output mass, and no output mass is larger. -/
+theorem kernelRepeat_one_policyCeil (κ : Kernel) (π : Policy (κ.rounds 1)) :
+    (∀ y, κ.K π.1 y ≤ policyCeil (Field.p (κ.rounds 1)) π) ∧
+    (∃ y, policyCeil (Field.p (κ.rounds 1)) π = κ.K π.1 y) := by
+  have hleaf : ∀ y,
+      policyCeil (Field.probability (.leaf) ((1 : ℝ) * κ.K π.1 y)) (π.2 π.1 y) =
+        κ.K π.1 y := by
+    intro y
+    simp [policyCeil, Field.probability, one_mul]
+  change (∀ y, κ.K π.1 y ≤ finMax (κ.hY π.1) (fun y =>
+      policyCeil (Field.probability (.leaf) ((1 : ℝ) * κ.K π.1 y)) (π.2 π.1 y))) ∧
+    (∃ y, finMax (κ.hY π.1) (fun y =>
+      policyCeil (Field.probability (.leaf) ((1 : ℝ) * κ.K π.1 y)) (π.2 π.1 y)) =
+        κ.K π.1 y)
+  simp_rw [hleaf]
+  constructor
+  · intro y
+    exact le_finMax (κ.hY π.1) (κ.K π.1) y
+  · exact ⟨finArgmax (κ.hY π.1) (κ.K π.1), rfl⟩
+
 end CausalSpectrum
+

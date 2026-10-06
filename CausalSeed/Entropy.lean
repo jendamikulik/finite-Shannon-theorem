@@ -1792,7 +1792,253 @@ theorem one_seed_shannon (T : Tree) :
   · exact envelope_le_seedShannon hexact hbounds.1 hbounds.2 htot
   · exact seedShannon_le_envelope ht hbounds.1 hbounds.2
 
+/-! Stochastic realization. `Z` is the envelope `F⋆` and `J` is the greedy seed.
+    `coupleSurv t` is `P(Z + E > t)` for an exponential `E` of rate `ln 2`,
+    independent of `Z`: `P(E > t - z) = min(1, 2^(z - t))`. -/
+
+noncomputable def coupleFactor (T : Tree) (t : ℝ) (i : ℕ) : ℝ :=
+  if h : i < (infoValues T).length then
+    min 1 ((2 : ℝ) ^ ((infoValues T)[i] - t))
+  else 0
+
+noncomputable def coupleSurv (T : Tree) (t : ℝ) : ℝ :=
+  (Finset.range (infoValues T).length).sum fun i => envInc T i * coupleFactor T t i
+
+theorem coupleFactor_mono (T : Tree) (t : ℝ) {i : ℕ}
+    (hi : i + 1 < (infoValues T).length) :
+    coupleFactor T t i ≤ coupleFactor T t (i + 1) := by
+  have hi0 : i < (infoValues T).length := by omega
+  unfold coupleFactor
+  rw [dif_pos hi0, dif_pos hi]
+  have hz : (infoValues T)[i] ≤ (infoValues T)[i + 1] :=
+    (info_get_strictMono T hi0 hi (by omega)).le
+  have hexp :
+      (2 : ℝ) ^ ((infoValues T)[i] - t) ≤ (2 : ℝ) ^ ((infoValues T)[i + 1] - t) :=
+    Real.rpow_le_rpow_of_exponent_le (by norm_num : (1 : ℝ) ≤ 2) (sub_le_sub_right hz t)
+  exact min_le_min le_rfl hexp
+
+theorem coupleFactor_index (T : Tree) (t : ℝ) (ℓ : Leaf T) :
+    coupleFactor T t (infoIndex T ℓ) =
+      min 1 ((2 : ℝ) ^ (infoMass (leafMass ℓ) - t)) := by
+  have hi := infoIndex_lt T ℓ
+  unfold coupleFactor
+  rw [dif_pos hi, infoValues_get_index]
+
+theorem aDelta_le_min (δ p : ℝ) : aDelta δ p ≤ min p δ := by
+  unfold aDelta
+  by_cases h : p ≤ δ
+  · rw [if_pos h, min_eq_left h]
+  · rw [if_neg h, min_eq_right (le_of_lt (lt_of_not_ge h))]
+    exact min_le_left _ _
+
+theorem min_eq_scaled {p δ : ℝ} (hp : 0 < p) :
+    min p δ = p * min (1 : ℝ) (δ / p) := by
+  by_cases h : δ ≤ p
+  · have hdiv : δ / p ≤ 1 := (div_le_one₀ hp).mpr h
+    rw [min_eq_right h, min_eq_right hdiv]
+    field_simp
+  · have hlt : p < δ := lt_of_not_ge h
+    have hdiv : 1 ≤ δ / p := (one_le_div hp).mpr hlt.le
+    rw [min_eq_left hlt.le, min_eq_left hdiv]
+    ring
+
+theorem min_eq_dyadic {p δ : ℝ} (hp : 0 < p) :
+    min p δ = p * min (1 : ℝ) (δ * (2 : ℝ) ^ infoMass p) := by
+  rw [min_eq_scaled hp, div_eq_rpow_info hp]
+
+theorem dyadic_shift (z t : ℝ) :
+    (2 : ℝ) ^ (-t) * (2 : ℝ) ^ z = (2 : ℝ) ^ (z - t) := by
+  rw [← Real.rpow_add (by norm_num : (0 : ℝ) < 2)]
+  congr 1
+  ring
+
+theorem smallWeight_le_truncated {T : Tree} {atoms : List (Atom T)}
+    (ht : GreedyTrace (Field.p T) atoms) (δ : ℝ) (hδ : 0 ≤ δ) :
+    ∃ π : Policy T, smallWeight atoms δ ≤
+      policySum (fun ℓ => min (leafMass ℓ) δ) π := by
+  obtain ⟨π, hπ⟩ := greedy_advanced_bound ht δ hδ
+  refine ⟨π, le_trans hπ ?_⟩
+  apply policySum_mono
+  intro ℓ _
+  exact aDelta_le_min δ (leafMass ℓ)
+
+theorem levelAt_mul (T : Tree) (π : Policy T) (i : ℕ) (c : ℝ) :
+    levelAt T π i * c =
+      policySum (fun ℓ =>
+        if hi : i < (infoValues T).length then
+          if infoMass (leafMass ℓ) = (infoValues T)[i] then leafMass ℓ * c else 0
+        else 0) π := by
+  unfold levelAt
+  by_cases hi : i < (infoValues T).length
+  · simp only [hi, dite_true]
+    unfold levelMass
+    rw [mul_comm, ← policySum_mul]
+    refine congrArg (fun f => policySum f π) ?_
+    funext ℓ
+    by_cases he : infoMass (leafMass ℓ) = (infoValues T)[i]
+    · simp [he, mul_comm]
+    · simp [he]
+  · simp only [hi, dite_false, zero_mul]
+    exact (policySum_zero (π := π)).symm
+
+theorem level_weighted (T : Tree) (π : Policy T) (G : ℕ → ℝ) :
+    (Finset.range (infoValues T).length).sum (fun i => levelAt T π i * G i) =
+      policySum (fun ℓ => leafMass ℓ * G (infoIndex T ℓ)) π := by
+  set n := (infoValues T).length
+  calc
+    (Finset.range n).sum (fun i => levelAt T π i * G i)
+        = (Finset.range n).sum (fun i =>
+            policySum (fun ℓ =>
+              if hi : i < n then
+                if infoMass (leafMass ℓ) = (infoValues T)[i] then leafMass ℓ * G i else 0
+              else 0) π) := by
+          refine Finset.sum_congr rfl ?_
+          intro i hi
+          simpa using levelAt_mul T π i (G i)
+    _ = policySum (fun ℓ =>
+          (Finset.range n).sum (fun i =>
+            if hi : i < n then
+              if infoMass (leafMass ℓ) = (infoValues T)[i] then leafMass ℓ * G i else 0
+            else 0)) π := by
+          rw [policySum_range]
+    _ = policySum (fun ℓ => leafMass ℓ * G (infoIndex T ℓ)) π := by
+          refine congrArg (fun f => policySum f π) ?_
+          funext ℓ
+          have hsum : (Finset.range n).sum (fun i =>
+              if hi : i < n then
+                if infoMass (leafMass ℓ) = (infoValues T)[i] then leafMass ℓ * G i else 0
+              else 0) =
+              (Finset.range n).sum (fun i =>
+                if i = infoIndex T ℓ then leafMass ℓ * G i else 0) := by
+            refine Finset.sum_congr rfl ?_
+            intro i _
+            have ht := level_term_eq T ℓ i
+            by_cases hi : i < n
+            · simp only [hi, dite_true] at ht ⊢
+              by_cases he : infoMass (leafMass ℓ) = (infoValues T)[i]
+              · have hinj : i = infoIndex T ℓ :=
+                  (List.Nodup.getElem_inj_iff (nodup_infoValues T) (hi := hi)
+                    (hj := infoIndex_lt T ℓ)).1
+                    ((he.symm).trans (infoValues_get_index T ℓ).symm)
+                simp [he, hinj]
+              · have hne : i ≠ infoIndex T ℓ := by
+                  intro h
+                  subst h
+                  exact he (infoValues_get_index T ℓ).symm
+                simp [he, hne]
+            · have hne : i ≠ infoIndex T ℓ := by
+                intro h
+                exact hi (h ▸ infoIndex_lt T ℓ)
+              simp [hi, hne]
+          rw [hsum, Finset.sum_ite_eq']
+          have hmem : infoIndex T ℓ ∈ Finset.range n :=
+            Finset.mem_range.mpr (infoIndex_lt T ℓ)
+          simp [hmem]
+
+theorem cumsum_env_le_level (T : Tree) (π : Policy T) (k : ℕ)
+    (hk : k ≤ (infoValues T).length) :
+    cumsum (envInc T) k ≤ cumsum (levelAt T π) k := by
+  rw [cumsum_envInc T k hk, cumsum_levelAt π k hk]
+  by_cases hk0 : k = 0
+  · simp [hk0]
+  · simp only [hk0, ite_false]
+    exact Fstar_le T _ π
+
+theorem cumsum_level_last (T : Tree) (π : Policy T) :
+    cumsum (levelAt T π) (infoValues T).length = 1 := by
+  have h := cumsum_levelAt π (infoValues T).length le_rfl
+  have hpos := infoValues_length_pos T
+  rw [if_neg (by omega : (infoValues T).length ≠ 0)] at h
+  rw [h]
+  exact policyCDF_last π
+
+theorem policy_factor_le_couple (T : Tree) (π : Policy T) (t : ℝ) :
+    policySum (fun ℓ => leafMass ℓ * coupleFactor T t (infoIndex T ℓ)) π ≤
+      coupleSurv T t := by
+  set n := (infoValues T).length
+  have hsum := sum_le_of_larger_partials n (coupleFactor T t) (levelAt T π) (envInc T)
+    (fun i hi => coupleFactor_mono T t hi)
+    (fun k hk => cumsum_env_le_level T π k hk)
+    ?_
+  have hleft := level_weighted T π (coupleFactor T t)
+  have hright : (Finset.range n).sum (fun i => envInc T i * coupleFactor T t i) =
+      coupleSurv T t := rfl
+  linarith
+  · rw [cumsum_level_last T π, cumsum_envInc_last]
+
+theorem seedTail_le_smallWeight {T : Tree} (atoms : List (Atom T)) (t : ℝ)
+    (hpos : ∀ a ∈ atoms, 0 < a.1) :
+    seedTail atoms t ≤ smallWeight atoms ((2 : ℝ) ^ (-t)) := by
+  induction atoms with
+  | nil => simp [seedTail, smallWeight]
+  | cons a tail ih =>
+      have htail := ih (fun b hb => hpos b (List.mem_cons_of_mem a hb))
+      simp only [seedTail, smallWeight, List.map_cons, List.sum_cons] at htail ⊢
+      have ha : 0 < a.1 := hpos a (by simp)
+      by_cases ht : t < infoMass a.1
+      · have hw : a.1 ≤ (2 : ℝ) ^ (-t) :=
+          (weight_le_dyadic_iff ha).2 (le_of_lt ht)
+        simp only [ht, hw, ite_true]
+        linarith
+      · simp only [ht, ite_false, zero_add]
+        refine le_trans htail ?_
+        by_cases hw : a.1 ≤ (2 : ℝ) ^ (-t)
+        · simp only [hw, ite_true]
+          exact le_add_of_nonneg_left ha.le
+        · simp only [hw, ite_false, zero_add]
+          exact le_rfl
+
+theorem truncated_le_couple {T : Tree} {atoms : List (Atom T)}
+    (ht : GreedyTrace (Field.p T) atoms) (t : ℝ) :
+    ∃ π : Policy T, smallWeight atoms ((2 : ℝ) ^ (-t)) ≤
+      policySum (fun ℓ => leafMass ℓ * coupleFactor T t (infoIndex T ℓ)) π := by
+  have hδ : 0 ≤ (2 : ℝ) ^ (-t) := (Real.rpow_pos_of_pos (by norm_num) (-t)).le
+  obtain ⟨π, hπ⟩ := smallWeight_le_truncated ht ((2 : ℝ) ^ (-t)) hδ
+  refine ⟨π, le_trans hπ ?_⟩
+  apply policySum_mono
+  intro ℓ _
+  have hp := leafMass_pos ℓ
+  rw [min_eq_dyadic (δ := (2 : ℝ) ^ (-t)) hp]
+  refine mul_le_mul_of_nonneg_left ?_ hp.le
+  rw [coupleFactor_index, dyadic_shift (infoMass (leafMass ℓ)) t]
+
+/-- The discovery: one greedy seed, exact for every policy, lies between the
+    adaptive envelope and that envelope shifted by an exponential of rate `ln 2`.
+    `seedCDF ≤ F⋆` is `Z ≼st J`. `seedTail ≤ coupleSurv` is `J ≼st Z + E`. -/
+theorem causal_realization (T : Tree) :
+    ∃ atoms : List (Atom T),
+      GreedyTrace (Field.p T) atoms ∧
+      (∀ a ∈ atoms, 0 < a.1) ∧
+      totalWeight atoms = 1 ∧
+      (∀ (π : Policy T) (ℓ : Leaf T),
+        transcriptWeight atoms π ℓ =
+          if CompatiblePolicy ℓ π then leafMass ℓ else 0) ∧
+      (∀ t : ℝ, seedCDF atoms t ≤ Fstar T t) ∧
+      (∀ t : ℝ, seedTail atoms t ≤ coupleSurv T t) := by
+  obtain ⟨atoms, ht⟩ :=
+    greedyTrace_exists (Field.p T) (Field.p_isFlow T) (Field.p_nonneg T)
+  have hbounds := greedy_atom_bounds ht
+  obtain ⟨-, -, hsum, hrep⟩ :=
+    greedyTrace_properties ht (Field.p_isFlow T) (Field.p_nonneg T)
+  have htot : totalWeight atoms = 1 := by simpa using hsum
+  have hexact : ∀ (π : Policy T) (ℓ : Leaf T),
+      transcriptWeight atoms π ℓ =
+        if CompatiblePolicy ℓ π then leafMass ℓ else 0 := by
+    intro π ℓ
+    rw [transcriptWeight_eq, hrep]
+    have hp : leafValue (Field.p T) ℓ = leafMass ℓ := by
+      simpa [Field.p] using leafValue_probability T 1 ℓ
+    rw [hp]
+  refine ⟨atoms, ht, hbounds.1, htot, hexact, ?_, ?_⟩
+  · intro t
+    exact seedCDF_le_Fstar hexact hbounds.1 t
+  · intro t
+    have htail := seedTail_le_smallWeight atoms t hbounds.1
+    obtain ⟨π, hπ⟩ := truncated_le_couple ht t
+    exact le_trans htail (le_trans hπ (policy_factor_le_couple T π t))
+
 #print axioms one_seed_shannon
+#print axioms causal_realization
 
 end CausalSpectrum
 

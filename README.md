@@ -2,15 +2,30 @@
 
 Jan Mikulik, 5 October 2026.
 
-The result of this repository is one theorem, `CausalSpectrum.one_seed_shannon`, in [`CausalSeed/Entropy.lean`](CausalSeed/Entropy.lean).
+The result of this repository is one theorem, `CausalSpectrum.causal_realization`, in [`CausalSeed/Entropy.lean`](CausalSeed/Entropy.lean).
 
-For every finite controlled history tree there is one finite seed, produced by greedy extraction of the probability flow, which is an exact decoder for every deterministic policy. If `H` is the Shannon entropy of its weights and `L` is the mean of the lower envelope of the policy information distribution functions, then
+For every finite controlled history tree, greedy extraction produces one finite seed which is an exact decoder for every deterministic policy. Let `Z` be the information of the lower envelope of the deterministic-policy transcript laws, and let `J` be the information of the seed. Then
+
+```text
+Z  ≼_st  J  ≼_st  Z + E,        E ~ Exp(ln 2).
+```
+
+In the formalization the two comparisons are, for every real `t`,
+
+```text
+seedCDF t ≤ F⋆(t)
+seedTail t ≤ coupleSurv t
+```
+
+`coupleSurv t` is `∑ μᵢ min(1, 2^(zᵢ − t))`, the survival function of `Z + E` when `E` is exponential of rate `ln 2` and independent of `Z`. The gap does not grow with the horizon.
+
+Integrating the tails gives `L ≤ H ≤ L + log₂ e`. The checked Shannon statement `CausalSpectrum.one_seed_shannon` is the same comparison after integration, with the residual-mass refinement of the constant:
 
 ```text
 L ≤ H ≤ L + (1 + log₂ e) / 2.
 ```
 
-The lower bound is the information-spectrum converse for this family of transcript laws. The upper bound is the statement that one seed, consistent at every shared history–action node, meets that converse up to the constant above.
+That refinement improves the integral. It is not a stronger stochastic bound than `E`. The lower bound is the information-spectrum converse for this family of transcript laws. The upper bound is one seed, consistent at every shared history–action node.
 
 ## What is new, and what is not
 
@@ -51,7 +66,7 @@ The two PDF files are the written note. The checked statement is the Lean theore
 
 | What | Where |
 | --- | --- |
-| The theorem | `CausalSpectrum.one_seed_shannon` in `CausalSeed/Entropy.lean` |
+| The theorem | `CausalSpectrum.causal_realization` in `CausalSeed/Entropy.lean` |
 | The seed, the policies, the envelope | `CausalSeed/Spectrum.lean`, `CausalSeed/Gap.lean` |
 | The Wasserstein identity, min-entropy, Rényi scalars | `CausalSeed/Note.lean` |
 | Profile mean and the `√n` transfer only | `CausalSeed/SecondOrder.lean` |
@@ -66,9 +81,11 @@ For every finite controlled tree `T` there is a finite list of atoms, produced b
 - every atom weight is strictly positive and at most 1,
 - the weights sum to 1,
 - under every deterministic policy, the decoder’s transcript weights equal the prescribed leaf masses on the histories compatible with that policy, and equal 0 on the others,
-- `L ≤ H ≤ L + (1 + log₂ e) / 2`, with `H` and `L` as above.
+- for every real `t`, `seedCDF t ≤ F⋆(t)` and `seedTail t ≤ coupleSurv t`.
 
-`L` is `envelopeMean`, the finite sum that defines the envelope in the written proof. It is not an appeal to an abstract law `Z`.
+The first comparison is `Z ≼_st J`. The second is `J ≼_st Z + E` for `E ~ Exp(ln 2)`. Integrating it gives `L ≤ H ≤ L + log₂ e`. The separate declaration `one_seed_shannon` is that integral with the constant sharpened to `(1 + log₂ e) / 2`.
+
+`L` is `envelopeMean`, the finite sum that defines the envelope in the written proof. `Z` in the stochastic statement is the same envelope, read as a distribution function, not an extra hypothesis.
 
 A tree is a leaf, or a node with a positive finite number of actions. Each action has its own positive finite output alphabet and a kernel of strictly positive real weights summing to 1. Alphabets may differ from node to node and from action to action. A policy chooses one action from the whole history and continues along every output. A strategy chooses one output of every action. The same finite seed is exact for every policy.
 
@@ -76,7 +93,7 @@ A tree is a leaf, or a node with a positive finite number of actions. Each actio
 
 Checked with Lean `4.35.0-rc3` (`leanprover/lean4:v4.35.0-rc3`) and mathlib `7d6757bc18680044fc0ff6efc8ee20494b408556`, by `lake build` of this import closure. There is no `sorry` and no `admit`.
 
-`#print axioms CausalSpectrum.one_seed_shannon` reports only
+`#print axioms CausalSpectrum.causal_realization` reports only
 
 ```text
 propext
@@ -95,7 +112,8 @@ The same three axioms are reported for every declaration below. They are the ker
 | Existence of the greedy trace | `CausalSpectrum.greedyTrace_exists` |
 | Residual mass after the cutoff `δ` | `CausalSpectrum.greedy_refined_bound` |
 | Exact seed together with the refined cutoffs | `CausalSpectrum.exact_seed_with_refined_cutoffs` |
-| Shannon sandwich | `CausalSpectrum.one_seed_shannon` |
+| Stochastic realization, `Z ≼ J ≼ Z + Exp(ln 2)` | `CausalSpectrum.causal_realization` |
+| Shannon sandwich, the integral, with the refined constant | `CausalSpectrum.one_seed_shannon` |
 
 ### Identities in the same closure
 

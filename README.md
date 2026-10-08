@@ -79,6 +79,37 @@ makes the error at most `ε + δ`. The comparison `−ln(1 − 1/K) ≥ 1/K` mak
 
 `K` is a cardinality of a `(1 − ε)`-support, not a Shannon entropy. Depth and the number of policies do not appear as a further factor. They can increase `K` itself. The price of using one compatible seed, rather than a separate compression for each policy, is this logarithmic multiple of `K`.
 
+## Repair of an inconsistent coupling
+
+We assume this repair is already known. It is not a Lean theorem of this repository, and it is not claimed as a discovery. It uses the checked bound `H ≤ L + c_*` with `c_* = (1 + log₂ e) / 2`.
+
+Let `Γ` be any coupling of the exact transcript laws of all deterministic policies, and let `B` be the set of transcript tuples that no single causal strategy produces. Write `η = Γ(B)`. Let `C` be the least entropy of an exact causal seed.
+
+There is a compatible coupling `Γ̂` with the same marginals such that
+
+```text
+d_TV(Γ, Γ̂) = η,        H(Γ̂) ≤ H(Γ) + c_* η.
+```
+
+Total variation is `sup |Γ(A) − Γ̂(A)|`. The distance `η` is the least possible to a compatible coupling, because every compatible coupling puts mass zero on `B`. The coefficient does not depend on the horizon or on the number of policies.
+
+The good part of `Γ` is a subflow `q ≤ p` of mass `1 − η`. The residual `r = p − q` is a nonnegative flow of root mass `η`. Normalising it and deleting zero branches gives a finite controlled tree, and `Γ(· | B)` is a coupling of its policy marginals. Its envelope entropy is at most `H(Γ(· | B))`, so the checked Shannon bound supplies a compatible replacement `Λ` with `H(Λ) ≤ H(Γ(· | B)) + c_*`. The mixture of the good part with weight `η` on `Λ` is `Γ̂`. Membership of a tuple in `B` is a function of the tuple, so
+
+```text
+H(Γ) = h₂(η) + (1 − η) H(Γ(· | Bᶜ)) + η H(Γ(· | B)),
+```
+
+and the binary entropy cancels against the mixture bound. The mixture step is an inequality. The chain rule for `H(Γ)` is an equality.
+
+Consequently, for every coefficient `κ ≥ c_*`,
+
+```text
+C = min over couplings Γ of [ H(Γ) + κ Γ(B) ].
+```
+
+The minimum runs over all couplings of the policy transcripts, with no compatibility restriction. It is attained by an exact causal seed. The identity is not special to `κ = c_*`. What `c_*` supplies is that the coefficient is large enough. For every `λ > c_*`, every minimiser of `H(Γ) + λ Γ(B)` is compatible: an inconsistent candidate would be strictly improved by the repair. The strict separation below this coefficient is not argued here.
+
+
 
 
 ## What is new
@@ -122,6 +153,7 @@ The PDF files are the written note. The checked statement is `causal_realization
 | --- | --- |
 | The theorem | `CausalSpectrum.causal_realization` in `CausalSeed/Entropy.lean` |
 | The `(1 − ε)`-support prefix, assumed known, not formalised | section Separate compressions, one prefix |
+| Repair by a linear penalty, assumed known, not formalised | section Repair of an inconsistent coupling |
 | The Shannon integral | `CausalSpectrum.one_seed_shannon` in the same file |
 | The seed, the policies, the envelope | `CausalSeed/Spectrum.lean`, `CausalSeed/Gap.lean` |
 | The Wasserstein identity, min-entropy, Rényi scalars | `CausalSeed/Note.lean` |

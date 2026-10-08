@@ -8,6 +8,8 @@ That is the theorem of this repository, `CausalSpectrum.causal_realization`, che
 
 Penalty identity checked 8 October 2026: for every coefficient at least the gap, the penalised infimum is the causal minimum. The proof is [`CausalSeed/Identity.lean`](CausalSeed/Identity.lean#L569).
 
+Arithmetic profile of a fixed seed, checked 8 October 2026 in [`CausalSeed/Arithmetic.lean`](CausalSeed/Arithmetic.lean): an index lies in the defect exactly when it belongs to the symmetric difference of two subsets whose weights differ by at most `2ε`. Distinct subset sums are equivalent to an empty defect at `ε = 0`, and the defect is empty if and only if `2ε` is strictly below the minimum subset-sum separation `gamma`. This half does not use the Shannon bound. The decoder half of the note — every incompatible policy-transcript index lies in that defect, and the bound is attained by a tree of depth at most two — is not a Lean theorem yet.
+
 ## How to read this
 
 The object is one finite controlled tree and every deterministic policy on it. A policy may choose the next action from the history so far. A causal seed is one shared source of randomness and a decoder that realises the prescribed kernel at every history, including on actions the realised path never takes. An ordinary coupling of the transcript laws does not have to do that.
@@ -37,6 +39,7 @@ Not the theorem to cite: the square-root asymptotic in the PDF, the identificati
 | [`CausalSeed/Gap.lean`](CausalSeed/Gap.lean) | Envelope against an ordinary coupling |
 | [`CausalSeed/Note.lean`](CausalSeed/Note.lean) | Wasserstein identity, Rényi scalars, repeated-kernel min-entropy |
 | [`CausalSeed/SecondOrder.lean`](CausalSeed/SecondOrder.lean) | Mean of the diffusion profile only; not the `√n` asymptotic |
+| [`CausalSeed/Arithmetic.lean`](CausalSeed/Arithmetic.lean) | Subset-sum defect, `gamma`, exact-rigidity threshold. Decoder attainment not yet a theorem |
 | [`AXIOMS.txt`](AXIOMS.txt) | `#print axioms` for the declarations above |
 
 ## The theorem

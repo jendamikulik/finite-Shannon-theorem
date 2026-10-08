@@ -6,5 +6,7 @@ import CausalSeed.Penalty
 import CausalSeed.Close
 import CausalSeed.Transport
 import CausalSeed.Identity
+import CausalSeed.Arithmetic
+
 
 

@@ -18,6 +18,10 @@ CausalSpectrum.penalty_shortfall
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.causalMin_le_penalised_of_one
   depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.causalMin_le_penalised
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.penaltyMin_eq_causalMin
+  depends on axioms: [propext, choice, Quot.sound]
 
 
 CausalSpectrum.exact_tree_minimax

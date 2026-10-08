@@ -770,9 +770,9 @@ theorem penalty_shortfall {κ : ℝ} (hκ0 : 0 ≤ κ) (hκ : κ < gapSup) :
   exact ⟨T, lt_of_le_of_lt (csInf_le hbdd ⟨Γ, rfl⟩) hpen⟩
 
 /-! A nonnegative flow, with zero branches deleted, is again a controlled tree.
-The construction is used by the residual step of the exact penalty. The leaf-mass
-transport is not yet a theorem, so the identity at intermediate bad mass is not
-claimed below. -/
+The transparent pruned tree and the leaf-mass transport are in
+`CausalSeed/Transport.lean`. The identity at every bad mass is
+`causalMin_le_penalised`. -/
 
 noncomputable def supportOf {n : ℕ} (mass : Fin n → ℝ) : Finset (Fin n) :=
   Finset.univ.filter fun y => 0 < mass y

@@ -81,7 +81,7 @@ makes the error at most `ε + δ`. The comparison `−ln(1 − 1/K) ≥ 1/K` mak
 
 ## Repair of an inconsistent coupling
 
-We assume this repair is already known. It is not a Lean theorem of this repository, and it is not claimed as a discovery. It uses the checked bound `H ≤ L + c_*` with `c_* = (1 + log₂ e) / 2`.
+We assume this repair is already known. It is not claimed as a discovery. The argument below uses the checked bound `H ≤ L + c_*` with `c_* = (1 + log₂ e) / 2`. The infimum identity for every coefficient at least `c_*` is `CausalSpectrum.penaltyMin_eq_causalMin`, because `gapSup ≤ c_*`. The total-variation reconstruction written in this section, and the claim that every minimiser strictly above the coefficient is compatible, are not separate Lean theorems.
 
 Let `Γ` be any coupling of the exact transcript laws of all deterministic policies, and let `B` be the set of transcript tuples that no single causal strategy produces. Write `η = Γ(B)`. Let `C` be the least entropy of an exact causal seed.
 
@@ -123,15 +123,13 @@ The checked Shannon bound gives `G_* ≤ c_*`. In Lean that is `CausalSpectrum.g
 
 `CausalSpectrum.penalty_shortfall` says that no nonnegative coefficient strictly below `gapSup` is universal. If `0 ≤ κ < gapSup`, some tree has penalised infimum strictly smaller than its causal minimum.
 
-Two endpoint cases of the identity are checked. If the inconsistent mass is zero, the coupling is already compatible, so `causalMin ≤ H`. If the inconsistent mass is one, `causalMin ≤ H + gapSup`. Those are `causalMin_le_penalised_of_zero` and `causalMin_le_penalised_of_one`.
-
-The intermediate case `0 < Γ(B) < 1` is not a Lean theorem in this repository. It is the residual-tree step: delete the compatible part, prune the zero branches of what remains, and apply the same gap on that tree. `pruned` in `CausalSeed/Penalty.lean` builds that tree. The identification of its leaf masses, and the push of the conditional coupling back and forth, are not finished, so the identity
+The identity is checked for every coefficient at least `gapSup`. `CausalSpectrum.causalMin_le_penalised` says that every coupling satisfies `causalMin T ≤ H(Γ) + gapSup · Γ(B)`. The endpoints `Γ(B) ∈ {0, 1}` are `causalMin_le_penalised_of_zero` and `causalMin_le_penalised_of_one`. The intermediate mass deletes the compatible part (`residualField` in `CausalSeed/Close.lean`), prunes the zero branches (`prunedTree` in `CausalSeed/Transport.lean`), and pays `gapSup` on that tree. `CausalSpectrum.penaltyMin_eq_causalMin` is the equality
 
 ```text
-C(T) = inf over Γ of [ H(Γ) + G_* Γ(B) ]
+C(T) = inf over Γ of [ H(Γ) + κ Γ(B) ]
 ```
 
-is not checked here. Neither is the statement that every minimiser at a penalty strictly above `G_*` is compatible, beyond the two endpoints.
+for every `κ ≥ gapSup`, and therefore for every `κ ≥ c_*`. The statement that every minimiser at a penalty strictly above `G_*` is compatible is not a separate theorem.
 
 A stated witness gives `2/9 ≤ G_*`. The search that produced it is not in this repository and was not rerun here. Nothing in the Lean development depends on that number. The interval recorded from that computation remains
 
@@ -184,8 +182,8 @@ The PDF files are the written note. The checked statement is `causal_realization
 | --- | --- |
 | The theorem | `CausalSpectrum.causal_realization` in `CausalSeed/Entropy.lean` |
 | The `(1 − ε)`-support prefix, assumed known, not formalised | section Separate compressions, one prefix |
-| Repair by a linear penalty, assumed known, not formalised | section Repair of an inconsistent coupling |
-| Exact penalty `G_*`: the envelope, the gap, and the failure of every smaller nonnegative coefficient. The identity at intermediate inconsistent mass is not checked | `CausalSeed/Penalty.lean`; section The exact penalty |
+| Repair by a linear penalty. The infimum identity is checked; the total-variation reconstruction in the section is not a separate theorem | `CausalSeed/Identity.lean`; section Repair of an inconsistent coupling |
+| Exact penalty `G_*`: the envelope, the gap, the shortfall, and `penaltyMin κ = causalMin` for `κ ≥ gapSup`. A strict minimiser above `G_*` is not a separate theorem | `CausalSeed/Penalty.lean`, `CausalSeed/Identity.lean`; section The exact penalty |
 | The Shannon integral | `CausalSpectrum.one_seed_shannon` in the same file |
 | The seed, the policies, the envelope | `CausalSeed/Spectrum.lean`, `CausalSeed/Gap.lean` |
 | The Wasserstein identity, min-entropy, Rényi scalars | `CausalSeed/Note.lean` |

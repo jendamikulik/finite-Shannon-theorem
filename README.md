@@ -21,7 +21,7 @@ seedCDF t ≤ F⋆(t)
 seedTail t ≤ coupleSurv t
 ```
 
-`coupleSurv t` is `∑ μᵢ min(1, 2^(zᵢ − t))`, which is `P(Z + E > t)` for `E` independent of `Z`. The same seed works at every horizon. Nothing in the gap depends on the depth of the tree.
+`coupleSurv t` is `∑ μᵢ min(1, 2^(zᵢ − t))`, which is `P(Z + E > t)` for `E` independent of `Z`. For each finite controlled tree, one seed works for every deterministic adaptive policy on that tree. The seed may depend on the tree and its horizon; the overhead bound is independent of the horizon. Nothing in the gap depends on the depth of the tree.
 
 Integrating the tails gives `L ≤ H ≤ L + log₂ e`. The declaration `CausalSpectrum.one_seed_shannon` is that integral with the residual-mass refinement
 

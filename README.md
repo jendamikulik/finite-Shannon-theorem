@@ -49,6 +49,37 @@ atoms, and the discarded mass is at most `ε`. Renormalising those atoms moves t
 
 It does not control the conditional kernel at one history whose probability is much smaller than `ε`. The guarantee is on the law of what the path actually shows.
 
+## Separate compressions, one prefix
+
+We assume this quantitative bound is already known. The note records it because it follows from the checked minimax and extraction lemmas. It is not a Lean theorem of this repository, and it is not claimed as a discovery.
+
+Let `0 ≤ ε < 1`. For each deterministic policy `π` let `k_ε(P_π)` be the smallest number of transcripts that carry probability at least `1 − ε`, and let `K` be the maximum of `k_ε(P_π)` over policies. Thus `K ≥ 1`. Each policy, compressed on its own, keeps mass `1 − ε` in at most `K` transcripts. Those sets need not agree.
+
+Keep the first `M ≥ 1` atoms of the same greedy seed and renormalise them. If the extraction has already ended, keep the whole seed and the error is zero. Otherwise the renormalised seed has at most `M` values and, simultaneously for every policy, total-variation error at most
+
+```text
+ε + (1 − ε) (1 − 1/K)^M.
+```
+
+The reason is the residual flow. After `m` extractions its root mass is `R_m`, with `R_0 = 1`. The minimax identity supplies a policy whose largest residual leaf equals the next greedy weight `w_{m+1}`. On that policy, some set of at most `K` transcripts carries original mass at least `1 − ε`, so the residual outside it is at most `ε`. Hence `R_m − ε ≤ K w_{m+1}`. Extracting the atom gives
+
+```text
+R_{m+1} − ε ≤ (1 − 1/K) (R_m − ε).
+```
+
+The discarded mass after `M` atoms is `R_M`, which is the total-variation distance caused by renormalising the prefix. A deterministic decoder does not increase it. One prefix serves every policy.
+
+For `0 < δ < 1 − ε` the choice
+
+```text
+M = ⌈K ln((1 − ε) / δ)⌉
+```
+
+makes the error at most `ε + δ`. The comparison `−ln(1 − 1/K) ≥ 1/K` makes this `M` sufficient, not necessarily smallest. An extra error `0.01` therefore costs at most `⌈4.606 K⌉` seed values. That count is a number of seed states, not a number of uniform random bits.
+
+`K` is a cardinality of a `(1 − ε)`-support, not a Shannon entropy. Depth and the number of policies do not appear as a further factor. They can increase `K` itself. The price of using one compatible seed, rather than a separate compression for each policy, is this logarithmic multiple of `K`.
+
+
 
 ## What is new
 
@@ -90,6 +121,7 @@ The PDF files are the written note. The checked statement is `causal_realization
 | What | Where |
 | --- | --- |
 | The theorem | `CausalSpectrum.causal_realization` in `CausalSeed/Entropy.lean` |
+| The `(1 − ε)`-support prefix, assumed known, not formalised | section Separate compressions, one prefix |
 | The Shannon integral | `CausalSpectrum.one_seed_shannon` in the same file |
 | The seed, the policies, the envelope | `CausalSeed/Spectrum.lean`, `CausalSeed/Gap.lean` |
 | The Wasserstein identity, min-entropy, Rényi scalars | `CausalSeed/Note.lean` |

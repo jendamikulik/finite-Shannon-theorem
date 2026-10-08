@@ -63,3 +63,18 @@ CausalSpectrum.profile_mean_zero
   depends on axioms: [propext, Classical.choice, Quot.sound]
 CausalSpectrum.second_order_transfer
   depends on axioms: [propext, Classical.choice, Quot.sound]
+
+CausalSpectrum.bad_mem_defect
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.unrealizable_splits
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.profile_attainment
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.incompatible_mass_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.profile_mass_attained
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.exact_rigidity
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.sharp_threshold
+  depends on axioms: [propext, choice, Quot.sound]

@@ -7,6 +7,7 @@ import CausalSeed.Close
 import CausalSeed.Transport
 import CausalSeed.Identity
 import CausalSeed.Arithmetic
+import CausalSeed.Profile
 
 
 

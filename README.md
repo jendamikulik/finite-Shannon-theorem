@@ -8,7 +8,7 @@ That is the theorem of this repository, `CausalSpectrum.causal_realization`, che
 
 Penalty identity checked 8 October 2026: for every coefficient at least the gap, the penalised infimum is the causal minimum. The proof is [`CausalSeed/Identity.lean`](CausalSeed/Identity.lean#L569).
 
-Arithmetic profile of a fixed seed, checked 8 October 2026 in [`CausalSeed/Arithmetic.lean`](CausalSeed/Arithmetic.lean): an index lies in the defect exactly when it belongs to the symmetric difference of two subsets whose weights differ by at most `2ε`. Distinct subset sums are equivalent to an empty defect at `ε = 0`, and the defect is empty if and only if `2ε` is strictly below the minimum subset-sum separation `gamma`. This half does not use the Shannon bound. The decoder half of the note — every incompatible policy-transcript index lies in that defect, and the bound is attained by a tree of depth at most two — is not a Lean theorem yet.
+Arithmetic rigidity of policy-indexed decoders, checked 8 October 2026. For a positive weight vector summing to 1, an index of an `ε`-accurate family is unrealizable if and only if it lies in the subset-sum defect, and one controlled tree of depth at most two attains the equality (`CausalSpectrum.profile_attainment` in [`CausalSeed/Profile.lean`](CausalSeed/Profile.lean)). The upper bound on every tree is `CausalSpectrum.bad_mem_defect` in [`CausalSeed/Probe.lean`](CausalSeed/Probe.lean). Distinct subset sums are equivalent to every exact family being realizable (`exact_rigidity`), and every `ε`-accurate family is realizable if and only if `2ε < gamma` (`sharp_threshold`). The incompatible mass is at most the defect mass, and that mass is attained. This characterization does not use the Shannon bound. The constant `(1 + log₂ e) / 2` is not this result, and no publication priority is claimed.
 
 ## How to read this
 
@@ -39,7 +39,9 @@ Not the theorem to cite: the square-root asymptotic in the PDF, the identificati
 | [`CausalSeed/Gap.lean`](CausalSeed/Gap.lean) | Envelope against an ordinary coupling |
 | [`CausalSeed/Note.lean`](CausalSeed/Note.lean) | Wasserstein identity, Rényi scalars, repeated-kernel min-entropy |
 | [`CausalSeed/SecondOrder.lean`](CausalSeed/SecondOrder.lean) | Mean of the diffusion profile only; not the `√n` asymptotic |
-| [`CausalSeed/Arithmetic.lean`](CausalSeed/Arithmetic.lean) | Subset-sum defect, `gamma`, exact-rigidity threshold. Decoder attainment not yet a theorem |
+| [`CausalSeed/Arithmetic.lean`](CausalSeed/Arithmetic.lean) | Subset-sum defect and `gamma` |
+| [`CausalSeed/Probe.lean`](CausalSeed/Probe.lean) | Unrealizable index implies membership in the defect |
+| [`CausalSeed/Profile.lean`](CausalSeed/Profile.lean) | Depth-two attainment, exact rigidity, sharp threshold |
 | [`AXIOMS.txt`](AXIOMS.txt) | `#print axioms` for the declarations above |
 
 ## The theorem
@@ -296,6 +298,19 @@ The same three axioms are reported for every declaration below. They are the ker
 | `∫₀^∞ (1 − Φ(t/c)) dt = c/√(2π)` | `integral_gaussTail`, `integral_normalTail_scale` |
 | Mean of profile (13), including `b = 0` | `profile_mean`, `profile_mean_zero` |
 | A gap of at most `c⋆` does not change a `√n` coefficient | `second_order_transfer` |
+
+### Arithmetic rigidity of a decoder family
+
+Separate from the seed theorem. Positive weights, summing to 1. No use of the Shannon bound.
+
+| Step | Declaration |
+| --- | --- |
+| An unrealizable transcript tuple splits into two policies of equal cylinder mass | `unrealizable_splits` |
+| Every unrealizable index of an `ε`-accurate family lies in the defect | `bad_mem_defect` |
+| The defect is exactly the bad set of one tree of depth at most 2 | `profile_attainment` |
+| Incompatible mass is at most the defect mass, and the mass is attained | `incompatible_mass_le`, `profile_mass_attained` |
+| Distinct subset sums iff every exact family is realizable | `exact_rigidity` |
+| Every `ε`-accurate family is realizable iff `2ε < gamma` | `sharp_threshold` |
 
 ## Build
 

@@ -1,13 +1,19 @@
 /-
-Arithmetic rigidity of a fixed finite seed.
+Arithmetic profile of a fixed finite seed.
 
-The incompatible mass of any decoder family is at most the weight of the
-seed indices that participate in a subset-sum collision of width `2ε`.
-The bound is attained by a tree of depth at most two.
+An index lies in the defect when it belongs to the symmetric difference of
+two subsets whose weights differ by at most `2ε`. Distinct subset sums are
+equivalent to an empty defect at `ε = 0`, and the defect is empty if and only
+if `2ε` is strictly below the minimum separation `gamma`.
 
-This file does not use the Shannon bound.
+The decoder half is not in this file. `CausalSeed/Probe.lean` puts every
+unrealizable index of an `ε`-accurate family into that defect.
+`CausalSeed/Profile.lean` attains the equality on one tree of depth at most
+two and records the two corollaries. None of these files uses the Shannon bound.
 -/
 import CausalSeed.Spectrum
+import CausalSeed.Entropy
+import CausalSeed.Close
 import Mathlib.Data.Finset.Image
 import Mathlib.Data.Finset.SymmDiff
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
@@ -67,16 +73,16 @@ theorem unequalPairs_nonempty {m : ℕ} (hm : 0 < m) :
     exact Finset.mem_singleton_self _
   simp at this
 
-def gapSet {m : ℕ} (w : Fin m → ℝ) : Finset ℝ :=
+def subsetGapSet {m : ℕ} (w : Fin m → ℝ) : Finset ℝ :=
   (unequalPairs m).image (fun p => |subsetSum w p.1 - subsetSum w p.2|)
 
-theorem gapSet_nonempty {m : ℕ} (hm : 0 < m) (w : Fin m → ℝ) :
-    (gapSet w).Nonempty := by
+theorem subsetGapSet_nonempty {m : ℕ} (hm : 0 < m) (w : Fin m → ℝ) :
+    (subsetGapSet w).Nonempty := by
   obtain ⟨p, hp⟩ := unequalPairs_nonempty hm
   exact ⟨_, Finset.mem_image.mpr ⟨p, hp, rfl⟩⟩
 
 def gamma {m : ℕ} (hm : 0 < m) (w : Fin m → ℝ) : ℝ :=
-  (gapSet w).min' (gapSet_nonempty hm w)
+  (subsetGapSet w).min' (subsetGapSet_nonempty hm w)
 
 theorem gamma_le {m : ℕ} (hm : 0 < m) (w : Fin m → ℝ)
     {A B : Finset (Fin m)} (hne : A ≠ B) :
@@ -88,7 +94,7 @@ theorem gamma_le {m : ℕ} (hm : 0 < m) (w : Fin m → ℝ)
 theorem exists_gamma_pair {m : ℕ} (hm : 0 < m) (w : Fin m → ℝ) :
     ∃ A B : Finset (Fin m), A ≠ B ∧
       |subsetSum w A - subsetSum w B| = gamma hm w := by
-  have hmem := Finset.min'_mem (gapSet w) (gapSet_nonempty hm w)
+  have hmem := Finset.min'_mem (subsetGapSet w) (subsetGapSet_nonempty hm w)
   obtain ⟨p, hp, hg⟩ := Finset.mem_image.mp hmem
   refine ⟨p.1, p.2, ?_, hg⟩
   simpa [unequalPairs] using hp
@@ -227,16 +233,6 @@ def seedRealizes {T : Tree} (d : Strategy T) : SeedAssign T :=
 def seedRealizable {T : Tree} (α : SeedAssign T) : Prop :=
   ∃ d : Strategy T, seedRealizes d = α
 
-def defaultPolicy : (T : Tree) → Policy T
-  | .leaf => PUnit.unit
-  | .node nA hA nY _ _ _ _ child =>
-      (⟨0, hA⟩, fun a y => defaultPolicy (child a y))
-
-def defaultStrategy : (T : Tree) → Strategy T
-  | .leaf => PUnit.unit
-  | .node _ hA nY hY _ _ _ child =>
-      (fun a => ⟨0, hY a⟩, fun a y => defaultStrategy (child a y))
-
 def seedMass {m : ℕ} (w : Fin m → ℝ) (p : Fin m → Prop) : ℝ :=
   ∑ i ∈ Finset.univ.filter (fun i => p i), w i
 
@@ -255,52 +251,14 @@ def Accurate {m : ℕ} (w : Fin m → ℝ) (ε : ℝ) {T : Tree}
 def oneAssign {m : ℕ} {T : Tree} (f : Decoder (m := m) T) (i : Fin m) : SeedAssign T :=
   fun π => f π i
 
-/-! ## Sums along a policy -/
-
-theorem policySum_zero : ∀ {T : Tree} (π : Policy T),
-    policySum (fun _ => (0 : ℝ)) π = 0 := by
-  intro T
-  induction T with
-  | leaf => intro π; rfl
-  | node nA hA nY hY K Kpos Ksum child ih =>
-      intro π
-      simp only [policySum]
-      rw [Finset.sum_eq_zero]
-      intro y _
-      exact ih _ _ _
-
-theorem policySum_mul : ∀ {T : Tree} (c : ℝ) (f : Leaf T → ℝ) (π : Policy T),
-    policySum (fun ℓ => c * f ℓ) π = c * policySum f π := by
-  intro T
-  induction T with
-  | leaf => intro c f π; rfl
-  | node nA hA nY hY K Kpos Ksum child ih =>
-      intro c f π
-      simp only [policySum]
-      simp_rw [ih, Finset.mul_sum]
-
-theorem policySum_leafMass : ∀ {T : Tree} (π : Policy T),
-    policySum (fun ℓ => leafMass ℓ) π = 1 := by
-  intro T
-  induction T with
-  | leaf => intro π; rfl
-  | node nA hA nY hY K Kpos Ksum child ih =>
-      intro π
-      simp only [policySum, leafMass]
-      have hstep : ∀ y, policySum (fun ℓ => K π.1 y * leafMass ℓ) (π.2 π.1 y) =
-          K π.1 y * policySum (fun ℓ => leafMass ℓ) (π.2 π.1 y) :=
-        fun y => policySum_mul (K π.1 y) (fun ℓ => leafMass ℓ) _
-      simp_rw [hstep, ih, mul_one]
-      exact Ksum π.1
-
-
 /-!
-The decoder half of the note is not in this file yet. What is checked is the
-arithmetic profile of a fixed seed: the defect set, its coefficient form's
-subset-sum description, the separation `gamma`, and the two equivalences
-`subsetSumsDistinct ↔ defect empty at 0` and `defect empty ↔ 2ε < gamma`.
-The inclusion of every incompatible decoder index in that defect, and the
-depth-two attainment, are the next Lean target. They are not theorems here.
+Checked here: the defect set, its symmetric-difference description, the
+separation `gamma`, and the two equivalences `subsetSumsDistinct ↔ defect
+empty at 0` and `defect empty ↔ 2ε < gamma`. The inclusion of every
+incompatible decoder index in that defect is `bad_mem_defect` in
+`CausalSeed/Probe.lean`. The depth-two attainment and the rigidity
+corollaries are `profile_attainment`, `exact_rigidity` and `sharp_threshold`
+in `CausalSeed/Profile.lean`.
 -/
 
 #print axioms subsetSumsDistinct_iff_defect_empty

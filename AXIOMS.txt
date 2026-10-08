@@ -1,4 +1,4 @@
-#print axioms, from the lake build of 5 October 2026
+#print axioms, from the lake build of 8 October 2026
 Lean 4.35.0-rc3, mathlib 7d6757bc18680044fc0ff6efc8ee20494b408556
 
 CausalSpectrum.causal_realization
@@ -9,6 +9,16 @@ CausalSpectrum.causal_truncation
 
 CausalSpectrum.one_seed_shannon
   depends on axioms: [propext, choice, Quot.sound]
+
+CausalSpectrum.entropy_ge_envelope
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.gapSup_le_shannonOverhead
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.penalty_shortfall
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.causalMin_le_penalised_of_one
+  depends on axioms: [propext, choice, Quot.sound]
+
 
 CausalSpectrum.exact_tree_minimax
   depends on axioms: [propext, choice, Quot.sound]

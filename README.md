@@ -111,31 +111,29 @@ The minimum runs over all couplings of the policy transcripts, with no compatibi
 
 ## The exact penalty
 
-We assume this reduction is already known. It is not a Lean theorem here, and it is not claimed as a discovery. Let `M(T)` be the least entropy of an ordinary coupling of the policy transcripts, and
+We assume this reduction is already known. It is not claimed as a discovery. Let `M(T)` be the least entropy of an ordinary coupling of the policy transcripts, and
 
 ```text
 G_* = sup over finite controlled trees T of (C(T) − M(T)).
 ```
 
-The checked Shannon bound gives `G_* ≤ c_*`.
+The checked Shannon bound gives `G_* ≤ c_*`. In Lean that is `CausalSpectrum.gapSup_le_shannonOverhead`: `gapSup` is this supremum and `shannonOverhead` is `c_*`.
 
-If a coupling has advantage `d = C(T) − H(Γ) > 0` and inconsistent mass `η < 1`, deleting its compatible part leaves a residual tree `T'` and the conditional coupling `Γ(· | B)`. The same cancellation as above yields
+`CausalSpectrum.entropy_ge_envelope` is the coupling form of the envelope. Every joint law of the deterministic transcripts, compatible or not, has entropy at least `envelopeMean`. A positive atom is no heavier than any transcript it selects, so its self-information dominates that transcript, and the layer-cake integral of the joint is at least `1 − F⋆`. The ordinary minimum is therefore at least the envelope, and the greedy seed pushed onto its realised transcripts is a compatible coupling of entropy at most `L + c_*`. That is why the gap cannot exceed `c_*`.
 
-```text
-d ≤ η (C(T') − H(Γ(· | B))),
-```
+`CausalSpectrum.penalty_shortfall` says that no nonnegative coefficient strictly below `gapSup` is universal. If `0 ≤ κ < gapSup`, some tree has penalised infimum strictly smaller than its causal minimum.
 
-so the residual advantage is at least `d/η`, which is strictly larger than `d`. At least one positive atom of `Γ` lies in the compatible part and disappears. The residual tree is no deeper. A finite support therefore reaches a coupling on which every atom is inconsistent, without lowering the advantage. The extremal gap is witnessed by fully inconsistent couplings.
+Two endpoint cases of the identity are checked. If the inconsistent mass is zero, the coupling is already compatible, so `causalMin ≤ H`. If the inconsistent mass is one, `causalMin ≤ H + gapSup`. Those are `causalMin_le_penalised_of_zero` and `causalMin_le_penalised_of_one`.
 
-That purification is what replaces `c_*` by `G_*`. For every tree and every coupling, `C(T) ≤ H(Γ) + G_* Γ(B)`, because the residual gap is at most `G_*`. A compatible seed attains the value `C(T)`. Hence
+The intermediate case `0 < Γ(B) < 1` is not a Lean theorem in this repository. It is the residual-tree step: delete the compatible part, prune the zero branches of what remains, and apply the same gap on that tree. `pruned` in `CausalSeed/Penalty.lean` builds that tree. The identification of its leaf masses, and the push of the conditional coupling back and forth, are not finished, so the identity
 
 ```text
-C(T) = min over Γ of [ H(Γ) + G_* Γ(B) ].
+C(T) = inf over Γ of [ H(Γ) + G_* Γ(B) ]
 ```
 
-No smaller universal coefficient works. If `κ < G_*`, some tree has `C − M > κ`, and its minimum-entropy coupling makes the penalised value strictly smaller than `C`. If the penalty is strictly larger than `G_*`, every minimiser is compatible. Thus `G_*` is at once the largest entropic price of consistency and the least universal penalty that forces it.
+is not checked here. Neither is the statement that every minimiser at a penalty strictly above `G_*` is compatible, beyond the two endpoints.
 
-A stated witness gives `2/9 ≤ G_*`. The search that produced it is not in this repository and was not rerun here. The interval recorded from that computation is
+A stated witness gives `2/9 ≤ G_*`. The search that produced it is not in this repository and was not rerun here. Nothing in the Lean development depends on that number. The interval recorded from that computation remains
 
 ```text
 2/9 ≤ G_* ≤ (1 + log₂ e) / 2.
@@ -187,7 +185,7 @@ The PDF files are the written note. The checked statement is `causal_realization
 | The theorem | `CausalSpectrum.causal_realization` in `CausalSeed/Entropy.lean` |
 | The `(1 − ε)`-support prefix, assumed known, not formalised | section Separate compressions, one prefix |
 | Repair by a linear penalty, assumed known, not formalised | section Repair of an inconsistent coupling |
-| Exact penalty `G_*`, assumed known, not formalised | section The exact penalty |
+| Exact penalty `G_*`: the envelope, the gap, and the failure of every smaller nonnegative coefficient. The identity at intermediate inconsistent mass is not checked | `CausalSeed/Penalty.lean`; section The exact penalty |
 | The Shannon integral | `CausalSpectrum.one_seed_shannon` in the same file |
 | The seed, the policies, the envelope | `CausalSeed/Spectrum.lean`, `CausalSeed/Gap.lean` |
 | The Wasserstein identity, min-entropy, Rényi scalars | `CausalSeed/Note.lean` |

@@ -6,6 +6,39 @@ Jan Mikulik, 5 October 2026.
 
 That is the theorem of this repository, `CausalSpectrum.causal_realization`, checked in Lean. It is the result to read and to cite. The diffusion profile of the square-root asymptotic is not this result, and the numerical value of the gap is not a new Shannon limit.
 
+Penalty identity checked 8 October 2026: for every coefficient at least the gap, the penalised infimum is the causal minimum. The proof is [`CausalSeed/Identity.lean`](CausalSeed/Identity.lean#L569).
+
+## How to read this
+
+The object is one finite controlled tree and every deterministic policy on it. A policy may choose the next action from the history so far. A causal seed is one shared source of randomness and a decoder that realises the prescribed kernel at every history, including on actions the realised path never takes. An ordinary coupling of the transcript laws does not have to do that.
+
+Read the three checked statements in this order. The later sections spell out the same claims; they are not further theorems.
+
+1. **One exact seed.** [`CausalSeed/Entropy.lean`](CausalSeed/Entropy.lean), declaration `CausalSpectrum.causal_realization`. Greedy extraction produces one finite seed that is exact for every deterministic policy, and `Z ≼_st J ≼_st Z + E` with `E ~ Exp(ln 2)`. The constant is not new. The compatible decoder is the statement. The integral form is `CausalSpectrum.one_seed_shannon`: `L ≤ H ≤ L + (1 + log₂ e) / 2`.
+2. **The penalty identity.** [`CausalSeed/Identity.lean`](CausalSeed/Identity.lean#L569), declaration `CausalSpectrum.penaltyMin_eq_causalMin`. For every coefficient `κ ≥ gapSup`, and therefore for every `κ ≥ c_*`,
+
+   ```text
+   C(T) = inf over couplings Γ of [ H(Γ) + κ · Γ(B) ].
+   ```
+
+   The inequality underneath it is `causalMin_le_penalised` in the same file, at [line 131](CausalSeed/Identity.lean#L131): every coupling satisfies `causalMin T ≤ H(Γ) + gapSup · Γ(B)`. The endpoints `Γ(B) ∈ {0, 1}` are in [`CausalSeed/Penalty.lean`](CausalSeed/Penalty.lean). The intermediate mass deletes the compatible part in [`CausalSeed/Close.lean`](CausalSeed/Close.lean) and carries the residual coupling across the pruned tree in [`CausalSeed/Transport.lean`](CausalSeed/Transport.lean).
+3. **The gap cannot exceed the Shannon overhead.** `CausalSpectrum.gapSup_le_shannonOverhead` says `G_* ≤ c_*`. `CausalSpectrum.penalty_shortfall` says that no nonnegative coefficient strictly below `gapSup` is universal.
+
+Not the theorem to cite: the square-root asymptotic in the PDF, the identification of the profile limit, and the claim that every minimiser strictly above `G_*` is compatible. The `(1 − ε)`-support prefix below follows from the checked minimax lemma; it is recorded as known and it is not a Lean theorem of this repository.
+
+| File | What a reader opens it for |
+| --- | --- |
+| [`CausalSeed/Entropy.lean`](CausalSeed/Entropy.lean) | The seed theorem and the truncation corollary |
+| [`CausalSeed/Identity.lean`](CausalSeed/Identity.lean#L569) | `penaltyMin κ T = causalMin T` for `κ ≥ gapSup` |
+| [`CausalSeed/Close.lean`](CausalSeed/Close.lean) | Residual flow after the compatible part is removed |
+| [`CausalSeed/Transport.lean`](CausalSeed/Transport.lean) | Pruned residual tree; transport of leaves, policies, and strategies |
+| [`CausalSeed/Penalty.lean`](CausalSeed/Penalty.lean) | `G_*`, the shortfall, the endpoint cases |
+| [`CausalSeed/Spectrum.lean`](CausalSeed/Spectrum.lean) | Tree, policy, strategy, greedy extraction |
+| [`CausalSeed/Gap.lean`](CausalSeed/Gap.lean) | Envelope against an ordinary coupling |
+| [`CausalSeed/Note.lean`](CausalSeed/Note.lean) | Wasserstein identity, Rényi scalars, repeated-kernel min-entropy |
+| [`CausalSeed/SecondOrder.lean`](CausalSeed/SecondOrder.lean) | Mean of the diffusion profile only; not the `√n` asymptotic |
+| [`AXIOMS.txt`](AXIOMS.txt) | `#print axioms` for the declarations above |
+
 ## The theorem
 
 For every finite controlled history tree, greedy extraction of the probability flow produces one finite seed which is an exact decoder for every deterministic policy. Let `Z` be the information of the lower envelope of the deterministic-policy transcript laws, and let `J` be the information of that seed. Then
@@ -180,14 +213,19 @@ The PDF files are the written note. The checked statement is `causal_realization
 
 | What | Where |
 | --- | --- |
-| The theorem | `CausalSpectrum.causal_realization` in `CausalSeed/Entropy.lean` |
-| The `(1 − ε)`-support prefix, assumed known, not formalised | section Separate compressions, one prefix |
-| Repair by a linear penalty. The infimum identity is checked; the total-variation reconstruction in the section is not a separate theorem | `CausalSeed/Identity.lean`; section Repair of an inconsistent coupling |
-| Exact penalty `G_*`: the envelope, the gap, the shortfall, and `penaltyMin κ = causalMin` for `κ ≥ gapSup`. A strict minimiser above `G_*` is not a separate theorem | `CausalSeed/Penalty.lean`, `CausalSeed/Identity.lean`; section The exact penalty |
+| Start here | section How to read this |
+| The theorem | `CausalSpectrum.causal_realization` in [`CausalSeed/Entropy.lean`](CausalSeed/Entropy.lean) |
 | The Shannon integral | `CausalSpectrum.one_seed_shannon` in the same file |
-| The seed, the policies, the envelope | `CausalSeed/Spectrum.lean`, `CausalSeed/Gap.lean` |
-| The Wasserstein identity, min-entropy, Rényi scalars | `CausalSeed/Note.lean` |
-| Profile mean and the `√n` transfer only | `CausalSeed/SecondOrder.lean` |
+| The penalty identity | `CausalSpectrum.penaltyMin_eq_causalMin` in [`CausalSeed/Identity.lean`](CausalSeed/Identity.lean#L569) |
+| The inequality under that identity | `CausalSpectrum.causalMin_le_penalised` in [`CausalSeed/Identity.lean`](CausalSeed/Identity.lean#L131) |
+| Residual flow used by the intermediate case | [`CausalSeed/Close.lean`](CausalSeed/Close.lean) |
+| Pruned tree and transport used by the intermediate case | [`CausalSeed/Transport.lean`](CausalSeed/Transport.lean) |
+| Envelope, gap, shortfall, endpoints | [`CausalSeed/Penalty.lean`](CausalSeed/Penalty.lean); section The exact penalty |
+| The `(1 − ε)`-support prefix, assumed known, not formalised | section Separate compressions, one prefix |
+| Repair narrative. The infimum identity is the Lean theorem above; the total-variation reconstruction in the section is not a separate theorem | section Repair of an inconsistent coupling |
+| Seed, policies, envelope | [`CausalSeed/Spectrum.lean`](CausalSeed/Spectrum.lean), [`CausalSeed/Gap.lean`](CausalSeed/Gap.lean) |
+| Wasserstein identity, min-entropy, Rényi scalars | [`CausalSeed/Note.lean`](CausalSeed/Note.lean) |
+| Profile mean and the `√n` transfer only | [`CausalSeed/SecondOrder.lean`](CausalSeed/SecondOrder.lean) |
 | Axiom audit | [`AXIOMS.txt`](AXIOMS.txt) |
 | The note, including arguments not checked here | [`causal_spectrum.pdf`](causal_spectrum.pdf), [`one_seed_entropy.pdf`](one_seed_entropy.pdf) |
 
@@ -233,6 +271,8 @@ The same three axioms are reported for every declaration below. They are the ker
 | Residual mass after the cutoff `δ` | `CausalSpectrum.greedy_refined_bound` |
 | Exact seed together with the refined cutoffs | `CausalSpectrum.exact_seed_with_refined_cutoffs` |
 | Shannon sandwich, the integral, with the refined constant | `CausalSpectrum.one_seed_shannon` |
+| Every coupling pays at most `gapSup` on its inconsistent mass | `CausalSpectrum.causalMin_le_penalised` |
+| Penalised infimum equals the causal minimum for `κ ≥ gapSup` | `CausalSpectrum.penaltyMin_eq_causalMin` |
 
 ### Identities in the same closure
 

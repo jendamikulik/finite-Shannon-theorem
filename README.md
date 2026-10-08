@@ -109,6 +109,39 @@ C = min over couplings Γ of [ H(Γ) + κ Γ(B) ].
 
 The minimum runs over all couplings of the policy transcripts, with no compatibility restriction. It is attained by an exact causal seed. The identity is not special to `κ = c_*`. What `c_*` supplies is that the coefficient is large enough. For every `λ > c_*`, every minimiser of `H(Γ) + λ Γ(B)` is compatible: an inconsistent candidate would be strictly improved by the repair. The strict separation below this coefficient is not argued here.
 
+## The exact penalty
+
+We assume this reduction is already known. It is not a Lean theorem here, and it is not claimed as a discovery. Let `M(T)` be the least entropy of an ordinary coupling of the policy transcripts, and
+
+```text
+G_* = sup over finite controlled trees T of (C(T) − M(T)).
+```
+
+The checked Shannon bound gives `G_* ≤ c_*`.
+
+If a coupling has advantage `d = C(T) − H(Γ) > 0` and inconsistent mass `η < 1`, deleting its compatible part leaves a residual tree `T'` and the conditional coupling `Γ(· | B)`. The same cancellation as above yields
+
+```text
+d ≤ η (C(T') − H(Γ(· | B))),
+```
+
+so the residual advantage is at least `d/η`, which is strictly larger than `d`. At least one positive atom of `Γ` lies in the compatible part and disappears. The residual tree is no deeper. A finite support therefore reaches a coupling on which every atom is inconsistent, without lowering the advantage. The extremal gap is witnessed by fully inconsistent couplings.
+
+That purification is what replaces `c_*` by `G_*`. For every tree and every coupling, `C(T) ≤ H(Γ) + G_* Γ(B)`, because the residual gap is at most `G_*`. A compatible seed attains the value `C(T)`. Hence
+
+```text
+C(T) = min over Γ of [ H(Γ) + G_* Γ(B) ].
+```
+
+No smaller universal coefficient works. If `κ < G_*`, some tree has `C − M > κ`, and its minimum-entropy coupling makes the penalised value strictly smaller than `C`. If the penalty is strictly larger than `G_*`, every minimiser is compatible. Thus `G_*` is at once the largest entropic price of consistency and the least universal penalty that forces it.
+
+A stated witness gives `2/9 ≤ G_*`. The search that produced it is not in this repository and was not rerun here. The interval recorded from that computation is
+
+```text
+2/9 ≤ G_* ≤ (1 + log₂ e) / 2.
+```
+
+
 
 
 
@@ -154,6 +187,7 @@ The PDF files are the written note. The checked statement is `causal_realization
 | The theorem | `CausalSpectrum.causal_realization` in `CausalSeed/Entropy.lean` |
 | The `(1 − ε)`-support prefix, assumed known, not formalised | section Separate compressions, one prefix |
 | Repair by a linear penalty, assumed known, not formalised | section Repair of an inconsistent coupling |
+| Exact penalty `G_*`, assumed known, not formalised | section The exact penalty |
 | The Shannon integral | `CausalSpectrum.one_seed_shannon` in the same file |
 | The seed, the policies, the envelope | `CausalSeed/Spectrum.lean`, `CausalSeed/Gap.lean` |
 | The Wasserstein identity, min-entropy, Rényi scalars | `CausalSeed/Note.lean` |

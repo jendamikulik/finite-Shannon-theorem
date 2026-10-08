@@ -11,7 +11,7 @@ import Mathlib.Data.List.Dedup
 import Mathlib.Data.List.Sort
 import Mathlib.Data.Fintype.BigOperators
 import Mathlib.MeasureTheory.Integral.Bochner.Set
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+import Mathlib.Algebra.Order.Floor.Defs
 
 noncomputable section
 open Classical
@@ -2037,8 +2037,158 @@ theorem causal_realization (T : Tree) :
     obtain ⟨π, hπ⟩ := truncated_le_couple ht t
     exact le_trans htail (le_trans hπ (policy_factor_le_couple T π t))
 
+/-- Atoms whose weight is at least `δ`. -/
+noncomputable def keptCount {T : Tree} : List (Atom T) → ℝ → ℕ
+  | [], _ => 0
+  | a :: tail, δ => (if δ ≤ a.1 then 1 else 0) + keptCount tail δ
+
+theorem keptCount_mul_le {T : Tree} (atoms : List (Atom T)) (δ : ℝ)
+    (hδ : 0 ≤ δ) (hnn : ∀ a ∈ atoms, 0 ≤ a.1) :
+    δ * (keptCount atoms δ : ℝ) ≤ totalWeight atoms := by
+  induction atoms with
+  | nil => simp [keptCount, totalWeight]
+  | cons a tail ih =>
+      have htail := ih (fun b hb => hnn b (List.mem_cons_of_mem a hb))
+      have ha : 0 ≤ a.1 := hnn a (by simp)
+      simp only [keptCount, totalWeight, List.map_cons, List.sum_cons]
+      by_cases h : δ ≤ a.1
+      · simp only [h, ite_true]
+        have hcast : ((1 + keptCount tail δ : ℕ) : ℝ) =
+            1 + (keptCount tail δ : ℝ) := by norm_cast
+        rw [hcast]
+        simp only [totalWeight] at htail
+        linarith
+      · simp only [h, ite_false, zero_add]
+        exact le_trans htail (le_add_of_nonneg_left ha)
+
+theorem keptCount_le_dyadic {T : Tree} {atoms : List (Atom T)} (u : ℝ)
+    (hnn : ∀ a ∈ atoms, 0 ≤ a.1) (htot : totalWeight atoms = 1) :
+    (keptCount atoms ((2 : ℝ) ^ (-u)) : ℝ) ≤ (2 : ℝ) ^ u := by
+  have hδ : 0 < (2 : ℝ) ^ (-u) := Real.rpow_pos_of_pos (by norm_num) (-u)
+  have hmul := keptCount_mul_le atoms ((2 : ℝ) ^ (-u)) hδ.le hnn
+  rw [htot] at hmul
+  have hcount : (keptCount atoms ((2 : ℝ) ^ (-u)) : ℝ) ≤
+      1 / ((2 : ℝ) ^ (-u)) :=
+    (le_div_iff₀ hδ).mpr (by simpa [mul_comm] using hmul)
+  have hinv : ((2 : ℝ) ^ (-u))⁻¹ = (2 : ℝ) ^ u := by
+    rw [Real.rpow_neg (by norm_num : (0 : ℝ) ≤ 2), inv_inv]
+  rw [div_eq_mul_inv, one_mul, hinv] at hcount
+  exact hcount
+
+theorem coupleSurv_le_exp (T : Tree) (t s : ℝ) :
+    coupleSurv T (t + s) ≤ (1 - Fstar T t) + (2 : ℝ) ^ (-s) := by
+  set n := (infoValues T).length
+  have hexp : 0 ≤ (2 : ℝ) ^ (-s) := (Real.rpow_pos_of_pos (by norm_num) (-s)).le
+  have hpoint : ∀ i ∈ Finset.range n,
+      envInc T i * coupleFactor T (t + s) i ≤
+        envTail T i t + envInc T i * (2 : ℝ) ^ (-s) := by
+    intro i hi
+    have hi' : i < n := Finset.mem_range.mp hi
+    have hμ : 0 ≤ envInc T i := envInc_nonneg T i
+    unfold coupleFactor envTail
+    rw [dif_pos hi', dif_pos hi']
+    by_cases hz : t < (infoValues T)[i]
+    · rw [if_pos hz]
+      have hmin : min 1 ((2 : ℝ) ^ ((infoValues T)[i] - (t + s))) ≤ 1 :=
+        min_le_left _ _
+      have hmul := mul_le_mul_of_nonneg_left hmin hμ
+      have hrest : 0 ≤ envInc T i * (2 : ℝ) ^ (-s) := mul_nonneg hμ hexp
+      linarith
+    · rw [if_neg hz]
+      have hle : (infoValues T)[i] ≤ t := le_of_not_gt hz
+      have hshift : (infoValues T)[i] - (t + s) =
+          ((infoValues T)[i] - t) + (-s) := by ring
+      have hunit : (2 : ℝ) ^ ((infoValues T)[i] - t) ≤ 1 := by
+        rw [← Real.rpow_zero (2 : ℝ)]
+        exact Real.rpow_le_rpow_of_exponent_le (by norm_num : (1 : ℝ) ≤ 2)
+          (by linarith)
+      have hpow : (2 : ℝ) ^ ((infoValues T)[i] - (t + s)) ≤ (2 : ℝ) ^ (-s) := by
+        rw [hshift, Real.rpow_add (by norm_num : (0 : ℝ) < 2)]
+        calc
+          (2 : ℝ) ^ ((infoValues T)[i] - t) * (2 : ℝ) ^ (-s)
+              ≤ 1 * (2 : ℝ) ^ (-s) :=
+                mul_le_mul_of_nonneg_right hunit hexp
+          _ = (2 : ℝ) ^ (-s) := by ring
+      have hmin : min 1 ((2 : ℝ) ^ ((infoValues T)[i] - (t + s))) ≤
+          (2 : ℝ) ^ (-s) := le_trans (min_le_right _ _) hpow
+      simpa [zero_add] using mul_le_mul_of_nonneg_left hmin hμ
+  have hsum := Finset.sum_le_sum hpoint
+  have hsplit :
+      (Finset.range n).sum (fun i =>
+          envTail T i t + envInc T i * (2 : ℝ) ^ (-s)) =
+        (Finset.range n).sum (fun i => envTail T i t) +
+          (2 : ℝ) ^ (-s) * (Finset.range n).sum (envInc T) := by
+    rw [Finset.sum_add_distrib]
+    congr 1
+    rw [← Finset.sum_mul, mul_comm]
+  have hmass : (Finset.range n).sum (envInc T) = 1 := by
+    rw [← cumsum_eq_sum, cumsum_envInc_last]
+  rw [hsplit, hmass, ← one_sub_Fstar_sum, mul_one] at hsum
+  unfold coupleSurv
+  exact hsum
+
+/-- The same exact seed, read operationally. For `s ≥ 0`,
+    `Pr(J > t + s) ≤ Pr(Z > t) + 2^{-s}`. Atoms of weight at least `2^{-u}`
+    number at most `2^u`. If the envelope tail is at most `ε / 2` and
+    `s = log₂(2 / ε)`, at most `⌊2^{t+1} / ε⌋` atoms remain and the discarded
+    mass is at most `ε`. -/
+theorem causal_truncation (T : Tree) :
+    ∃ atoms : List (Atom T),
+      GreedyTrace (Field.p T) atoms ∧
+      (∀ a ∈ atoms, 0 < a.1) ∧
+      totalWeight atoms = 1 ∧
+      (∀ (π : Policy T) (ℓ : Leaf T),
+        transcriptWeight atoms π ℓ =
+          if CompatiblePolicy ℓ π then leafMass ℓ else 0) ∧
+      (∀ t s : ℝ, 0 ≤ s →
+        seedTail atoms (t + s) ≤ (1 - Fstar T t) + (2 : ℝ) ^ (-s)) ∧
+      (∀ u : ℝ, (keptCount atoms ((2 : ℝ) ^ (-u)) : ℝ) ≤ (2 : ℝ) ^ u) ∧
+      (∀ (ε t : ℝ), 0 < ε → ε ≤ 2 → (1 - Fstar T t) ≤ ε / 2 →
+        seedTail atoms (t + Real.logb 2 (2 / ε)) ≤ ε ∧
+        keptCount atoms ((2 : ℝ) ^ (-(t + Real.logb 2 (2 / ε)))) ≤
+          ⌊(2 : ℝ) ^ (t + 1) / ε⌋₊) := by
+  obtain ⟨atoms, ht, hpos, htot, hexact, -, htail⟩ := causal_realization T
+  have hnn : ∀ a ∈ atoms, 0 ≤ a.1 := fun a ha => (hpos a ha).le
+  refine ⟨atoms, ht, hpos, htot, hexact, ?_, ?_, ?_⟩
+  · intro t s hs
+    exact le_trans (htail (t + s)) (coupleSurv_le_exp T t s)
+  · intro u
+    exact keptCount_le_dyadic u hnn htot
+  · intro ε t hε hε2 henv
+    set s := Real.logb 2 (2 / ε)
+    have hratio : 0 < 2 / ε := div_pos (by norm_num) hε
+    have hone : (1 : ℝ) ≤ 2 / ε := by
+      rw [one_le_div hε]
+      linarith
+    have hs : 0 ≤ s := Real.logb_nonneg (by norm_num : (1 : ℝ) < 2) hone
+    have hbase : (2 : ℝ) ^ s = 2 / ε :=
+      Real.rpow_logb (by norm_num : (0 : ℝ) < 2) (by norm_num : (2 : ℝ) ≠ 1) hratio
+    have hsmall : (2 : ℝ) ^ (-s) = ε / 2 := by
+      rw [Real.rpow_neg (by norm_num : (0 : ℝ) ≤ 2), hbase]
+      field_simp
+    have htail' : seedTail atoms (t + s) ≤ (1 - Fstar T t) + (2 : ℝ) ^ (-s) :=
+      le_trans (htail (t + s)) (coupleSurv_le_exp T t s)
+    refine ⟨?_, ?_⟩
+    · rw [hsmall] at htail'
+      linarith
+    · have hnum : (keptCount atoms ((2 : ℝ) ^ (-(t + s))) : ℝ) ≤ (2 : ℝ) ^ (t + s) :=
+        keptCount_le_dyadic (t + s) hnn htot
+      have hprod : (2 : ℝ) ^ (t + s) = (2 : ℝ) ^ (t + 1) / ε := by
+        have htwo : (2 : ℝ) ^ t * 2 = (2 : ℝ) ^ (t + 1) := by
+          simpa [Real.rpow_one] using
+            (Real.rpow_add (by norm_num : (0 : ℝ) < 2) t (1 : ℝ)).symm
+        calc
+          (2 : ℝ) ^ (t + s) = (2 : ℝ) ^ t * (2 : ℝ) ^ s :=
+            Real.rpow_add (by norm_num : (0 : ℝ) < 2) t s
+          _ = (2 : ℝ) ^ t * (2 / ε) := by rw [hbase]
+          _ = ((2 : ℝ) ^ t * 2) / ε := by ring
+          _ = (2 : ℝ) ^ (t + 1) / ε := by rw [htwo]
+      rw [hprod] at hnum
+      exact Nat.le_floor hnum
+
 #print axioms one_seed_shannon
 #print axioms causal_realization
+#print axioms causal_truncation
 
 end CausalSpectrum
 

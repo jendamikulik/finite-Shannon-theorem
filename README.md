@@ -31,6 +31,25 @@ L ≤ H ≤ L + (1 + log₂ e) / 2.
 
 The refinement sharpens the integral. It does not replace the stochastic bound by a smaller exponential.
 
+## Corollary
+
+The same seed gives a uniform truncation. `CausalSpectrum.causal_truncation` is this reading of `causal_realization`, not a second discovery. For every real `t` and every `s ≥ 0`,
+
+```text
+Pr(J > t + s) ≤ Pr(Z > t) + 2^{−s}.
+```
+
+In the formalization that is `seedTail (t + s) ≤ (1 − F⋆(t)) + 2^{−s}`. Atoms of weight at least `2^{−u}` number at most `2^u`. Therefore, if `0 < ε ≤ 2` and `1 − F⋆(t) ≤ ε / 2`, the choice `s = log₂(2 / ε)` leaves at most
+
+```text
+⌊2^{t+1} / ε⌋
+```
+
+atoms, and the discarded mass is at most `ε`. Renormalising those atoms moves the seed by at most `ε` in total variation. Every function of the seed moves by at most that much: every deterministic-policy transcript, and every stopping time inside this same finite tree. One truncation serves all of them at once.
+
+It does not control the conditional kernel at one history whose probability is much smaller than `ε`. The guarantee is on the law of what the path actually shows.
+
+
 ## What is new
 
 An ordinary minimum-entropy coupling assigns one joint law to a fixed finite list of marginals. It does not, by itself, give a decoder that realises the prescribed kernel at every history and every requested action, including actions that are never taken on the realised branch. The theorem produces that decoder. One finite list of weights is exact for every deterministic policy at once, and the information excess over the adaptive envelope is bounded by a single exponential, uniformly in the horizon.
@@ -113,6 +132,7 @@ The same three axioms are reported for every declaration below. They are the ker
 | Step | Declaration |
 | --- | --- |
 | Stochastic realization, `Z ≼ J ≼ Z + Exp(ln 2)` | `CausalSpectrum.causal_realization` |
+| Truncation, `Pr(J > t + s) ≤ Pr(Z > t) + 2^{−s}` | `CausalSpectrum.causal_truncation` |
 | Minimax identity for an arbitrary real field | `CausalSpectrum.exact_tree_minimax` |
 | Greedy extraction ends and gives one exact seed | `CausalSpectrum.exact_finite_seed` |
 | Existence of the greedy trace | `CausalSpectrum.greedyTrace_exists` |

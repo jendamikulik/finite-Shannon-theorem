@@ -4,6 +4,9 @@ Lean 4.35.0-rc3, mathlib 7d6757bc18680044fc0ff6efc8ee20494b408556
 CausalSpectrum.causal_realization
   depends on axioms: [propext, choice, Quot.sound]
 
+CausalSpectrum.causal_truncation
+  depends on axioms: [propext, choice, Quot.sound]
+
 CausalSpectrum.one_seed_shannon
   depends on axioms: [propext, choice, Quot.sound]
 

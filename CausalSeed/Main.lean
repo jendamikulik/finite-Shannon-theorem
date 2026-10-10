@@ -8,6 +8,7 @@ import CausalSeed.Transport
 import CausalSeed.Identity
 import CausalSeed.Arithmetic
 import CausalSeed.Profile
+import CausalSeed.Relabel
 
 
 

@@ -78,3 +78,13 @@ CausalSpectrum.exact_rigidity
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.sharp_threshold
   depends on axioms: [propext, choice, Quot.sound]
+
+#print axioms, from the lake build of 10 October 2026
+Lean 4.35.0-rc3, mathlib 7d6757bc18680044fc0ff6efc8ee20494b408556
+
+CausalSpectrum.relabelRepair_iff_countStable
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.sharp_relabel
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.repair_same_law
+  depends on axioms: [propext, choice, Quot.sound]

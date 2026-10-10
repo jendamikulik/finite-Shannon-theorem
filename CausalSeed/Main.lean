@@ -11,6 +11,7 @@ import CausalSeed.Profile
 import CausalSeed.Relabel
 import CausalSeed.Witness
 import CausalSeed.Atomic
+import CausalSeed.Capacity
 
 
 

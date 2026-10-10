@@ -117,3 +117,26 @@ CausalSpectrum.diagMass_eq_atomQ
 of ordered greedy weights. It is not an exact causal representation, and it
 is not the equality of ordinary and causal atomic capacities. `C_∞ = sup_n C_n`
 and `G_*` are not identified.
+
+#print axioms, from the lake build of 10 October 2026
+Lean 4.35.0-rc3, mathlib 7d6757bc18680044fc0ff6efc8ee20494b408556
+
+CausalSpectrum.cap_coord_tendsto
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.cyl_partial_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.cylMass_le_path
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.cylMass_root
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.cylMass_split
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.resMass_split
+  depends on axioms: [propext, choice, Quot.sound]
+`capStrat` is a countable family of strategies on the infinite tree, obtained
+as a limit of extended finite greedy strategies. `cylMass h ≤ pathMass h`,
+and `cylMass [] = atomQ`. `resMass` is the nonnegative difference and is
+conserved by every action. This is not a probability realizing the residual,
+not an exact causal seed, and not the equality of ordinary and causal atomic
+capacities. `C_∞ = sup_n C_n` is not a theorem.
+

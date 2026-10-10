@@ -1,3 +1,5 @@
+**No claim.** Nothing in this repository is claimed as a priority, a discovery, or anyone's property. If a result here is someone else's research, including work that was used as training data for a model, the credit belongs to that author. They are welcome to come forward. Thank you.
+
 # An exact causal seed on a finite controlled tree
 
 Jan Mikulik, 5 October 2026.

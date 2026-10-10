@@ -1,0 +1,336 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\At}{\operatorname{At}}
+\newcommand{\cS}{\mathcal S}
+\newcommand{\cP}{\mathcal P}
+\title{No causality gap for atomic capacity\\on a locally finite infinite tree}
+\author{Research note developed with Jan Mikul\'{\i}k}
+\date{10 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For the transcript laws of all finite-horizon deterministic policies on a
+locally finite controlled tree, define $a_K$ to be the smallest mass carried
+by the $K$ most likely transcripts, uniformly over policies and horizons.
+We prove that $q=\lim_K a_K$ is exactly the maximum total atomic mass of an
+exact causal representation. The maximum is attained and equals the
+corresponding maximum without causality constraints. Thus the unavoidable
+nonatomic mass is exactly $1-q$. The proof uses finite causal greedy
+extraction, a quantitative concentration estimate, and a diagonal limit
+with an explicitly realized residual flow. A further compactness argument
+shows that bounded finite-horizon optimal entropies give one optimal
+countable seed for the entire infinite tree, with no extra entropy cost.
+\end{abstract}
+
+\paragraph{Status and scope.}
+This is a mathematical proof conditional on the finite causal extraction
+and minimax theorem of the finite-Shannon-theorem project. It is not a Lean
+certificate, and publication priority is not claimed. Infinite families of
+ordinary couplings and their uniform concentration condition are already
+treated by Li~\cite{Li}. The assertion examined here is attainment of the
+\emph{same atomic capacity by compatible strategies}, including $q<1$.
+This does not determine the finite Shannon entropy gap $G_*$.
+
+\section{Objects and statement}
+Let $T$ be a rooted controlled history tree. At every finite history $h$
+there are finitely many available actions, each with a finite nonempty
+output alphabet and a prescribed probability kernel. We assume the
+alphabets are finite at every node, not uniformly bounded. Terminal nodes
+can be padded by a forced action and output. Zero-probability outputs may
+be deleted; deterministic singleton alphabets are permitted.
+
+Write $p(h)$ for the product of output probabilities along $h$.
+For every available action $a$,
+\[
+ p(\varnothing)=1,\qquad \sum_y p(hay)=p(h).
+\]
+At each finite depth there are finitely many histories. A deterministic
+response strategy selects one output at every history--action pair.
+The space $\cS$ of all such strategies is a countable product of finite
+discrete spaces, hence compact and metrizable. For a history $h$, let
+$E_h\subseteq\cS$ be the set of strategies agreeing with its output
+choices. This is a clopen cylinder, and
+\[
+ E_h=\bigsqcup_y E_{hay}\quad\text{for every action }a.
+\]
+A Borel probability measure $\mu$ on $\cS$ is an exact causal
+representation if $\mu(E_h)=p(h)$ for every finite history $h$.
+This is equivalent to exactness for every deterministic adaptive policy
+at every finite horizon, and therefore for the corresponding infinite
+path laws.
+
+Let $P_{n,\pi}$ be the finite transcript law at horizon $n$ under policy
+$\pi$. Put
+\begin{align}
+ A_K(P)&=\max_{D:\,|D|\le K}P(D),\\
+ a_K(T)&=\inf_{n,\pi} A_K(P_{n,\pi}),\qquad
+ q(T)=\lim_{K\to\infty}a_K(T).\label{eq:q}
+\end{align}
+The limit exists by monotonicity and belongs to $[0,1]$.
+For a Borel probability on a compact metrizable space define its total
+atomic mass by
+\[
+ \At(\mu)=\sum_{s:\,\mu(\{s\})>0}\mu(\{s\}).
+\]
+There are at most countably many terms.
+
+Ordinary couplings below are Borel probability laws on the countable
+product of the transcript spaces indexed by all pairs $(n,\pi)$, with
+the specified coordinate marginals. They need not be compatible with a
+single strategy or even consistent between horizons.
+
+\begin{theorem}[Atomic capacity]\label{th:main}
+For every such tree,
+\[
+ \boxed{\quad
+ \max_{\mu\ \mathrm{exact\ causal}}\At(\mu)
+ =\max_{\Gamma\ \mathrm{ordinary}}\At(\Gamma)
+ =q(T).\quad}
+\]
+Both maxima are attained. In particular, an exact countably supported
+causal seed for the entire infinite tree exists if and only if $q(T)=1$.
+If $q(T)<1$, every exact causal representation has nonatomic mass at
+least $1-q(T)$, and a representation attaining this minimum exists.
+\end{theorem}
+
+\section{The finite concentration estimate}
+We use the following part of the finite theorem~\cite{repo}. After a
+finite number of causal greedy extractions, the residual cylinder masses
+form a nonnegative controlled flow. If its root mass is $R$, its next
+extractable strategy weight $w$ equals the smallest, over policies, of
+the largest residual transcript mass. Extraction terminates on each
+finite tree and gives an exact finite seed.
+
+\begin{lemma}\label{lem:concentration}
+Suppose every policy on a finite controlled tree has $K$ transcripts
+carrying total mass at least $a$. The first $M$ greedy atoms, padded with
+zeros if extraction has ended, have total mass at least
+\[
+ a\bigl[1-(1-1/K)^M\bigr].\label{eq:head}
+\]
+Consequently the same is true of the $M$ largest seed atoms.
+\end{lemma}
+\begin{proof}
+Let $R_m$ be the residual root mass after $m$ steps, with $R_0=1$.
+The minimax identity supplies a policy all of whose residual transcript
+masses are at most the next weight $w_{m+1}$. On this policy select at
+most $K$ original transcripts of mass at least $a$. The residual mass
+outside this set is at most $1-a$, so
+\[
+ R_m-(1-a)\le K w_{m+1}.
+\]
+Since $R_{m+1}=R_m-w_{m+1}$,
+\[
+ R_{m+1}-(1-a)\le(1-1/K)(R_m-(1-a)).
+\]
+Iteration gives $R_M\le1-a+a(1-1/K)^M$. The same bound holds after
+termination. Subtract from one. For $K=1$ and $M\ge1$ the displayed
+formula has its usual value $a$.
+\end{proof}
+
+\section{Proof of atomic capacity}
+\begin{proof}[Proof of Theorem~\ref{th:main}]
+\emph{Upper bound, even without causality.}
+Take any $m$ atoms of an ordinary coupling, of total mass $b$. Their
+images in any one transcript coordinate lie in at most $m$ transcripts,
+so $b\le A_m(P_{n,\pi})$ for every $(n,\pi)$. Hence $b\le a_m\le q$.
+Exhausting all its atoms gives $\At(\Gamma)\le q$. The same argument
+applies directly to a causal representation by projecting each atom
+through a policy.
+
+\emph{Limits of weights and strategies.}
+For each horizon $n$, take a finite greedy causal seed, order its weights
+as $w^{(n)}_1\ge w^{(n)}_2\ge\cdots\ge0$, and pad by zeros.
+Extend each finite strategy arbitrarily to an element $s^{(n)}_i$ of
+$\cS$. By compactness and diagonal selection there is one subsequence
+$n_j\to\infty$ such that, for every $i$,
+\[
+ w_i^{(n_j)}\to w_i,\qquad s_i^{(n_j)}\to s_i.
+\]
+Set $\nu=\sum_iw_i\delta_{s_i}$ and $A=\sum_iw_i\le1$; repeated
+limit strategies are simply merged as measures. For fixed $K,M$,
+Lemma~\ref{lem:concentration}, with $a=a_K(T)$, gives
+\[
+ \sum_{i=1}^M w_i
+ \ge a_K(T)\bigl[1-(1-1/K)^M\bigr].
+\]
+First let $M\to\infty$ and then $K\to\infty$. It follows that
+$A\ge q$.
+
+\emph{No invalid passage of infinitely many atoms through a limit.}
+For fixed $h$ and $M$, convergence of strategies makes membership in
+the clopen set $E_h$ eventually constant for each of the first $M$
+indices. For large $j$, the finite seed is exact at $h$. Thus
+\[
+ \sum_{i=1}^M w_i\mathbf1_{E_h}(s_i)
+ =\lim_j\sum_{i=1}^M w_i^{(n_j)}\mathbf1_{E_h}(s_i^{(n_j)})
+ \le p(h).
+\]
+Monotone convergence in $M$ proves $\nu(E_h)\le p(h)$. Define
+\[
+ r(h)=p(h)-\nu(E_h)\ge0.
+\]
+Since the $E_{hay}$ partition $E_h$ for each action,
+$\sum_y r(hay)=r(h)$ and $r(\varnothing)=1-A$.
+
+\emph{Realization of the missing mass.}
+If $A<1$, assign, independently at every history--action pair, an output
+with probabilities $r(hay)/r(h)$ whenever $r(h)>0$, and any distribution
+when $r(h)=0$. The countable product law $\lambda$ of these response
+choices satisfies
+\[
+ \lambda(E_h)=r(h)/(1-A).
+\]
+Indeed this follows by induction along $h$ from the displayed ratios;
+after a zero residual prefix both sides vanish. Hence
+$\mu=\nu+(1-A)\lambda$ is exact. If $A=1$, simply set $\mu=\nu$.
+As $\nu$ is atomic of mass $A$, $\At(\mu)\ge A\ge q$.
+The upper bound already proved gives $\At(\mu)=A=q$. In particular,
+the residual law in this construction has no atoms when $q<1$.
+
+Finally map $s\in\cS$ to its full tuple of finite-policy transcripts.
+This is a measurable map into the countable product of finite spaces.
+The image of $\mu$ is an ordinary coupling and has atomic mass at least
+$q$, since images of atoms remain atoms. The upper bound makes its
+atomic mass exactly $q$. This proves attainment on both sides.
+\end{proof}
+
+\section{Information spectrum and entropy}
+All logarithms in this section have base two. Define
+\[
+ F_n(t)=\min_\pi P_{n,\pi}\{-\log P_{n,\pi}(X)\le t\},\quad
+ F_\infty(t)=\inf_n F_n(t),\quad t\ge0.
+\]
+Refining a transcript cannot reduce its information, and policies extend
+to longer horizons. Therefore $F_n(t)$ decreases with $n$.
+For an individual finite law $P$, writing its information CDF as $F_P$,
+\[
+ F_P(t)\le A_{\lfloor2^t\rfloor}(P),\qquad
+ A_K(P)\le F_P(t)+K2^{-t}.
+\]
+Taking infima over all finite-policy laws proves
+\[
+ \boxed{q(T)=\lim_{t\to\infty}F_\infty(t).}
+\]
+Thus atomic capacity is precisely the mass that does not escape to
+infinite information in the uniform policy envelope. This statement
+does not require treating a possibly defective $F_\infty$ as a
+probability CDF.
+
+Let $C_n$ be the minimum entropy of an exact seed for the depth-$n$
+tree. Let $C_\infty$ be the infimum entropy among countably supported
+exact seeds for the full tree, with value $+\infty$ if there is no such
+seed. Set
+\[
+ L_n=\int_0^\infty(1-F_n(t))\,dt,\quad
+ L_\infty=\sup_nL_n,\quad c_*=(1+\log e)/2.
+\]
+
+\begin{theorem}[No extra entropy at the projective limit]
+In the extended real numbers,
+\[
+ \boxed{C_\infty=\sup_n C_n.}
+\]
+If the right-hand side is finite, the infimum on the left is attained.
+Consequently the finite Shannon theorem implies
+\[
+ L_\infty\le C_\infty\le L_\infty+c_*.
+\]
+In particular, $L_\infty<\infty$ is equivalent to the existence of one
+finite-entropy exact causal seed for the entire infinite tree.
+\end{theorem}
+\begin{proof}
+Restriction of a seed proves $C_n\le C_{n+1}\le C_\infty$. If
+$B=\sup_n C_n=+\infty$, this already proves the equality.
+Assume $B<\infty$ and choose a minimizing finite seed at each horizon.
+Such minimizers exist: one can minimize entropy over the compact
+finite-dimensional polytope of laws on finite strategies, merging
+identical strategies if necessary. Order and pad weights as above.
+For $i>K$, $w_i^{(n)}\le1/(K+1)$, whence
+\[
+ \sum_{i>K}w_i^{(n)}\le \frac{B}{\log(K+1)}.\tag{*}
+\]
+Diagonal compactness gives limiting weights and strategies. The uniform
+tail bound (*) forces $\sum_iw_i=1$. The cylinder argument in the
+previous proof gives $\nu(E_h)\le p(h)$. Since both are probability
+flows, equality follows at each depth by summing over the leaves of
+any policy following $h$, or by passing the uniformly small tails
+directly through the limit.
+
+The countable label seed $i$ with masses $w_i$ realizes these strategies.
+With $0\log0=0$, continuity of each summand and Fatou's lemma give
+\[
+ H(w)=\sum_i-w_i\log w_i
+ \le\liminf_j H(w^{(n_j)})=B.
+\]
+Together with restriction this yields $C_\infty=B$, with attainment.
+Finally the finite theorem gives $L_n\le C_n\le L_n+c_*$;
+take suprema. No continuity of Shannon entropy on an unrestricted
+countable simplex is being assumed.
+\end{proof}
+
+\paragraph{Three regimes.}
+If $q<1$, every exact representation has an unavoidable nonatomic
+component. If $q=1$ but $L_\infty=\infty$, a countable exact seed exists
+but all such seeds have infinite entropy. If $L_\infty<\infty$, an
+optimal finite-entropy countable seed exists. Countable support is not
+the same as finite support.
+
+\section{A strict quantifier separation}
+Consider a deterministic waiting chain. At waiting stage $m\ge1$ the
+controller can either wait for the next stage or trigger an experiment.
+Triggering at stage $m$ produces $m$ independent fair bits and then
+stops; there are no choices during the experiment. A policy that never
+triggers has a deterministic infinite transcript. The tree is locally
+finite, with at most two actions and at most two outputs at every node.
+
+Every individual deterministic policy therefore has a finite-support
+full-path law: either one path, or $2^m$ paths for some finite $m$.
+Nevertheless, for each fixed $K$, choosing arbitrarily large $m$ yields
+\[
+ a_K\le K2^{-m},\qquad a_K=0,\qquad q=0.
+\]
+Hence \emph{every exact common representation is atomless}, even
+without a causality requirement. An elementary direct proof is that
+an atom of mass $w>0$ would have to map into a transcript of mass
+$2^{-m}<w$ for a sufficiently large triggered experiment.
+This example illustrates why separate finite-support simulations do
+not imply one discrete seed. It is not claimed as a new counterexample
+in the general theory of ordinary coupling.
+
+For any prescribed $q_0\in(0,1)$, first choose a deterministic absorbing
+branch with probability $q_0$ and the waiting construction with
+probability $1-q_0$. Then $a_K=q_0$ for every $K\ge1$: the absorbing
+transcript gives the lower bound, and triggering an arbitrarily long
+experiment gives the upper bound. Thus the full interval of atomic
+capacities is realized even with binary branching.
+
+\paragraph{What the result does not say.}
+The diagonal argument is an existence proof, not a uniform algorithm
+for an arbitrary computable infinite tree. It does not bound the time
+needed to sample the seed, determine $G_*$, prove a new asymptotic
+coefficient, or assert that this infinite extension has been formally
+verified. Its structural conclusion is the exact equality of ordinary
+and causal atomic capacities, including attainment and partial atomic
+mass, and the absence of a further entropy charge when finite-horizon
+optima stay bounded.
+
+\begin{thebibliography}{9}
+\bibitem{repo} J. Mikul\'{\i}k, \emph{An exact causal seed on a finite
+controlled tree}, finite-Shannon-theorem repository. The finite
+minimax/extraction and Shannon statements are the inputs used here.
+\url{https://github.com/jendamikulik/finite-Shannon-theorem}.
+\bibitem{Li} C. T. Li, \emph{Efficient Approximate Minimum Entropy
+Coupling of Multiple Probability Distributions}, IEEE Transactions on
+Information Theory 67(8), 5259--5268, 2021.
+\url{https://arxiv.org/abs/2006.07955}.
+Definition 6 and Corollary 9 treat uniform concentration and ordinary
+discrete couplings for infinite families; this prior work must be
+distinguished from causal compatibility on a history tree.
+\end{thebibliography}
+\end{document}

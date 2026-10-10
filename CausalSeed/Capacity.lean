@@ -9,10 +9,15 @@ limiting strategies that reproduce `h` is at most the kernel mass of `h`
 `resMass h = pathMass h - cylMass h` is nonnegative and is conserved by every
 action (`resMass_split`).
 
-Not proved here: a probability measure realizing that residual, an exact causal
-seed for the missing mass, equality of ordinary and causal atomic capacities,
-and `C_∞ = sup_n C_n`. No publication priority is claimed. Ordinary
-infinite-family concentration is prior work and is not reproved.
+`resCyl h` is the product of the conditional residual ratios along `h`, and
+`resMass h = resMass [] * resCyl h` (`resMass_eq_root_mul`), so
+`cylMass h + resMass [] * resCyl h = pathMass h` (`exact_split`). This is the
+cylinder exactness of the construction `μ = ν + (1 - atomQ) λ` of the note,
+written as a real identity. No measure on the strategy space is constructed.
+
+Not proved here: equality of ordinary and causal atomic capacities, and
+`C_∞ = sup_n C_n`. No publication priority is claimed. Ordinary infinite-family
+concentration is prior work and is not reproved.
 -/
 import CausalSeed.Atomic
 import Mathlib.Analysis.SpecialFunctions.Log.NegMulLog
@@ -1326,6 +1331,153 @@ theorem resMass_split (ι : ITree) (h : List (ℕ × ℕ)) (a : Fin (ι.nA h)) :
   simp only [resMass]
   rw [Finset.sum_sub_distrib, pathMass_sum_child, cylMass_split]
 
+/-! ## Residual ratios and cylinder exactness
+
+`resRatioStep h p` is the conditional residual ratio of the note: zero when the
+residual at `h` vanishes, and `resMass (h ++ [p]) / resMass h` otherwise.
+`resCyl h` is the product of those ratios along `h`, with value `1` at the
+root. The product identity
+
+```
+resMass h = resMass [] * resCyl h
+```
+
+holds for every history, so
+
+```
+cylMass h + resMass [] * resCyl h = pathMass h
+```
+
+holds for every history. This is the cylinder exactness of the construction
+`μ = ν + (1 - atomQ) λ` of the note, written as a real identity. No measure on
+the strategy space is constructed: `resCyl` is the cylinder function of the
+product law, and the identity is exactly what exactness asks of it. It does
+not by itself give the equality of ordinary and causal atomic capacities.
+-/
+
+/-- The history before its last step. -/
+def initHist (h : List (ℕ × ℕ)) : List (ℕ × ℕ) :=
+  h.reverse.tail.reverse
+
+theorem initHist_append (h : List (ℕ × ℕ)) (p : ℕ × ℕ) :
+    initHist (h ++ [p]) = h := by
+  simp [initHist, List.reverse_append, List.tail_cons]
+
+/-- Conditional residual ratio of a one-step extension. -/
+noncomputable def resRatioStep (ι : ITree) (h : List (ℕ × ℕ)) (p : ℕ × ℕ) : ℝ :=
+  if resMass ι h = 0 then 0 else resMass ι (h ++ [p]) / resMass ι h
+
+/-- Product of residual ratios, computed on the reversed history. -/
+noncomputable def resCylRev (ι : ITree) : List (ℕ × ℕ) → ℝ
+  | [] => 1
+  | p :: t => resRatioStep ι t.reverse p * resCylRev ι t
+
+/-- Product of residual ratios along a history. `resCyl [] = 1`. -/
+noncomputable def resCyl (ι : ITree) (h : List (ℕ × ℕ)) : ℝ :=
+  resCylRev ι h.reverse
+
+theorem resCyl_nil (ι : ITree) : resCyl ι [] = 1 := by
+  simp [resCyl, resCylRev]
+
+theorem resCyl_append (ι : ITree) (h : List (ℕ × ℕ)) (p : ℕ × ℕ) :
+    resCyl ι (h ++ [p]) = resRatioStep ι h p * resCyl ι h := by
+  simp [resCyl, resCylRev, List.reverse_append]
+
+theorem resRatioStep_nonneg (ι : ITree) (h : List (ℕ × ℕ)) (p : ℕ × ℕ) :
+    0 ≤ resRatioStep ι h p := by
+  unfold resRatioStep
+  split_ifs with hz
+  · exact le_rfl
+  · exact div_nonneg (resMass_nonneg ι _) (resMass_nonneg ι h)
+
+theorem resCyl_nonneg (ι : ITree) : ∀ h, 0 ≤ resCyl ι h := by
+  intro h
+  induction h using List.reverseRecOn with
+  | nil => rw [resCyl_nil]; norm_num
+  | append_singleton t q ih =>
+      rw [resCyl_append]
+      exact mul_nonneg (resRatioStep_nonneg ι t q) ih
+
+/-- A residual child is at most its parent, by conservation over the valid
+outputs of any action. Invalid steps have residual zero. -/
+theorem resMass_child_le (ι : ITree) (h : List (ℕ × ℕ)) (p : ℕ × ℕ) :
+    resMass ι (h ++ [p]) ≤ resMass ι h := by
+  by_cases ha : p.1 < ι.nA h
+  · let a : Fin (ι.nA h) := ⟨p.1, ha⟩
+    by_cases hy : p.2 < ι.nY h a
+    · let y : Fin (ι.nY h a) := ⟨p.2, hy⟩
+      have hmem : resMass ι (h ++ [p]) =
+          resMass ι (h ++ [(a.val, y.val)]) := rfl
+      have hsum := resMass_split ι h a
+      have hle : resMass ι (h ++ [(a.val, y.val)]) ≤
+          ∑ z : Fin (ι.nY h a), resMass ι (h ++ [(a.val, z.val)]) :=
+        Finset.single_le_sum (fun z _ => resMass_nonneg ι (h ++ [(a.val, z.val)]))
+          (Finset.mem_univ y)
+      rw [hmem]
+      exact le_trans hle (le_of_eq hsum)
+    · have : resMass ι (h ++ [p]) = 0 := by
+        have hpm : pathMass ι (h ++ [p]) = 0 := by
+          rw [pathMass, pm_append_one ι [] h p.1 p.2]
+          unfold kernRaw
+          split_ifs with h1 h2
+          · exact absurd h2 hy
+          · exact mul_zero _
+          · exact mul_zero _
+        have hcyl : cylMass ι (h ++ [p]) = 0 := by
+          have hle := cylMass_le_path ι (h ++ [p])
+          exact le_antisymm (le_trans hle (le_of_eq hpm)) (by
+            have : 0 ≤ cylMass ι (h ++ [p]) := by
+              have hsum := cyl_summable ι (h ++ [p])
+              exact tsum_nonneg (cyl_term_nonneg ι (h ++ [p]))
+            exact this)
+        simp [resMass, hpm, hcyl]
+      rw [this]
+      exact resMass_nonneg ι h
+  · have : resMass ι (h ++ [p]) = 0 := by
+      have hpm : pathMass ι (h ++ [p]) = 0 := by
+        rw [pathMass, pm_append_one ι [] h p.1 p.2]
+        unfold kernRaw
+        rw [List.nil_append]
+        simp [ha]
+      have hcyl : cylMass ι (h ++ [p]) = 0 := by
+        have hle := cylMass_le_path ι (h ++ [p])
+        exact le_antisymm (le_trans hle (le_of_eq hpm))
+          (tsum_nonneg (cyl_term_nonneg ι (h ++ [p])))
+      simp [resMass, hpm, hcyl]
+    rw [this]
+    exact resMass_nonneg ι h
+
+theorem resMass_eq_root_mul (ι : ITree) :
+    ∀ h, resMass ι h = resMass ι [] * resCyl ι h := by
+  intro h
+  induction h using List.reverseRecOn with
+  | nil => rw [resCyl_nil]; norm_num
+  | append_singleton t q ih =>
+      rw [resCyl_append]
+      by_cases hz : resMass ι t = 0
+      · have hzero : resMass ι (t ++ [q]) = 0 :=
+          le_antisymm (le_trans (resMass_child_le ι t q) (le_of_eq hz))
+            (resMass_nonneg ι _)
+        have hstep : resRatioStep ι t q = 0 := by
+          unfold resRatioStep
+          simp [hz]
+        rw [hstep, zero_mul, mul_zero, hzero]
+      · have hstep : resRatioStep ι t q = resMass ι (t ++ [q]) / resMass ι t := by
+          simp [resRatioStep, hz]
+        rw [hstep]
+        have hrewrite : resMass ι [] * (resMass ι (t ++ [q]) / resMass ι t * resCyl ι t) =
+            resMass ι (t ++ [q]) * (resMass ι [] * resCyl ι t) / resMass ι t := by ring
+        rw [hrewrite, ← ih]
+        field_simp [hz]
+
+theorem exact_split (ι : ITree) (h : List (ℕ × ℕ)) :
+    cylMass ι h + resMass ι [] * resCyl ι h = pathMass ι h := by
+  rw [← resMass_eq_root_mul ι h]
+  simp [resMass]
+
+#print axioms resMass_child_le
+#print axioms resMass_eq_root_mul
+#print axioms exact_split
 #print axioms cap_coord_tendsto
 #print axioms cyl_partial_le
 #print axioms cylMass_le_path

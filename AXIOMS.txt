@@ -140,3 +140,20 @@ conserved by every action. This is not a probability realizing the residual,
 not an exact causal seed, and not the equality of ordinary and causal atomic
 capacities. `C_∞ = sup_n C_n` is not a theorem.
 
+
+#print axioms, from the lake build of 10 October 2026
+Lean 4.35.0-rc3, mathlib 7d6757bc18680044fc0ff6efc8ee20494b408556
+
+CausalSpectrum.resMass_child_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.resMass_eq_root_mul
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.exact_split
+  depends on axioms: [propext, choice, Quot.sound]
+`resCyl h` is the product of the conditional residual ratios along `h`.
+`resMass h = resMass [] * resCyl h` for every history, so
+`cylMass h + resMass [] * resCyl h = pathMass h`. This is the cylinder
+exactness of the construction `μ = ν + (1 - atomQ) λ` of the note, written
+as a real identity. No measure on the strategy space is constructed.
+It is not the equality of ordinary and causal atomic capacities.
+`C_∞ = sup_n C_n` is not a theorem.

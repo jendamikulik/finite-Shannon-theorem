@@ -14,6 +14,8 @@ Arithmetic rigidity of policy-indexed decoders, checked 8 October 2026. For a po
 
 Relabeling repair, checked 10 October 2026. For one family, weight-preserving permutations of the seed, one permutation per policy, and one response strategy per seed reproduce the decoder if and only if, inside every weight class, the number of seeds whose transcript extends a history does not depend on which policy is chosen among the policies that follow that history (`CausalSpectrum.relabelRepair_iff_countStable` in [`CausalSeed/Relabel.lean`](CausalSeed/Relabel.lean)). No marginal-accuracy hypothesis is used for that equivalence. Every `ε`-accurate family on every finite controlled tree admits such a repair if and only if `2ε < deltaRel w` (`CausalSpectrum.sharp_relabel`). `deltaRel` is the minimum mass gap between subsets whose vectors of weight-class counts differ. The minimum may be zero. It is not the subset-sum separation `gamma`. The repair keeps the seed weights and each individual policy law (`repair_same_law`). The converse is witnessed by `pairTree`, whose depth is at most 2 (`pairTree_depth`). The repair does not use the Shannon bound, and it is not the constant `(1 + log₂ e) / 2`. The Lebesgue statement for generic tensor powers, and the claim that a gap `C(T) > M(T)` forces a linear relation among atom masses, are not theorems of this repository. No publication priority is claimed.
 
+Greedy concentration, checked 10 October 2026. If every policy on a finite controlled tree puts mass at least `a` on some `K` transcripts, the first `M` greedy weights sum to at least `a (1 - (1 - 1/K)^M)` (`CausalSpectrum.greedy_head_lower` in [`CausalSeed/Atomic.lean`](CausalSeed/Atomic.lean)). The same head is at most the mass of any `M` transcripts of any policy (`greedy_prefix_le_topMass`). On a locally finite tree the lower bound holds at every finite horizon, with `a` replaced by `atomA`, the infimum of that transcript mass (`horizon_head`). That infimum is also the infimum over horizons of the horizon-wise infima (`atomA_eq_iInf`). `atomQ` is the supremum of `atomA`. A diagonal subsequence of the ordered greedy weights converges in `[0,1]^ℕ`, and the supremum of the partial sums of the limit weights equals `atomQ` (`diagMass_eq_atomQ`). This is an equality of two real numbers. It does not construct limiting strategies, a residual flow, or an exact causal representation, and it does not prove that the ordinary atomic capacity equals the causal one. The projective entropy identity `C_∞ = sup_n C_n` is not a theorem here. It does not identify `G_*`. Ordinary infinite-family concentration is prior work and is not reproved. No publication priority is claimed.
+
 ## How to read this
 
 The object is one finite controlled tree and every deterministic policy on it. A policy may choose the next action from the history so far. A causal seed is one shared source of randomness and a decoder that realises the prescribed kernel at every history, including on actions the realised path never takes. An ordinary coupling of the transcript laws does not have to do that.
@@ -47,6 +49,7 @@ Not the theorem to cite: the square-root asymptotic in the PDF, the identificati
 | [`CausalSeed/Probe.lean`](CausalSeed/Probe.lean) | Unrealizable index implies membership in the defect |
 | [`CausalSeed/Profile.lean`](CausalSeed/Profile.lean) | Depth-two attainment, exact rigidity, sharp threshold |
 | [`CausalSeed/Relabel.lean`](CausalSeed/Relabel.lean) | Relabeling repair and the `deltaRel` threshold |
+| [`CausalSeed/Atomic.lean`](CausalSeed/Atomic.lean) | Greedy head, the horizon infimum, and `diagMass = atomQ` |
 | [`AXIOMS.txt`](AXIOMS.txt) | `#print axioms` for the declarations above |
 
 ## The theorem
@@ -237,6 +240,7 @@ The PDF files are the written note. The checked statement is `causal_realization
 | Wasserstein identity, min-entropy, Rényi scalars | [`CausalSeed/Note.lean`](CausalSeed/Note.lean) |
 | Profile mean and the `√n` transfer only | [`CausalSeed/SecondOrder.lean`](CausalSeed/SecondOrder.lean) |
 | Relabeling repair. One family repairs iff its weight-class prefix counts are stable; every accurate family repairs iff `2ε < deltaRel`. Not `gamma`, not the Shannon constant, not the tensor-power statement | [`CausalSeed/Relabel.lean`](CausalSeed/Relabel.lean) |
+| Greedy weights. The head is at least `a(1-(1-1/K)^M)` and at most every policy's `M`-transcript mass. The diagonal of horizon weights has partial sums whose supremum is `atomQ`. Not a causal seed, not ordinary-versus-causal atomic capacity, not `C_∞`, not `G_*` | [`CausalSeed/Atomic.lean`](CausalSeed/Atomic.lean) |
 | Axiom audit | [`AXIOMS.txt`](AXIOMS.txt) |
 | The note, including arguments not checked here | [`causal_spectrum.pdf`](causal_spectrum.pdf), [`one_seed_entropy.pdf`](one_seed_entropy.pdf) |
 

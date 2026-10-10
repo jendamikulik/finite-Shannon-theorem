@@ -99,3 +99,21 @@ The checked statement is `2/9 ≤ gapSup`, from an ordinary coupling of profile
 It does not identify `gapSup`, and it does not prove that the ordinary or
 causal minimum equals that profile. The open box with gap above `1/20` and
 the `ℓ¹ ≤ 13` resonance corollary are not theorems.
+
+#print axioms, from the lake build of 10 October 2026
+Lean 4.35.0-rc3, mathlib 7d6757bc18680044fc0ff6efc8ee20494b408556
+
+CausalSpectrum.greedy_head_lower
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.horizon_head
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.greedy_prefix_le_topMass
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.atomA_eq_iInf
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.diagMass_eq_atomQ
+  depends on axioms: [propext, choice, Quot.sound]
+`diagMass = atomQ` is the supremum of the partial sums of one diagonal limit
+of ordered greedy weights. It is not an exact causal representation, and it
+is not the equality of ordinary and causal atomic capacities. `C_∞ = sup_n C_n`
+and `G_*` are not identified.

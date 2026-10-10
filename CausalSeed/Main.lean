@@ -10,6 +10,7 @@ import CausalSeed.Arithmetic
 import CausalSeed.Profile
 import CausalSeed.Relabel
 import CausalSeed.Witness
+import CausalSeed.Atomic
 
 
 

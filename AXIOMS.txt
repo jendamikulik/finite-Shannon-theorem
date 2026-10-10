@@ -88,3 +88,14 @@ CausalSpectrum.sharp_relabel
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.repair_same_law
   depends on axioms: [propext, choice, Quot.sound]
+
+#print axioms, from the lake build of 10 October 2026
+Lean 4.35.0-rc3, mathlib 7d6757bc18680044fc0ff6efc8ee20494b408556
+
+CausalSpectrum.witness_gapSup_lower
+  depends on axioms: [propext, choice, Quot.sound]
+The checked statement is `2/9 ≤ gapSup`, from an ordinary coupling of profile
+`(3,2,2,1,1)/9` and a causal lower bound of profile `(3,2,1,1,1,1)/9`.
+It does not identify `gapSup`, and it does not prove that the ordinary or
+causal minimum equals that profile. The open box with gap above `1/20` and
+the `ℓ¹ ≤ 13` resonance corollary are not theorems.

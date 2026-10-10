@@ -174,7 +174,7 @@ C(T) = inf over Γ of [ H(Γ) + κ Γ(B) ]
 
 for every `κ ≥ gapSup`, and therefore for every `κ ≥ c_*`. The statement that every minimiser at a penalty strictly above `G_*` is compatible is not a separate theorem.
 
-A stated witness gives `2/9 ≤ G_*`. The search that produced it is not in this repository and was not rerun here. Nothing in the Lean development depends on that number. The interval recorded from that computation remains
+`CausalSpectrum.witness_gapSup_lower` checks the recorded witness on one tree. An ordinary coupling has entropy `H(3,2,2,1,1)/9`, and every causal coupling has entropy at least `H(3,2,1,1,1,1)/9`. Those two profile entropies differ by `2/9`, so `2/9 ≤ gapOf` on that tree and therefore `2/9 ≤ gapSup`. This does not identify `gapSup`. It does not prove that either minimum equals its profile, and it does not prove uniqueness. The open neighborhood with gap above `1/20`, and the integer-relation corollary with `ℓ¹` norm at most 13, are not formalized. The interval remains
 
 ```text
 2/9 ≤ G_* ≤ (1 + log₂ e) / 2.

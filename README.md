@@ -108,7 +108,7 @@ survival function. For every exact finite seed,
 Lean:
 - [`causal_realization`](CausalSeed/Entropy.lean#L2008)
 - [`seedCDF_le_Fstar`](CausalSeed/Entropy.lean#L1703)
-- [`wasserstein_gap`](CausalSeed/Gap.lean#L57)
+- [`wasserstein_gap`](CausalSeed/Gap.lean#L55)
 
 **Theorem 3 (zero-probability branches).** Let the kernels be nonnegative and
 normalized, so that zero-probability branches are kept in the tree (`Zero.ZTree`).
@@ -146,8 +146,8 @@ $C_\infty=\sup_n C_n$. If this value is finite, it is attained by one countable 
 exact at every horizon.
 
 Lean:
-- [`Completion.projective_entropy_identity`](CausalSeed/EntropyLimit.lean#L352)
-- [`Completion.entropy_attained`](CausalSeed/EntropyLimit.lean#L310)
+- [`Completion.projective_entropy_identity`](CausalSeed/EntropyLimit.lean#L351)
+- [`Completion.entropy_attained`](CausalSeed/EntropyLimit.lean#L309)
 
 **Theorem 6 (infinite sandwich).** For countable seeds exact at every horizon, in bits,
 
@@ -178,9 +178,9 @@ where $A_K$ is the total mass of the $K$ heaviest transcripts. Then:
 ```
 
 Lean:
-- [`Completion.ordinary_atomic_upper`](CausalSeed/AtomicCapacity.lean#L78)
-- [`Completion.causal_atomic_capacity_attained`](CausalSeed/AtomicCapacity.lean#L149)
-- [`Completion.countable_seed_iff_atomQ_one`](CausalSeed/AtomicCapacity.lean#L218)
+- [`Completion.ordinary_atomic_upper`](CausalSeed/AtomicCapacity.lean#L76)
+- [`Completion.causal_atomic_capacity_attained`](CausalSeed/AtomicCapacity.lean#L147)
+- [`Completion.countable_seed_iff_atomQ_one`](CausalSeed/AtomicCapacity.lean#L216)
 - [`atomQ_eq_lim_FInf`](CausalSeed/AtomicSpectrum.lean#L118)
 - [`atomQ_eq_iSup_FInf`](CausalSeed/AtomicSpectrum.lean#L134)
 
@@ -295,9 +295,40 @@ Lean:
 - [`Kernel.causal_floor`](CausalSeed/CausalFloor.lean#L329)
 - [`Kernel.envelope_floor`](CausalSeed/CausalFloor.lean#L334)
 
+**Theorem 12 (subadditivity).** For every stationary kernel and all $m,n$,
+
+```math
+C_{m+n}\;\le\;C_m+C_n .
+```
+
+Two seeds exact to horizons $m$ and $n$ are concatenated: the first answers at
+histories of length less than $m$, the second at the later rounds, reading the
+history from round $m$ on. Path masses factor over this split, so the product seed
+is exact to horizon $m+n$, and its entropy is the sum of the two entropies.
+
+Lean:
+- [`Kernel.costBits_subadditive`](CausalSeed/Subadditive.lean#L191) (bits)
+- [`Kernel.finiteCost_subadditive`](CausalSeed/Subadditive.lean#L175) (nats)
+- [`Kernel.catSeed_exactTo`](CausalSeed/Subadditive.lean#L134)
+- [`Kernel.catSeed_entropy`](CausalSeed/Subadditive.lean#L150)
+
+**Theorem 13 (Fekete limit and exact lower bound).** By Fekete's lemma,
+$C_n/n\to\inf_{n\ge1}C_n/n$. With Theorem 11 this identifies the infimum:
+
+```math
+h_{\max}=\inf_{n\ge1}\frac{C_n}{n},
+\qquad\text{hence}\qquad
+n\,h_{\max}\;\le\;C_n\qquad\text{for every } n\ge1 .
+```
+
+Lean:
+- [`Kernel.costBits_fekete`](CausalSeed/Subadditive.lean#L210)
+- [`Kernel.hmax_eq_inf`](CausalSeed/Subadditive.lean#L217)
+- [`Kernel.hmax_mul_le_costBits`](CausalSeed/Subadditive.lean#L222)
+
 ### V. Structure of the causal constraint
 
-**Theorem 12 (exact penalty).** Let $G_*=\sup_T\bigl(C(T)-O(T)\bigr)$, where $O(T)$
+**Theorem 14 (exact penalty).** Let $G_*=\sup_T\bigl(C(T)-O(T)\bigr)$, where $O(T)$
 is the least entropy of an exact coupling that need not be causal. Then
 $\tfrac29\le G_*\le c_\star$. For every $\kappa\ge G_*$,
 
@@ -313,10 +344,10 @@ Lean:
 - [`witness_gapSup_lower`](CausalSeed/Witness.lean#L1376)
 - [`gapSup_le_shannonOverhead`](CausalSeed/Penalty.lean#L710)
 - [`penaltyMin_eq_causalMin`](CausalSeed/Identity.lean#L569)
-- [`global_minimizer_above_gap_is_causal`](CausalSeed/StrictPenalty.lean#L76)
-- [`near_minimizer_badMass_le`](CausalSeed/StrictPenalty.lean#L20)
+- [`global_minimizer_above_gap_is_causal`](CausalSeed/StrictPenalty.lean#L74)
+- [`near_minimizer_badMass_le`](CausalSeed/StrictPenalty.lean#L18)
 
-**Theorem 13 (arithmetic rigidity).** Let $w$ be a positive weight vector with total
+**Theorem 15 (arithmetic rigidity).** Let $w$ be a positive weight vector with total
 mass one. Every exact policy-indexed decoder family on every finite tree is causally
 realizable if and only if all subset sums of $w$ are distinct. With marginal error
 $\varepsilon\ge0$, every $\varepsilon$-accurate family is realizable if and only if
@@ -349,7 +380,7 @@ defining module is `CausalSeed.*` and computes its axioms with `collectAxioms`.
 Auto-generated declarations (equation lemmas, `sizeOf_spec`, injectivity lemmas,
 instances) are excluded.
 
-[`AXIOMS.txt`](AXIOMS.txt) records the result. All **1475** theorems in the 56 project
+[`AXIOMS.txt`](AXIOMS.txt) records the result. All **1496** theorems in the 57 project
 modules depend only on `propext`, `Classical.choice` and `Quot.sound`; three depend on
 no axiom. No theorem uses `sorryAx`, the build reports no `sorry` or `admit`, and the
 project declares no `axiom`.
@@ -368,20 +399,20 @@ the theorems above. Line numbers refer to the current revision.
 | `Policy`, `Strategy`, `Leaf`, `leafMass` | [Spectrum.lean#L124](CausalSeed/Spectrum.lean#L124), [#L133](CausalSeed/Spectrum.lean#L133), [#L139](CausalSeed/Spectrum.lean#L139), [#L144](CausalSeed/Spectrum.lean#L144) | deterministic adaptive policy; total response strategy; transcript; its probability |
 | `CompatiblePolicy`, `CompatibleStrategy`, `run` | [Spectrum.lean#L149](CausalSeed/Spectrum.lean#L149), [#L154](CausalSeed/Spectrum.lean#L154), [#L159](CausalSeed/Spectrum.lean#L159) | consistency of a transcript with a policy or strategy; the transcript of a strategy under a policy |
 | `Atom`, `transcriptWeight`, `seedShannon`, `seedCDF` | [Spectrum.lean#L823](CausalSeed/Spectrum.lean#L823), [#L913](CausalSeed/Spectrum.lean#L913), [Entropy.lean#L648](CausalSeed/Entropy.lean#L648), [#L1393](CausalSeed/Entropy.lean#L1393) | finite seed as a weighted list of strategies; decoded transcript mass; entropy (bits); information CDF |
-| `IStrategy`, `pathMass`, `policyRead` | [Capacity.lean#L557](CausalSeed/Capacity.lean#L557), [#L67](CausalSeed/Capacity.lean#L67), [AtomicCapacity.lean#L88](CausalSeed/AtomicCapacity.lean#L88) | strategy on the infinite tree; probability of a history; horizon-`n` transcript |
+| `IStrategy`, `pathMass`, `policyRead` | [Capacity.lean#L557](CausalSeed/Capacity.lean#L557), [#L67](CausalSeed/Capacity.lean#L67), [AtomicCapacity.lean#L86](CausalSeed/AtomicCapacity.lean#L86) | strategy on the infinite tree; probability of a history; horizon-`n` transcript |
 | `Completion.CountableSeed`, `.entropy`, `.ExactTo`, `.Exact` | [SeedRanking.lean#L20](CausalSeed/SeedRanking.lean#L20), [#L30](CausalSeed/SeedRanking.lean#L30), [#L36](CausalSeed/SeedRanking.lean#L36), [#L39](CausalSeed/SeedRanking.lean#L39) | countable law on infinite strategies; entropy (nats, in `[0,∞]`); every history of length `≤ n` (resp. every history) receives its path mass |
 | `infoMass`, `policyCDF`, `Fstar` | [Entropy.lean#L53](CausalSeed/Entropy.lean#L53), [#L190](CausalSeed/Entropy.lean#L190), [#L226](CausalSeed/Entropy.lean#L226) | `-log₂ q`; information CDF of a policy; its pointwise minimum over policies |
 | `envelopeMean`, `Completion.LInf`, `FInf` | [Entropy.lean#L651](CausalSeed/Entropy.lean#L651), [EnvelopeBridge.lean#L367](CausalSeed/EnvelopeBridge.lean#L367), [AtomicSpectrum.lean#L22](CausalSeed/AtomicSpectrum.lean#L22) | `L` (bits); `L_∞ = sup_n L_n`; `F_∞(t) = inf_n F*_n(t)` |
 | `atomQ` | [Atomic.lean#L561](CausalSeed/Atomic.lean#L561) | `sup_K inf_{n,π}` of the mass of the `K` heaviest transcripts |
 | `pmfEntropy`, `entTerm` | [Penalty.lean#L118](CausalSeed/Penalty.lean#L118), [#L52](CausalSeed/Penalty.lean#L52) | Shannon entropy (bits) of a finite law, with `entTerm 0 = 0` |
 | `ordinaryMin`, `causalMin`, `gapSup` | [Penalty.lean#L626](CausalSeed/Penalty.lean#L626), [#L628](CausalSeed/Penalty.lean#L628), [#L696](CausalSeed/Penalty.lean#L696) | `O(T)`, `C(T)` over exact couplings (bits); `G_*` |
-| `Completion.finiteCost`, `infiniteCost`, `Kernel.costBits` | [EntropyLimit.lean#L284](CausalSeed/EntropyLimit.lean#L284), [#L287](CausalSeed/EntropyLimit.lean#L287), [SqrtMain.lean#L99](CausalSeed/SqrtMain.lean#L99) | `C_n`, `C_∞` (nats); `C_n` in bits for a stationary kernel |
+| `Completion.finiteCost`, `infiniteCost`, `Kernel.costBits` | [EntropyLimit.lean#L283](CausalSeed/EntropyLimit.lean#L283), [#L286](CausalSeed/EntropyLimit.lean#L286), [SqrtMain.lean#L99](CausalSeed/SqrtMain.lean#L99) | `C_n`, `C_∞` (nats); `C_n` in bits for a stationary kernel |
 | `RenyiInf.shannonBits`, `H`, `Hinf` | [RenyiCountable.lean#L23](CausalSeed/RenyiCountable.lean#L23), [#L30](CausalSeed/RenyiCountable.lean#L30), [#L33](CausalSeed/RenyiCountable.lean#L33) | Shannon, Rényi and min-entropy of a countable law (bits, in `[0,∞]`) |
 | `RenyiInf.OrdSource`, `Oα`, `Cα`, `Oinf`, `Cinf` | [RenyiSource.lean#L25](CausalSeed/RenyiSource.lean#L25), [RenyiInfinite.lean#L28](CausalSeed/RenyiInfinite.lean#L28), [#L31](CausalSeed/RenyiInfinite.lean#L31), [#L33](CausalSeed/RenyiInfinite.lean#L33), [#L35](CausalSeed/RenyiInfinite.lean#L35) | ordinary exact source; ordinary and causal Rényi optima |
 | `RenyiInf.RZ`, `lawZ`, `RZmeas` | [RenyiInfinite.lean#L24](CausalSeed/RenyiInfinite.lean#L24), [RenyiLimitMeasure.lean#L117](CausalSeed/RenyiLimitMeasure.lean#L117), [#L324](CausalSeed/RenyiLimitMeasure.lean#L324) | `sup_n R_α(Z_n)`; the law of `Z` on `[0,∞] ⊂ EReal`; `R_α` of that law |
 | `shannonOverhead`, `Renyi.dAlpha`, `RenyiInf.dA` | [Entropy.lean#L646](CausalSeed/Entropy.lean#L646), [RenyiFinite.lean#L180](CausalSeed/RenyiFinite.lean#L180), [RenyiCountable.lean#L36](CausalSeed/RenyiCountable.lean#L36) | `c⋆ = (1 + 1/ln 2)/2`; `d_α`; `d_α` with `d_1 = c⋆` |
 | `Zero.ZTree` | [ZeroTree.lean#L255](CausalSeed/ZeroTree.lean#L255) | finite tree with nonnegative normalized kernels, all branches kept |
-| `Sqrt.IncFamily.sA`, `sB`, `Flim` | [SqrtDefect.lean#L426](CausalSeed/SqrtDefect.lean#L426), [#L428](CausalSeed/SqrtDefect.lean#L428), [SqrtUniversality.lean#L26](CausalSeed/SqrtUniversality.lean#L26) | `a = max σ_a`, `b = min σ_a`; the limit profile `F_{a,b}` (half-normal if `b = 0`) |
+| `Sqrt.IncFamily.sA`, `sB`, `Flim` | [SqrtDefect.lean#L427](CausalSeed/SqrtDefect.lean#L427), [#L429](CausalSeed/SqrtDefect.lean#L429), [SqrtUniversality.lean#L26](CausalSeed/SqrtUniversality.lean#L26) | `a = max σ_a`, `b = min σ_a`; the limit profile `F_{a,b}` (half-normal if `b = 0`) |
 | `Kernel.EqualEntropy`, `actEntropy`, `hmax`, `floorConst` | [SqrtBridge.lean#L19](CausalSeed/SqrtBridge.lean#L19), [CausalFloor.lean#L145](CausalSeed/CausalFloor.lean#L145), [#L150](CausalSeed/CausalFloor.lean#L150), [#L181](CausalSeed/CausalFloor.lean#L181) | common entropy `h`; `H(K_a)`; `h_max`; the Gaussian integral `K` |
 | `Dyadic.wt`, `massL`, `cdfL` | [DyadicCouple.lean#L18](CausalSeed/DyadicCouple.lean#L18), [#L28](CausalSeed/DyadicCouple.lean#L28), [#L31](CausalSeed/DyadicCouple.lean#L31) | `2^{-k}`; a dyadic law as a list of (level, payload); its expectation functional and information CDF |
 | `Dyadic.DyadicTree`, `Kernel.IsDyadic` | [DyadicTree.lean#L17](CausalSeed/DyadicTree.lean#L17), [DyadicKernel.lean#L132](CausalSeed/DyadicKernel.lean#L132) | every kernel entry is `(1/2)^c` with `c : ℕ` |
@@ -430,6 +461,7 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 - `SqrtNumerics`: integer inequalities.
 - `SqrtUniversality`, `SqrtUniversalityCountable`: $W_1$ universality.
 - `CausalFloor`: the causal Shannon floor.
+- `Subadditive`: concatenation of seeds, $C_{m+n}\le C_m+C_n$, and the Fekete limit.
 - `DyadicCouple`, `DyadicTree`, `DyadicKernel`: dyadic exactness.
 
 **Mathematical expositions** (LaTeX/PDF at the repository root)
@@ -458,13 +490,18 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 - The second-order term of $C_n-nh$ when $a=b$, where the $\sqrt n$ coefficient
   vanishes.
 - Optimality of the constants $c_\star$ and $d_\alpha$.
+- Whether $C_n-nh_{\max}=O(1)$ when exactly one action attains $h_{\max}$.
+  Theorems 11 and 13 give $0\le C_n-nh_{\max}\le K\sqrt n+c_\star$. When two
+  maximizing actions have different variances, Theorem 9 shows the excess grows
+  like $\sqrt n$.
 - Infinite-horizon versions of Theorems 5–8 for kernels with zero entries.
 
 **Not yet formalized.**
-- Subadditivity $C_{m+n}\le C_m+C_n$ for stationary kernels.
 - A classification of $C_n-nh$, for equal entropies, as $\Theta(\sqrt n)$,
   $\Theta(\log n)$ or $O(1)$ according to moment matching between the actions.
-- $C_n-nh_{\max}=O(1)$ for unequal entropies; Theorem 11 gives $O(\sqrt n)$.
+- The reduction that removes zero entries from a stationary kernel, so that
+  Theorems 9–13 hold for nonnegative kernels. Lean's stationary model requires
+  positive entries, and no cost is defined there for kernels with zero entries.
 
 ## Attribution
 

@@ -146,14 +146,17 @@ Lean 4.35.0-rc3, mathlib 7d6757bc18680044fc0ff6efc8ee20494b408556
 
 CausalSpectrum.resMass_child_le
   depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.resRatioStep_sum
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.resMass_eq_root_mul
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.exact_split
   depends on axioms: [propext, choice, Quot.sound]
-`resCyl h` is the product of the conditional residual ratios along `h`.
-`resMass h = resMass [] * resCyl h` for every history, so
-`cylMass h + resMass [] * resCyl h = pathMass h`. This is the cylinder
-exactness of the construction `μ = ν + (1 - atomQ) λ` of the note, written
-as a real identity. No measure on the strategy space is constructed.
+`resRatioStep` uses the original kernel wherever `resMass h = 0`, and
+`resRatioStep_sum` says those ratios sum to 1 on every action. `resCyl h` is
+their product. `resMass h = resMass [] * resCyl h` for every history, so
+`cylMass h + resMass [] * resCyl h = pathMass h`. The weighted identity does
+not depend on the ratio at a history of residual zero. These are identities
+of real cylinder functions. No measure on the strategy space is constructed.
 It is not the equality of ordinary and causal atomic capacities.
 `C_∞ = sup_n C_n` is not a theorem.

@@ -9,11 +9,15 @@ limiting strategies that reproduce `h` is at most the kernel mass of `h`
 `resMass h = pathMass h - cylMass h` is nonnegative and is conserved by every
 action (`resMass_split`).
 
-`resCyl h` is the product of the conditional residual ratios along `h`, and
-`resMass h = resMass [] * resCyl h` (`resMass_eq_root_mul`), so
-`cylMass h + resMass [] * resCyl h = pathMass h` (`exact_split`). This is the
-cylinder exactness of the construction `μ = ν + (1 - atomQ) λ` of the note,
-written as a real identity. No measure on the strategy space is constructed.
+`resCyl h` is the product of one-step ratios along `h`. Where the residual at
+`h` is positive, the ratio of a step `p` is `resMass (h ++ [p]) / resMass h`.
+Where that residual vanishes, the ratio is the original kernel (`kernRaw`),
+so every action stays a probability kernel (`resRatioStep_sum`). The weighted
+identity `resMass h = resMass [] * resCyl h` (`resMass_eq_root_mul`) does not
+use the value of a ratio at a history of residual zero, and
+`cylMass h + resMass [] * resCyl h = pathMass h` (`exact_split`) is unchanged.
+`resCyl` is the cylinder function of that kernel product. No measure on the
+strategy space is constructed.
 
 Not proved here: equality of ordinary and causal atomic capacities, and
 `C_∞ = sup_n C_n`. No publication priority is claimed. Ordinary infinite-family
@@ -94,6 +98,14 @@ noncomputable def kernRaw (ι : ITree) (h : List (ℕ × ℕ)) (av yv : ℕ) : �
   if ha : av < ι.nA h then
     if hy : yv < ι.nY h ⟨av, ha⟩ then ι.kern h ⟨av, ha⟩ ⟨yv, hy⟩ else 0
   else 0
+
+theorem kernRaw_nonneg (ι : ITree) (h : List (ℕ × ℕ)) (av yv : ℕ) :
+    0 ≤ kernRaw ι h av yv := by
+  unfold kernRaw
+  split_ifs with ha hy
+  · exact (ι.kpos h ⟨av, ha⟩ ⟨yv, hy⟩).le
+  · exact le_rfl
+  · exact le_rfl
 
 theorem kernRaw_fin (ι : ITree) (h : List (ℕ × ℕ))
     (a : Fin (ι.nA h)) (y : Fin (ι.nY h a)) :
@@ -1333,26 +1345,32 @@ theorem resMass_split (ι : ITree) (h : List (ℕ × ℕ)) (a : Fin (ι.nA h)) :
 
 /-! ## Residual ratios and cylinder exactness
 
-`resRatioStep h p` is the conditional residual ratio of the note: zero when the
-residual at `h` vanishes, and `resMass (h ++ [p]) / resMass h` otherwise.
+`resRatioStep h p` is a one-step probability ratio. Where `resMass h` is
+positive it is the residual child over the residual parent. Where `resMass h`
+vanishes it is the original kernel at `h`, which is already normalised, rather
+than the zero function. Every action therefore satisfies
+
+```
+∑ y, resRatioStep h (a, y) = 1.
+```
+
 `resCyl h` is the product of those ratios along `h`, with value `1` at the
-root. The product identity
+root. A ratio at a history of residual zero is multiplied, in
+`resMass_eq_root_mul`, by a factor that is already zero, so
 
 ```
 resMass h = resMass [] * resCyl h
 ```
 
-holds for every history, so
+holds for every history either way, and so does
 
 ```
-cylMass h + resMass [] * resCyl h = pathMass h
+cylMass h + resMass [] * resCyl h = pathMass h.
 ```
 
-holds for every history. This is the cylinder exactness of the construction
-`μ = ν + (1 - atomQ) λ` of the note, written as a real identity. No measure on
-the strategy space is constructed: `resCyl` is the cylinder function of the
-product law, and the identity is exactly what exactness asks of it. It does
-not by itself give the equality of ordinary and causal atomic capacities.
+This is an identity of real cylinder functions. It is not a measure on the
+strategy space, and it is not the equality of ordinary and causal atomic
+capacities.
 -/
 
 /-- The history before its last step. -/
@@ -1363,9 +1381,11 @@ theorem initHist_append (h : List (ℕ × ℕ)) (p : ℕ × ℕ) :
     initHist (h ++ [p]) = h := by
   simp [initHist, List.reverse_append, List.tail_cons]
 
-/-- Conditional residual ratio of a one-step extension. -/
+/-- One-step ratio. The original kernel replaces the residual ratio wherever
+the residual vanishes, so the ratio of every action remains a probability. -/
 noncomputable def resRatioStep (ι : ITree) (h : List (ℕ × ℕ)) (p : ℕ × ℕ) : ℝ :=
-  if resMass ι h = 0 then 0 else resMass ι (h ++ [p]) / resMass ι h
+  if resMass ι h = 0 then kernRaw ι h p.1 p.2
+  else resMass ι (h ++ [p]) / resMass ι h
 
 /-- Product of residual ratios, computed on the reversed history. -/
 noncomputable def resCylRev (ι : ITree) : List (ℕ × ℕ) → ℝ
@@ -1383,12 +1403,42 @@ theorem resCyl_append (ι : ITree) (h : List (ℕ × ℕ)) (p : ℕ × ℕ) :
     resCyl ι (h ++ [p]) = resRatioStep ι h p * resCyl ι h := by
   simp [resCyl, resCylRev, List.reverse_append]
 
+theorem resRatioStep_of_zero {ι : ITree} {h : List (ℕ × ℕ)} {p : ℕ × ℕ}
+    (hz : resMass ι h = 0) :
+    resRatioStep ι h p = kernRaw ι h p.1 p.2 := by
+  simp [resRatioStep, hz]
+
+theorem resRatioStep_of_pos {ι : ITree} {h : List (ℕ × ℕ)} {p : ℕ × ℕ}
+    (hz : resMass ι h ≠ 0) :
+    resRatioStep ι h p = resMass ι (h ++ [p]) / resMass ι h := by
+  simp [resRatioStep, hz]
+
 theorem resRatioStep_nonneg (ι : ITree) (h : List (ℕ × ℕ)) (p : ℕ × ℕ) :
     0 ≤ resRatioStep ι h p := by
-  unfold resRatioStep
-  split_ifs with hz
-  · exact le_rfl
-  · exact div_nonneg (resMass_nonneg ι _) (resMass_nonneg ι h)
+  by_cases hz : resMass ι h = 0
+  · rw [resRatioStep_of_zero hz]
+    exact kernRaw_nonneg ι h p.1 p.2
+  · rw [resRatioStep_of_pos hz]
+    exact div_nonneg (resMass_nonneg ι _) (resMass_nonneg ι h)
+
+/-- Every action has residual ratios that sum to one. On a positive residual
+this is conservation of `resMass`. On a zero residual it is `ksum` of the
+original kernel. -/
+theorem resRatioStep_sum (ι : ITree) (h : List (ℕ × ℕ)) (a : Fin (ι.nA h)) :
+    ∑ y : Fin (ι.nY h a), resRatioStep ι h (a.val, y.val) = 1 := by
+  by_cases hz : resMass ι h = 0
+  · have hkern : ∀ y : Fin (ι.nY h a),
+        resRatioStep ι h (a.val, y.val) = ι.kern h a y := by
+      intro y
+      rw [resRatioStep_of_zero hz, kernRaw_fin]
+    simp_rw [hkern]
+    exact ι.ksum h a
+  · have hstep : ∀ y : Fin (ι.nY h a),
+        resRatioStep ι h (a.val, y.val) =
+          resMass ι (h ++ [(a.val, y.val)]) / resMass ι h :=
+      fun y => resRatioStep_of_pos hz
+    simp_rw [hstep, ← Finset.sum_div, resMass_split ι h a]
+    exact div_self hz
 
 theorem resCyl_nonneg (ι : ITree) : ∀ h, 0 ≤ resCyl ι h := by
   intro h
@@ -1458,23 +1508,29 @@ theorem resMass_eq_root_mul (ι : ITree) :
       · have hzero : resMass ι (t ++ [q]) = 0 :=
           le_antisymm (le_trans (resMass_child_le ι t q) (le_of_eq hz))
             (resMass_nonneg ι _)
-        have hstep : resRatioStep ι t q = 0 := by
-          unfold resRatioStep
-          simp [hz]
-        rw [hstep, zero_mul, mul_zero, hzero]
-      · have hstep : resRatioStep ι t q = resMass ι (t ++ [q]) / resMass ι t := by
-          simp [resRatioStep, hz]
+        -- The parent product is already zero, so the fallback ratio is irrelevant.
+        rw [mul_left_comm (resMass ι []) (resRatioStep ι t q) (resCyl ι t),
+            ← ih, hz, mul_zero]
+        exact hzero
+      · have hstep : resRatioStep ι t q = resMass ι (t ++ [q]) / resMass ι t :=
+          resRatioStep_of_pos hz
         rw [hstep]
         have hrewrite : resMass ι [] * (resMass ι (t ++ [q]) / resMass ι t * resCyl ι t) =
-            resMass ι (t ++ [q]) * (resMass ι [] * resCyl ι t) / resMass ι t := by ring
+            resMass ι (t ++ [q]) * (resMass ι [] * resCyl ι t) / resMass ι t := by
+          rw [div_mul_eq_mul_div, mul_div_assoc,
+            mul_left_comm (resMass ι []) (resMass ι (t ++ [q])),
+            (mul_div_assoc (resMass ι []) (resCyl ι t) (resMass ι t)).symm,
+            (mul_div_assoc (resMass ι (t ++ [q]))
+              (resMass ι [] * resCyl ι t) (resMass ι t)).symm]
         rw [hrewrite, ← ih]
-        field_simp [hz]
+        exact (mul_div_cancel_right₀ _ hz).symm
 
 theorem exact_split (ι : ITree) (h : List (ℕ × ℕ)) :
     cylMass ι h + resMass ι [] * resCyl ι h = pathMass ι h := by
   rw [← resMass_eq_root_mul ι h]
   simp [resMass]
 
+#print axioms resRatioStep_sum
 #print axioms resMass_child_le
 #print axioms resMass_eq_root_mul
 #print axioms exact_split

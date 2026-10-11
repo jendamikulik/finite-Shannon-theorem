@@ -233,8 +233,11 @@ tight:
 \bigl[-\log_2 P_{n,\pi}(X)>t\bigr]\le\varepsilon.
 ```
 
-The spectral identity has a mathematical proof in the manuscript;
-its Lean formalization remains to be added.
+The spectral identity is formalized as `CausalSpectrum.atomQ_eq_lim_FInf`
+(with `atomQ_eq_iSup_FInf`) in [AtomicSpectrum.lean](CausalSeed/AtomicSpectrum.lean),
+where $F_\infty(t)=\inf_n F_n(t)$ is `FInf`. The tightness reformulation above
+is its immediate consequence together with `countable_seed_iff_atomQ_one`;
+it is not stated as a separate Lean theorem.
 
 ## Stationary kernels: the exact square-root coefficient
 
@@ -403,11 +406,14 @@ The following remain unresolved in this development:
 - optimality of the universal overhead constants;
 - extension of the infinite-horizon results to kernels with zero probabilities.
 
-A separate formalization task remains:
+The identity $\mathrm{atomQ}=\lim_{t\to\infty}F_\infty(t)$ of
+`atomic_capacity.tex` is now formalized (`atomQ_eq_lim_FInf`).
 
-- Lean formalization of
-  $\mathrm{atomQ}=\lim_{t\to\infty}F_\infty(t)$,
-  whose mathematical proof appears in `atomic_capacity.tex`.
+Remaining formalization tasks:
+
+- the $W_1$ universality corollary of the square-root note;
+- $R_\alpha(Z)$ of the infinite envelope as a moment of a limit variable
+  (in Lean it is defined as $\sup_n R_\alpha(Z_n)$).
 
 ## Attribution
 

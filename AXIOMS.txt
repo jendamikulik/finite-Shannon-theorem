@@ -204,7 +204,8 @@ attains that value. A countable exact seed exists if and only if `atomQ = 1`.
 `projective_entropy_identity` is `infiniteCost = sup_n finiteCost` for
 antitone countable seeds, with entropy in nats. The infima may be infinite.
 It is not the comparison with `L_∞`, and it does not identify `G_*`.
-The limit `atomQ = lim F_∞` is not a theorem.
+The limit `atomQ = lim F_∞` was not a theorem in this build; it is now
+`CausalSpectrum.atomQ_eq_lim_FInf` (AtomicSpectrum.lean, see below).
 No `sorry` or `admit` is used.
 
 --- 11 October 2026, later ---
@@ -233,7 +234,8 @@ LInf ι := sup_n envelopeMean (trunc ι n []) (bits).
 log 2 · LInf ≤ infiniteCost ≤ log 2 · (LInf + shannonOverhead).
 A finite-entropy exact seed exists if and only if LInf < ∞.
 The comparison uses the explicit unit conversion nats = log 2 · bits.
-It does not identify G_*. The limit atomQ = lim F_∞ is not a theorem.
+It does not identify G_*. The limit atomQ = lim F_∞ was not a theorem in this
+build; it is now CausalSpectrum.atomQ_eq_lim_FInf (see below).
 No sorry or admit is used.
 
 --- 11 October 2026, final ---
@@ -979,3 +981,42 @@ remainder for b > 0 (O(n^{-1/4} log n) after dividing by √n). The W1 universal
 `RenyiInf.one_seed_all_orders` assumes one ordinary exact source exists;
 `RZ ι α` is defined as sup_n R_α(Z_n) (L_∞ at α = 1), not as a moment of a
 limit variable Z. CountableAlphabet.lean was removed (it was not imported).
+
+--- 11 October 2026, atomic spectrum ---
+
+#print axioms, from the lake build of 11 October 2026
+Lean 4.35.0-rc3, mathlib 7d6757bc18680044fc0ff6efc8ee20494b408556
+`lake build`: Build completed successfully (3824 jobs). No sorry or admit.
+
+-- CausalSeed.AtomicSpectrum
+CausalSpectrum.FInf_bdd
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.FInf_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.FInf_le_atomA
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.FInf_le_atomQ
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.FInf_mono
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.atomA_le_FInf
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.atomQ_eq_iSup_FInf
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.atomQ_eq_lim_FInf
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.compat_sum
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.info_le_iff
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.policyCDF_eq
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.policyCDF_le_top
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.top_le_policyCDF
+  depends on axioms: [propext, choice, Quot.sound]
+
+FInf ι t := inf_n Fstar (trunc ι n []) t, the uniform information envelope F_∞.
+`atomQ_eq_lim_FInf` is Tendsto (FInf ι) atTop (𝓝 (atomQ ι)), i.e.
+atomQ = lim_{t→∞} F_∞(t); `atomQ_eq_iSup_FInf` is the sup form. The per-law
+inequalities are F_P(t) ≤ A_{⌊2^t⌋}(P) and A_K(P) ≤ F_P(t) + K·2^{-t}.

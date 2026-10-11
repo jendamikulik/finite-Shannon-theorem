@@ -295,6 +295,31 @@ This theorem requires common entropy and a stationary kernel.
 When $a=b$, it establishes a vanishing square-root coefficient;
 it does not establish a sharp logarithmic correction.
 
+### Unequal entropies: the causal Shannon floor
+
+For every finite stationary positive kernel, with $h_{\max}=\max_a H(K_a)$ (bits) and
+$K=\int_{\mathbb R}e^{-x^2/(2M^2)}\,dx$ ($M=\max|{-\log_2K_a(y)}-h_{\max}|$), for $n\ge1$
+$$
+nh_{\max}-K\sqrt n\;\le\;L_n\;\le\;C_n\;\le\;nh_{\max}+K\sqrt n+c_\star,
+\qquad\text{hence}\qquad \frac{C_n}{n}\to h_{\max}.
+$$
+Entropies need not be equal. Recentred at $h_{\max}$, every increment has nonpositive
+mean, so the conditional Hoeffding bound still controls the upper envelope tail; a
+constant policy at a maximizing action controls the lower tail.
+
+**Main declarations** ([CausalFloor.lean](CausalSeed/CausalFloor.lean)):
+`Kernel.cost_floor_bounds`, `Kernel.causal_floor`, `Kernel.envelope_floor`,
+`Kernel.envelope_le_floor`, `Kernel.floor_le_envelope`.
+
+Provenance: this statement is the "causal Shannon floor"
+$C^{\mathrm{causal}}_\infty=\max\{H(P),H(Q)\}$ of DREAM6 `WHO_PAYS_THE_BILL_v5.tex`
+(Theorem 17.1). The Lean proof takes a different route. It covers any number of actions
+and gives the full limit of $C_n/n$ with an $O(\sqrt n)$ residual; the DREAM6 proof uses
+an anti-diagonal block source along $n=mL$ and gives $O(n^{2/3})$ (its Corollary 17.2).
+The Lean result needs strictly positive kernels (`Kernel.Kpos`). Zero entries can be
+dropped from a stationary kernel without changing any law, but the reduction is not
+formalized.
+
 ## Structural results
 
 ### Exact penalty for incompatibility
@@ -370,10 +395,10 @@ zero-kernel, and Rényi developments.
 | $R_\alpha(Z)$ of the limit envelope law | [RenyiLimitLaw.lean](CausalSeed/RenyiLimitLaw.lean), [RenyiLimitMeasure.lean](CausalSeed/RenyiLimitMeasure.lean) |
 | Strict-penalty compatibility and stability | [StrictPenalty.lean](CausalSeed/StrictPenalty.lean) |
 
-[AXIOMS.txt](AXIOMS.txt) is a full axiom audit of all 1406 theorems declared in the
+[AXIOMS.txt](AXIOMS.txt) is a full axiom audit of all 1429 theorems declared in the
 52 project modules (`CausalSeed.*`) reachable from `Main.lean`. Auto-generated
 declarations (equation lemmas, `sizeOf_spec`, injectivity lemmas, instances) are excluded.
-All 1406 depend only on `propext`, `Classical.choice` and `Quot.sound` (3 on none). No
+All 1429 depend only on `propext`, `Classical.choice` and `Quot.sound` (3 on none). No
 theorem uses `sorryAx`, the build reports no `sorry` or `admit`, and no `axiom` is
 declared in the project. The notes from earlier dated audit logs are kept at the end
 of the file.
@@ -424,6 +449,7 @@ current revision.
 | `Completion.finiteCost`, `infiniteCost`, `Kernel.costBits` | [EntropyLimit.lean#L284](CausalSeed/EntropyLimit.lean#L284), [#L287](CausalSeed/EntropyLimit.lean#L287), [SqrtMain.lean#L99](CausalSeed/SqrtMain.lean#L99) | optimal entropy of seeds exact to `n` / at all horizons (nats); `C_n` in bits |
 | `RenyiInf.OrdSource`, `Oα`, `Cα`, `RZ`, `lawZ`, `RZmeas` | [RenyiSource.lean#L25](CausalSeed/RenyiSource.lean#L25), [RenyiInfinite.lean#L24](CausalSeed/RenyiInfinite.lean#L24)–[#L31](CausalSeed/RenyiInfinite.lean#L31), [RenyiLimitMeasure.lean#L117](CausalSeed/RenyiLimitMeasure.lean#L117), [#L324](CausalSeed/RenyiLimitMeasure.lean#L324) | ordinary (possibly history-inconsistent) exact source; ordinary/causal Rényi optima; `sup_n R_α(Z_n)`; the law of `Z` on `[0,∞] ⊆ EReal`; `R_α` from that law |
 | `shannonOverhead`, `Renyi.dAlpha`, `RenyiInf.dA` | [Entropy.lean#L646](CausalSeed/Entropy.lean#L646), [RenyiFinite.lean#L180](CausalSeed/RenyiFinite.lean#L180), [RenyiCountable.lean#L36](CausalSeed/RenyiCountable.lean#L36) | `c⋆ = (1 + 1/ln 2)/2`; the Rényi constant `d_α`; `dA 1 = c⋆` |
+| `Kernel.actEntropy`, `Kernel.hmax`, `Kernel.floorConst` | [CausalFloor.lean#L146](CausalSeed/CausalFloor.lean#L146), [#L151](CausalSeed/CausalFloor.lean#L151), [#L182](CausalSeed/CausalFloor.lean#L182) | `H(K_a)` in bits; `h_max = max_a H(K_a)`; the constant `∫ exp(-x²/(2M²)) dx` |
 | `Zero.ZTree` (`.P`, `.L`) | [ZeroTree.lean#L255](CausalSeed/ZeroTree.lean#L255) | finite tree whose kernels may vanish (`Valid`: `K ≥ 0`, sums 1); all branches kept |
 
 Main statements to read:
@@ -434,7 +460,9 @@ Main statements to read:
 [`Zero.zero_closure`](CausalSeed/ZeroClosure.lean#L130),
 [`RenyiInf.one_seed_all_orders_meas`](CausalSeed/RenyiLimitMeasure.lean#L350),
 [`atomQ_eq_lim_FInf`](CausalSeed/AtomicSpectrum.lean#L118),
-[`Kernel.universality_countable`](CausalSeed/SqrtUniversalityCountable.lean#L182).
+[`Kernel.universality_countable`](CausalSeed/SqrtUniversalityCountable.lean#L182),
+[`Kernel.causal_floor`](CausalSeed/CausalFloor.lean#L330),
+[`Kernel.cost_floor_bounds`](CausalSeed/CausalFloor.lean#L285).
 
 Conventions: entropies are in bits except `CountableSeed.entropy`, `finiteCost` and
 `infiniteCost` (nats; `costBits` divides by `ln 2`). `0 log 0 = 0` (`entTerm 0 = 0`,
@@ -455,7 +483,10 @@ questions (no proof is known to us), not formalization tasks:
 - compatibility of all minimizers at the endpoint $\kappa=G_*$;
 - a sharp logarithmic asymptotic in the equal-variance regime (the square-root
   theorem gives the $\sqrt n$ term $\sqrt{2/\pi}(a-b)$, which vanishes when $a=b$; the
-  next order is not determined by the notes);
+  next order is not determined by the notes). DREAM6 (`equal_entropy_sublog.tex`,
+  `moment_thresholds.tex`) proposes an exact dyadic recursion and a
+  $\Theta(\sqrt n)/\Theta(\log n)$/bounded classification. These are not formalized
+  here, so this item stays open in this repository;
 - optimality of the universal overhead constants;
 - extension of the infinite-horizon results to kernels with zero probabilities (the
   finite case is `Zero.zero_closure`; the infinite proofs use $\kappa>0$ in compactness
@@ -478,7 +509,17 @@ Closed formalization items:
   restated as `one_seed_all_orders_meas`
   ([RenyiLimitMeasure.lean](CausalSeed/RenyiLimitMeasure.lean)).
 
-Remaining formalization task:
+- The causal Shannon floor $C_n/n\to\max_aH(K_a)$ for unequal entropies:
+  `Kernel.causal_floor` (from DREAM6, see above).
+
+Remaining formalization tasks:
+
+- DREAM6 items not yet ported: exact dyadic optimality $C_n=H(R_n)$
+  (`equal_entropy_sublog.tex` thm:optimal; the inequality $F_S\le F_n$ is already
+  `seedCDF ≤ Fstar` here, so only attainment is missing), the moment classification
+  (`moment_thresholds.tex`), bounded excess for unequal entropies
+  (`bounded_causal_tax.tex`; only the $O(\sqrt n)$ residual is formalized), subadditivity
+  of $C_n$, the $W_1$ contract converse, and zero-repair.
 
 - identifying the CDF form of $W_1$ with the coupling (optimal-transport) definition.
   Mathlib in this version has no Wasserstein or optimal-transport definition; the

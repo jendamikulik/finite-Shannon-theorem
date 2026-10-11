@@ -14,7 +14,7 @@ $$
 \boxed{
 Z \preceq_{\mathrm{st}} J \preceq_{\mathrm{st}} Z+E,
 \qquad
-E\sim \operatorname{Exp}(\ln 2)
+E\sim \mathrm{Exp}(\ln 2)
 }
 $$
 
@@ -56,7 +56,7 @@ The key point is therefore not merely to couple the transcript laws of several p
 `CausalSpectrum.causal_realization` proves that greedy extraction of the probability flow produces one finite seed $S$ such that, simultaneously for every deterministic policy $\pi$,
 
 $$
-\Pr_S\!\left[\operatorname{run}(S,\pi)=\ell\right]
+\Pr_S\!\left[\mathrm{run}(S,\pi)=\ell\right]
 =
 \begin{cases}
 p_T(\ell), & \ell \text{ is compatible with } \pi,\\
@@ -77,7 +77,7 @@ $$
 \boxed{
 Z\preceq_{\mathrm{st}}J\preceq_{\mathrm{st}}Z+E,
 \qquad
-E\sim\operatorname{Exp}(\ln2).
+E\sim\mathrm{Exp}(\ln2).
 }
 $$
 
@@ -99,7 +99,7 @@ The second bound is the survival function of $Z+E$, with $E$ independent of $Z$.
 Define
 
 $$
-L(T)=\operatorname{envelopeMean}(T),
+L(T)=\mathrm{envelopeMean}(T),
 $$
 
 measured in bits, and let $H(S)$ be the Shannon entropy of the finite causal seed.
@@ -227,7 +227,7 @@ Finite greedy seeds have ordered atom weights.
 Passing to a diagonal subsequence produces limiting strategy atoms. Let
 
 $$
-q=\operatorname{atomQ}.
+q=\mathrm{atomQ}.
 $$
 
 The formal development constructs:
@@ -250,19 +250,19 @@ $$
 \boxed{
 \mu_{\mathrm{full}}([h])
 =
-\operatorname{pathMass}(h).
+\mathrm{pathMass}(h).
 }
 $$
 
 At the level of cylinder masses,
 
 $$
-\operatorname{cylMass}(h)
+\mathrm{cylMass}(h)
 +
-\operatorname{resMass}(\varnothing)\,
-\operatorname{resCyl}(h)
+\mathrm{resMass}(\varnothing)\,
+\mathrm{resCyl}(h)
 =
-\operatorname{pathMass}(h).
+\mathrm{pathMass}(h).
 $$
 
 The residual component is explicit: its one-step transition probabilities are obtained from the residual flow.
@@ -287,14 +287,14 @@ No causal compatibility between those readouts is assumed.
 Nevertheless, every such source satisfies
 
 $$
-\operatorname{atomicMass}(\mu)\le q.
+\mathrm{atomicMass}(\mu)\le q.
 $$
 
 The constructed causal measure attains equality:
 
 $$
 \boxed{
-\operatorname{atomicMass}(\mu_{\mathrm{full}})=q.
+\mathrm{atomicMass}(\mu_{\mathrm{full}})=q.
 }
 $$
 

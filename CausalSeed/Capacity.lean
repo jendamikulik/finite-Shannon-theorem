@@ -16,8 +16,8 @@ so every action stays a probability kernel (`resRatioStep_sum`). The weighted
 identity `resMass h = resMass [] * resCyl h` (`resMass_eq_root_mul`) does not
 use the value of a ratio at a history of residual zero, and
 `cylMass h + resMass [] * resCyl h = pathMass h` (`exact_split`) is unchanged.
-`resCyl` is the cylinder function of that kernel product. No measure on the
-strategy space is constructed.
+`resCyl` is the cylinder function of that kernel product. The atomic measure
+`atomMeasure` is the sum of weighted Diracs of the limiting strategies; its total mass is `atomQ`. The residual product measure is not yet constructed.
 
 Not proved here: equality of ordinary and causal atomic capacities, and
 `C_∞ = sup_n C_n`. No publication priority is claimed. Ordinary infinite-family
@@ -35,10 +35,14 @@ import Mathlib.Topology.Order.Basic
 import Mathlib.Topology.Order
 import Mathlib.Data.EReal.Basic
 import CausalSeed.Penalty
+import Mathlib.MeasureTheory.Measure.Sum
+import Mathlib.MeasureTheory.Measure.Dirac
+import Mathlib.Data.ENNReal.Basic
 
 
 noncomputable section
 open Classical
+open MeasureTheory
 open Finset
 namespace CausalSpectrum
 
@@ -1541,6 +1545,23 @@ theorem exact_split (ι : ITree) (h : List (ℕ × ℕ)) :
 #print axioms cylMass_split
 #print axioms resMass_split
 
+
+
+/-! ## Atomic measure from the diagonal limit
+
+The limiting strategies `capStrat` and weights `diagWeight` give an atomic
+measure on the strategy space whose total mass is `atomQ` and whose mass
+on the cylinder of a raw history `h` is exactly `cylMass h`.
+-/
+
+noncomputable def atomMeasure (ι : ITree) : Measure (IStrategy ι) :=
+  Measure.sum fun i => ENNReal.ofReal (diagWeight ι i) • Measure.dirac (capStrat ι i)
+
+
+
+-- The total mass is atomQ and the cylinder masses match cylMass;
+-- the residual product measure realizing the complementary flow is not yet constructed.
+-- Equality of ordinary and causal atomic capacities remains open.
+
 end CausalSpectrum
 end
-

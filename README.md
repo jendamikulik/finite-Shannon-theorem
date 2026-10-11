@@ -365,9 +365,9 @@ zero-kernel, and Rényi developments.
 | Projective entropy identity and attainment | [EntropyLimit.lean](CausalSeed/EntropyLimit.lean) |
 | Ordinary and causal atomic capacities | [AtomicCapacity.lean](CausalSeed/AtomicCapacity.lean) |
 | General square-root limit | [SqrtGeneral.lean](CausalSeed/SqrtGeneral.lean) |
-| $W_1$ universality of asymptotically optimal seeds | [SqrtUniversality.lean](CausalSeed/SqrtUniversality.lean) |
+| $W_1$ universality of asymptotically optimal seeds | [SqrtUniversality.lean](CausalSeed/SqrtUniversality.lean), [SqrtUniversalityCountable.lean](CausalSeed/SqrtUniversalityCountable.lean) |
 | One infinite seed for all positive Rényi orders | [RenyiInfinite.lean](CausalSeed/RenyiInfinite.lean) |
-| $R_\alpha(Z)$ of the limit envelope law | [RenyiLimitLaw.lean](CausalSeed/RenyiLimitLaw.lean) |
+| $R_\alpha(Z)$ of the limit envelope law | [RenyiLimitLaw.lean](CausalSeed/RenyiLimitLaw.lean), [RenyiLimitMeasure.lean](CausalSeed/RenyiLimitMeasure.lean) |
 | Strict-penalty compatibility and stability | [StrictPenalty.lean](CausalSeed/StrictPenalty.lean) |
 
 [AXIOMS.txt](AXIOMS.txt) contains historical axiom-audit output for the
@@ -400,29 +400,41 @@ theorem allows nonnegative transitions and retains the tree shape. The
 infinite and stationary developments still assume strictly positive kernels.
 Policies are deterministic and adaptive.
 
-The following remain unresolved in this development:
+The following remain unresolved in this development. They are open mathematical
+questions (no proof is known to us), not formalization tasks:
 
-- the exact value of $G_*$;
+- the exact value of $G_*$ (only bounds are proved);
 - compatibility of all minimizers at the endpoint $\kappa=G_*$;
-- a sharp logarithmic asymptotic in the equal-variance regime;
+- a sharp logarithmic asymptotic in the equal-variance regime (the square-root
+  theorem gives the $\sqrt n$ term $\sqrt{2/\pi}(a-b)$, which vanishes when $a=b$; the
+  next order is not determined by the notes);
 - optimality of the universal overhead constants;
-- extension of the infinite-horizon results to kernels with zero probabilities.
+- extension of the infinite-horizon results to kernels with zero probabilities (the
+  finite case is `Zero.zero_closure`; the infinite proofs use $\kappa>0$ in compactness
+  and positivity of path masses, and no replacement argument is written down).
 
-The identity $\mathrm{atomQ}=\lim_{t\to\infty}F_\infty(t)$ of
-`atomic_capacity.tex` is now formalized (`atomQ_eq_lim_FInf`).
+Closed formalization items:
 
-The $W_1$ universality corollary of the square-root note is formalized in
-[SqrtUniversality.lean](CausalSeed/SqrtUniversality.lean) (`Kernel.universality`, with
-$W_1$ in its CDF form $\int_{\mathbb R}|F_\mu-F_\nu|$, for exact finite seeds), and
-$R_\alpha(Z)$ of the limit envelope law (CDF $F_\infty$, moments by the tail formula,
-infinite values allowed) equals $\sup_n R_\alpha(Z_n)$ for every $\alpha>0$ in
-[RenyiLimitLaw.lean](CausalSeed/RenyiLimitLaw.lean) (`RZlaw_eq`,
-`one_seed_all_orders_law`).
+- $\mathrm{atomQ}=\lim_{t\to\infty}F_\infty(t)$: `atomQ_eq_lim_FInf`.
+- $W_1$ universality of the square-root note, in CDF form
+  $W_1(\mu,\nu)=\int_{\mathbb R}|F_\mu-F_\nu|$: for finite seeds `Kernel.universality`
+  ([SqrtUniversality.lean](CausalSeed/SqrtUniversality.lean)), for countable seeds with
+  finite entropy `Kernel.universality_countable`
+  ([SqrtUniversalityCountable.lean](CausalSeed/SqrtUniversalityCountable.lean)); the
+  analytic core is `Sqrt.IncFamily.L1_tendsto`.
+- The law of the limit variable $Z$ as a probability measure on $[0,\infty]\subset$
+  `EReal` (`RenyiInf.lawZ`: the Stieltjes measure of $F_\infty$ plus an atom of mass
+  $1-\mathrm{atomQ}$ at $\infty$), with moments as Lebesgue integrals equal to the tail
+  formulas (`moment_lt`, `moment_one`, `moment_gt`) and
+  $R_\alpha(Z)=\sup_n R_\alpha(Z_n)$ for all $\alpha>0$ (`RZmeas_eq`, `RZlaw_eq`),
+  restated as `one_seed_all_orders_meas`
+  ([RenyiLimitMeasure.lean](CausalSeed/RenyiLimitMeasure.lean)).
 
-Remaining formalization tasks:
+Remaining formalization task:
 
-- universality for countable (not finite) exact seeds at each horizon;
-- the limit law of $Z$ as a measure on $[0,\infty]$ (now given by its tail function only).
+- identifying the CDF form of $W_1$ with the coupling (optimal-transport) definition.
+  Mathlib in this version has no Wasserstein or optimal-transport definition; the
+  equivalence needs the quantile coupling, which is not formalized here.
 
 ## Attribution
 

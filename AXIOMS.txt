@@ -1117,3 +1117,109 @@ the corollary for exact finite seeds (atom lists) of κ.rounds n with
 F_∞ = FInf (tail-integral formula, value +∞ allowed, E Z at α = 1);
 `RZlaw_eq` proves RZlaw ι α = RZ ι α = sup_n R_α(Z_n) for every α > 0 with no extra
 hypothesis, and `one_seed_all_orders_law` restates the main theorem with RZlaw.
+
+--- 11 October 2026, countable-seed universality and the law of Z ---
+
+#print axioms, from the lake build of 11 October 2026 (HEAD 4e4348f + local changes)
+Lean 4.35.0-rc3, mathlib 7d6757bc18680044fc0ff6efc8ee20494b408556
+`lake build`: Build completed successfully (3828 jobs). No sorry or admit.
+
+-- CausalSeed.SqrtUniversalityCountable
+CausalSpectrum.Completion.CountableSeed.cCDF_mono
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.CountableSeed.cTail_anti
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.CountableSeed.cTail_ge
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.CountableSeed.cTail_le_one
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.CountableSeed.cTail_meas
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.CountableSeed.cTail_neg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.CountableSeed.cTail_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.CountableSeed.gap_total_countable
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.CountableSeed.infoMass_anti
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.CountableSeed.info_nonneg_w
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.CountableSeed.integrableOn_cTail
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.CountableSeed.integral_cTail
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.CountableSeed.lintegral_cTail
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.CountableSeed.term_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.CountableSeed.term_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.CountableSeed.term_summable
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.universality_countable
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.RenyiLimitMeasure
+CausalSpectrum.RenyiInf.FInf_atBot
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.FInf_le_atomQ'
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.FInf_neg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.FInf_rightCont
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.Fstar_rightCont
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.RZmeas_eq
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.atomQ_le_one
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.atomQ_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.coe_meas
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.integral_gw_Ioi
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.ite_rightCont
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.lawZ_tail
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.layer
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.lint_gw_top
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.lintegral_lawZ
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.moment_gt
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.moment_lt
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.moment_one
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.muInf_Iio
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.muInf_Ioi
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.muInf_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.muInf_univ
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.one_seed_all_orders_meas
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.policyCDF_rightCont
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.rightCont_of_inf
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.zMomLawR_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+
+Notes. `Kernel.universality_countable` is the W1 (CDF-L1) universality corollary for
+countable seeds G n exact to horizon n with finite entropy and (E J_n - C_n)/√n → 0
+(E J_n = `bits` = H(G n)/ln 2). `RenyiInf.lawZ` is an actual probability measure on
+EReal: the Lebesgue–Stieltjes measure of the right-continuous F_∞ (`FInf_rightCont`)
+plus mass 1 - atomQ at ⊤; `lawZ_tail` gives P(Z > t) = 1 - F_∞(t).
+`moment_lt`, `moment_one`, `moment_gt` identify the Lebesgue integrals of
+2^{(1-α)z} and z against lawZ with the tail-formula values; `RZmeas_eq` gives
+R_α(Z) (from lawZ) = sup_n R_α(Z_n) for all α > 0. Mathlib (this version) has no
+Wasserstein/optimal-transport definition, so W1 stays in its CDF form.

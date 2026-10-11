@@ -1,8 +1,8 @@
 Axiom audit of every theorem in the project modules (CausalSeed.*), 11 October 2026
 Lean 4.35.0-rc3, mathlib 7d6757bc18680044fc0ff6efc8ee20494b408556
-`lake build`: Build completed successfully (3843 jobs). No `sorry`, `admit` or custom axioms.
+`lake build`: Build completed successfully (3852 jobs). No `sorry`, `admit` or custom axioms.
 
-Summary: 1637 theorems in 65 modules: all depend only on propext, Classical.choice,
+Summary: 1810 theorems in 71 modules: all depend only on propext, Classical.choice,
 Quot.sound (3 on none). No theorem uses sorryAx or any other axiom, and no `axiom`
 is declared in the CausalSeed modules.
 
@@ -28,7 +28,7 @@ CausalSpectrum.Completion.AlphabetSeed.mass
 CausalSpectrum.Completion.AlphabetSeed.nonneg
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.AlphabetSeed.toSeed.congr_simp
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.AlphabetSeed.toSeed_entropy
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.AlphabetSeed.toSeed_exactTo
@@ -224,17 +224,17 @@ CausalSpectrum.wAt_nonneg
 CausalSpectrum.Completion.OrdinarySource.exact_fiber
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.OrdinarySource.measurable_fiber
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.atomMeasure_atomicMass
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.causal_atomic_capacity_attained
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.countableMeasure_atomicMass
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.countableMeasure_cylinder
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.countable_seed_iff_atomQ_one
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.discrete_seed_of_atomQ_one
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.fullMeasure_atomicMass
@@ -960,7 +960,7 @@ CausalSpectrum.weight_lt_dyadic_iff
 CausalSpectrum.Completion.RankedSeed.decreasing
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.RankedSeed.entropyHead_nonneg
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.RankedSeed.entropy_eq_tsum
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.RankedSeed.entropy_le_iff
@@ -994,7 +994,7 @@ CausalSpectrum.Completion.RankedSeed.tail_entropy
 CausalSpectrum.Completion.RankedSeed.weight_le_one
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.bounded_entropy_implies_atomQ_one
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.entropy_attained
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.entropy_compactness
@@ -1010,11 +1010,11 @@ CausalSpectrum.Completion.projective_entropy_identity
 
 -- CausalSeed.EnvelopeBridge (28 theorems)
 CausalSpectrum.Completion.CountableSeed.coupling.congr_simp
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.coupling_entropy_le
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.envelope_le_entropy
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.fiber_iff
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.part_le
@@ -1022,7 +1022,7 @@ CausalSpectrum.Completion.CountableSeed.part_le
 CausalSpectrum.Completion.CountableSeed.part_nonneg
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.part_summable
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.sum_part
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.agrees_of_run_mem
@@ -1060,7 +1060,7 @@ CausalSpectrum.Completion.negMulLog_eq_bits
 CausalSpectrum.Completion.negMulLog_hasSum_le
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.prefix_transcript_le_hitSum
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.stratAgrees_of_prefix
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.sum_range_atomWeight
@@ -1068,9 +1068,9 @@ CausalSpectrum.Completion.sum_range_atomWeight
 
 -- CausalSeed.FiniteSeedExtension (10 theorems)
 CausalSpectrum.Completion.CountableSeed.mk.congr_simp
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.PaddedList.hasSum_eval
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.PaddedList.sum_eval
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.finite_envelope_upper
@@ -1086,7 +1086,7 @@ CausalSpectrum.Completion.listSeed_exact
 CausalSpectrum.Completion.run_mem_prefix_iff
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.stratAgrees_append_left
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 
 -- CausalSeed.Gap (15 theorems)
 CausalSpectrum.bottleneck_p_le_one
@@ -1156,15 +1156,15 @@ CausalSpectrum.pmfEntropy_push_le
 
 -- CausalSeed.InfiniteEnvelope (8 theorems)
 CausalSpectrum.Completion.finite_envelope_finite_cost
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.finite_envelope_implies_atomQ_one
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.infinite_envelope_attained
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.infinite_envelope_sandwich
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.infinite_envelope_sandwich_nats
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.natPerBit_ne_top
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.natPerBit_ne_zero
@@ -1190,9 +1190,9 @@ CausalSpectrum.Completion.atomicSupport_countable
 CausalSpectrum.Completion.diag_summable
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.exact_infinite_representation
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.fullMeasure_atomic_lower
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.fullMeasure_cylinder
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.measurable_agrees
@@ -1202,12 +1202,64 @@ CausalSpectrum.Completion.measurable_cylinder
 CausalSpectrum.Completion.product_constraints
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.residualCoordinate_singleton
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.residualMeasure_valid
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.valid_of_agree
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.valid_of_path_pos
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.MomentAssembly (25 theorems)
+CausalSpectrum.Kernel.excess_bdd_upper
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.excess_log_theta
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.excess_log_upper
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.gg_le_tel
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.gg_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.small_sum
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.sum_Ico_gg_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.sum_Ico_gg_le'
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.sum_inv_le_log
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.sum_split
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_decay_four_gg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_decay_three_gg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.eG_bdd_upper
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.eG_le_of_sums
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.eG_log_upper
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.exists_L_beta
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.mom_zero
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.nondeg_of_lt
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.nondeg_of_m3_ne_zero
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.nondeg_of_ne
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.sum_ofReal_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.two_mul_quarter
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.excess_bdd_upper
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.excess_log_theta
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.excess_log_upper
   depends on axioms: [propext, choice, Quot.sound]
 
 -- CausalSeed.MomentClass (3 theorems)
@@ -1216,6 +1268,86 @@ CausalSpectrum.Kernel.excess_little_o
 CausalSpectrum.Kernel.excess_theta_sqrt
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Kernel.sB_le_sA
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.MomentDecay (39 theorems)
+CausalSpectrum.Sqrt.Decay.alt_eq
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.binom_inv
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.binom_inv_sq
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.binom_sum
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.binom_term_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.dB_mul_sB_pow
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.dB_scale
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.natCast_meas
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.sB_pow
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.single_sub'
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.sqrt_div_sq
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.sum_abs_alt
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.sum_choose
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.sum_choose_abs
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.sum_choose_sq
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.sum_choose_succ
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_add_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_algebraMap
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_dB
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_dB_pow_sB_pow
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_dB_sB_pow
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_dB_scale_pow
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_decay_four
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_decay_three
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_decay_two
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_eq_of_subset
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_finsupp_sum_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_mixture
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_mul_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_neg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_one
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_pow_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_sB
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_single
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_smul
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_sub_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_sum_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_zero
   depends on axioms: [propext, choice, Quot.sound]
 
 -- CausalSeed.MomentFourier (29 theorems)
@@ -1314,6 +1446,232 @@ CausalSpectrum.Sqrt.IncFamily.log_succ_sub_le
 CausalSpectrum.Sqrt.IncFamily.measurable_G
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Zero.NNKernel.excess_log_lower
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.MomentSmooth (30 theorems)
+CausalSpectrum.Sqrt.Decay.Psi_eq_one
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.Psi_eq_zero
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.Psi_le_one
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.Psi_mono
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.Psi_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.Psi_props
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.Psi_shift
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.Psi_succ
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.act_Dif
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.act_add
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.act_eq_sum
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.act_fun
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.act_mul
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.act_neg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.act_one
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.act_single
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.act_smul
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.act_sub
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.act_sum
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.act_translate
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.act_zero
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.continuous_Psi_succ
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.continuous_act
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.hasDerivAt_Psi
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.hasDerivAt_act
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.lintegral_act_Dif_Psi_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.lintegral_act_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.measurable_Psi
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.measurable_act
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_Dif
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.MomentTaylor (7 theorems)
+CausalSpectrum.Sqrt.IncFamily.amom_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.expect_taylor
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.lintegral_expect_sub_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Taylor.continuous_rem
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Taylor.hasDerivAt_rem
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Taylor.lintegral_rem_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Taylor.rem_at_zero
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.MomentUpper (20 theorems)
+CausalSpectrum.Sqrt.Decay.chain_cont
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.chain_deriv
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.chain_lintegral
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.chain_zero
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.integrable_chain
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tendsto_act_atBot
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_Dif_scale
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.Decay.tv_mul_Dif_pow_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.WidthData.mk.congr_simp
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.amomSum_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.eG_expect_gen
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.eG_refPol
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.expect_fun
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.integrable_G0_sub_polE
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.integrable_act
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.ofReal_eG_le_Wint
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.polE_G0_eq
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.wdata_Rf
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.wdata_α_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.wdata_β_le
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.MomentWidth (52 theorems)
+CausalSpectrum.Sqrt.IncFamily.G0_bounds
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.G_le_polE
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.U_envelope
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.U_monotone
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.Wd_bounds
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.WidthData.H_le_Ψ
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.WidthData.Kf_eq
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.WidthData.S_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.WidthData.Wd_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.WidthData.Wint_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.WidthData.hA
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.WidthData.hR
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.WidthData.hR'c
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.WidthData.hR'i
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.WidthData.hlim
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.WidthData.hΨ
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.WidthData.hΨ0
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.WidthData.hΨ1
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.WidthData.hΨm
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.WidthData.lintegral_U_Kf
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.WidthData.lintegral_shift_Ψ
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.WidthData.measurable_Rf
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.WidthData.measurable_S
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.WidthData.Ψ_le_H
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.abs_polE_sub_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.cdfPol_eq_polE
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.expect_U_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.expect_eq_act
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.integrable_mul_Wd
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.integrable_mul_polE
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.lintegral_conv_Wd
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.measurable_U
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.measurable_Wd
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.measurable_conv_Wd
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.measurable_polE
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.ofReal_conv_Wd
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.ofReal_sum_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.polE_abs_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.polE_add_const
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.polE_bounds
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.polE_ibp
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.polE_le_U
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.polE_mono
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.polE_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.polE_refPol
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.polE_sum
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.polE_translate
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.polE_zero
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.recursion_solve
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.telescope
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.tv_measOf
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.tv_measOf_pow
   depends on axioms: [propext, choice, Quot.sound]
 
 -- CausalSeed.Note (25 theorems)
@@ -2192,7 +2550,7 @@ CausalSpectrum.two_div_sqrt_two_pi
 
 -- CausalSeed.SeedDataProcessing (13 theorems)
 CausalSpectrum.Completion.Seed.dominated_summable
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.Seed.fiber_le
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.Seed.fiber_nonneg
@@ -2232,23 +2590,23 @@ CausalSpectrum.Completion.CountableSeed.mass
 CausalSpectrum.Completion.CountableSeed.nonneg
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.rankedWeight_anti
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.rankedWeight_hasSum
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.rankedWeight_nonneg
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.ranked_entropy
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.ranked_exactTo_iff
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.ranked_exact_iff
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.ranked_hit
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.ranked_measure
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.ranked_positive_relabel
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.relabel
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.weight_le_one
@@ -2284,9 +2642,9 @@ CausalSpectrum.Completion.RankedSeed.forget_entropy
 CausalSpectrum.Completion.RankedSeed.mk.congr_simp
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.RankedSeed.toCountable_entropy
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.RankedSeed.toCountable_exactTo
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.Seed.ranked_entropy
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.Seed.ranked_exact
@@ -2302,7 +2660,7 @@ CausalSpectrum.Completion.countableInfiniteCost_eq
 CausalSpectrum.Completion.countable_entropy_attained
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.countable_projective_entropy_identity
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.finiteCost_eq_countable
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.infiniteCost_eq_countable
@@ -2818,39 +3176,39 @@ CausalSpectrum.Sqrt.IncFamily.sB_nonneg
 
 -- CausalSeed.SqrtUniversalityCountable (17 theorems)
 CausalSpectrum.Completion.CountableSeed.cCDF_mono
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.cTail_anti
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.cTail_ge
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.cTail_le_one
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.cTail_meas
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.cTail_neg
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.cTail_nonneg
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.gap_total_countable
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.infoMass_anti
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.info_nonneg_w
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.integrableOn_cTail
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.integral_cTail
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.lintegral_cTail
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.term_le
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.term_nonneg
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.CountableSeed.term_summable
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Kernel.universality_countable
-  depends on axioms: [propext,]
+  depends on axioms: [propext, choice, Quot.sound]
 
 -- CausalSeed.SqrtW1 (11 theorems)
 CausalSpectrum.Completion.CountableSeed.cdf_normLaw
@@ -3546,3 +3904,16 @@ earlier note that W1 is formalized only in CDF form: `Kernel.universality_W1` an
 with zero entries; `NNKernel.costBits_eq_red` proves C_n(κ₀) = C_n(κ₀.red), and
 subadditivity and the Fekete limit transfer. The Θ(log n)/O(1) branches of the moment
 classification are not theorems here.
+
+--- 11 October 2026, moment classification: upper bounds ---
+
+Notes. The Θ(log n) and O(1) branches of the moment classification at equal entropy are
+now theorems (this supersedes the last sentence of the previous note).
+`Kernel.excess_log_upper`: if every action has the variance of a nondegenerate reference
+action j₀ (`IncFamily.Nondeg`: the law of j₀ contains a symmetric pair of atoms; implied
+by two distinct values, `nondeg_of_ne`), then L_n - nh ≤ C(1 + log n) and
+C_n - nh ≤ C(1 + log n) + c_*. `Kernel.excess_bdd_upper`: if the third moments also agree,
+both are O(1). `Kernel.excess_log_theta`: equal variances and two different third moments
+give c log n ≤ L_n - nh, C_n - nh ≤ C log n eventually, with no extra hypothesis
+(nondegeneracy follows from a nonzero third moment, `nondeg_of_m3_ne_zero`). Any number of
+actions is allowed. `Zero.NNKernel.excess_*` transfer these to kernels with zero entries.

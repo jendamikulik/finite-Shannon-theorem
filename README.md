@@ -411,6 +411,61 @@ Lean:
   [`Sqrt.IncFamily.eG_step`](CausalSeed/MomentLower.lean#L94),
   [`Kernel.envelope_sub_eq_eG`](CausalSeed/MomentLower.lean#L172)
 
+**Theorem 16 (moment classification: logarithmic and bounded branches).** In the setting of
+Theorem 9, let $`j_0`$ be an action whose centered information law contains a symmetric
+pair of atoms, $`\mu_{j_0}=\rho\,\delta_c*\tfrac12(\delta_{-b}+\delta_b)+\zeta`$ with
+$`b>0`$, $`0<\rho\le1`$ and $`\|\zeta\|_{\mathrm{TV}}\le1-\rho`$; every law with two
+distinct values has this form. Any finite number of actions is allowed.
+
+1. If every action has the variance of $`j_0`$, there is $`C`$ with
+   $`L_n-nh\le C(1+\log n)`$ and $`C_n-nh\le C(1+\log n)+c_{\star}`$ for all $`n\ge1`$.
+2. If every action also has the third moment of $`j_0`$, then $`L_n-nh`$ and
+   $`C_n-nh`$ are bounded.
+3. If all actions have equal variances and two have different third moments, there are
+   $`0<c\le C`$ with
+$$`
+c\log n\le L_n-nh\le C\log n,\qquad c\log n\le C_n-nh\le C\log n
+`$$
+   for all large $`n`$. No nondegeneracy hypothesis is needed here: a centered law with
+   nonzero third moment has two distinct values.
+
+The same bounds hold for nonnegative kernels, stated for the reduced kernel.
+
+The proof bounds $`e(G_n)`$ by the integrated width
+$`W_n=\int(U_nG_0-G_n)`$ between the upper and lower policy envelopes, where
+$`U_n`$ iterates $`f\mapsto\max_jE_jf`$. Smoothing by $`\Psi=\Psi_6`$, the CDF of a sum
+of six independent uniforms on $`[-a,a]`$, gives the recursion
+$$`
+W_n\le 24a+2\sum_{i<n}\bigl(\alpha_{n-1-i}+\beta_{n-1-i}W_i\bigr),
+`$$
+where $`\alpha_r`$ and $`\beta_r`$ are the $`L^1`$ norms of
+$`(E_j-E_{j_0})(\mu_{j_0}^{*r}*\Psi)`$ and of its derivative. When the moments of
+order $`<m`$ agree, a Taylor bound gives
+$`\|(E_j-E_{j_0})f\|_{L^1}\le(E|X_j|^m+E|X_{j_0}|^m)\|f^{(m)}\|_{L^1}`$, and
+$`f^{(m)}=\mu_{j_0}^{*r}*\Delta_a^{m-1}*\Psi_{7-m}'`$ with $`\Delta_a=(\delta_{-a}-\delta_a)/2a`$.
+Total-variation decay of the smoothed walk, $`\|\Delta_b^q*\mu_{j_0}^{*r}\|_{\mathrm{TV}}=O(r^{-q/2})`$
+for $`q\le4`$ (binomial mixture and Rademacher orthogonality), makes
+$`\sum_r\beta_r\le\tfrac14`$ once $`a`$ is a large multiple of $`b`$, and gives
+$`\sum_{r<n}\alpha_r=O(\log n)`$ for $`m=3`$ and $`O(1)`$ for $`m=4`$.
+
+Lean:
+- [`Kernel.excess_log_upper`](CausalSeed/MomentAssembly.lean#L420)
+- [`Kernel.excess_bdd_upper`](CausalSeed/MomentAssembly.lean#L434)
+- [`Kernel.excess_log_theta`](CausalSeed/MomentAssembly.lean#L449)
+- [`Zero.NNKernel.excess_log_upper`](CausalSeed/MomentAssembly.lean#L482),
+  [`excess_bdd_upper`](CausalSeed/MomentAssembly.lean#L489),
+  [`excess_log_theta`](CausalSeed/MomentAssembly.lean#L497)
+- [`Sqrt.IncFamily.eG_log_upper`](CausalSeed/MomentAssembly.lean#L299),
+  [`eG_bdd_upper`](CausalSeed/MomentAssembly.lean#L349),
+  [`nondeg_of_ne`](CausalSeed/MomentAssembly.lean#L224),
+  [`nondeg_of_m3_ne_zero`](CausalSeed/MomentAssembly.lean#L400)
+- Ingredients: [`lintegral_expect_sub_le`](CausalSeed/MomentTaylor.lean#L139) (Taylor),
+  [`Decay.tv_mixture`](CausalSeed/MomentDecay.lean#L365) (TV decay),
+  [`Sqrt.IncFamily.polE_abs_le`](CausalSeed/MomentWidth.lean#L274),
+  [`WidthData.Wint_le`](CausalSeed/MomentWidth.lean#L558),
+  [`recursion_solve`](CausalSeed/MomentWidth.lean#L598),
+  [`ofReal_eG_le_Wint`](CausalSeed/MomentUpper.lean#L159)
+
 ### V. Structure of the causal constraint
 
 **Theorem 16 (exact penalty).** Let $`G_{\ast}=\sup_T\bigl(C(T)-O(T)\bigr)`$, where $`O(T)`$
@@ -465,7 +520,7 @@ defining module is `CausalSeed.*` and computes its axioms with `collectAxioms`.
 Auto-generated declarations (equation lemmas, `sizeOf_spec`, injectivity lemmas,
 instances) are excluded.
 
-[`AXIOMS.txt`](AXIOMS.txt) records the result. All **1637** theorems in the 65 project
+[`AXIOMS.txt`](AXIOMS.txt) records the result. All **1810** theorems in the 71 project
 modules depend only on `propext`, `Classical.choice` and `Quot.sound`; three depend on
 no axiom. No theorem uses `sorryAx`, the build reports no `sorry` or `admit`, and the
 project declares no `axiom`.
@@ -503,6 +558,7 @@ the theorems above. Line numbers refer to the current revision.
 | `Sqrt.IncFamily.limitLaw`, `CountableSeed.normLaw`, `seedLaw`, `envLaw` | [SqrtW1.lean#L70](CausalSeed/SqrtW1.lean#L70), [#L87](CausalSeed/SqrtW1.lean#L87), [GapW1.lean#L20](CausalSeed/GapW1.lean#L20), [#L75](CausalSeed/GapW1.lean#L75) | the law with CDF `F_{a,b}`; the law of `(J - c)/s`; the law of `J` for a finite seed; the law with CDF `F*` |
 | `Sqrt.IncFamily.sA`, `sB`, `Flim` | [SqrtDefect.lean#L427](CausalSeed/SqrtDefect.lean#L427), [#L429](CausalSeed/SqrtDefect.lean#L429), [SqrtUniversality.lean#L26](CausalSeed/SqrtUniversality.lean#L26) | `a = max σ_a`, `b = min σ_a`; the limit profile `F_{a,b}` (half-normal if `b = 0`) |
 | `Sqrt.IncFamily.sig2`, `m3`, `law`, `eG` | [SqrtDefect.lean#L424](CausalSeed/SqrtDefect.lean#L424), [MomentFourier.lean#L369](CausalSeed/MomentFourier.lean#L369), [#L116](CausalSeed/MomentFourier.lean#L116), [MomentLower.lean#L21](CausalSeed/MomentLower.lean#L21) | variance and third moment of the centered information of an action; the law `μ_n` with CDF `G_n`; its mean `∫ (G_0 - G)` |
+| `Sqrt.IncFamily.mom`, `measOf`, `Nondeg` | [MomentTaylor.lean#L116](CausalSeed/MomentTaylor.lean#L116), [MomentWidth.lean#L79](CausalSeed/MomentWidth.lean#L79), [MomentAssembly.lean#L176](CausalSeed/MomentAssembly.lean#L176) | `E X_j^i`; the law of one increment as a finitely supported measure; the symmetric-pair hypothesis of Theorem 16 |
 | `Kernel.EqualEntropy`, `actEntropy`, `hmax`, `floorConst` | [SqrtBridge.lean#L19](CausalSeed/SqrtBridge.lean#L19), [CausalFloor.lean#L145](CausalSeed/CausalFloor.lean#L145), [#L150](CausalSeed/CausalFloor.lean#L150), [#L181](CausalSeed/CausalFloor.lean#L181) | common entropy `h`; `H(K_a)`; `h_max`; the Gaussian integral `K` |
 | `Dyadic.wt`, `massL`, `cdfL` | [DyadicCouple.lean#L18](CausalSeed/DyadicCouple.lean#L18), [#L28](CausalSeed/DyadicCouple.lean#L28), [#L31](CausalSeed/DyadicCouple.lean#L31) | `2^{-k}`; a dyadic law as a list of (level, payload); its expectation functional and information CDF |
 | `Dyadic.DyadicTree`, `Kernel.IsDyadic` | [DyadicTree.lean#L17](CausalSeed/DyadicTree.lean#L17), [DyadicKernel.lean#L132](CausalSeed/DyadicKernel.lean#L132) | every kernel entry is `(1/2)^c` with `c : ℕ` |
@@ -554,6 +610,7 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 - `Wasserstein`, `SqrtW1`, `GapW1`: $`W_1`$ by optimal transport, the quantile coupling, universality and the gap identity for it.
 - `MomentClass`: the $`\Theta(\sqrt n)`$ branch of the moment classification.
 - `MomentFourier`, `MomentLower`: the Fourier lower bound for $`\int|E_jG_n-E_kG_n|`$ and the $`\Omega(\log n)`$ lower bound.
+- `MomentTaylor`, `MomentDecay`, `MomentSmooth`, `MomentWidth`, `MomentUpper`, `MomentAssembly`: the Taylor bound, total-variation decay, uniform splines, the width recursion, and the $`O(\log n)`$, $`O(1)`$ and $`\Theta(\log n)`$ theorems.
 - `CausalFloor`: the causal Shannon floor.
 - `Subadditive`: concatenation of seeds, $`C_{m+n}\le C_m+C_n`$, and the Fekete limit.
 - `DyadicCouple`, `DyadicTree`, `DyadicKernel`: dyadic exactness.
@@ -571,7 +628,7 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 **Scope.**
 - All local alphabets are finite and nonempty.
 - Policies are deterministic and adaptive.
-- Theorems 3 and 14 and the nonnegative-kernel part of Theorem 15 allow zero kernel
+- Theorems 3 and 14 and the nonnegative-kernel parts of Theorems 15 and 16 allow zero kernel
   entries; all other results assume strictly positive kernels.
 
 **Open mathematical problems.**
@@ -586,18 +643,10 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
   like $`\sqrt n`$.
 - Infinite-horizon versions of Theorems 5–8 for kernels with zero entries.
 
-**Not yet formalized.**
-- The upper bounds in the moment classification at equal entropy: $`C_n-nh=O(\log n)`$
-  when all actions share the variance, and $`C_n-nh=O(1)`$ when they also share the
-  third moment. The lower bound $`\Omega(\log n)`$ is Theorem 15. A proof of the upper
-  bounds is known for two actions; it bounds $`e_n`$ by the integrated width $`W_n`$
-  between the upper and lower policy envelopes and needs (i) a contraction estimate for
-  $`W_n`$ after smoothing by a bounded uniform noise, (ii) total-variation decay
-  $`\|h_r^{(q+1)}\|_{\mathrm{TV}}=O(r^{-q/2})`$ for derivatives of smoothed random-walk
-  CDFs, and (iii) the Taylor factorisation $`D*f=\Gamma_m*f^{(m)}`$ for a signed measure
-  $`D`$ whose moments vanish below order $`m`$. The extension from two actions to
-  finitely many actions with a common reference law is routine on paper but also
-  unformalized.
+**Hypotheses of Theorem 16.** Parts 1 and 2 require a reference action whose law has two
+distinct values and whose variance (and, for part 2, third moment) every action shares.
+The excluded case, in which every action is a point mass, is not covered by the formal
+statement.
 
 ## Attribution
 

@@ -15,14 +15,14 @@ action, all policies that reach that history see the same response. The seed is
 exactly the prescribed law.
 
 This repository proves in Lean 4 that the least entropy of an exact causal seed is
-governed by one object: the lower envelope $F^*$ of the transcript-information CDFs
-over all policies, and its mean $L$. Results:
+governed by one object: the lower envelope $`F^{\ast}`$ of the transcript-information CDFs
+over all policies, and its mean $`L`$. Results:
 
 - For finite trees, the optimal entropy is within the universal constant
-  $c_\star=\tfrac12(1+\log_2 e)$ of $L$.
+  $`c_{\star}=\tfrac12(1+\log_2 e)`$ of $`L`$.
 - The bound extends to infinite horizons, to atomic capacity and to Rényi entropies of
   every positive order.
-- For stationary kernels this gives the sharp $\sqrt n$ asymptotic, its $W_1$
+- For stationary kernels this gives the sharp $`\sqrt n`$ asymptotic, its $`W_1`$
   universality, and the linear growth rate when the actions' entropies differ.
 - For dyadic kernels the overhead vanishes.
 
@@ -42,28 +42,28 @@ axioms beyond Lean's standard three.
 ## Setting and notation
 
 - **Trees.** A finite controlled tree (`Tree`) has, at each node, finitely many
-  actions and, for each action $a$, finitely many outputs $y$ with kernel
-  $K_a(y)>0$ and $\sum_y K_a(y)=1$. A locally finite infinite tree (`ITree`) assigns
-  such a finite positive kernel to every history. `trunc ι n []` is its depth-$n$
+  actions and, for each action $`a`$, finitely many outputs $`y`$ with kernel
+  $`K_a(y)>0`$ and $`\sum_y K_a(y)=1`$. A locally finite infinite tree (`ITree`) assigns
+  such a finite positive kernel to every history. `trunc ι n []` is its depth-$`n`$
   truncation. A stationary kernel (`Kernel`) repeats one finite family of positive
-  laws $(K_a)_a$ for $n$ rounds (`Kernel.rounds n`).
+  laws $`(K_a)_a`$ for $`n`$ rounds (`Kernel.rounds n`).
 - **Policies and seeds.** Policies are deterministic and adaptive. A strategy fixes
   a response for every action at every history, including histories it never
   visits. A finite seed is a weighted list of strategies. A countable seed is a
-  countable law on strategies of the infinite tree. It is exact to horizon $n$ if
-  every history of length at most $n$ receives its path probability.
-- **Information and envelope.** For a transcript $\ell$ of probability $p(\ell)$,
-  $I(\ell)=-\log_2 p(\ell)$. For a policy $\pi$, $F_\pi(t)=\Pr_\pi[I\le t]$. The
-  envelope is $F^*(t)=\min_\pi F_\pi(t)$, with mean
-  $L=\int_0^\infty(1-F^*(t))\,dt$. On an infinite tree, $L_n$ is the mean at horizon
-  $n$, $L_\infty=\sup_nL_n$ and $F_\infty(t)=\inf_nF^*_n(t)$.
-- **Costs.** $C(T)$ is the least entropy of an exact causal coupling of a finite tree.
-  $C_n$ is the least entropy of a countable seed exact to horizon $n$, and $C_\infty$
+  countable law on strategies of the infinite tree. It is exact to horizon $`n`$ if
+  every history of length at most $`n`$ receives its path probability.
+- **Information and envelope.** For a transcript $`\ell`$ of probability $`p(\ell)`$,
+  $`I(\ell)=-\log_2 p(\ell)`$. For a policy $`\pi`$, $`F_\pi(t)=\Pr_\pi[I\le t]`$. The
+  envelope is $`F^{\ast}(t)=\min_\pi F_\pi(t)`$, with mean
+  $`L=\int_0^\infty(1-F^{\ast}(t))\,dt`$. On an infinite tree, $`L_n`$ is the mean at horizon
+  $`n`$, $`L_\infty=\sup_nL_n`$ and $`F_\infty(t)=\inf_nF^{\ast}_n(t)`$.
+- **Costs.** $`C(T)`$ is the least entropy of an exact causal coupling of a finite tree.
+  $`C_n`$ is the least entropy of a countable seed exact to horizon $`n`$, and $`C_\infty`$
   the least entropy of a seed exact at every horizon.
 - **Units.** All entropies in the statements below are in **bits**. In Lean, the
   countable-seed entropies `CountableSeed.entropy`, `finiteCost` and `infiniteCost`
   are in nats; `Kernel.costBits` and `countableInfiniteCostBits` convert to bits.
-  The convention is $0\log0=0$. Infinite optima take values in $[0,\infty]$.
+  The convention is $`0\log0=0`$. Infinite optima take values in $`[0,\infty]`$.
 
 The constants are
 
@@ -80,16 +80,16 @@ Unless a sub-namespace is shown, Lean names are in namespace `CausalSpectrum`.
 
 ### I. Finite trees
 
-**Theorem 1 (one seed, Shannon sandwich).** For every finite controlled tree $T$
-there is a finite exact causal seed $S$, produced by a greedy bottleneck procedure,
+**Theorem 1 (one seed, Shannon sandwich).** For every finite controlled tree $`T`$
+there is a finite exact causal seed $`S`$, produced by a greedy bottleneck procedure,
 with
 
 ```math
 L(T)\;\le\;H(S)\;\le\;L(T)+c_\star .
 ```
 
-Every exact coupling, causal or not, has entropy at least $L(T)$, so
-$L(T)\le C(T)\le L(T)+c_\star$.
+Every exact coupling, causal or not, has entropy at least $`L(T)`$, so
+$`L(T)\le C(T)\le L(T)+c_{\star}`$.
 
 Lean:
 - [`one_seed_shannon`](CausalSeed/Entropy.lean#L1767)
@@ -98,7 +98,7 @@ Lean:
 - [`causalMin_le_overhead`](CausalSeed/Penalty.lean#L666)
 
 **Theorem 2 (causal realization).** The same seed is stochastically sandwiched:
-$F_S(t)\le F^*(t)$ for all $t$, together with an explicit upper comparison of its
+$`F_S(t)\le F^{\ast}(t)`$ for all $`t`$, together with an explicit upper comparison of its
 survival function. For every exact finite seed,
 
 ```math
@@ -112,15 +112,15 @@ Lean:
 
 **Theorem 3 (zero-probability branches).** Let the kernels be nonnegative and
 normalized, so that zero-probability branches are kept in the tree (`Zero.ZTree`).
-There is a law $q$ on total strategies that is exact for every policy and satisfies
-$L\le H(q)\le L+c_\star$. Every exact law has $H(q)\ge L$.
+There is a law $`q`$ on total strategies that is exact for every policy and satisfies
+$`L\le H(q)\le L+c_{\star}`$. Every exact law has $`H(q)\ge L`$.
 
 Lean:
 - [`Zero.zero_closure`](CausalSeed/ZeroClosure.lean#L130)
 - [`Zero.zero_lower`](CausalSeed/ZeroClosure.lean#L154)
 
-**Theorem 4 (dyadic exactness).** Suppose every kernel entry is a power of $1/2$.
-Then some exact finite seed with dyadic atoms has $F_S=F^*$, hence $H(S)=L(T)$, and
+**Theorem 4 (dyadic exactness).** Suppose every kernel entry is a power of $`1/2`$.
+Then some exact finite seed with dyadic atoms has $`F_S=F^{\ast}`$, hence $`H(S)=L(T)`$, and
 there is no overhead. For a stationary dyadic kernel,
 
 ```math
@@ -139,10 +139,10 @@ Lean:
 
 ### II. Infinite horizons and atomic capacity
 
-Let $\iota$ be a locally finite infinite tree with positive kernels.
+Let $`\iota`$ be a locally finite infinite tree with positive kernels.
 
 **Theorem 5 (projective identity and attainment).** In nats,
-$C_\infty=\sup_n C_n$. If this value is finite, it is attained by one countable seed
+$`C_\infty=\sup_n C_n`$. If this value is finite, it is attained by one countable seed
 exact at every horizon.
 
 Lean:
@@ -155,22 +155,22 @@ Lean:
 L_\infty \;\le\; C_\infty \;\le\; L_\infty + c_\star ,
 ```
 
-and, whenever $L_\infty<\infty$, an exact seed attains $C_\infty$. In particular, an
-exact seed of finite entropy exists if and only if $\sup_n L_n<\infty$.
+and, whenever $`L_\infty<\infty`$, an exact seed attains $`C_\infty`$. In particular, an
+exact seed of finite entropy exists if and only if $`\sup_n L_n<\infty`$.
 
 Lean:
 - [`Completion.infinite_envelope_sandwich`](CausalSeed/InfiniteEnvelope.lean#L60)
 - [`Completion.infinite_envelope_attained`](CausalSeed/InfiniteEnvelope.lean#L82)
 - [`Completion.infiniteCost_lt_top_iff`](CausalSeed/EnvelopeBridge.lean#L395)
 
-**Theorem 7 (atomic capacity).** Let $\mathrm{atomQ}=\sup_K\inf_{n,\pi}A_K(P_{n,\pi})$,
-where $A_K$ is the total mass of the $K$ heaviest transcripts. Then:
+**Theorem 7 (atomic capacity).** Let $`\mathrm{atomQ}=\sup_K\inf_{n,\pi}A_K(P_{n,\pi})`$,
+where $`A_K`$ is the total mass of the $`K`$ heaviest transcripts. Then:
 
 1. Every ordinary exact source, causal or not, has atomic mass at most
-   $\mathrm{atomQ}$.
+   $`\mathrm{atomQ}`$.
 2. Some exact causal probability measure on strategies has atomic mass exactly
-   $\mathrm{atomQ}$.
-3. An exact countably supported causal seed exists if and only if $\mathrm{atomQ}=1$.
+   $`\mathrm{atomQ}`$.
+3. An exact countably supported causal seed exists if and only if $`\mathrm{atomQ}=1`$.
 4. The capacity is read off the envelope:
 
 ```math
@@ -186,21 +186,21 @@ Lean:
 
 ### III. One seed for the whole Rényi spectrum
 
-Let $\iota$ be as in Section II.
+Let $`\iota`$ be as in Section II.
 
 - An *ordinary exact source* (`RenyiInf.OrdSource`) is a countable law with, for each
   horizon, a deterministic readout of a joint transcript. Its readouts need not be
   history-consistent or consistent across horizons.
-- $O_\alpha$ and $C_\alpha$ are the infima of $H_\alpha$ over ordinary and over
+- $`O_\alpha`$ and $`C_\alpha`$ are the infima of $`H_\alpha`$ over ordinary and over
   causal exact sources.
-- $Z$ is the envelope limit variable, a law on $[0,\infty]$ with CDF $F_\infty$ and an
-  atom of mass $1-\mathrm{atomQ}$ at $+\infty$.
-- $R_\alpha(Z)$ is the Rényi functional of the law of $Z$:
-  $(1-\alpha)^{-1}\log_2\mathbb E\,2^{(1-\alpha)Z}$ for $\alpha\ne1$ and $\mathbb EZ$ for
-  $\alpha=1$.
+- $`Z`$ is the envelope limit variable, a law on $`[0,\infty]`$ with CDF $`F_\infty`$ and an
+  atom of mass $`1-\mathrm{atomQ}`$ at $`+\infty`$.
+- $`R_\alpha(Z)`$ is the Rényi functional of the law of $`Z`$:
+  $`(1-\alpha)^{-1}\log_2\mathbb E\,2^{(1-\alpha)Z}`$ for $`\alpha\ne1`$ and $`\mathbb EZ`$ for
+  $`\alpha=1`$.
 
 **Theorem 8.** Suppose an ordinary exact source exists. Then there is one countable
-causal seed $S$, exact at every horizon, such that for every $\alpha>0$
+causal seed $`S`$, exact at every horizon, such that for every $`\alpha>0`$
 
 ```math
 R_\alpha(Z)\;\le\;O_\alpha\;\le\;C_\alpha\;\le\;H_\alpha(S)\;\le\;R_\alpha(Z)+d_\alpha ,
@@ -212,35 +212,35 @@ and for the min-entropy
 H_\infty(S)=C_\infty^{\mathrm R}=O_\infty^{\mathrm R}.
 ```
 
-At each order, $O_\alpha$, $C_\alpha$, $R_\alpha(Z)$ and $H_\alpha(S)$ are finite or
-infinite together. Examples: $d_1=c_\star$ and $d_2=\log_2(8/5)$.
+At each order, $`O_\alpha`$, $`C_\alpha`$, $`R_\alpha(Z)`$ and $`H_\alpha(S)`$ are finite or
+infinite together. Examples: $`d_1=c_{\star}`$ and $`d_2=\log_2(8/5)`$.
 
 Lean:
 - [`RenyiInf.one_seed_all_orders_meas`](CausalSeed/RenyiLimitMeasure.lean#L350)
-  (with $R_\alpha(Z)$ computed from the measure `lawZ`)
+  (with $`R_\alpha(Z)`$ computed from the measure `lawZ`)
 - [`RenyiInf.one_seed_all_orders`](CausalSeed/RenyiInfinite.lean#L202)
 - [`RenyiInf.RZmeas_eq`](CausalSeed/RenyiLimitMeasure.lean#L337)
-  ($R_\alpha(Z)=\sup_nR_\alpha(Z_n)$)
+  ($`R_\alpha(Z)=\sup_nR_\alpha(Z_n)`$)
 - [`RenyiInf.simultaneous_finiteness`](CausalSeed/RenyiInfinite.lean#L232)
 
 ### IV. Stationary kernels
 
-Let a finite family of positive laws $(K_a)_a$ be used at every round. Put
-$X_a=-\log_2K_a(Y)$ for $Y\sim K_a$, and let $C_n$ and $L_n$ be the optimal cost and
-the envelope mean at horizon $n$, in bits.
+Let a finite family of positive laws $`(K_a)_a`$ be used at every round. Put
+$`X_a=-\log_2K_a(Y)`$ for $`Y\sim K_a`$, and let $`C_n`$ and $`L_n`$ be the optimal cost and
+the envelope mean at horizon $`n`$, in bits.
 
 **Theorem 9 (sharp square-root asymptotic).** Suppose all actions have the same
-entropy $h=\mathbb E X_a$. Put $a=\max_a\sigma_a$ and $b=\min_a\sigma_a$, where
-$\sigma_a^2=\mathrm{Var}X_a$. Then
+entropy $`h=\mathbb E X_a`$. Put $`a=\max_a\sigma_a`$ and $`b=\min_a\sigma_a`$, where
+$`\sigma_a^2=\mathrm{Var}X_a`$. Then
 
 ```math
 C_n = nh+\sqrt{\tfrac{2}{\pi}}\,(a-b)\sqrt n+o(\sqrt n),
 ```
 
-and the same holds for $L_n$. It also holds for the entropy of any exact finite
-seeds $S_n$ with $L_n\le H(S_n)\le L_n+c_\star$, which includes the greedy seeds.
+and the same holds for $`L_n`$. It also holds for the entropy of any exact finite
+seeds $`S_n`$ with $`L_n\le H(S_n)\le L_n+c_{\star}`$, which includes the greedy seeds.
 
-If $b>0$, there is a constant $K$ such that for all $n\ge3$
+If $`b>0`$, there is a constant $`K`$ such that for all $`n\ge3`$
 
 ```math
 \Bigl|C_n-nh-\sqrt{\tfrac{2}{\pi}}\,(a-b)\sqrt n\Bigr|\le K\,n^{1/4}\log n ,
@@ -255,26 +255,26 @@ Lean:
 - [`Kernel.cost_rate`](CausalSeed/SqrtMain.lean#L122)
 - [`Kernel.greedy_rate`](CausalSeed/SqrtMain.lean#L131)
 
-**Theorem 10 ($W_1$ universality).** In the setting of Theorem 9, assume $a>0$.
-Let $F_{a,b}$ be the limit profile:
+**Theorem 10 ($`W_1`$ universality).** In the setting of Theorem 9, assume $`a>0`$.
+Let $`F_{a,b}`$ be the limit profile:
 
 ```math
 F_{a,b}(z)=\begin{cases}\dfrac{2b}{a+b}\,\Phi(z/b), & z\le0,\\[2mm]
 1-\dfrac{2a}{a+b}\,\Phi(-z/a), & z\ge0,\end{cases}
 ```
 
-which is the half-normal CDF $1-2\Phi(-z/a)$, $z>0$, when $b=0$. Let $S_n$ be
-countable seeds, exact to horizon $n$, with finite entropy and with
-$H(S_n)-C_n=o(\sqrt n)$. Let $J_n$ be the information of $S_n$. Then
+which is the half-normal CDF $`1-2\Phi(-z/a)`$, $`z>0`$, when $`b=0`$. Let $`S_n`$ be
+countable seeds, exact to horizon $`n`$, with finite entropy and with
+$`H(S_n)-C_n=o(\sqrt n)`$. Let $`J_n`$ be the information of $`S_n`$. Then
 
 ```math
 \int_{\mathbb R}\Bigl|\Pr\!\Bigl[\tfrac{J_n-nh}{\sqrt n}\le x\Bigr]-F_{a,b}(x)\Bigr|\,dx\;\longrightarrow\;0 .
 ```
 
-The left side is the $W_1$ distance in its CDF form. For finite seeds the same
+The left side is the $`W_1`$ distance in its CDF form. For finite seeds the same
 statement is `Kernel.universality`. The analytic core is
 `Sqrt.IncFamily.L1_tendsto`:
-$\int|G_n(x\sqrt n)-F_{a,b}(x)|\,dx\to0$ for the Bellman envelope $G_n$.
+$`\int|G_n(x\sqrt n)-F_{a,b}(x)|\,dx\to0`$ for the Bellman envelope $`G_n`$.
 
 Lean:
 - [`Kernel.universality_countable`](CausalSeed/SqrtUniversalityCountable.lean#L182)
@@ -282,8 +282,8 @@ Lean:
 - [`Sqrt.IncFamily.L1_tendsto`](CausalSeed/SqrtUniversality.lean#L102)
 
 **Theorem 11 (causal Shannon floor).** The entropies need not be equal. Let
-$h_{\max}=\max_aH(K_a)$, $M=\max_{a,y}|{-\log_2K_a(y)}-h_{\max}|$ and
-$K=\int_{\mathbb R}e^{-x^2/(2M^2)}\,dx$. For every $n\ge1$,
+$`h_{\max}=\max_aH(K_a)`$, $`M=\max_{a,y}|{-\log_2K_a(y)}-h_{\max}|`$ and
+$`K=\int_{\mathbb R}e^{-x^2/(2M^2)}\,dx`$. For every $`n\ge1`$,
 
 ```math
 nh_{\max}-K\sqrt n\;\le\;L_n\;\le\;C_n\;\le\;nh_{\max}+K\sqrt n+c_\star ,
@@ -295,16 +295,16 @@ Lean:
 - [`Kernel.causal_floor`](CausalSeed/CausalFloor.lean#L329)
 - [`Kernel.envelope_floor`](CausalSeed/CausalFloor.lean#L334)
 
-**Theorem 12 (subadditivity).** For every stationary kernel and all $m,n$,
+**Theorem 12 (subadditivity).** For every stationary kernel and all $`m,n`$,
 
 ```math
 C_{m+n}\;\le\;C_m+C_n .
 ```
 
-Two seeds exact to horizons $m$ and $n$ are concatenated: the first answers at
-histories of length less than $m$, the second at the later rounds, reading the
-history from round $m$ on. Path masses factor over this split, so the product seed
-is exact to horizon $m+n$, and its entropy is the sum of the two entropies.
+Two seeds exact to horizons $`m`$ and $`n`$ are concatenated: the first answers at
+histories of length less than $`m`$, the second at the later rounds, reading the
+history from round $`m`$ on. Path masses factor over this split, so the product seed
+is exact to horizon $`m+n`$, and its entropy is the sum of the two entropies.
 
 Lean:
 - [`Kernel.costBits_subadditive`](CausalSeed/Subadditive.lean#L191) (bits)
@@ -313,7 +313,7 @@ Lean:
 - [`Kernel.catSeed_entropy`](CausalSeed/Subadditive.lean#L150)
 
 **Theorem 13 (Fekete limit and exact lower bound).** By Fekete's lemma,
-$C_n/n\to\inf_{n\ge1}C_n/n$. With Theorem 11 this identifies the infimum:
+$`C_n/n\to\inf_{n\ge1}C_n/n`$. With Theorem 11 this identifies the infimum:
 
 ```math
 h_{\max}=\inf_{n\ge1}\frac{C_n}{n},
@@ -328,17 +328,17 @@ Lean:
 
 ### V. Structure of the causal constraint
 
-**Theorem 14 (exact penalty).** Let $G_*=\sup_T\bigl(C(T)-O(T)\bigr)$, where $O(T)$
+**Theorem 14 (exact penalty).** Let $`G_{\ast}=\sup_T\bigl(C(T)-O(T)\bigr)`$, where $`O(T)`$
 is the least entropy of an exact coupling that need not be causal. Then
-$\tfrac29\le G_*\le c_\star$. For every $\kappa\ge G_*$,
+$`\tfrac29\le G_{\ast}\le c_{\star}`$. For every $`\kappa\ge G_{\ast}`$,
 
 ```math
 C(T)=\inf_\Gamma\bigl[H(\Gamma)+\kappa\,\Gamma(B)\bigr],
 ```
 
-where $B$ is the set of incompatible joint transcripts. For $\kappa>G_*$, every
-global minimizer is causal, and every $\varepsilon$-minimizer has
-$\Gamma(B)\le\varepsilon/(\kappa-G_*)$.
+where $`B`$ is the set of incompatible joint transcripts. For $`\kappa>G_{\ast}`$, every
+global minimizer is causal, and every $`\varepsilon`$-minimizer has
+$`\Gamma(B)\le\varepsilon/(\kappa-G_{\ast})`$.
 
 Lean:
 - [`witness_gapSup_lower`](CausalSeed/Witness.lean#L1376)
@@ -347,12 +347,12 @@ Lean:
 - [`global_minimizer_above_gap_is_causal`](CausalSeed/StrictPenalty.lean#L74)
 - [`near_minimizer_badMass_le`](CausalSeed/StrictPenalty.lean#L18)
 
-**Theorem 15 (arithmetic rigidity).** Let $w$ be a positive weight vector with total
+**Theorem 15 (arithmetic rigidity).** Let $`w`$ be a positive weight vector with total
 mass one. Every exact policy-indexed decoder family on every finite tree is causally
-realizable if and only if all subset sums of $w$ are distinct. With marginal error
-$\varepsilon\ge0$, every $\varepsilon$-accurate family is realizable if and only if
-$2\varepsilon<\gamma$, where
-$\gamma=\min_{A\ne B}\bigl|\sum_{i\in A}w_i-\sum_{i\in B}w_i\bigr|$. Repair by
+realizable if and only if all subset sums of $`w`$ are distinct. With marginal error
+$`\varepsilon\ge0`$, every $`\varepsilon`$-accurate family is realizable if and only if
+$`2\varepsilon<\gamma`$, where
+$`\gamma=\min_{A\ne B}\bigl|\sum_{i\in A}w_i-\sum_{i\in B}w_i\bigr|`$. Repair by
 weight-preserving relabelings is characterized separately.
 
 Lean:
@@ -425,21 +425,21 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 - `Spectrum`: trees, policies, strategies, transcripts, the greedy trace, stationary kernels.
 - `Entropy`: the information CDF, the envelope, the Shannon sandwich, causal realization.
 - `Gap`: the CDF-gap identity and finite-tree consequences.
-- `Note`: constants and finite numerical facts ($c_\star$, $\theta_\alpha$, $\log_2(8/5)$).
+- `Note`: constants and finite numerical facts ($`c_{\star}`$, $`\theta_\alpha`$, $`\log_2(8/5)`$).
 - `SecondOrder`: Gaussian integrals for the profile mean.
 - `Probe`: policy extensions used by the lower bounds.
 
 **Couplings, penalty and rigidity**
-- `Penalty`: couplings, ordinary and causal optima, $G_*$, the penalized problem.
+- `Penalty`: couplings, ordinary and causal optima, $`G_{\ast}`$, the penalized problem.
 - `Close`, `Transport`, `Identity`: residual flows, leaf transport, the exact-penalty identity.
-- `StrictPenalty`: strict compatibility above $G_*$ and its stability.
-- `Witness`: the witness tree for $G_*\ge 2/9$.
+- `StrictPenalty`: strict compatibility above $`G_{\ast}`$ and its stability.
+- `Witness`: the witness tree for $`G_{\ast}\ge 2/9`$.
 - `Arithmetic`, `Profile`: subset-sum gaps and arithmetic rigidity.
 - `Relabel`: repair by relabeling.
 
 **Infinite horizons**
 - `Atomic`, `Capacity`, `MeasureCompletion`, `AtomicCapacity`: infinite trees, path mass, limiting strategies, atomic capacity.
-- `AtomicSpectrum`: $\mathrm{atomQ}=\lim F_\infty$.
+- `AtomicSpectrum`: $`\mathrm{atomQ}=\lim F_\infty`$.
 - `EntropyLimit`, `SeedRanking`, `EnvelopeBridge`: countable seeds, ranking, the projective identity, the infinite sandwich.
 - `SeedDataProcessing`, `FiniteSeedExtension`, `AlphabetSeed`, `InfiniteEnvelope`: arbitrary countable alphabets and the bit-valued infinite envelope.
 
@@ -452,16 +452,16 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 - `RenyiSource`: ordinary exact sources.
 - `RenyiLimit`: the diagonal limit seed.
 - `RenyiInfinite`: the infinite-horizon theorem.
-- `RenyiLimitLaw`, `RenyiLimitMeasure`: the law of $Z$ and its moments.
+- `RenyiLimitLaw`, `RenyiLimitMeasure`: the law of $`Z`$ and its moments.
 
 **Stationary kernels**
 - `Bellman`, `BellmanCompare`: the Bellman operator and barrier propagation.
-- `SqrtProfile`, `SqrtDefect`, `SqrtCompare`: the profile $F_{a,b}$, the one-step defect, the CDF comparison.
-- `SqrtTails`, `SqrtMean`, `SqrtRate`, `SqrtBridge`, `SqrtMain`, `SqrtPerturb`, `SqrtGeneral`: Hoeffding tails, the mean identity, the rate, the $b=0$ perturbation, the main theorem.
+- `SqrtProfile`, `SqrtDefect`, `SqrtCompare`: the profile $`F_{a,b}`$, the one-step defect, the CDF comparison.
+- `SqrtTails`, `SqrtMean`, `SqrtRate`, `SqrtBridge`, `SqrtMain`, `SqrtPerturb`, `SqrtGeneral`: Hoeffding tails, the mean identity, the rate, the $`b=0`$ perturbation, the main theorem.
 - `SqrtNumerics`: integer inequalities.
-- `SqrtUniversality`, `SqrtUniversalityCountable`: $W_1$ universality.
+- `SqrtUniversality`, `SqrtUniversalityCountable`: $`W_1`$ universality.
 - `CausalFloor`: the causal Shannon floor.
-- `Subadditive`: concatenation of seeds, $C_{m+n}\le C_m+C_n$, and the Fekete limit.
+- `Subadditive`: concatenation of seeds, $`C_{m+n}\le C_m+C_n`$, and the Fekete limit.
 - `DyadicCouple`, `DyadicTree`, `DyadicKernel`: dyadic exactness.
 
 **Mathematical expositions** (LaTeX/PDF at the repository root)
@@ -480,25 +480,25 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 - Theorem 3 allows zero kernel entries. All other results assume strictly positive
   kernels; zero entries of a stationary kernel could be dropped without changing any
   law, but that reduction is not formalized.
-- $W_1$ is used in its CDF form $\int_{\mathbb R}|F_\mu-F_\nu|$. This Mathlib version
-  has no optimal-transport definition of $W_1$, and the identification through the
+- $`W_1`$ is used in its CDF form $`\int_{\mathbb R}|F_\mu-F_\nu|`$. This Mathlib version
+  has no optimal-transport definition of $`W_1`$, and the identification through the
   quantile coupling is not formalized.
 
 **Open mathematical problems.**
-- The exact value of $G_*\in[\tfrac29,c_\star]$, and whether all minimizers are causal
-  at $\kappa=G_*$.
-- The second-order term of $C_n-nh$ when $a=b$, where the $\sqrt n$ coefficient
+- The exact value of $`G_{\ast}\in[\tfrac29,c_{\star}]`$, and whether all minimizers are causal
+  at $`\kappa=G_{\ast}`$.
+- The second-order term of $`C_n-nh`$ when $`a=b`$, where the $`\sqrt n`$ coefficient
   vanishes.
-- Optimality of the constants $c_\star$ and $d_\alpha$.
-- Whether $C_n-nh_{\max}=O(1)$ when exactly one action attains $h_{\max}$.
-  Theorems 11 and 13 give $0\le C_n-nh_{\max}\le K\sqrt n+c_\star$. When two
+- Optimality of the constants $`c_{\star}`$ and $`d_\alpha`$.
+- Whether $`C_n-nh_{\max}=O(1)`$ when exactly one action attains $`h_{\max}`$.
+  Theorems 11 and 13 give $`0\le C_n-nh_{\max}\le K\sqrt n+c_{\star}`$. When two
   maximizing actions have different variances, Theorem 9 shows the excess grows
-  like $\sqrt n$.
+  like $`\sqrt n`$.
 - Infinite-horizon versions of Theorems 5–8 for kernels with zero entries.
 
 **Not yet formalized.**
-- A classification of $C_n-nh$, for equal entropies, as $\Theta(\sqrt n)$,
-  $\Theta(\log n)$ or $O(1)$ according to moment matching between the actions.
+- A classification of $`C_n-nh`$, for equal entropies, as $`\Theta(\sqrt n)`$,
+  $`\Theta(\log n)`$ or $`O(1)`$ according to moment matching between the actions.
 - The reduction that removes zero entries from a stationary kernel, so that
   Theorems 9–13 hold for nonnegative kernels. Lean's stationary model requires
   positive entries, and no cost is defined there for kernels with zero entries.

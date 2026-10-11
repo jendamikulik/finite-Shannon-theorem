@@ -398,6 +398,49 @@ Parts of the countable Shannon implementation use extended entropy in **nats**.
 The envelope comparisons explicitly convert between nats and bits.
 The Rényi layer and the mathematical statements above use **bits** throughout.
 
+## What a reviewer must check: the trusted definitions
+
+The axiom audit certifies that every proof is complete. It does not certify that
+the Lean definitions mean what the prose says. Trust therefore rests on the small set
+of definitions below and on the statements of the main theorems. All names are in
+namespace `CausalSpectrum` unless a sub-namespace is shown. Line numbers refer to the
+current revision.
+
+| Lean name | Source | Plain meaning |
+| --- | --- | --- |
+| `Tree` | [Spectrum.lean#L20](CausalSeed/Spectrum.lean#L20) | finite controlled tree; each node has actions `Fin nA`, responses `Fin (nY a)`, a kernel `K a y` with `Kpos : 0 < K a y` and `Ksum : ∑ y, K a y = 1` |
+| `ITree`, `trunc` | [Atomic.lean#L513](CausalSeed/Atomic.lean#L513), [#L522](CausalSeed/Atomic.lean#L522) | infinite tree indexed by histories `List (ℕ × ℕ)`, kernels `kern` with `kpos`, `ksum`; `trunc ι n h` is its depth-`n` tree |
+| `Kernel`, `Kernel.rounds` | [Spectrum.lean#L1296](CausalSeed/Spectrum.lean#L1296), [#L1307](CausalSeed/Spectrum.lean#L1307) | one stationary positive kernel repeated for `n` rounds |
+| `Policy`, `Strategy`, `Leaf`, `run`, `CompatiblePolicy` | [Spectrum.lean#L124](CausalSeed/Spectrum.lean#L124)–[#L159](CausalSeed/Spectrum.lean#L159) | deterministic adaptive policy (action chosen from the full history); a strategy fixes a response at every node; `run s π` is the transcript; `leafMass` ([#L144](CausalSeed/Spectrum.lean#L144)) is its probability |
+| `IStrategy`, `policyRead` | [Capacity.lean#L557](CausalSeed/Capacity.lean#L557), [AtomicCapacity.lean#L88](CausalSeed/AtomicCapacity.lean#L88) | infinite response strategy; its horizon-`n` transcript under a policy |
+| `Atom`, `transcriptWeight`, `seedShannon` | [Spectrum.lean#L823](CausalSeed/Spectrum.lean#L823), [#L913](CausalSeed/Spectrum.lean#L913), [Entropy.lean#L648](CausalSeed/Entropy.lean#L648) | finite seed = weighted list of strategies; mass decoded onto each transcript; its Shannon entropy (bits) |
+| `Completion.CountableSeed`, `.ExactTo`, `.Exact`, `.entropy` | [SeedRanking.lean#L20](CausalSeed/SeedRanking.lean#L20)–[#L39](CausalSeed/SeedRanking.lean#L39) | countable law on infinite strategies; exact to `n` = every history of length `≤ n` gets its path mass (history-consistent decoder); entropy in nats |
+| `infoMass`, `policyCDF`, `Fstar` | [Entropy.lean#L53](CausalSeed/Entropy.lean#L53), [#L190](CausalSeed/Entropy.lean#L190), [#L226](CausalSeed/Entropy.lean#L226) | `-log₂ q`; CDF of transcript information under a policy; lower envelope over policies |
+| `envelopeMean` (`L_n`), `Completion.LInf` | [Entropy.lean#L651](CausalSeed/Entropy.lean#L651), [EnvelopeBridge.lean#L367](CausalSeed/EnvelopeBridge.lean#L367) | mean of the envelope law (bits); `L_∞ = sup_n L_n` in `[0, ∞]` |
+| `FInf` | [AtomicSpectrum.lean#L22](CausalSeed/AtomicSpectrum.lean#L22) | `F_∞(t) = inf_n F_n(t)` |
+| `atomQ` | [Atomic.lean#L561](CausalSeed/Atomic.lean#L561) | causal atomic capacity (sup of the uniform top-`K` masses) |
+| `pmfEntropy`, `entTerm` | [Penalty.lean#L118](CausalSeed/Penalty.lean#L118), [#L52](CausalSeed/Penalty.lean#L52) | Shannon entropy (bits) of a finite law |
+| `RenyiInf.shannonBits`, `renyiNe`, `H`, `Hinf` | [RenyiCountable.lean#L23](CausalSeed/RenyiCountable.lean#L23)–[#L33](CausalSeed/RenyiCountable.lean#L33) | Shannon, Rényi (order `α`) and min-entropy of a countable law, bits, values in `[0, ∞]` |
+| `Completion.finiteCost`, `infiniteCost`, `Kernel.costBits` | [EntropyLimit.lean#L284](CausalSeed/EntropyLimit.lean#L284), [#L287](CausalSeed/EntropyLimit.lean#L287), [SqrtMain.lean#L99](CausalSeed/SqrtMain.lean#L99) | optimal entropy of seeds exact to `n` / at all horizons (nats); `C_n` in bits |
+| `RenyiInf.OrdSource`, `Oα`, `Cα`, `RZ`, `lawZ`, `RZmeas` | [RenyiSource.lean#L25](CausalSeed/RenyiSource.lean#L25), [RenyiInfinite.lean#L24](CausalSeed/RenyiInfinite.lean#L24)–[#L31](CausalSeed/RenyiInfinite.lean#L31), [RenyiLimitMeasure.lean#L117](CausalSeed/RenyiLimitMeasure.lean#L117), [#L324](CausalSeed/RenyiLimitMeasure.lean#L324) | ordinary (possibly history-inconsistent) exact source; ordinary/causal Rényi optima; `sup_n R_α(Z_n)`; the law of `Z` on `[0,∞] ⊆ EReal`; `R_α` from that law |
+| `shannonOverhead`, `Renyi.dAlpha`, `RenyiInf.dA` | [Entropy.lean#L646](CausalSeed/Entropy.lean#L646), [RenyiFinite.lean#L180](CausalSeed/RenyiFinite.lean#L180), [RenyiCountable.lean#L36](CausalSeed/RenyiCountable.lean#L36) | `c⋆ = (1 + 1/ln 2)/2`; the Rényi constant `d_α`; `dA 1 = c⋆` |
+| `Zero.ZTree` (`.P`, `.L`) | [ZeroTree.lean#L255](CausalSeed/ZeroTree.lean#L255) | finite tree whose kernels may vanish (`Valid`: `K ≥ 0`, sums 1); all branches kept |
+
+Main statements to read:
+[`one_seed_shannon`](CausalSeed/Entropy.lean#L1767),
+[`causal_realization`](CausalSeed/Entropy.lean#L2008),
+[`Kernel.cost_tendsto`](CausalSeed/SqrtGeneral.lean#L384),
+[`Kernel.cost_rate`](CausalSeed/SqrtMain.lean#L122),
+[`Zero.zero_closure`](CausalSeed/ZeroClosure.lean#L130),
+[`RenyiInf.one_seed_all_orders_meas`](CausalSeed/RenyiLimitMeasure.lean#L350),
+[`atomQ_eq_lim_FInf`](CausalSeed/AtomicSpectrum.lean#L118),
+[`Kernel.universality_countable`](CausalSeed/SqrtUniversalityCountable.lean#L182).
+
+Conventions: entropies are in bits except `CountableSeed.entropy`, `finiteCost` and
+`infiniteCost` (nats; `costBits` divides by `ln 2`). `0 log 0 = 0` (`entTerm 0 = 0`,
+`Real.negMulLog 0 = 0`). Values in `ℝ≥0∞` may be `∞` (infinite optima, `L_∞`, `R_α`,
+`H`, `Hinf`); `lawZ` puts mass `1 - atomQ` at `+∞`.
+
 ## Scope and open questions
 
 All tree models have finite nonempty local alphabets. The finite zero-kernel

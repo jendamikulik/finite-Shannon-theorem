@@ -91,7 +91,7 @@ theorem sum_emb (a : Fin κ.nA) (f : Fin (κ.nY a) → ℝ) (hf : ∀ y, κ.K a 
   exact le_antisymm hy (κ.Knn a y)
 
 /-- The reduced positive kernel: zero entries deleted. -/
-def red : Kernel where
+abbrev red : Kernel where
   nA := κ.nA
   hA := κ.hA
   nY a := (κ.supp a).card

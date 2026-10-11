@@ -354,7 +354,20 @@ $`L_n(K^{\mathrm{red}})`$, so
 L_n(K^{\mathrm{red}})\;\le\;C_n(K)\;\le\;L_n(K^{\mathrm{red}})+c_\star .
 ```
 
-Hence Theorem 11 holds for $`K`$ with $`h_{\max}=\max_a H(K_a)`$ (with $`0\log0=0`$),
+Moreover the cost itself is unchanged by the reduction:
+
+```math
+C_n(K)=C_n(K^{\mathrm{red}})\qquad\text{for every }n .
+```
+
+A strategy of the full tree is restricted to the positive branches, and a strategy of
+the reduced tree is extended arbitrarily on the zero branches; pushing an exact law
+forward along either map keeps it exact and does not increase its entropy, because
+an exact law gives mass zero to strategies that answer with a zero-probability output
+along a positive-probability history. For positive kernels the finite-law cost
+coincides with the countable-seed cost $`C_n`$ of Theorems 9–13. Hence Theorems 12
+and 13 hold for $`K`$: $`C_{m+n}(K)\le C_m(K)+C_n(K)`$, $`C_n(K)/n\to h_{\max}=\inf_{n\ge1}C_n(K)/n`$
+and $`n\,h_{\max}\le C_n(K)`$. Also Theorem 11 holds for $`K`$ with $`h_{\max}=\max_a H(K_a)`$ (with $`0\log0=0`$),
 and Theorem 9, including the $`O(n^{1/4}\log n)`$ rate when $`b>0`$, holds for $`K`$ with
 $`h,a,b`$ computed from $`K^{\mathrm{red}}`$, that is, over the support of each $`K_a`$.
 
@@ -365,6 +378,12 @@ Lean:
 - [`Zero.NNKernel.causal_floor`](CausalSeed/ZeroKernel.lean#L246)
 - [`Zero.NNKernel.cost_tendsto`](CausalSeed/ZeroKernel.lean#L251)
 - [`Zero.NNKernel.cost_rate`](CausalSeed/ZeroKernel.lean#L270)
+- [`Zero.NNKernel.zcost_ztree`](CausalSeed/ZeroCost.lean#L415)
+- [`Zero.NNKernel.costBits_eq_red`](CausalSeed/ZeroCost.lean#L429)
+- [`Kernel.costBits_eq_tcost`](CausalSeed/ZeroCost.lean#L162)
+- [`Zero.NNKernel.costBits_subadditive`](CausalSeed/ZeroCost.lean#L433)
+- [`Zero.NNKernel.hmax_eq_inf`](CausalSeed/ZeroCost.lean#L438)
+- [`Zero.NNKernel.hmax_mul_le_costBits`](CausalSeed/ZeroCost.lean#L448)
 
 **Theorem 15 (the square-root branch of the moment classification).** In the
 setting of Theorem 9, if $`a>b`$ there are $`0<c_1\le c_2`$ with
@@ -429,7 +448,7 @@ defining module is `CausalSeed.*` and computes its axioms with `collectAxioms`.
 Auto-generated declarations (equation lemmas, `sizeOf_spec`, injectivity lemmas,
 instances) are excluded.
 
-[`AXIOMS.txt`](AXIOMS.txt) records the result. All **1560** theorems in the 62 project
+[`AXIOMS.txt`](AXIOMS.txt) records the result. All **1590** theorems in the 63 project
 modules depend only on `propext`, `Classical.choice` and `Quot.sound`; three depend on
 no axiom. No theorem uses `sorryAx`, the build reports no `sorry` or `admit`, and the
 project declares no `axiom`.
@@ -462,6 +481,7 @@ the theorems above. Line numbers refer to the current revision.
 | `shannonOverhead`, `Renyi.dAlpha`, `RenyiInf.dA` | [Entropy.lean#L646](CausalSeed/Entropy.lean#L646), [RenyiFinite.lean#L180](CausalSeed/RenyiFinite.lean#L180), [RenyiCountable.lean#L36](CausalSeed/RenyiCountable.lean#L36) | `c⋆ = (1 + 1/ln 2)/2`; `d_α`; `d_α` with `d_1 = c⋆` |
 | `Zero.ZTree` | [ZeroTree.lean#L255](CausalSeed/ZeroTree.lean#L255) | finite tree with nonnegative normalized kernels, all branches kept |
 | `Zero.NNKernel`, `.red`, `.ztree`, `Zero.zcost`, `NNKernel.costBits` | [ZeroKernel.lean#L53](CausalSeed/ZeroKernel.lean#L53), [#L94](CausalSeed/ZeroKernel.lean#L94), [#L117](CausalSeed/ZeroKernel.lean#L117), [#L197](CausalSeed/ZeroKernel.lean#L197), [#L220](CausalSeed/ZeroKernel.lean#L220) | stationary kernel with nonnegative entries; its reduction to the support; the `n`-round tree with all branches; least exact Shannon entropy (bits) of a `ZTree`; `C_n` of the kernel |
+| `Zero.tcost` | [ZeroCost.lean#L25](CausalSeed/ZeroCost.lean#L25) | least Shannon entropy (bits) of an exact finite law on response strategies of a positive tree |
 | `OT.IsCoupling`, `OT.W1`, `OT.cdfDist` | [Wasserstein.lean#L21](CausalSeed/Wasserstein.lean#L21), [#L29](CausalSeed/Wasserstein.lean#L29), [#L32](CausalSeed/Wasserstein.lean#L32) | coupling of two laws on `ℝ`; `inf` over couplings of `E|X-Y|` in `[0,∞]`; `∫ |F_μ - F_ν|` |
 | `Sqrt.IncFamily.limitLaw`, `CountableSeed.normLaw`, `seedLaw`, `envLaw` | [SqrtW1.lean#L70](CausalSeed/SqrtW1.lean#L70), [#L87](CausalSeed/SqrtW1.lean#L87), [GapW1.lean#L20](CausalSeed/GapW1.lean#L20), [#L75](CausalSeed/GapW1.lean#L75) | the law with CDF `F_{a,b}`; the law of `(J - c)/s`; the law of `J` for a finite seed; the law with CDF `F*` |
 | `Sqrt.IncFamily.sA`, `sB`, `Flim` | [SqrtDefect.lean#L427](CausalSeed/SqrtDefect.lean#L427), [#L429](CausalSeed/SqrtDefect.lean#L429), [SqrtUniversality.lean#L26](CausalSeed/SqrtUniversality.lean#L26) | `a = max σ_a`, `b = min σ_a`; the limit profile `F_{a,b}` (half-normal if `b = 0`) |
@@ -497,7 +517,7 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 
 **Zero-probability branches**
 - `ZeroGame`, `ZeroTree`, `ZeroClosure`: an abstract finite game, trees with nonnegative kernels, the closure theorem.
-- `ZeroKernel`: stationary kernels with zero entries and their reduction.
+- `ZeroKernel`, `ZeroCost`: stationary kernels with zero entries, their reduction, and the equality of costs.
 
 **Rényi spectrum**
 - `RenyiFinite`: the finite-horizon Rényi sandwich.
@@ -548,14 +568,17 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 - Infinite-horizon versions of Theorems 5–8 for kernels with zero entries.
 
 **Not yet formalized.**
-- The $`\Theta(\log n)`$ and $`O(1)`$ branches of the moment classification of
-  $`C_n-nh`$ at equal entropy: the expected statement is $`C_n-nh=\Theta(\log n)`$ when
-  $`a=b`$ but the third moments of the informations differ, and $`C_n-nh=O(1)`$ when the
-  second and third moments all match. Theorem 15 gives only $`o(\sqrt n)`$ when $`a=b`$; the finer orders
-  need an Edgeworth-type expansion of the Bellman envelope beyond the Gaussian profile.
-- Subadditivity (Theorem 12) for kernels with zero entries. Theorem 14 controls
-  $`C_n(K)`$ through the envelope; the identity $`C_n(K)=C_n(K^{\mathrm{red}})`$, which
-  needs a strategy-level correspondence between the two trees, is not formalized.
+- The $`\Theta(\log n)`$ and $`O(1)`$ branches of the moment classification at equal
+  entropy. Write $`e_n=L_n-nh`$; since $`L_n\le C_n\le L_n+c_\star`$, it suffices to
+  treat $`e_n`$. With $`D`$ the difference of the two centered information laws,
+  $`e_{n+1}-e_n=\tfrac12\int|D*G_n|`$. The claimed orders are $`e_n=\Theta(\log n)`$ when
+  $`a=b`$ and the third moments differ, and $`e_n=O(1)`$ when the second and third
+  moments agree. A proof along these lines is known but not formalized. It needs a
+  Fourier lower bound $`\int|D*G_n|\ge c\,n^{-(d-1)/2}`$, with $`d`$ the first order at
+  which the moments differ; a contraction estimate for the integrated width between the
+  upper and lower policy envelopes after smoothing; and total-variation decay
+  $`\|h_r^{(q+1)}\|_{\mathrm{TV}}=O(r^{-q/2})`$ for derivatives of smoothed random-walk
+  CDFs. Theorem 15 gives only $`o(\sqrt n)`$ when $`a=b`$.
 
 ## Attribution
 

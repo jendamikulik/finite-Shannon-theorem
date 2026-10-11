@@ -1,8 +1,8 @@
 Axiom audit of every theorem in the project modules (CausalSeed.*), 11 October 2026
 Lean 4.35.0-rc3, mathlib 7d6757bc18680044fc0ff6efc8ee20494b408556
-`lake build`: Build completed successfully (3840 jobs). No `sorry`, `admit` or custom axioms.
+`lake build`: Build completed successfully (3841 jobs). No `sorry`, `admit` or custom axioms.
 
-Summary: 1560 theorems in 62 modules: all depend only on propext, Classical.choice,
+Summary: 1590 theorems in 63 modules: all depend only on propext, Classical.choice,
 Quot.sound (3 on none). No theorem uses sorryAx or any other axiom, and no `axiom`
 is declared in the CausalSeed modules.
 
@@ -3131,6 +3131,68 @@ CausalSpectrum.Zero.zero_closure
 CausalSpectrum.Zero.zero_lower
   depends on axioms: [propext, choice, Quot.sound]
 
+-- CausalSeed.ZeroCost (30 theorems)
+CausalSpectrum.Kernel.costBits_eq_tcost
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.costBits_eq_tcost_trunc
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.costBits_le_pmf
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.pmf_le_seed
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.compat_liftL
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.costBits_eq_red
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.costBits_fekete
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.costBits_subadditive
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.dropL_liftL
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.exact_of_red
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.exact_to_red
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.extendS_injective
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.hmax_eq_inf
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.hmax_mul_le_costBits
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.liftL_dropL
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.liftL_injective
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.liftL_restrictS
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.mass_liftL
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.mem_supp_of_ne
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.restrictP_extendP
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.restrictS_extendS
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.run_extendS
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.sum_push_event
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.zcost_bdd
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.zcost_ztree
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.atomsOf_pos
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.atomsOf_sum
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.le_tcost
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.tcost_bdd
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.tcost_le
+  depends on axioms: [propext, choice, Quot.sound]
+
 -- CausalSeed.ZeroGame (25 theorems)
 CausalSpectrum.Zero.Fenv.congr_simp
   depends on axioms: [propext, choice, Quot.sound]
@@ -3384,5 +3446,6 @@ Notes. `OT.W1` is the infimum over couplings of E|X - Y| (values in [0,∞]);
 `OT.qCoupling_optimal` shows the quantile coupling attains it. This supersedes the
 earlier note that W1 is formalized only in CDF form: `Kernel.universality_W1` and
 `wasserstein_gap_W1` are stated with `OT.W1`. `Zero.NNKernel` covers stationary kernels
-with zero entries through the envelope identity `L_ztree`; subadditivity of their cost
-and the Θ(log n)/O(1) branches of the moment classification are not theorems here.
+with zero entries; `NNKernel.costBits_eq_red` proves C_n(κ₀) = C_n(κ₀.red), and
+subadditivity and the Fekete limit transfer. The Θ(log n)/O(1) branches of the moment
+classification are not theorems here.

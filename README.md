@@ -19,11 +19,11 @@ The development connects three results:
 
 ## 1. Finite trees: a universal entropy bound
 
-Let $`C(T)`$ be the minimum entropy required for exact causal simulation of
-a finite controlled tree. Let $`L(T)`$ be the mean of the lower envelope
+Let $C(T)$ be the infimum of entropy required for exact causal simulation of
+a finite controlled tree. Let $L(T)$ be the mean of the lower envelope
 of its policy transcript information distributions.
 
-There exists one finite greedy seed $`S_G`$ such that
+There exists one finite greedy seed $S_G$ such that
 
 ```math
 \boxed{
@@ -61,8 +61,8 @@ See [Entropy.lean](CausalSeed/Entropy.lean).
 
 ## 2. Infinite horizons: bounded envelopes characterize finite entropy
 
-For a locally finite infinite controlled tree, let $`C_n`$ be the infimum
-of countable-seed entropy needed through horizon $`n`$, and $`C_\infty`$
+For a locally finite infinite controlled tree, let $C_n$ be the infimum
+of countable-seed entropy needed through horizon $n$, and $C_\infty$
 the infimum for one seed exact at every finite horizon.
 
 Expressing all entropies in bits,
@@ -73,7 +73,7 @@ Expressing all entropies in bits,
 
 If this value is finite, one exact countable seed attains it.
 
-Writing $`L_\infty=\sup_n L(T_n)`$, the same additive constant survives:
+Writing $L_\infty=\sup_n L(T_n)$, the same additive constant survives:
 
 ```math
 \boxed{
@@ -114,17 +114,53 @@ See [EntropyLimit.lean](CausalSeed/EntropyLimit.lean),
 [EnvelopeBridge.lean](CausalSeed/EnvelopeBridge.lean), and
 [AtomicCapacity.lean](CausalSeed/AtomicCapacity.lean).
 
+### Atomic capacity and the information spectrum
+
+Let $P_{n,\pi}$ be the transcript law under policy $\pi$ through horizon $n$.
+Define
+
+```math
+F_\infty(t)
+=
+\inf_{n,\pi}
+\Pr_{X\sim P_{n,\pi}}
+\bigl[-\log_2 P_{n,\pi}(X)\le t\bigr].
+```
+
+The mathematical argument in [atomic_capacity.tex](atomic_capacity.tex)
+establishes
+
+```math
+\boxed{
+\mathrm{atomQ}=\lim_{t\to\infty}F_\infty(t).
+}
+```
+
+Thus an exact countably supported causal seed exists if and only if the
+information contents of all finite-policy transcript laws are uniformly
+tight:
+
+```math
+\forall\varepsilon>0\ \exists t<\infty\ \forall n,\pi:
+\quad
+\Pr_{X\sim P_{n,\pi}}
+\bigl[-\log_2 P_{n,\pi}(X)>t\bigr]\le\varepsilon.
+```
+
+The spectral identity has a mathematical proof in the manuscript;
+its Lean formalization remains to be added.
+
 ## 3. Stationary kernels: the exact square-root coefficient
 
 Suppose the same finite family of output laws is available at every history,
-and all actions have the same entropy $`h`$, in bits.
+and all actions have the same entropy $h$, in bits.
 
-Let
+For $Y_i\sim P_i$, let
 
 ```math
-a=\max_i\sqrt{\operatorname{Var}(-\log_2 P_i(Y_i))},
+a=\max_i\sqrt{\mathrm{Var}(-\log_2 P_i(Y_i))},
 \qquad
-b=\min_i\sqrt{\operatorname{Var}(-\log_2 P_i(Y_i))}.
+b=\min_i\sqrt{\mathrm{Var}(-\log_2 P_i(Y_i))}.
 ```
 
 Then the optimal exact causal seed entropy satisfies
@@ -138,9 +174,9 @@ nh+\sqrt{\frac{2}{\pi}}\,(a-b)\sqrt{n}+o(\sqrt{n}).
 ```
 
 The envelope mean and the greedy seed entropy have the same expansion.
-The result includes $`b=0`$.
+The result includes $b=0$.
 
-When $`b>0`$, the development proves the stronger remainder estimate
+When $b>0$, the development proves the stronger remainder estimate
 
 ```math
 C_n
@@ -167,31 +203,31 @@ See [SqrtGeneral.lean](CausalSeed/SqrtGeneral.lean),
 [mathematical exposition](bellman_square_root.pdf).
 
 This theorem requires common entropy and a stationary kernel.
-When $`a=b`$, it establishes a vanishing square-root coefficient;
+When $a=b$, it establishes a vanishing square-root coefficient;
 it does not establish a sharp logarithmic correction.
 
 ## Structural results
 
 ### Exact penalty for incompatibility
 
-Let $`G_*`$ be the supremum, over finite trees, of the difference between
+Let $G_*$ be the supremum, over finite trees, of the difference between
 the causal and ordinary coupling entropy optima. The development proves
 
 ```math
 \frac{2}{9}\le G_*\le c_*.
 ```
 
-For every $`\kappa\ge G_*`$,
+For every $\kappa\ge G_*$,
 
 ```math
 C(T)=\inf_\Gamma
 \bigl[H(\Gamma)+\kappa\,\Gamma(B)\bigr],
 ```
 
-where $`B`$ is the incompatible part of the coupling.
+where $B$ is the incompatible part of the coupling.
 
-For $`\kappa>G_*`$, every attained minimizer is causal. More quantitatively,
-an $`\varepsilon`$-minimizer satisfies
+For $\kappa>G_*$, every attained minimizer is causal. More quantitatively,
+an $\varepsilon$-minimizer satisfies
 
 ```math
 \Gamma(B)\le\frac{\varepsilon}{\kappa-G_*}.
@@ -209,8 +245,15 @@ if and only if all subset sums are distinct.
 
 Subset-sum collisions bound the possible incompatible mass, and suitable
 trees of depth at most two attain the obstruction. With marginal error
-$`\varepsilon`$, the sharp universal threshold is $`2\varepsilon<\gamma`$,
-where $`\gamma`$ is the minimum separation between distinct subset sums.
+$\varepsilon$, the sharp universal threshold is $2\varepsilon<\gamma$,
+where
+
+```math
+\gamma=\min_{A\ne B}
+\left|\sum_{i\in A}w_i-\sum_{i\in B}w_i\right|.
+```
+
+In particular, $\gamma=0$ when two different subsets have the same weight.
 
 A separate characterization treats repair by policy-dependent,
 weight-preserving relabelings.
@@ -252,12 +295,17 @@ positive transition probabilities. Policies are deterministic and adaptive.
 
 The following remain unresolved in this development:
 
-- the exact value of $`G_*`$;
-- compatibility of all minimizers at the endpoint $`\kappa=G_*`$;
-- the proposed identity $`\mathrm{atomQ}=\lim F_\infty`$;
+- the exact value of $G_*$;
+- compatibility of all minimizers at the endpoint $\kappa=G_*$;
 - a sharp logarithmic asymptotic in the equal-variance regime;
 - an extension retaining zero-probability branches without reformulating
   the model.
+
+A separate formalization task remains:
+
+- Lean formalization of
+  $\mathrm{atomQ}=\lim_{t\to\infty}F_\infty(t)$,
+  whose mathematical proof appears in `atomic_capacity.tex`.
 
 ## Attribution
 

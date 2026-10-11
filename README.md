@@ -1,285 +1,607 @@
-**No claim.** Nothing in this repository is claimed as a priority, a discovery, or anyone's property. If a result here is someone else's research, including work that was used as training data for a model, the credit belongs to that author. They are welcome to come forward. Thank you.
+# Exact causal seeds on controlled trees
 
-# An exact causal seed on a finite controlled tree
+### A machine-checked finite Shannon theorem, atomic-capacity theorem, and projective entropy identity
 
-Jan Mikulik, 5 October 2026.
+**Jan Mikulik — October 2026**
 
-**One seed realises every adaptive policy, and its information stays within one exponential of the envelope. The gap does not grow with the horizon.**
+This repository studies a common-randomness problem for controlled stochastic processes.
 
-That is the theorem of this repository, `CausalSpectrum.causal_realization`, checked in Lean. It is the result to read and to cite. The diffusion profile of the square-root asymptotic is not this result, and the numerical value of the gap is not a new Shannon limit.
+A single random seed chooses a **total response strategy**.  
+Every deterministic adaptive policy must then obtain the prescribed process law from that same seed.
 
-Penalty identity checked 8 October 2026: for every coefficient at least the gap, the penalised infimum is the causal minimum. The proof is [`CausalSeed/Identity.lean`](CausalSeed/Identity.lean#L569).
+The central finite theorem is:
 
-Arithmetic rigidity of policy-indexed decoders, checked 8 October 2026. For a positive weight vector summing to 1, every `ε`-accurate family on every controlled tree satisfies `Bad(f) ⊆ R_ε(w)` (`CausalSpectrum.bad_mem_defect` in [`CausalSeed/Probe.lean`](CausalSeed/Probe.lean)). Equality `Bad(f) = R_ε(w)` is attained by one controlled tree of depth at most two (`CausalSpectrum.profile_attainment` in [`CausalSeed/Profile.lean`](CausalSeed/Profile.lean)); it is not claimed for an arbitrary family. Distinct subset sums are equivalent to every exact family being realizable (`exact_rigidity`), and every `ε`-accurate family is realizable if and only if `2ε < gamma` (`sharp_threshold`). The incompatible mass is at most the defect mass, and that mass is attained. This characterization does not use the Shannon bound. The constant `(1 + log₂ e) / 2` is not this result, and no publication priority is claimed.
+\[
+\boxed{
+Z \preceq_{\mathrm{st}} J \preceq_{\mathrm{st}} Z+E,
+\qquad
+E\sim \operatorname{Exp}(\ln 2)
+}
+\]
 
-Relabeling repair, checked 10 October 2026. For one family, weight-preserving permutations of the seed, one permutation per policy, and one response strategy per seed reproduce the decoder if and only if, inside every weight class, the number of seeds whose transcript extends a history does not depend on which policy is chosen among the policies that follow that history (`CausalSpectrum.relabelRepair_iff_countStable` in [`CausalSeed/Relabel.lean`](CausalSeed/Relabel.lean)). No marginal-accuracy hypothesis is used for that equivalence. Every `ε`-accurate family on every finite controlled tree admits such a repair if and only if `2ε < deltaRel w` (`CausalSpectrum.sharp_relabel`). `deltaRel` is the minimum mass gap between subsets whose vectors of weight-class counts differ. The minimum may be zero. It is not the subset-sum separation `gamma`. The repair keeps the seed weights and each individual policy law (`repair_same_law`). The converse is witnessed by `pairTree`, whose depth is at most 2 (`pairTree_depth`). The repair does not use the Shannon bound, and it is not the constant `(1 + log₂ e) / 2`. The Lebesgue statement for generic tensor powers, and the claim that a gap `C(T) > M(T)` forces a linear relation among atom masses, are not theorems of this repository. No publication priority is claimed.
+and, in entropy form,
 
-Greedy concentration, checked 10 October 2026. If every policy on a finite controlled tree puts mass at least `a` on some `K` transcripts, the first `M` greedy weights sum to at least `a (1 - (1 - 1/K)^M)` (`CausalSpectrum.greedy_head_lower` in [`CausalSeed/Atomic.lean`](CausalSeed/Atomic.lean)). The same head is at most the mass of the `M` most likely transcripts of any policy (`greedy_prefix_le_topMass`). On a locally finite tree the lower bound holds at every finite horizon, with `a` replaced by `atomA`, the infimum of that transcript mass (`horizon_head`). That infimum is also the infimum over horizons of the horizon-wise infima (`atomA_eq_iInf`). `atomQ` is the supremum of `atomA`. A diagonal subsequence of the ordered greedy weights converges in `[0,1]^ℕ`, and the supremum of the partial sums of the limit weights equals `atomQ` (`diagMass_eq_atomQ`). This is an equality of two real numbers. [`CausalSeed/Capacity.lean`](CausalSeed/Capacity.lean) extends those finite strategies to the infinite tree and extracts a convergent subsequence at every node (`cap_coord_tendsto`). The total weight of the limit strategies that reproduce a raw history `h` is at most the kernel mass of `h` (`cylMass_le_path`); the root cylinder has mass `atomQ` (`cylMass_root`). The difference `resMass h = pathMass h - cylMass h` is nonnegative and is conserved by every action (`resMass_split`). Where the residual at a history is positive, the one-step ratio is the residual child over the residual parent. Where that residual vanishes, the ratio is the original kernel rather than zero (`resRatioStep_of_zero`), so the ratios of every action sum to one (`resRatioStep_sum`). Their product is `resCyl h`. The weighted identity `resMass h = resMass [] * resCyl h` (`resMass_eq_root_mul`) does not depend on the ratio chosen at a history of residual zero, and `cylMass h + resMass [] * resCyl h = pathMass h` (`exact_split`) is unchanged.
+\[
+\boxed{
+L(T)\le H(S)\le
+L(T)+\frac{1+\log_2 e}{2}.
+}
+\]
 
-Atomic capacity, checked 11 October 2026. [`CausalSeed/MeasureCompletion.lean`](CausalSeed/MeasureCompletion.lean) proves the two identities that the definition of `atomMeasure` does not contain by itself: its total mass is `atomQ` (`Completion.atomMeasure_univ`) and its mass on the cylinder of `h` is `cylMass h` (`Completion.atomMeasure_cylinder`). The same file builds one probability kernel at every history-action pair (`resRatioStep`, with the original kernel where the residual vanishes) and their infinite product `residualMeasure`. The mixture `fullMeasure = atomMeasure + resMass [] • residualMeasure` is a probability on strategies, and its cylinder of `h` has mass `pathMass h` (`fullMeasure_cylinder`). [`CausalSeed/AtomicCapacity.lean`](CausalSeed/AtomicCapacity.lean) is the capacity comparison. An ordinary source is one probability space with a measurable readout of every finite policy whose fibre masses equal the leaf masses. The sum of its singleton masses is at most `atomQ` (`ordinary_atomic_upper`). The mixture attains that value (`causal_atomic_capacity_attained`), so the ordinary supremum and the causal value are the same number `atomQ`, and the causal side is attained. A countably supported exact seed, as a weighted sequence of strategies, exists if and only if `atomQ = 1` (`countable_seed_iff_atomQ_one`); in that case `atomMeasure` itself is already exact (`discrete_seed_of_atomQ_one`).
+The seed is exact for **every deterministic adaptive policy on the tree**, and the additive constant is independent of the depth of the tree.
 
-The projective entropy identity, checked 11 October 2026, holds for ranked seeds. A ranked seed is an antitone countable weight sequence of total mass one, paired with one strategy per index. Its entropy is the extended sum of `Real.negMulLog`, so the unit is nats. `finiteCost n` is the infimum of that entropy over ranked seeds that reproduce `pathMass` on every history of length at most `n`. `infiniteCost` is the same infimum over seeds that do so at every length. Both infima may be infinite, and neither is identified with the entropy of the finite greedy seed. [`CausalSeed/EntropyLimit.lean`](CausalSeed/EntropyLimit.lean) proves `infiniteCost = sup_n finiteCost` (`projective_entropy_identity`). If the supremum is finite, a ranked exact seed attains it (`entropy_attained`), and then `atomQ = 1` (`bounded_entropy_implies_atomQ_one`).
+The formal proof is in Lean.
 
-[`CausalSeed/SeedRanking.lean`](CausalSeed/SeedRanking.lean) shows that every countable seed (arbitrary nonnegative weights summing to one) has a ranked rearrangement that preserves every cylinder sum, the seed measure, the entropy, and the ExactTo predicate (`CountableSeed.exists_ranked`). Consequently the ranked costs equal the costs over all countable seeds (`finiteCost_eq_countable`, `infiniteCost_eq_countable`).
+---
 
-[`CausalSeed/EnvelopeBridge.lean`](CausalSeed/EnvelopeBridge.lean) relates the costs to the finite envelopes. `LInf ι = sup_n envelopeMean (trunc ι n [])` is measured in bits. Every seed exact up to horizon `n` induces a coupling of the joint transcripts of `trunc ι n []` whose entropy (converted by `log 2`) is at least the envelope (`envelope_le_entropy`). The finite greedy seed of that horizon, extended by `greedyCode`, is exact up to `n` and has entropy at most `envelopeMean + shannonOverhead` bits (`finiteCost_le_envelope`). Therefore `log 2 · LInf ≤ infiniteCost ≤ log 2 · (LInf + c_*)` (`infiniteCost_bridge`), and a finite-entropy exact seed exists if and only if `LInf < ∞` (`infiniteCost_lt_top_iff`). The unit conversion is explicit: nats = log 2 · bits. It does not identify `G_*`. The limit `atomQ = lim_t F_∞(t)` is not a theorem. Ordinary infinite-family concentration is prior work and is not reproved. No publication priority is claimed.
+## 1. The finite theorem
 
-## How to read this
+Let \(T\) be a finite controlled history tree.
 
-The object is one finite controlled tree and every deterministic policy on it. A policy may choose the next action from the history so far. A causal seed is one shared source of randomness and a decoder that realises the prescribed kernel at every history, including on actions the realised path never takes. An ordinary coupling of the transcript laws does not have to do that.
+At every nonterminal history:
 
-Read the three checked statements in this order. The later sections spell out the same claims; they are not further theorems.
+- there is a finite nonempty set of actions;
+- each action has a finite nonempty output alphabet;
+- the output kernel consists of strictly positive real probabilities summing to one.
 
-1. **One exact seed.** [`CausalSeed/Entropy.lean`](CausalSeed/Entropy.lean), declaration `CausalSpectrum.causal_realization`. Greedy extraction produces one finite seed that is exact for every deterministic policy, and `Z ≼_st J ≼_st Z + E` with `E ~ Exp(ln 2)`. The constant is not new. The compatible decoder is the statement. The integral form is `CausalSpectrum.one_seed_shannon`: `L ≤ H ≤ L + (1 + log₂ e) / 2`.
-2. **The penalty identity.** [`CausalSeed/Identity.lean`](CausalSeed/Identity.lean#L569), declaration `CausalSpectrum.penaltyMin_eq_causalMin`. For every coefficient `κ ≥ gapSup`, and therefore for every `κ ≥ c_*`,
+A deterministic policy may choose its next action from the complete observed history.
 
-   ```text
-   C(T) = inf over couplings Γ of [ H(Γ) + κ · Γ(B) ].
-   ```
+A deterministic response strategy is stronger: it specifies an output for **every action at every history**, including branches that will not be visited by a particular policy.
 
-   The inequality underneath it is `causalMin_le_penalised` in the same file, at [line 131](CausalSeed/Identity.lean#L131): every coupling satisfies `causalMin T ≤ H(Γ) + gapSup · Γ(B)`. The endpoints `Γ(B) ∈ {0, 1}` are in [`CausalSeed/Penalty.lean`](CausalSeed/Penalty.lean). The intermediate mass deletes the compatible part in [`CausalSeed/Close.lean`](CausalSeed/Close.lean) and carries the residual coupling across the pruned tree in [`CausalSeed/Transport.lean`](CausalSeed/Transport.lean).
-3. **The gap cannot exceed the Shannon overhead.** `CausalSpectrum.gapSup_le_shannonOverhead` says `G_* ≤ c_*`. `CausalSpectrum.penalty_shortfall` says that no nonnegative coefficient strictly below `gapSup` is universal.
+A causal seed is a probability distribution over such total strategies.
 
-Not the theorem to cite: the square-root asymptotic in the PDF, the identification of the profile limit, and the claim that every minimiser strictly above `G_*` is compatible. The `(1 − ε)`-support prefix below follows from the checked minimax lemma; it is recorded as known and it is not a Lean theorem of this repository.
+The key requirement is therefore not merely to couple the transcript laws of several policies. One probability source must admit a single compatible strategy interpretation across all shared histories.
 
-| File | What a reader opens it for |
-| --- | --- |
-| [`CausalSeed/Entropy.lean`](CausalSeed/Entropy.lean) | The seed theorem and the truncation corollary |
-| [`CausalSeed/Identity.lean`](CausalSeed/Identity.lean#L569) | `penaltyMin κ T = causalMin T` for `κ ≥ gapSup` |
-| [`CausalSeed/Close.lean`](CausalSeed/Close.lean) | Residual flow after the compatible part is removed |
-| [`CausalSeed/Transport.lean`](CausalSeed/Transport.lean) | Pruned residual tree; transport of leaves, policies, and strategies |
-| [`CausalSeed/Penalty.lean`](CausalSeed/Penalty.lean) | `G_*`, the shortfall, the endpoint cases |
-| [`CausalSeed/Spectrum.lean`](CausalSeed/Spectrum.lean) | Tree, policy, strategy, greedy extraction |
-| [`CausalSeed/Gap.lean`](CausalSeed/Gap.lean) | Envelope against an ordinary coupling |
-| [`CausalSeed/Note.lean`](CausalSeed/Note.lean) | Wasserstein identity, Rényi scalars, repeated-kernel min-entropy |
-| [`CausalSeed/SecondOrder.lean`](CausalSeed/SecondOrder.lean) | Mean of the diffusion profile only; not the `√n` asymptotic |
-| [`CausalSeed/Arithmetic.lean`](CausalSeed/Arithmetic.lean) | Subset-sum defect and `gamma` |
-| [`CausalSeed/Probe.lean`](CausalSeed/Probe.lean) | Unrealizable index implies membership in the defect |
-| [`CausalSeed/Profile.lean`](CausalSeed/Profile.lean) | Depth-two attainment, exact rigidity, sharp threshold |
-| [`CausalSeed/Relabel.lean`](CausalSeed/Relabel.lean) | Relabeling repair and the `deltaRel` threshold |
-| [`CausalSeed/Atomic.lean`](CausalSeed/Atomic.lean) | Greedy head, the horizon infimum, and `diagMass = atomQ` |
-| [`CausalSeed/Capacity.lean`](CausalSeed/Capacity.lean) | Limit strategies, cylinder mass, residual ratios, cylinder exactness |
-| [`CausalSeed/MeasureCompletion.lean`](CausalSeed/MeasureCompletion.lean) | Atomic measure identities, residual product, exact mixture |
-| [`CausalSeed/AtomicCapacity.lean`](CausalSeed/AtomicCapacity.lean) | Ordinary upper bound, causal attainment, countable seed at `atomQ = 1` |
-| [`CausalSeed/EntropyLimit.lean`](CausalSeed/EntropyLimit.lean) | `infiniteCost = sup finiteCost` for ranked seeds, in nats |
-| [`CausalSeed/SeedRanking.lean`](CausalSeed/SeedRanking.lean) | Ranked rearrangement of any countable seed; costs equal over all countable seeds |
-| [`CausalSeed/EnvelopeBridge.lean`](CausalSeed/EnvelopeBridge.lean) | `log 2 · LInf ≤ infiniteCost ≤ log 2 · (LInf + c_*)`; finite entropy iff `LInf < ∞` |
-| [`AXIOMS.txt`](AXIOMS.txt) | `#print axioms` for the declarations above |
+### Exact realization
 
-## The theorem
+`CausalSpectrum.causal_realization` proves that greedy extraction of the probability flow produces one finite seed \(S\) such that, simultaneously for every deterministic policy \(\pi\),
 
-For every finite controlled history tree, greedy extraction of the probability flow produces one finite seed which is an exact decoder for every deterministic policy. Let `Z` be the information of the lower envelope of the deterministic-policy transcript laws, and let `J` be the information of that seed. Then
+\[
+\Pr_S[\operatorname{run}(S,\pi)=\ell]
+=
+\begin{cases}
+p_T(\ell), & \ell\text{ is compatible with }\pi,\\
+0, & \text{otherwise}.
+\end{cases}
+\]
 
-```text
-Z  ≼_st  J  ≼_st  Z + E,        E ~ Exp(ln 2).
-```
+The seed is chosen once. It is not selected separately for each policy.
 
-`E` has rate `ln 2`, hence mean `log₂ e`. In the formalization the two comparisons are, for every real `t`,
+Let
 
-```text
-seedCDF t ≤ F⋆(t)
-seedTail t ≤ coupleSurv t
-```
+- \(J=-\log_2 W\) be the information of a seed atom of weight \(W\);
+- \(Z\) be the information distribution induced by the lower envelope of the deterministic-policy transcript laws.
 
-`coupleSurv t` is `∑ μᵢ min(1, 2^(zᵢ − t))`, which is `P(Z + E > t)` for `E` independent of `Z`. For each finite controlled tree, one seed works for every deterministic adaptive policy on that tree. The seed may depend on the tree and its horizon; the overhead bound is independent of the horizon. Nothing in the gap depends on the depth of the tree.
+Then
 
-Integrating the tails gives `L ≤ H ≤ L + log₂ e`. The declaration `CausalSpectrum.one_seed_shannon` is that integral with the residual-mass refinement
+\[
+Z\preceq_{\mathrm{st}}J\preceq_{\mathrm{st}}Z+E,
+\qquad
+E\sim\operatorname{Exp}(\ln2).
+\]
+
+In the Lean formalization these two comparisons are
 
 ```text
-L ≤ H ≤ L + (1 + log₂ e) / 2.
+seedCDF t  ≤ Fstar T t
+seedTail t ≤ coupleSurv T t
 ```
 
-The refinement sharpens the integral. It does not replace the stochastic bound by a smaller exponential.
+for every real \(t\).
 
-## Corollary
+The second bound is exactly the survival function of \(Z+E\), with \(E\) independent of \(Z\).
 
-The same seed gives a uniform truncation. `CausalSpectrum.causal_truncation` is this reading of `causal_realization`, not a second discovery. For every real `t` and every `s ≥ 0`,
+---
+
+## 2. Shannon bound
+
+Define
+
+\[
+L(T)=\operatorname{envelopeMean}(T)
+\]
+
+in bits, and let \(H(S)\) be the Shannon entropy of the finite causal seed.
+
+The declaration
 
 ```text
-Pr(J > t + s) ≤ Pr(Z > t) + 2^{−s}.
+CausalSpectrum.one_seed_shannon
 ```
 
-In the formalization that is `seedTail (t + s) ≤ (1 − F⋆(t)) + 2^{−s}`. Atoms of weight at least `2^{−u}` number at most `2^u`. Therefore, if `0 < ε ≤ 2` and `1 − F⋆(t) ≤ ε / 2`, the choice `s = log₂(2 / ε)` leaves at most
+proves
+
+\[
+\boxed{
+L(T)\le H(S)\le L(T)+c_*,
+\qquad
+c_*=\frac{1+\log_2 e}{2}.
+}
+\]
+
+Numerically,
+
+\[
+c_* \approx 1.2213475204\ \text{bits}.
+\]
+
+The lower bound follows from the layer-cake representation of the envelope.  
+The upper bound comes from the refined greedy cutoff estimate.
+
+The stochastic exponential bound by itself integrates to the weaker constant \(\log_2 e\).  
+The constant \(c_*\) comes from the sharper residual-mass estimate.
+
+The constant is uniform in the horizon and in the depth of the finite tree.
+
+---
+
+## 3. Operational truncation
+
+The same seed satisfies the uniform tail estimate
+
+\[
+\Pr(J>t+s)
+\le
+\Pr(Z>t)+2^{-s},
+\qquad s\ge0.
+\]
+
+This is
 
 ```text
-⌊2^{t+1} / ε⌋
+CausalSpectrum.causal_truncation
 ```
 
-atoms, and the discarded mass is at most `ε`. Renormalising those atoms moves the seed by at most `ε` in total variation. Every function of the seed moves by at most that much: every deterministic-policy transcript, and every stopping time inside this same finite tree. One truncation serves all of them at once.
+and is an operational reading of the same finite realization theorem, not a separate construction.
 
-It does not control the conditional kernel at one history whose probability is much smaller than `ε`. The guarantee is on the law of what the path actually shows.
+---
 
-## Separate compressions, one prefix
+## 4. Causal versus ordinary coupling
 
-We assume this quantitative bound is already known. The note records it because it follows from the checked minimax and extraction lemmas. It is not a Lean theorem of this repository, and it is not claimed as a discovery.
+An ordinary coupling of policy transcript laws need not be consistent at shared histories.
 
-Let `0 ≤ ε < 1`. For each deterministic policy `π` let `k_ε(P_π)` be the smallest number of transcripts that carry probability at least `1 − ε`, and let `K` be the maximum of `k_ε(P_π)` over policies. Thus `K ≥ 1`. Each policy, compressed on its own, keeps mass `1 − ε` in at most `K` transcripts. Those sets need not agree.
+A causal seed must be.
 
-Keep the first `M ≥ 1` atoms of the same greedy seed and renormalise them. If the extraction has already ended, keep the whole seed and the error is zero. Otherwise the renormalised seed has at most `M` values and, simultaneously for every policy, total-variation error at most
+Let
+
+- \(M(T)\) denote the ordinary coupling optimum;
+- \(C(T)\) denote the causal optimum;
+- \(G_*\) denote the universal causal gap.
+
+The formalization proves
+
+\[
+G_*\le c_*.
+\]
+
+It also proves the exact penalty identity
+
+\[
+\boxed{
+C(T)
+=
+\inf_\Gamma
+\left[
+H(\Gamma)+\kappa\,\Gamma(B)
+\right]
+}
+\qquad
+(\kappa\ge G_*),
+\]
+
+where \(B\) is the incompatible part of an ordinary coupling.
+
+The relevant declarations are
 
 ```text
-ε + (1 − ε) (1 − 1/K)^M.
+CausalSpectrum.causalMin_le_penalised
+CausalSpectrum.penaltyMin_eq_causalMin
+CausalSpectrum.gapSup_le_shannonOverhead
+CausalSpectrum.penalty_shortfall
 ```
 
-The reason is the residual flow. After `m` extractions its root mass is `R_m`, with `R_0 = 1`. The minimax identity supplies a policy whose largest residual leaf equals the next greedy weight `w_{m+1}`. On that policy, some set of at most `K` transcripts carries original mass at least `1 − ε`, so the residual outside it is at most `ε`. Hence `R_m − ε ≤ K w_{m+1}`. Extracting the atom gives
+Thus causal compatibility can be represented exactly by an entropy objective with a sufficiently large penalty on incompatible mass.
+
+---
+
+# Infinite controlled trees
+
+The finite theorem has a projective infinite-horizon continuation.
+
+The infinite tree is locally finite.  
+All statements below concern exact realization of every finite cylinder.
+
+---
+
+## 5. Atomic capacity
+
+Finite greedy seeds have ordered atom weights. Passing to a diagonal subsequence produces limiting strategy atoms.
+
+Let
+
+\[
+q=\operatorname{atomQ}.
+\]
+
+The formalization constructs:
+
+1. an atomic measure `atomMeasure` of total mass \(q\);
+2. a residual probability process from the remaining cylinder flow;
+3. the exact mixture
+
+\[
+\mu_{\mathrm{full}}
+=
+\mu_{\mathrm{atom}}
++
+(1-q)\mu_{\mathrm{res}}.
+\]
+
+For every finite history \(h\),
+
+\[
+\boxed{
+\mu_{\mathrm{full}}([h])
+=
+\operatorname{pathMass}(h).
+}
+\]
+
+At the level of real cylinder masses the decomposition is
+
+\[
+\operatorname{cylMass}(h)
++
+\operatorname{resMass}(\varnothing)\,
+\operatorname{resCyl}(h)
+=
+\operatorname{pathMass}(h).
+\]
+
+The residual component is therefore not merely obtained from abstract compactness: its local transition probabilities are explicitly constructed from the residual flow.
+
+Relevant files:
 
 ```text
-R_{m+1} − ε ≤ (1 − 1/K) (R_m − ε).
+CausalSeed/Atomic.lean
+CausalSeed/Capacity.lean
+CausalSeed/MeasureCompletion.lean
+CausalSeed/AtomicCapacity.lean
 ```
 
-The discarded mass after `M` atoms is `R_M`, which is the total-variation distance caused by renormalising the prefix. A deterministic decoder does not increase it. One prefix serves every policy.
+---
 
-For `0 < δ < 1 − ε` the choice
+## 6. Exact atomic-capacity theorem
+
+An ordinary source is allowed a separate measurable readout for every finite policy.  
+No causal compatibility between those readouts is assumed.
+
+Nevertheless every such exact source satisfies
+
+\[
+\operatorname{atomicMass}(\mu)\le q.
+\]
+
+The constructed causal measure attains equality:
+
+\[
+\operatorname{atomicMass}(\mu_{\mathrm{full}})=q.
+\]
+
+Thus the ordinary atomic supremum and the attained causal atomic value coincide.
+
+This is formalized by
 
 ```text
-M = ⌈K ln((1 − ε) / δ)⌉
+CausalSpectrum.Completion.ordinary_atomic_upper
+CausalSpectrum.Completion.causal_atomic_capacity_attained
 ```
 
-makes the error at most `ε + δ`. The comparison `−ln(1 − 1/K) ≥ 1/K` makes this `M` sufficient, not necessarily smallest. An extra error `0.01` therefore costs at most `⌈4.606 K⌉` seed values. That count is a number of seed states, not a number of uniform random bits.
+There is also an exact dichotomy:
 
-`K` is a cardinality of a `(1 − ε)`-support, not a Shannon entropy. Depth and the number of policies do not appear as a further factor. They can increase `K` itself. The price of using one compatible seed, rather than a separate compression for each policy, is this logarithmic multiple of `K`.
+\[
+\boxed{
+\text{a countably supported exact seed exists}
+\iff
+q=1.
+}
+\]
 
-## Repair of an inconsistent coupling
-
-We assume this repair is already known. It is not claimed as a discovery. The argument below uses the checked bound `H ≤ L + c_*` with `c_* = (1 + log₂ e) / 2`. The infimum identity for every coefficient at least `c_*` is `CausalSpectrum.penaltyMin_eq_causalMin`, because `gapSup ≤ c_*`. The total-variation reconstruction written in this section, and the claim that every minimiser strictly above the coefficient is compatible, are not separate Lean theorems.
-
-Let `Γ` be any coupling of the exact transcript laws of all deterministic policies, and let `B` be the set of transcript tuples that no single causal strategy produces. Write `η = Γ(B)`. Let `C` be the least entropy of an exact causal seed.
-
-There is a compatible coupling `Γ̂` with the same marginals such that
+This is
 
 ```text
-d_TV(Γ, Γ̂) = η,        H(Γ̂) ≤ H(Γ) + c_* η.
+CausalSpectrum.Completion.countable_seed_iff_atomQ_one
 ```
 
-Total variation is `sup |Γ(A) − Γ̂(A)|`. The distance `η` is the least possible to a compatible coupling, because every compatible coupling puts mass zero on `B`. The coefficient does not depend on the horizon or on the number of policies.
-
-The good part of `Γ` is a subflow `q ≤ p` of mass `1 − η`. The residual `r = p − q` is a nonnegative flow of root mass `η`. Normalising it and deleting zero branches gives a finite controlled tree, and `Γ(· | B)` is a coupling of its policy marginals. Its envelope entropy is at most `H(Γ(· | B))`, so the checked Shannon bound supplies a compatible replacement `Λ` with `H(Λ) ≤ H(Γ(· | B)) + c_*`. The mixture of the good part with weight `η` on `Λ` is `Γ̂`. Membership of a tuple in `B` is a function of the tuple, so
+and when \(q=1\), the explicitly constructed atomic measure is already exact:
 
 ```text
-H(Γ) = h₂(η) + (1 − η) H(Γ(· | Bᶜ)) + η H(Γ(· | B)),
+CausalSpectrum.Completion.discrete_seed_of_atomQ_one
 ```
 
-and the binary entropy cancels against the mixture bound. The mixture step is an inequality. The chain rule for `H(Γ)` is an equality.
+Hence \(1-q\) is precisely the mass that cannot be carried by any countably supported exact seed.
 
-Consequently, for every coefficient `κ ≥ c_*`,
+---
+
+## 7. Projective entropy identity
+
+A countable seed consists of nonnegative weights summing to one and one infinite response strategy per atom.
+
+A ranked seed has the same data with weights arranged in nonincreasing order.
+
+Entropy is the extended sum
+
+\[
+H(S)
+=
+\sum_i -w_i\log w_i
+\in[0,\infty],
+\]
+
+measured in nats.
+
+Define
+
+\[
+C_n
+=
+\inf
+\{
+H(S):
+S\text{ is exact through horizon }n
+\}
+\]
+
+and
+
+\[
+C_\infty
+=
+\inf
+\{
+H(S):
+S\text{ is exact at every finite horizon}
+\}.
+\]
+
+Then
+
+\[
+\boxed{
+C_\infty=\sup_n C_n.
+}
+\]
+
+This is
 
 ```text
-C = min over couplings Γ of [ H(Γ) + κ Γ(B) ].
+CausalSpectrum.Completion.projective_entropy_identity
 ```
 
-The minimum runs over all couplings of the policy transcripts, with no compatibility restriction. It is attained by an exact causal seed. The identity is not special to `κ = c_*`. What `c_*` supplies is that the coefficient is large enough. For every `λ > c_*`, every minimiser of `H(Γ) + λ Γ(B)` is compatible: an inconsistent candidate would be strictly improved by the repair. The strict separation below this coefficient is not argued here.
+The nontrivial direction is the infinite-horizon compactness step.  
+The proof prevents entropy-bounded probability mass from escaping to arbitrarily high atom ranks.
 
-## The exact penalty
+If
 
-We assume this reduction is already known. It is not claimed as a discovery. Let `M(T)` be the least entropy of an ordinary coupling of the policy transcripts, and
+\[
+\sup_n C_n<\infty,
+\]
+
+then an exact ranked seed exists and attains the value \(C_\infty\):
 
 ```text
-G_* = sup over finite controlled trees T of (C(T) − M(T)).
+CausalSpectrum.Completion.entropy_attained
 ```
 
-The checked Shannon bound gives `G_* ≤ c_*`. In Lean that is `CausalSpectrum.gapSup_le_shannonOverhead`: `gapSup` is this supremum and `shannonOverhead` is `c_*`.
+Consequently finite entropy implies
 
-`CausalSpectrum.entropy_ge_envelope` is the coupling form of the envelope. Every joint law of the deterministic transcripts, compatible or not, has entropy at least `envelopeMean`. A positive atom is no heavier than any transcript it selects, so its self-information dominates that transcript, and the layer-cake integral of the joint is at least `1 − F⋆`. The ordinary minimum is therefore at least the envelope, and the greedy seed pushed onto its realised transcripts is a compatible coupling of entropy at most `L + c_*`. That is why the gap cannot exceed `c_*`.
+\[
+q=1.
+\]
 
-`CausalSpectrum.penalty_shortfall` says that no nonnegative coefficient strictly below `gapSup` is universal. If `0 ≤ κ < gapSup`, some tree has penalised infimum strictly smaller than its causal minimum.
+---
 
-The identity is checked for every coefficient at least `gapSup`. `CausalSpectrum.causalMin_le_penalised` says that every coupling satisfies `causalMin T ≤ H(Γ) + gapSup · Γ(B)`. The endpoints `Γ(B) ∈ {0, 1}` are `causalMin_le_penalised_of_zero` and `causalMin_le_penalised_of_one`. The intermediate mass deletes the compatible part (`residualField` in `CausalSeed/Close.lean`), prunes the zero branches (`prunedTree` in `CausalSeed/Transport.lean`), and pays `gapSup` on that tree. `CausalSpectrum.penaltyMin_eq_causalMin` is the equality
+## 8. Ranking is without loss of generality
+
+The decreasing-weight condition is not an assumption on the original source.
+
+`CausalSeed/SeedRanking.lean` proves that every arbitrary countable seed can be rearranged into ranked form while preserving
+
+- total mass;
+- every cylinder sum;
+- the induced seed measure;
+- Shannon entropy;
+- finite-horizon exactness;
+- infinite exactness.
+
+Therefore the ranked optimization problems equal the corresponding optimization problems over all countable seeds:
 
 ```text
-C(T) = inf over Γ of [ H(Γ) + κ Γ(B) ]
+CausalSpectrum.Completion.finiteCost_eq_countable
+CausalSpectrum.Completion.infiniteCost_eq_countable
 ```
 
-for every `κ ≥ gapSup`, and therefore for every `κ ≥ c_*`. The statement that every minimiser at a penalty strictly above `G_*` is compatible is not a separate theorem.
+---
 
-`CausalSpectrum.witness_gapSup_lower` checks the recorded witness on one tree. An ordinary coupling has entropy `H(3,2,2,1,1)/9`, and every causal coupling has entropy at least `H(3,2,1,1,1,1)/9`. Those two profile entropies differ by `2/9`, so `2/9 ≤ gapOf` on that tree and therefore `2/9 ≤ gapSup`. This does not identify `gapSup`. It does not prove that either minimum equals its profile, and it does not prove uniqueness. The open neighborhood with gap above `1/20`, and the integer-relation corollary with `ℓ¹` norm at most 13, are not formalized. The interval remains
+## 9. Infinite Shannon bridge
+
+Let
+
+\[
+L_\infty
+=
+\sup_n L(T_n),
+\]
+
+where \(T_n\) is the horizon-\(n\) truncation and \(L(T_n)\) is the finite envelope entropy in bits.
+
+Every countable seed exact through horizon \(n\) induces an ordinary coupling of the horizon-\(n\) transcript family. This gives the lower bound.
+
+The finite greedy seed gives the upper bound.
+
+After the explicit conversion
+
+\[
+1\text{ bit}=\ln 2\text{ nats},
+\]
+
+the result is
+
+\[
+\boxed{
+(\ln2)L_\infty
+\le
+C_\infty
+\le
+(\ln2)(L_\infty+c_*).
+}
+\]
+
+This is
 
 ```text
-2/9 ≤ G_* ≤ (1 + log₂ e) / 2.
+CausalSpectrum.Completion.infiniteCost_bridge
 ```
 
+and therefore
 
+\[
+\boxed{
+C_\infty<\infty
+\iff
+L_\infty<\infty.
+}
+\]
 
+Equivalently, a finite-entropy exact countable seed exists exactly when the finite envelope entropies remain uniformly bounded.
 
-
-## What is new
-
-An ordinary minimum-entropy coupling assigns one joint law to a fixed finite list of marginals. It does not, by itself, give a decoder that realises the prescribed kernel at every history and every requested action, including actions that are never taken on the realised branch. The theorem produces that decoder. One finite list of weights is exact for every deterministic policy at once, and the information excess over the adaptive envelope is bounded by a single exponential, uniformly in the horizon.
-
-The size of the exponential is not new. Mean `log₂ e` is the greedy-coupling scale of [Compton, ISIT 2022](https://arxiv.org/abs/2203.05108). The integrated constant `(1 + log₂ e) / 2` is the constant of [Compton, Katz, Qi, Greenewald and Kocaoglu, AISTATS 2023](https://proceedings.mlr.press/v206/compton23a.html) for arbitrarily many marginals. This repository does not improve either number. The lower bound is the information-spectrum converse in the sense of [Shkel and Yadav, ISIT 2023](https://arxiv.org/abs/2305.05745), proved here for deterministic-policy transcripts on the tree. The new statement is the compatible seed, not a new constant.
-
-In Lean the refined integral constant is
+The formal declaration is
 
 ```text
-shannonOverhead = (1 + 1 / Real.log 2) / 2,
+CausalSpectrum.Completion.infiniteCost_lt_top_iff
 ```
 
-which equals `(1 + log₂ e) / 2`, because `Real.log` is the natural logarithm.
+---
 
-## What else is checked
+# Further formalized results
 
-Two identities lie in the same import closure. They are corollaries of the same seed, not a second theorem.
+The repository also contains several results that are logically separate from the Shannon theorem.
 
-- `wasserstein_gap`: the Wasserstein-1 distance between the law of the seed information and the law of the envelope equals `H − L`.
-- `memory_min_entropy`: the min-entropy of one kernel repeated `n` times is the bottleneck recursion. At order `∞` the compatibility gap is zero.
+## Arithmetic rigidity
 
-The table below records the remaining finite statements in the closure.
+For a positive finite weight vector \(w\), define the subset-sum separation parameter `gamma`.
 
-## Not part of the theorem
-
-[`causal_spectrum.pdf`](causal_spectrum.pdf) also states a square-root asymptotic for memoryless actions of equal entropy `h` and varentropies `σᵢ`, with `a = max σᵢ` and `b = min σᵢ`:
+The formalization proves:
 
 ```text
-C_n^causal = n h + √(2/π) (a − b) √n + o(√n).
+CausalSpectrum.bad_mem_defect
+CausalSpectrum.profile_attainment
+CausalSpectrum.incompatible_mass_le
+CausalSpectrum.profile_mass_attained
+CausalSpectrum.exact_rigidity
+CausalSpectrum.sharp_threshold
 ```
 
-That asymptotic is argued in the note. It is not the theorem of this repository, and it is not what the Lean development checks. [`CausalSeed/SecondOrder.lean`](CausalSeed/SecondOrder.lean) proves only the mean of profile (13), namely `√(2/π) (a − b)`, including `b = 0 < a`, and the fact that an additive gap of at most `c⋆` does not change a `√n` coefficient. The identification `Gₙ(x√n) → F` is not formalised here. Neither are the Fan–Grama–Liu logarithm, the rigidity statement that needs that limit, nor any claim that `c⋆` is optimal.
+In particular:
 
-The PDF files are the written note. The checked statement is `causal_realization`.
+\[
+\text{every exact family is realizable}
+\iff
+\text{all subset sums are distinct},
+\]
 
-## Where to read
+and every \(\varepsilon\)-accurate family is realizable exactly below the sharp threshold
 
-| What | Where |
-| --- | --- |
-| Start here | section How to read this |
-| The theorem | `CausalSpectrum.causal_realization` in [`CausalSeed/Entropy.lean`](CausalSeed/Entropy.lean) |
-| The Shannon integral | `CausalSpectrum.one_seed_shannon` in the same file |
-| The penalty identity | `CausalSpectrum.penaltyMin_eq_causalMin` in [`CausalSeed/Identity.lean`](CausalSeed/Identity.lean#L569) |
-| The inequality under that identity | `CausalSpectrum.causalMin_le_penalised` in [`CausalSeed/Identity.lean`](CausalSeed/Identity.lean#L131) |
-| Residual flow used by the intermediate case | [`CausalSeed/Close.lean`](CausalSeed/Close.lean) |
-| Pruned tree and transport used by the intermediate case | [`CausalSeed/Transport.lean`](CausalSeed/Transport.lean) |
-| Envelope, gap, shortfall, endpoints | [`CausalSeed/Penalty.lean`](CausalSeed/Penalty.lean); section The exact penalty |
-| The `(1 − ε)`-support prefix, assumed known, not formalised | section Separate compressions, one prefix |
-| Repair narrative. The infimum identity is the Lean theorem above; the total-variation reconstruction in the section is not a separate theorem | section Repair of an inconsistent coupling |
-| Seed, policies, envelope | [`CausalSeed/Spectrum.lean`](CausalSeed/Spectrum.lean), [`CausalSeed/Gap.lean`](CausalSeed/Gap.lean) |
-| Wasserstein identity, min-entropy, Rényi scalars | [`CausalSeed/Note.lean`](CausalSeed/Note.lean) |
-| Profile mean and the `√n` transfer only | [`CausalSeed/SecondOrder.lean`](CausalSeed/SecondOrder.lean) |
-| Relabeling repair. One family repairs iff its weight-class prefix counts are stable; every accurate family repairs iff `2ε < deltaRel`. Not `gamma`, not the Shannon constant, not the tensor-power statement | [`CausalSeed/Relabel.lean`](CausalSeed/Relabel.lean) |
-| Greedy weights. The head is at least `a(1-(1-1/K)^M)` and at most every policy's `M`-transcript mass. The diagonal of horizon weights has partial sums whose supremum is `atomQ`. Not a causal seed, not ordinary-versus-causal atomic capacity, not `C_∞`, not `G_*` | [`CausalSeed/Atomic.lean`](CausalSeed/Atomic.lean) |
-| Limit strategies, cylinder mass, residual ratios. A zero residual uses the original kernel, and every action's ratios sum to 1. `resMass h = resMass [] * resCyl h`, so `cylMass h + resMass [] * resCyl h = pathMass h`. Not a measure on strategies, not ordinary-versus-causal capacity, not `C_∞` | [`CausalSeed/Capacity.lean`](CausalSeed/Capacity.lean) |
-| Axiom audit | [`AXIOMS.txt`](AXIOMS.txt) |
-| The note, including arguments not checked here | [`causal_spectrum.pdf`](causal_spectrum.pdf), [`one_seed_entropy.pdf`](one_seed_entropy.pdf) |
+\[
+2\varepsilon<\gamma.
+\]
 
-## The theorem, as formalised
+The converse obstruction is witnessed on a controlled tree of depth at most two.
 
-For every finite controlled tree `T` there is a finite list of atoms, produced by greedy extraction of the probability flow, such that
+This result does not use the Shannon bound.
 
-- the list is a greedy trace of the root probability field,
-- every atom weight is strictly positive and at most 1,
-- the weights sum to 1,
-- under every deterministic policy, the decoder’s transcript weights equal the prescribed leaf masses on the histories compatible with that policy, and equal 0 on the others,
-- for every real `t`, `seedCDF t ≤ F⋆(t)` and `seedTail t ≤ coupleSurv t`.
+---
 
-The first comparison is `Z ≼_st J`. The second is `J ≼_st Z + E` for `E ~ Exp(ln 2)`. Integrating it gives `L ≤ H ≤ L + log₂ e`. The separate declaration `one_seed_shannon` is that integral with the constant sharpened to `(1 + log₂ e) / 2`.
+## Relabeling repair
 
-`L` is `envelopeMean`, the finite sum that defines the envelope. `Z` is that same envelope, read as a distribution function.
+For policy-indexed decoders one may allow a weight-preserving permutation of the seed separately for each policy.
 
-A tree is a leaf, or a node with a positive finite number of actions. Each action has its own positive finite output alphabet and a kernel of strictly positive real weights summing to 1. Alphabets may differ from node to node and from action to action. A policy chooses one action from the whole history and continues along every output. A strategy chooses one output of every action. The same finite seed is exact for every policy.
+The repository proves an exact combinatorial criterion for when this repairs the family:
 
-## Certificate
+```text
+CausalSpectrum.relabelRepair_iff_countStable
+```
 
-Checked with Lean `4.35.0-rc3` (`leanprover/lean4:v4.35.0-rc3`) and mathlib `7d6757bc18680044fc0ff6efc8ee20494b408556`, by `lake build` of this import closure. There is no `sorry` and no `admit`.
+and a sharp universal threshold
 
-`#print axioms CausalSpectrum.causal_realization` reports only
+```text
+CausalSpectrum.sharp_relabel
+```
+
+in terms of `deltaRel`, the minimum mass gap between subsets with different vectors of weight-class counts.
+
+This parameter is distinct from `gamma`.
+
+---
+
+## Greedy concentration
+
+If every policy places probability at least \(a\) on some \(K\) transcripts, then the first \(M\) greedy weights satisfy
+
+\[
+\sum_{i<M}w_i
+\ge
+a\left(1-\left(1-\frac1K\right)^M\right).
+\]
+
+This is
+
+```text
+CausalSpectrum.greedy_head_lower
+```
+
+The same prefix is bounded above by the mass of the \(M\) most likely transcripts of every policy:
+
+```text
+CausalSpectrum.greedy_prefix_le_topMass
+```
+
+These estimates are the finite starting point of the atomic-capacity construction.
+
+---
+
+# Formal verification
+
+The project is checked with
+
+```text
+Lean    4.35.0-rc3
+mathlib 7d6757bc18680044fc0ff6efc8ee20494b408556
+```
+
+The versions are pinned by
+
+```text
+lean-toolchain
+lake-manifest.json
+lakefile.toml
+```
+
+A complete build is
+
+```bash
+lake build
+```
+
+The principal declarations have also been audited with `#print axioms`.
+
+For example,
+
+```text
+#print axioms CausalSpectrum.causal_realization
+```
+
+and the corresponding infinite-horizon declarations report only the standard Lean axioms
 
 ```text
 propext
@@ -287,63 +609,121 @@ Classical.choice
 Quot.sound
 ```
 
-The same three axioms are reported for every declaration below. They are the kernel of Lean, not unproved lemmas.
+No `sorry`, `admit`, or `sorryAx` is used in the checked development.
 
-### The seed and the sandwich
-
-| Step | Declaration |
-| --- | --- |
-| Stochastic realization, `Z ≼ J ≼ Z + Exp(ln 2)` | `CausalSpectrum.causal_realization` |
-| Truncation, `Pr(J > t + s) ≤ Pr(Z > t) + 2^{−s}` | `CausalSpectrum.causal_truncation` |
-| Minimax identity for an arbitrary real field | `CausalSpectrum.exact_tree_minimax` |
-| Greedy extraction ends and gives one exact seed | `CausalSpectrum.exact_finite_seed` |
-| Existence of the greedy trace | `CausalSpectrum.greedyTrace_exists` |
-| Residual mass after the cutoff `δ` | `CausalSpectrum.greedy_refined_bound` |
-| Exact seed together with the refined cutoffs | `CausalSpectrum.exact_seed_with_refined_cutoffs` |
-| Shannon sandwich, the integral, with the refined constant | `CausalSpectrum.one_seed_shannon` |
-| Every coupling pays at most `gapSup` on its inconsistent mass | `CausalSpectrum.causalMin_le_penalised` |
-| Penalised infimum equals the causal minimum for `κ ≥ gapSup` | `CausalSpectrum.penaltyMin_eq_causalMin` |
-
-### Identities in the same closure
-
-| Step | Declaration |
-| --- | --- |
-| `W₁` equals the entropy gap | `CausalSpectrum.wasserstein_gap` |
-| `E[W] = c⋆` and `c⋆ < log₂ e` | `integral_wSurvival`, `shannonOverhead_lt_logb_exp` |
-| Strict gap on one finite tree | `CausalSpectrum.finite_gap_strict` |
-| Laplace identity and the Rényi scalars `θ₂`, `g̃₂` | `exp_moment`, `theta_two`, `gTilde_two` |
-| Min-entropy of a kernel repeated `n` times | `memory_min_entropy` |
-| Rational brackets of the crash pair | `crash_lower_pow`, `crash_C_bound` |
-| Entropy of the masses `1/3`, `1/3`, `1/6`, `1/6` | `vertex_mass_entropy` |
-
-### Calculations that do not prove the square-root asymptotic
-
-| Step | Declaration |
-| --- | --- |
-| `∫₀^∞ (1 − Φ(t/c)) dt = c/√(2π)` | `integral_gaussTail`, `integral_normalTail_scale` |
-| Mean of profile (13), including `b = 0` | `profile_mean`, `profile_mean_zero` |
-| A gap of at most `c⋆` does not change a `√n` coefficient | `second_order_transfer` |
-
-### Arithmetic rigidity of a decoder family
-
-Separate from the seed theorem. Positive weights, summing to 1. No use of the Shannon bound.
-
-| Step | Declaration |
-| --- | --- |
-| An unrealizable transcript tuple splits into two policies of equal cylinder mass | `unrealizable_splits` |
-| Every unrealizable index of an `ε`-accurate family lies in the defect | `bad_mem_defect` |
-| The defect is exactly the bad set of one tree of depth at most 2 | `profile_attainment` |
-| Incompatible mass is at most the defect mass, and the mass is attained | `incompatible_mass_le`, `profile_mass_attained` |
-| Distinct subset sums iff every exact family is realizable | `exact_rigidity` |
-| Every `ε`-accurate family is realizable iff `2ε < gamma` | `sharp_threshold` |
-
-## Build
-
-This archive does not contain mathlib. From this directory, with `elan`:
+See:
 
 ```text
+AXIOMS.txt
+```
+
+for the recorded audit.
+
+---
+
+# Repository map
+
+| File | Main role |
+| --- | --- |
+| `CausalSeed/Spectrum.lean` | Controlled trees, policies, strategies, minimax structure, greedy extraction |
+| `CausalSeed/Entropy.lean` | Finite stochastic realization and Shannon bound |
+| `CausalSeed/Gap.lean` | Envelope and ordinary coupling comparison |
+| `CausalSeed/Penalty.lean` | Universal causal gap and penalty endpoints |
+| `CausalSeed/Close.lean` | Removal of the compatible part |
+| `CausalSeed/Transport.lean` | Residual transport through the pruned tree |
+| `CausalSeed/Identity.lean` | Exact penalty identity |
+| `CausalSeed/Arithmetic.lean` | Subset-sum arithmetic |
+| `CausalSeed/Probe.lean` | Defect obstruction |
+| `CausalSeed/Profile.lean` | Depth-two attainment and sharp threshold |
+| `CausalSeed/Relabel.lean` | Relabeling repair |
+| `CausalSeed/Atomic.lean` | Greedy concentration and diagonal atom mass |
+| `CausalSeed/Capacity.lean` | Infinite strategies and residual cylinder flow |
+| `CausalSeed/MeasureCompletion.lean` | Atomic measure, residual product, exact mixture |
+| `CausalSeed/AtomicCapacity.lean` | Ordinary upper bound and attained causal atomic capacity |
+| `CausalSeed/EntropyLimit.lean` | Entropy compactness and \(C_\infty=\sup_n C_n\) |
+| `CausalSeed/SeedRanking.lean` | Rearrangement of arbitrary countable seeds |
+| `CausalSeed/EnvelopeBridge.lean` | Infinite Shannon bridge |
+| `CausalSeed/SecondOrder.lean` | Formalized profile-mean calculations only |
+| `AXIOMS.txt` | Recorded `#print axioms` audit |
+
+The root import
+
+```text
+CausalSeed.lean
+```
+
+imports the complete checked development.
+
+---
+
+# Scope
+
+The formalized finite theorem currently assumes:
+
+- finite controlled history trees;
+- finite nonempty action and output alphabets;
+- strictly positive real transition probabilities;
+- deterministic adaptive policies.
+
+The infinite development concerns locally finite controlled trees and exact finite-cylinder laws.
+
+Randomized policies are not a primitive object of the finite theorem.
+
+---
+
+# What is not claimed
+
+To keep the formal result separate from surrounding heuristics and numerical observations, the repository does **not** claim:
+
+- an identification of the exact numerical value of \(G_*\);
+- the square-root asymptotic suggested by the diffusion profile;
+- the identity `atomQ = lim F∞`;
+- that every minimizer strictly above \(G_*\) must be compatible;
+- a theorem for zero-probability branches without first removing or reformulating them.
+
+Only declarations present in the Lean development should be treated as machine-checked results.
+
+---
+
+# Main declarations
+
+For a quick audit, the principal statements are:
+
+```text
+CausalSpectrum.causal_realization
+CausalSpectrum.one_seed_shannon
+CausalSpectrum.penaltyMin_eq_causalMin
+CausalSpectrum.gapSup_le_shannonOverhead
+
+CausalSpectrum.Completion.causal_atomic_capacity_attained
+CausalSpectrum.Completion.countable_seed_iff_atomQ_one
+CausalSpectrum.Completion.projective_entropy_identity
+CausalSpectrum.Completion.entropy_attained
+CausalSpectrum.Completion.CountableSeed.exists_ranked
+CausalSpectrum.Completion.infiniteCost_bridge
+CausalSpectrum.Completion.infiniteCost_lt_top_iff
+```
+
+---
+
+# Build
+
+Install `elan`, clone the repository, and run
+
+```bash
 lake build
 ```
 
-Lake reads `lean-toolchain` and `lake-manifest.json` and fetches the pinned mathlib revision. The first build downloads the dependencies. Later builds reuse them.
+Lake reads the pinned toolchain and mathlib revision from the repository.
 
+The first build downloads the dependencies; subsequent builds reuse them.
+
+---
+
+# Priority and attribution
+
+This repository makes no claim of publication priority.
+
+Its purpose is to provide a precise mathematical formulation and a reproducible machine-checked proof package.
+
+If any result formalized here already appears in prior work, priority and credit belong to the original authors.

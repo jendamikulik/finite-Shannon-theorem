@@ -49,3 +49,6 @@ import CausalSeed.RenyiLimitLaw
 import CausalSeed.SqrtUniversalityCountable
 import CausalSeed.RenyiLimitMeasure
 import CausalSeed.CausalFloor
+import CausalSeed.DyadicCouple
+import CausalSeed.DyadicTree
+import CausalSeed.DyadicKernel

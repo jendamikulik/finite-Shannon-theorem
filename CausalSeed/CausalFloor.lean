@@ -1,9 +1,8 @@
 /-
 The causal Shannon floor for a stationary kernel (unequal entropies allowed).
 
-Port of the "causal Shannon floor" of DREAM6 `WHO_PAYS_THE_BILL_v5.tex`
-(Theorem "Causal Shannon floor for two actions": `C∞ = max{H(P),H(Q)}`), proved here
-for every finite stationary positive kernel by a different route: the Bellman envelope
+The causal Shannon floor `C∞ = max_a H(K_a)`, proved for every finite stationary
+positive kernel. The Bellman envelope
 recentred at `h_max = max_a H(K_a)` has increments of nonpositive mean, so the
 conditional Hoeffding bound still controls its upper tail, while the constant policy
 at a maximizing action controls the lower tail.  Result, for `n ≥ 1`:

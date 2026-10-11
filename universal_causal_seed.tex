@@ -1,0 +1,280 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=25mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,microtype}
+\usepackage[colorlinks=true,urlcolor=blue,citecolor=blue,linkcolor=blue]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\st}{\preceq_{\mathrm{st}}}
+\newcommand{\HH}{H}
+\title{\vspace{-12mm}One Causal Seed for the Entire\\ R\'enyi Entropy Spectrum}
+\author{Research note for the finite-Shannon-theorem project}
+\date{11 October 2026}
+\begin{document}
+\maketitle
+\vspace{-5mm}
+\begin{abstract}
+Assuming the finite refined-cutoff bound of the project, we construct one
+exact countable causal seed on a locally finite controlled tree whose
+R\'enyi entropy is within an explicit additive constant of the ordinary,
+possibly history-inconsistent optimum, simultaneously at every positive
+order. No finite Shannon entropy assumption is needed. The same seed
+attains the exact min-entropy optimum. The main step is a distributional
+compactness argument: one limiting seed retains the finite stochastic
+sandwich, and therefore all entropy comparisons at once.
+\end{abstract}
+\noindent\textbf{Status.} This is a mathematical derivation from the finite
+results in \cite{repo}, not a new Lean certificate. The infinite simultaneous
+statement below has not been independently reviewed. No claim of historical
+priority or sharpness of its constants is made.
+
+\section{Model and statement}
+Fix a rooted controlled history tree with finite nonempty action and output
+sets at every history and strictly positive transition probabilities.
+Finite horizons therefore have finitely many histories and policies.
+Terminal histories may be padded by deterministic steps.
+
+A \emph{causal seed} is a countable probability law on total response
+strategies: a strategy specifies an output at every history--action pair.
+It is exact if it realizes the prescribed law under every deterministic
+adaptive policy at every finite horizon. An \emph{ordinary source} is a
+countable random variable with a deterministic readout for each such
+policy and horizon; agreement between the readouts at shared histories is
+not required. Assume at least one ordinary exact source exists.
+
+All logarithms and entropies are in bits. Write
+\[
+ O_\alpha=\inf_{U\text{ ordinary exact}}H_\alpha(U),\qquad
+ C_\alpha=\inf_{U\text{ causal exact}}H_\alpha(U),
+\]
+where $H_\alpha(p)=(1-\alpha)^{-1}\log_2\sum_i p_i^\alpha$ for
+$\alpha\ne1$, $H_1$ is Shannon entropy, and
+$H_\infty(p)=-\log_2\sup_i p_i$. Infinite values are allowed.
+
+\begin{theorem}\label{thm:main}
+There exists a single exact countable causal seed $S$ such that, simultaneously
+for every $0<\alpha<\infty$,
+\[
+ \boxed{O_\alpha\le C_\alpha\le H_\alpha(S)\le O_\alpha+d_\alpha,}
+\]
+where
+\[
+ d_\alpha=\frac{\log_2\!\left(\frac12+\frac{2^{-\alpha}}{\alpha}\right)}
+ {1-\alpha}\quad(\alpha\ne1),\qquad
+ d_1=\frac{1+\log_2 e}{2}.
+\]
+Moreover $H_\infty(S)=C_\infty=O_\infty$.
+Here $\infty$ denotes the R\'enyi order, not the time horizon.
+\end{theorem}
+
+\section{The finite input and its infinite limit}
+For the horizon-$n$ transcript law $P_{n,\pi}$, put
+\[
+ F_n(t)=\min_\pi P_{n,\pi}\{-\log_2P_{n,\pi}(X)\le t\},
+ \qquad F(t)=\inf_nF_n(t).
+\]
+Zero-probability transcripts carry no mass in this expression.
+Extending a policy and refining its transcript shows $F_{n+1}\le F_n$.
+Each $F_n$ is a CDF; $F$ is nondecreasing and right-continuous. For the latter,
+use $F(t)=\inf_n\inf_{u>t}F_n(u)=\inf_{u>t}F(u)$.
+
+Let $I_U=-\log_2 p_U(U)$ for any countable source.
+Deterministic readouts merge atoms, so exactness gives
+\begin{equation}\label{eq:lower}
+ F_{I_U}(t)\le F_n(t)\quad\hbox{for all }n,t.
+\end{equation}
+Consequently $F(t)\to1$ as $t\to\infty$ whenever an ordinary countable source
+exists. Thus $F$ is the CDF of a finite nonnegative random variable $Z$.
+Let $Z_n$ have CDF $F_n$; then $Z_n\st Z$ and $Z_n\Rightarrow Z$.
+
+\paragraph{Finite input.}
+The refined greedy cutoff in \cite{repo} gives a finite exact causal seed
+at each horizon, with information $J_n$, for which
+\begin{equation}\label{eq:finite}
+ Z_n\st J_n\st Z_n+W,
+ \qquad
+ W=A(1+E),\quad A\sim{\rm Bernoulli}(1/2),\quad
+ E\sim{\rm Exp}(\ln2).
+\end{equation}
+Here $A,E,Z_n$ are independent. To be explicit about this input, the
+repository's \path{smallWeight_le_envelope} bounds
+$\Pp(J_n\ge t)$ by the envelope average of
+$\psi(2^{Z_n-t})$, where
+\[
+ \psi(2^{-u})=
+ \begin{cases}
+ 1,&u\le0,\\
+ 1/2,&0<u<1,\\
+ 2^{-u},&u\ge1.
+ \end{cases}
+\]
+This is $\Pp(W\ge u)$. Taking thresholds $t+\delta$ with $\delta\downarrow0$
+gives the usual strict-tail inequality in \eqref{eq:finite}, including the
+atom of $W$ at zero. The lower inequality is the deterministic-readout
+bound \eqref{eq:lower}.
+
+\begin{lemma}\label{lem:limit}
+There exists an exact countable causal seed $S$ with information $J$ such that
+\[
+ \boxed{Z\st J\st Z+W,}
+\]
+with $Z$ and $W$ independent on the right-hand side.
+\end{lemma}
+\begin{proof}
+List the finite greedy atom weights in decreasing order, pad by zeros, and
+write them as $p_{n,i}$, $i\ge1$. Extend each finite response strategy
+arbitrarily to the full infinite tree. As $Z_n\st Z$, \eqref{eq:finite} gives
+$J_n\st Z+W$. For $t\ge0$, at most $\lfloor2^t\rfloor$ atoms have weight
+at least $2^{-t}$. Hence
+\begin{equation}\label{eq:tight}
+ \sum_{i>\lfloor2^t\rfloor}p_{n,i}
+ \le \Pp(J_n>t)\le\Pp(Z+W>t).
+\end{equation}
+This is a uniform tail estimate for the \emph{ranked weights}, with no
+entropy assumption.
+
+The full strategy space is a countable product of finite discrete sets.
+Diagonal extraction gives a subsequence $n_j\to\infty$ such that, for every
+$i$, $p_{n_j,i}\to p_i$ and the associated strategies converge coordinatewise
+to $s_i$. Finite partial sums have limits. By \eqref{eq:tight}, their tails
+are uniformly arbitrarily small, so $\sum_i p_i=1$ and
+$\sum_i|p_{n_j,i}-p_i|\to0$.
+
+Give label $i$ weight $p_i$ and response strategy $s_i$, discarding zero
+weights. Fix a finite horizon, policy and transcript. The indicator that
+strategy $s_{n_j,i}$ generates that transcript eventually equals its limit
+for each fixed $i$, because it depends on finitely many coordinates.
+Splitting the weighted sum at a finite rank, and then using the uniform
+tail estimate, proves exactness of the limit. This works for every finite
+policy law.
+
+For completeness, $J_{n_j}\Rightarrow J$ follows directly from the same
+argument. For bounded continuous $f$, write
+\[
+ \E f(J_{n_j})=\sum_i p_{n_j,i}f(-\log_2p_{n_j,i}).
+\]
+A fixed positive limiting weight gives convergence of its term; a zero
+limiting weight gives a term tending to zero in absolute value. Uniformly
+small rank tails control the remaining sum. Thus the expectations converge
+to $\sum_{i:p_i>0}p_i f(-\log_2p_i)$.
+
+Finally $Z_{n_j}\Rightarrow Z$ and $Z_{n_j}+W\Rightarrow Z+W$.
+First-order stochastic order is closed under weak convergence: test against
+bounded continuous increasing functions. Passing to the limit in
+\eqref{eq:finite} proves the lemma.
+\end{proof}
+
+\section{Simultaneous entropy bounds}
+\begin{proof}[Proof of Theorem \ref{thm:main}]
+Take the single seed of Lemma \ref{lem:limit}. For $\alpha\ne1$, define
+\[
+ R_\alpha(Z)=\frac{1}{1-\alpha}\log_2\E 2^{(1-\alpha)Z}.
+\]
+The stochastic sandwich and independence give
+\begin{equation}\label{eq:renyi}
+ R_\alpha(Z)\le H_\alpha(S)\le
+ R_\alpha(Z)+\frac{\log_2\E2^{(1-\alpha)W}}{1-\alpha}.
+\end{equation}
+For $0<\alpha<1$ these follow by monotonicity of the increasing exponential;
+infinite moments are permitted. For $\alpha>1$ the exponential is decreasing,
+and division by $1-\alpha<0$ reverses the inequality once more. Its
+expectation is strictly positive because $Z$ is finite almost surely.
+
+Since $1-\alpha<1$, the exponential moment of $W$ is finite, and
+\[
+ \E2^{(1-\alpha)W}
+ =\frac12+\frac12\,2^{1-\alpha}
+   \int_0^\infty(\ln2)\,2^{-\alpha x}\,dx
+ =\frac12+\frac{2^{-\alpha}}{\alpha}.
+\]
+For $\alpha=1$, use the nonnegative means directly:
+\[
+ \E Z\le H_1(S)\le \E Z+\E W,\qquad
+ \E W=\frac12\left(1+\frac1{\ln2}\right)=d_1.
+\]
+This also agrees with the continuous extension of $d_\alpha$ at $1$.
+
+For any ordinary exact source $U$, \eqref{eq:lower} says $Z\st I_U$.
+Therefore $R_\alpha(Z)\le H_\alpha(U)$, and $\E Z\le H_1(U)$.
+Taking the infimum over such $U$ in \eqref{eq:renyi} yields
+$H_\alpha(S)\le O_\alpha+d_\alpha$. The other inequalities follow from
+inclusion of feasible classes and feasibility of $S$.
+
+For the endpoint, fix any ordinary exact $U$. The preceding bound gives
+$H_\alpha(S)\le H_\alpha(U)+d_\alpha$ for every $\alpha>1$.
+For a countable probability law, $H_\alpha\to H_\infty$ as
+$\alpha\to\infty$, whereas $d_\alpha\to0$. Consequently
+$H_\infty(S)\le H_\infty(U)$ for every $U$. Taking the infimum and using
+$O_\infty\le C_\infty\le H_\infty(S)$ proves equality.
+No interchange of an infimum with a limit is needed.
+\end{proof}
+
+\begin{corollary}[Simultaneous finiteness]
+For the same seed $S$, and for each $0<\alpha\le1$,
+\[
+ H_\alpha(S)<\infty
+ \iff
+ \text{some ordinary exact countable source has finite }H_\alpha.
+\]
+In particular the set of orders with finite R\'enyi entropy is realized
+by one causal source, even when its Shannon entropy is infinite.
+\end{corollary}
+\begin{proof}
+The forward implication uses $S$ itself as an ordinary source. The reverse
+implication follows from the theorem and the finite constant $d_\alpha$.
+\end{proof}
+
+\paragraph{Examples of the bounds.}
+The same $S$ satisfies
+\[
+ H_1(S)\le O_1+1.2213475204\ldots,\qquad
+ H_2(S)\le O_2+\log_2(8/5),\qquad H_\infty(S)=O_\infty.
+\]
+These are simultaneous approximation statements, not exact simultaneous
+minimization at finite orders. The construction does not claim that $S$
+also attains the Shannon optimum.
+
+\section{Dependencies and limits of the claim}
+The finite stochastic input is read from
+\path{CausalSeed/Entropy.lean} (in particular
+\path{smallWeight_le_envelope} and the deterministic-readout lower bound).
+The noise profile and constants are discussed in
+\path{CausalSeed/Note.lean}. Both belong to the repository snapshot
+\href{https://github.com/jendamikulik/finite-Shannon-theorem/tree/10c0865d63644aa9ffe9d6e8adbe6943a9f05697}{\texttt{10c0865}}.
+The compactness and passage of the full stochastic sandwich to infinity are
+proved above; they are not asserted here to have been checked by Lean.
+
+The assumptions retain strictly positive kernels. This note does not
+establish sharpness of $d_\alpha$, compute the universal Shannon causal gap,
+or claim a finite algorithm for constructing the limiting countable seed.
+The finite constants, information-spectrum method, and ordinary coupling
+approximations have antecedents in \cite{compton,spectrum,multiple}.
+A dedicated comparison is required before claiming novelty for the
+simultaneous history-consistent infinite-horizon formulation.
+
+\begin{thebibliography}{9}\small
+\bibitem{repo}
+J. Mikul\'ik, \emph{finite-Shannon-theorem}, source repository,
+snapshot \texttt{10c0865}, 11 October 2026.
+\url{https://github.com/jendamikulik/finite-Shannon-theorem}.
+
+\bibitem{compton}
+\emph{Minimum-Entropy Coupling Approximation Guarantees Beyond the
+Majorization Barrier}, AISTATS 2023.
+\url{https://arxiv.org/abs/2302.11838}.
+
+\bibitem{spectrum}
+\emph{Information Spectrum Converse for Minimum Entropy Couplings and
+Functional Representations}, 2023.
+\url{https://arxiv.org/abs/2305.05745}.
+
+\bibitem{multiple}
+\emph{Efficient Approximate Minimum Entropy Coupling of Multiple Probability
+Distributions}, preprint 2020; IEEE Transactions on Information Theory, 2021.
+\url{https://arxiv.org/abs/2006.07955}.
+\end{thebibliography}
+\end{document}
+

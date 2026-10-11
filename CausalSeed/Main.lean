@@ -46,3 +46,5 @@ import CausalSeed.RenyiInfinite
 import CausalSeed.AtomicSpectrum
 import CausalSeed.SqrtUniversality
 import CausalSeed.RenyiLimitLaw
+import CausalSeed.SqrtUniversalityCountable
+import CausalSeed.RenyiLimitMeasure

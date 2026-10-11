@@ -11,20 +11,15 @@ A single random seed chooses a **total response strategy**. Every deterministic 
 The central finite theorem is
 
 $$
-\boxed{
 Z \preceq_{\mathrm{st}} J \preceq_{\mathrm{st}} Z+E,
 \qquad
-E\sim \mathrm{Exp}(\ln 2)
-}
+E\sim \mathrm{Exp}(\ln 2).
 $$
 
-and, in entropy form,
+In entropy form,
 
 $$
-\boxed{
-L(T)\le H(S)\le
-L(T)+\frac{1+\log_2 e}{2}.
-}
+L(T)\le H(S)\le L(T)+\frac{1+\log_{2}e}{2}.
 $$
 
 The seed is exact for **every deterministic adaptive policy on the tree**, and the additive constant is independent of the depth of the tree.
@@ -49,39 +44,36 @@ A deterministic response strategy is stronger: it specifies an output for **ever
 
 A causal seed is a probability distribution over such total strategies.
 
-The key point is therefore not merely to couple the transcript laws of several policies. One shared source of randomness must admit a single compatible strategy interpretation across all shared histories.
+The essential requirement is therefore not merely to couple the transcript laws of several policies. One shared source of randomness must admit a single compatible strategy interpretation across all shared histories.
 
 ### Exact realization
 
-`CausalSpectrum.causal_realization` proves that greedy extraction of the probability flow produces one finite seed $S$ such that, simultaneously for every deterministic policy $\pi$,
+`CausalSpectrum.causal_realization` proves that greedy extraction of the probability flow produces one finite seed $S$ that is simultaneously exact for every deterministic policy $\pi$.
+
+For every transcript $\ell$ compatible with $\pi$,
 
 $$
-\Pr_S\!\left[\mathrm{run}(S,\pi)=\ell\right]
-=
-\begin{cases}
-p_T(\ell), & \ell \text{ is compatible with } \pi,\\
-0, & \text{otherwise}.
-\end{cases}
+P_{S}\!\left(\mathrm{run}(S,\pi)=\ell\right)=p_{T}(\ell).
 $$
+
+For an incompatible transcript the probability is zero.
 
 The seed is chosen once. It is not selected separately for each policy.
 
 Let
 
-- $J=-\log_2 W$ be the information of a seed atom of weight $W$;
+- $J=-\log_{2}W$ be the information of a seed atom of weight $W$;
 - $Z$ be the information distribution induced by the lower envelope of the deterministic-policy transcript laws.
 
 Then
 
 $$
-\boxed{
 Z\preceq_{\mathrm{st}}J\preceq_{\mathrm{st}}Z+E,
 \qquad
-E\sim\mathrm{Exp}(\ln2).
-}
+E\sim\mathrm{Exp}(\ln 2).
 $$
 
-In the Lean formalization the two stochastic comparisons are
+In Lean the two stochastic comparisons are
 
 ```text
 seedCDF t  ≤ Fstar T t
@@ -113,24 +105,21 @@ CausalSpectrum.one_seed_shannon
 proves
 
 $$
-\boxed{
-L(T)\le H(S)\le L(T)+c_*,
-\qquad
-c_*=\frac{1+\log_2 e}{2}.
-}
+L(T)\le H(S)\le L(T)+c_{\ast},
 $$
 
-Numerically,
+where
 
 $$
-c_*\approx 1.2213475204\ \text{bits}.
+c_{\ast}=\frac{1+\log_{2}e}{2}
+\approx 1.2213475204\ \mathrm{bits}.
 $$
 
 The lower bound is the layer-cake integral of the envelope.
 
 The upper bound comes from the refined greedy cutoff estimate.
 
-The stochastic exponential comparison by itself integrates to the weaker additive constant $\log_2 e$. The constant $c_*$ comes from the sharper residual-mass estimate.
+The stochastic exponential comparison alone integrates to the weaker additive constant $\log_{2}e$. The smaller constant $c_{\ast}$ comes from the refined residual-mass estimate.
 
 The bound is uniform in the finite horizon.
 
@@ -141,13 +130,11 @@ The bound is uniform in the finite horizon.
 The same seed satisfies
 
 $$
-\boxed{
-\Pr(J>t+s)
+P(J>t+s)
 \le
-\Pr(Z>t)+2^{-s},
+P(Z>t)+2^{-s},
 \qquad
-s\ge0.
-}
+s\ge 0.
 $$
 
 This is the declaration
@@ -172,29 +159,25 @@ Let
 
 - $M(T)$ denote the ordinary coupling optimum;
 - $C(T)$ denote the causal optimum;
-- $G_*$ denote the universal causal gap.
+- $G_{\ast}$ denote the universal causal gap.
 
 The formal development proves
 
 $$
-\boxed{
-G_*\le c_*.
-}
+G_{\ast}\le c_{\ast}.
 $$
 
 It also proves an exact penalty representation.
 
-For every coefficient $\kappa\ge G_*$,
+For every coefficient $\kappa\ge G_{\ast}$,
 
 $$
-\boxed{
 C(T)
 =
 \inf_{\Gamma}
-\left[
+\left(
 H(\Gamma)+\kappa\,\Gamma(B)
-\right],
-}
+\right),
 $$
 
 where $B$ is the incompatible part of the ordinary coupling.
@@ -224,7 +207,9 @@ The infinite tree is locally finite, and exactness is imposed on every finite cy
 
 Finite greedy seeds have ordered atom weights.
 
-Passing to a diagonal subsequence produces limiting strategy atoms. Let
+Passing to a diagonal subsequence produces limiting strategy atoms.
+
+Let
 
 $$
 q=\mathrm{atomQ}.
@@ -234,7 +219,9 @@ The formal development constructs:
 
 1. an atomic measure `atomMeasure` of total mass $q$;
 2. a residual probability process from the remaining cylinder flow;
-3. an exact probability measure
+3. an exact probability measure obtained by combining the atomic and residual parts.
+
+The decomposition is
 
 $$
 \mu_{\mathrm{full}}
@@ -247,11 +234,9 @@ $$
 For every finite history $h$,
 
 $$
-\boxed{
 \mu_{\mathrm{full}}([h])
 =
 \mathrm{pathMass}(h).
-}
 $$
 
 At the level of cylinder masses,
@@ -284,7 +269,7 @@ An ordinary exact source is allowed a separate measurable readout for every fini
 
 No causal compatibility between those readouts is assumed.
 
-Nevertheless, every such source satisfies
+Nevertheless every such source satisfies
 
 $$
 \mathrm{atomicMass}(\mu)\le q.
@@ -293,9 +278,7 @@ $$
 The constructed causal measure attains equality:
 
 $$
-\boxed{
 \mathrm{atomicMass}(\mu_{\mathrm{full}})=q.
-}
 $$
 
 This is formalized by
@@ -309,13 +292,7 @@ Therefore the optimal ordinary atomic mass and the attained causal atomic mass c
 
 There is also an exact dichotomy:
 
-$$
-\boxed{
-\text{a countably supported exact seed exists}
-\iff
-q=1.
-}
-$$
+> A countably supported exact seed exists if and only if $q=1$.
 
 This is
 
@@ -329,6 +306,8 @@ and when $q=1$, the explicitly constructed atomic measure is already exact:
 CausalSpectrum.Completion.discrete_seed_of_atomQ_one
 ```
 
+Thus $1-q$ measures the part that cannot be represented by any countably supported exact seed.
+
 ---
 
 ## 7. Projective entropy identity
@@ -340,47 +319,22 @@ A countable seed consists of
 
 A ranked seed has the same data with weights arranged in nonincreasing order.
 
-Entropy is the extended sum
+Its entropy is the extended sum
 
 $$
-H(S)
-=
-\sum_i -w_i\log w_i
-\in[0,\infty],
+H(S)=\sum_{i}-w_{i}\log w_{i},
 $$
 
-measured in nats.
+with values in $[0,\infty]$, measured in nats.
 
-Define
+Define $C_{n}$ as the infimum of entropy over countable seeds exact through horizon $n$.
 
-$$
-C_n
-=
-\inf
-\left\{
-H(S):
-S \text{ is exact through horizon } n
-\right\}
-$$
-
-and
-
-$$
-C_\infty
-=
-\inf
-\left\{
-H(S):
-S \text{ is exact at every finite horizon}
-\right\}.
-$$
+Define $C_{\infty}$ as the infimum of entropy over countable seeds exact at every finite horizon.
 
 Then
 
 $$
-\boxed{
-C_\infty=\sup_n C_n.
-}
+C_{\infty}=\sup_{n}C_{n}.
 $$
 
 This is
@@ -394,10 +348,10 @@ The nontrivial direction is the infinite-horizon compactness step: bounded entro
 If
 
 $$
-\sup_n C_n<\infty,
+\sup_{n}C_{n}<\infty,
 $$
 
-then an exact ranked seed exists and attains $C_\infty$.
+then an exact ranked seed exists and attains $C_{\infty}$.
 
 This is
 
@@ -448,33 +402,31 @@ show that the ranked optimization problems equal the corresponding optimization 
 Let
 
 $$
-L_\infty
+L_{\infty}
 =
-\sup_n L(T_n),
+\sup_{n}L(T_{n}),
 $$
 
-where $T_n$ is the horizon-$n$ truncation and $L(T_n)$ is the finite envelope entropy in bits.
+where $T_{n}$ is the horizon-$n$ truncation and $L(T_{n})$ is the finite envelope entropy in bits.
 
 Every countable seed exact through horizon $n$ induces an ordinary coupling of the joint horizon-$n$ transcript family. This gives the lower bound.
 
 The finite greedy seed gives the upper bound.
 
-Using
+Using the unit conversion
 
 $$
-1\ \text{bit}=\ln 2\ \text{nats},
+1\ \mathrm{bit}=\ln 2\ \mathrm{nats},
 $$
 
 the formalized comparison is
 
 $$
-\boxed{
-(\ln2)L_\infty
+(\ln 2)L_{\infty}
 \le
-C_\infty
+C_{\infty}
 \le
-(\ln2)(L_\infty+c_*).
-}
+(\ln 2)(L_{\infty}+c_{\ast}).
 $$
 
 This is
@@ -486,11 +438,9 @@ CausalSpectrum.Completion.infiniteCost_bridge
 and therefore
 
 $$
-\boxed{
-C_\infty<\infty
-\iff
-L_\infty<\infty.
-}
+C_{\infty}<\infty
+\quad\Longleftrightarrow\quad
+L_{\infty}<\infty.
 $$
 
 This is
@@ -525,22 +475,14 @@ CausalSpectrum.exact_rigidity
 CausalSpectrum.sharp_threshold
 ```
 
-In particular,
+In particular:
+
+> Every exact decoder family is realizable if and only if all subset sums are distinct.
+
+For an $\varepsilon$-accurate family the sharp universal threshold is
 
 $$
-\boxed{
-\text{every exact family is realizable}
-\iff
-\text{all subset sums are distinct}.
-}
-$$
-
-For $\varepsilon$-accurate families the sharp universal threshold is
-
-$$
-\boxed{
 2\varepsilon<\gamma.
-}
 $$
 
 The converse obstruction is attained on a controlled tree of depth at most two.
@@ -578,14 +520,12 @@ The repair preserves the seed weights and each individual policy law.
 If every policy places probability at least $a$ on some $K$ transcripts, then the first $M$ greedy weights satisfy
 
 $$
-\boxed{
-\sum_{i<M} w_i
+\sum_{i<M}w_{i}
 \ge
 a
 \left(
-1-\left(1-\frac1K\right)^M
+1-\left(1-\frac{1}{K}\right)^{M}
 \right).
-}
 $$
 
 This is
@@ -635,7 +575,7 @@ For example,
 #print axioms CausalSpectrum.causal_realization
 ```
 
-reports only the standard Lean axioms
+reports only
 
 ```text
 propext
@@ -742,10 +682,10 @@ Randomized policies are not a primitive object of the formal finite theorem.
 
 The repository does **not** claim:
 
-- an exact identification of the numerical value of $G_*$;
+- an exact identification of the numerical value of $G_{\ast}$;
 - the square-root asymptotic suggested by the diffusion profile;
 - the identity `atomQ = lim F∞`;
-- that every minimizer strictly above $G_*$ must be compatible;
+- that every minimizer strictly above $G_{\ast}$ must be compatible;
 - a theorem for zero-probability branches without first removing or reformulating those branches.
 
 Only statements represented by Lean declarations in the checked import closure should be treated as machine-checked results.

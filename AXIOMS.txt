@@ -160,3 +160,47 @@ not depend on the ratio at a history of residual zero. These are identities
 of real cylinder functions. No measure on the strategy space is constructed.
 It is not the equality of ordinary and causal atomic capacities.
 `C_∞ = sup_n C_n` is not a theorem.
+
+The three sentences above describe the build of 10 October 2026.
+The build of 11 October 2026 supersedes them.
+
+#print axioms, from the lake build of 11 October 2026
+Lean 4.35.0-rc3, mathlib 7d6757bc18680044fc0ff6efc8ee20494b408556
+
+CausalSpectrum.Completion.atomMeasure_univ
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.atomMeasure_cylinder
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.fullMeasure_cylinder
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.exact_infinite_representation
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.ordinary_atomic_upper
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.causal_atomic_capacity_attained
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.discrete_seed_of_atomQ_one
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.countable_seed_iff_atomQ_one
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.entropy_compactness
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.entropy_attained
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.projective_entropy_identity
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.RankedSeed.measure_cylinder
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.bounded_entropy_implies_atomQ_one
+  depends on axioms: [propext, choice, Quot.sound]
+
+`atomMeasure` has total mass `atomQ` and cylinder mass `cylMass h`.
+`residualMeasure` is the infinite product of the residual kernels, and
+`fullMeasure` is a probability whose cylinder of `h` has mass `pathMass h`.
+Every ordinary source has atomic mass at most `atomQ`, and `fullMeasure`
+attains that value. A countable exact seed exists if and only if `atomQ = 1`.
+`projective_entropy_identity` is `infiniteCost = sup_n finiteCost` for
+antitone countable seeds, with entropy in nats. The infima may be infinite.
+It is not the comparison with `L_∞`, and it does not identify `G_*`.
+The limit `atomQ = lim F_∞` is not a theorem.
+No `sorry` or `admit` is used.

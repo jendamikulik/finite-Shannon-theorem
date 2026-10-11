@@ -12,6 +12,9 @@ import CausalSeed.Relabel
 import CausalSeed.Witness
 import CausalSeed.Atomic
 import CausalSeed.Capacity
+import CausalSeed.MeasureCompletion
+import CausalSeed.AtomicCapacity
+import CausalSeed.EntropyLimit
 
 
 

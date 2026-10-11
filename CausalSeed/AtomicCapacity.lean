@@ -1,5 +1,6 @@
 /-
-UNCOMPILED SOURCE. Target commit 0244f50 / mathlib 7d6757bc.
+Compiled in the lake build of 11 October 2026.
+Lean 4.35.0-rc3, mathlib 7d6757bc18680044fc0ff6efc8ee20494b408556.
 Ordinary-source converse and attainment by the constructed causal measure.
 Atomic mass is the sum of singleton masses, including on uncountable spaces.
 -/

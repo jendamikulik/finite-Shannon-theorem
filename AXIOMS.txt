@@ -1,8 +1,8 @@
 Axiom audit of every theorem in the project modules (CausalSeed.*), 11 October 2026
 Lean 4.35.0-rc3, mathlib 7d6757bc18680044fc0ff6efc8ee20494b408556
-`lake build`: Build completed successfully (3834 jobs). No `sorry`, `admit` or custom axioms.
+`lake build`: Build completed successfully (3840 jobs). No `sorry`, `admit` or custom axioms.
 
-Summary: 1496 theorems in 57 modules: all depend only on propext, Classical.choice,
+Summary: 1560 theorems in 62 modules: all depend only on propext, Classical.choice,
 Quot.sound (3 on none). No theorem uses sorryAx or any other axiom, and no `axiom`
 is declared in the CausalSeed modules.
 
@@ -19,6 +19,7 @@ Reproduce (from the repository root, after `lake build`):
 It prints `<module> <theorem> : [axioms]` for each theorem and a final TOTAL line.
 
 === Full audit ===
+
 
 -- CausalSeed.AlphabetSeed (7 theorems)
 CausalSpectrum.Completion.AlphabetSeed.exists_ranked
@@ -1120,6 +1121,22 @@ CausalSpectrum.wSurvival_eq_psi
 CausalSpectrum.wasserstein_gap
   depends on axioms: [propext, choice, Quot.sound]
 
+-- CausalSeed.GapW1 (7 theorems)
+CausalSpectrum.Fstar_atBot
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Fstar_atTop
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.cdf_envLaw
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.cdf_seedLaw
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.isProb_seedLaw
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.seedLaw_apply
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.wasserstein_gap_W1
+  depends on axioms: [propext, choice, Quot.sound]
+
 -- CausalSeed.Identity (8 theorems)
 CausalSpectrum.causalMin_le_penalised
   depends on axioms: [propext, choice, Quot.sound]
@@ -1192,6 +1209,14 @@ CausalSpectrum.Completion.residualMeasure_valid
 CausalSpectrum.Completion.valid_of_agree
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.Completion.valid_of_path_pos
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.MomentClass (3 theorems)
+CausalSpectrum.Kernel.excess_little_o
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.excess_theta_sqrt
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.sB_le_sA
   depends on axioms: [propext, choice, Quot.sound]
 
 -- CausalSeed.Note (25 theorems)
@@ -2730,6 +2755,30 @@ CausalSpectrum.Completion.CountableSeed.term_summable
 CausalSpectrum.Kernel.universality_countable
   depends on axioms: [propext, choice, Quot.sound]
 
+-- CausalSeed.SqrtW1 (11 theorems)
+CausalSpectrum.Completion.CountableSeed.cdf_normLaw
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.CountableSeed.normLaw_apply
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.CountableSeed.tsum_ofReal_weight
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.universality_W1
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.Flim_atBot
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.Flim_atTop
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.Flim_continuous
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.Flim_mono
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.cdf_limitLaw
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.continuous_F0
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.gM_tendsto
+  depends on axioms: [propext, choice, Quot.sound]
+
 -- CausalSeed.StrictPenalty (7 theorems)
 CausalSpectrum.badMass_zero_iff_causal
   depends on axioms: [propext, choice, Quot.sound]
@@ -2816,6 +2865,48 @@ CausalSpectrum.run_stratOut
 CausalSpectrum.yOf_mem
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.yOf_pos
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.Wasserstein (20 theorems)
+CausalSpectrum.OT.IsCoupling.fst
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.OT.IsCoupling.snd
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.OT.W1_eq_cdfDist
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.OT.cdfDist_le_W1
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.OT.cdfDist_le_cost
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.OT.cost_qCoupling
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.OT.lintegral_abs_eq
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.OT.map_quantile
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.OT.measurableSet_D2
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.OT.measurable_qpair
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.OT.measurable_quantile
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.OT.mem_D
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.OT.qCoupling_isCoupling
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.OT.qCoupling_optimal
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.OT.quantile_le_iff
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.OT.quantile_set_bdd
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.OT.quantile_set_nonempty
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.OT.volume_D
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.OT.volume_unit_Iic
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.OT.volume_unit_sep
   depends on axioms: [propext, choice, Quot.sound]
 
 -- CausalSeed.Witness (100 theorems)
@@ -3092,6 +3183,54 @@ CausalSpectrum.Zero.one_sub_Sp
 CausalSpectrum.Zero.pmf_transport
   depends on axioms: [propext, choice, Quot.sound]
 
+-- CausalSeed.ZeroKernel (23 theorems)
+CausalSpectrum.Zero.NNKernel.F_ztree
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.K_emb_pos
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.Knn
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.Ksum
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.L_ztree
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.Phi_extend
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.Phi_restrict
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.Sp_eq_Phi
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.causal_floor
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.costBits_sandwich
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.cost_floor_bounds
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.cost_rate
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.cost_tendsto
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.hA
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.hY
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.hmax_eq
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.red_actEntropy
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.sum_emb
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.supp_nonempty
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.NNKernel.valid
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.Phi_node
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.Phi_zero
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.zcost_sandwich
+  depends on axioms: [propext, choice, Quot.sound]
+
 -- CausalSeed.ZeroTree (16 theorems)
 CausalSpectrum.Zero.Lenv_shape_eq
   depends on axioms: [propext, choice, Quot.sound]
@@ -3237,3 +3376,13 @@ plus mass 1 - atomQ at ⊤; `lawZ_tail` gives P(Z > t) = 1 - F_∞(t).
 2^{(1-α)z} and z against lawZ with the tail-formula values; `RZmeas_eq` gives
 R_α(Z) (from lawZ) = sup_n R_α(Z_n) for all α > 0. Mathlib (this version) has no
 Wasserstein/optimal-transport definition, so W1 stays in its CDF form.
+
+--- 11 October 2026, optimal-transport W1, kernels with zero entries ---
+
+Notes. `OT.W1` is the infimum over couplings of E|X - Y| (values in [0,∞]);
+`OT.W1_eq_cdfDist` identifies it with ∫|F_μ - F_ν| for probability measures on ℝ, and
+`OT.qCoupling_optimal` shows the quantile coupling attains it. This supersedes the
+earlier note that W1 is formalized only in CDF form: `Kernel.universality_W1` and
+`wasserstein_gap_W1` are stated with `OT.W1`. `Zero.NNKernel` covers stationary kernels
+with zero entries through the envelope identity `L_ztree`; subadditivity of their cost
+and the Θ(log n)/O(1) branches of the moment classification are not theorems here.

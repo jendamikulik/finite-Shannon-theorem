@@ -271,8 +271,21 @@ $`H(S_n)-C_n=o(\sqrt n)`$. Let $`J_n`$ be the information of $`S_n`$. Then
 \int_{\mathbb R}\Bigl|\Pr\!\Bigl[\tfrac{J_n-nh}{\sqrt n}\le x\Bigr]-F_{a,b}(x)\Bigr|\,dx\;\longrightarrow\;0 .
 ```
 
-The left side is the $`W_1`$ distance in its CDF form. For finite seeds the same
-statement is `Kernel.universality`. The analytic core is
+The same convergence holds for the optimal-transport distance. Define, for
+probability measures on $`\mathbb R`$,
+
+```math
+W_1(\mu,\nu)=\inf_{\gamma\in\Pi(\mu,\nu)}\int|x-y|\,d\gamma(x,y)\in[0,\infty],
+```
+
+the infimum over all couplings. Then $`W_1(\mu,\nu)=\int_{\mathbb R}|F_\mu-F_\nu|`$, and
+the quantile coupling $`(F_\mu^{-1}(U),F_\nu^{-1}(U))`$, $`U`$ uniform on $`(0,1)`$,
+attains the infimum; no moment assumption is needed in this extended-valued form.
+Consequently $`W_1\bigl(\mathcal L(\tfrac{J_n-nh}{\sqrt n}),\mu_{a,b}\bigr)\to0`$, where
+$`\mu_{a,b}`$ is the probability measure with CDF $`F_{a,b}`$. For a finite tree and an
+exact finite seed with positive atoms, $`W_1(\mathcal L(J),\mu_{F^\ast})=H(S)-L`$, where
+$`\mu_{F^\ast}`$ is the law with CDF $`F^\ast`$. For finite seeds the CDF statement is
+`Kernel.universality`. The analytic core is
 `Sqrt.IncFamily.L1_tendsto`:
 $`\int|G_n(x\sqrt n)-F_{a,b}(x)|\,dx\to0`$ for the Bellman envelope $`G_n`$.
 
@@ -280,6 +293,10 @@ Lean:
 - [`Kernel.universality_countable`](CausalSeed/SqrtUniversalityCountable.lean#L182)
 - [`Kernel.universality`](CausalSeed/SqrtUniversality.lean#L240)
 - [`Sqrt.IncFamily.L1_tendsto`](CausalSeed/SqrtUniversality.lean#L102)
+- [`Kernel.universality_W1`](CausalSeed/SqrtW1.lean#L137)
+- [`OT.W1_eq_cdfDist`](CausalSeed/Wasserstein.lean#L263)
+- [`OT.qCoupling_optimal`](CausalSeed/Wasserstein.lean#L268)
+- [`wasserstein_gap_W1`](CausalSeed/GapW1.lean#L85)
 
 **Theorem 11 (causal Shannon floor).** The entropies need not be equal. Let
 $`h_{\max}=\max_aH(K_a)`$, $`M=\max_{a,y}|{-\log_2K_a(y)}-h_{\max}|`$ and
@@ -326,9 +343,41 @@ Lean:
 - [`Kernel.hmax_eq_inf`](CausalSeed/Subadditive.lean#L217)
 - [`Kernel.hmax_mul_le_costBits`](CausalSeed/Subadditive.lean#L222)
 
+**Theorem 14 (kernels with zero entries).** Let $`K_a`$ be nonnegative laws, and let
+$`K^{\mathrm{red}}`$ be obtained by deleting the zero entries of every $`K_a`$. Let
+$`C_n(K)`$ be the least Shannon entropy (bits) of a law on response strategies of the
+$`n`$-round tree that keeps every branch, including those of probability zero, and is
+exact for every deterministic adaptive policy. Then the envelope of this tree equals
+$`L_n(K^{\mathrm{red}})`$, so
+
+```math
+L_n(K^{\mathrm{red}})\;\le\;C_n(K)\;\le\;L_n(K^{\mathrm{red}})+c_\star .
+```
+
+Hence Theorem 11 holds for $`K`$ with $`h_{\max}=\max_a H(K_a)`$ (with $`0\log0=0`$),
+and Theorem 9, including the $`O(n^{1/4}\log n)`$ rate when $`b>0`$, holds for $`K`$ with
+$`h,a,b`$ computed from $`K^{\mathrm{red}}`$, that is, over the support of each $`K_a`$.
+
+Lean:
+- [`Zero.NNKernel.L_ztree`](CausalSeed/ZeroKernel.lean#L184)
+- [`Zero.NNKernel.costBits_sandwich`](CausalSeed/ZeroKernel.lean#L222)
+- [`Zero.NNKernel.cost_floor_bounds`](CausalSeed/ZeroKernel.lean#L238)
+- [`Zero.NNKernel.causal_floor`](CausalSeed/ZeroKernel.lean#L246)
+- [`Zero.NNKernel.cost_tendsto`](CausalSeed/ZeroKernel.lean#L251)
+- [`Zero.NNKernel.cost_rate`](CausalSeed/ZeroKernel.lean#L270)
+
+**Theorem 15 (the square-root branch of the moment classification).** In the
+setting of Theorem 9, if $`a>b`$ there are $`0<c_1\le c_2`$ with
+$`c_1\sqrt n\le C_n-nh\le c_2\sqrt n`$ for all large $`n`$; if $`a=b`$, then
+$`C_n-nh=o(\sqrt n)`$.
+
+Lean:
+- [`Kernel.excess_theta_sqrt`](CausalSeed/MomentClass.lean#L20)
+- [`Kernel.excess_little_o`](CausalSeed/MomentClass.lean#L36)
+
 ### V. Structure of the causal constraint
 
-**Theorem 14 (exact penalty).** Let $`G_{\ast}=\sup_T\bigl(C(T)-O(T)\bigr)`$, where $`O(T)`$
+**Theorem 16 (exact penalty).** Let $`G_{\ast}=\sup_T\bigl(C(T)-O(T)\bigr)`$, where $`O(T)`$
 is the least entropy of an exact coupling that need not be causal. Then
 $`\tfrac29\le G_{\ast}\le c_{\star}`$. For every $`\kappa\ge G_{\ast}`$,
 
@@ -347,7 +396,7 @@ Lean:
 - [`global_minimizer_above_gap_is_causal`](CausalSeed/StrictPenalty.lean#L74)
 - [`near_minimizer_badMass_le`](CausalSeed/StrictPenalty.lean#L18)
 
-**Theorem 15 (arithmetic rigidity).** Let $`w`$ be a positive weight vector with total
+**Theorem 17 (arithmetic rigidity).** Let $`w`$ be a positive weight vector with total
 mass one. Every exact policy-indexed decoder family on every finite tree is causally
 realizable if and only if all subset sums of $`w`$ are distinct. With marginal error
 $`\varepsilon\ge0`$, every $`\varepsilon`$-accurate family is realizable if and only if
@@ -380,7 +429,7 @@ defining module is `CausalSeed.*` and computes its axioms with `collectAxioms`.
 Auto-generated declarations (equation lemmas, `sizeOf_spec`, injectivity lemmas,
 instances) are excluded.
 
-[`AXIOMS.txt`](AXIOMS.txt) records the result. All **1496** theorems in the 57 project
+[`AXIOMS.txt`](AXIOMS.txt) records the result. All **1560** theorems in the 62 project
 modules depend only on `propext`, `Classical.choice` and `Quot.sound`; three depend on
 no axiom. No theorem uses `sorryAx`, the build reports no `sorry` or `admit`, and the
 project declares no `axiom`.
@@ -412,6 +461,9 @@ the theorems above. Line numbers refer to the current revision.
 | `RenyiInf.RZ`, `lawZ`, `RZmeas` | [RenyiInfinite.lean#L24](CausalSeed/RenyiInfinite.lean#L24), [RenyiLimitMeasure.lean#L117](CausalSeed/RenyiLimitMeasure.lean#L117), [#L324](CausalSeed/RenyiLimitMeasure.lean#L324) | `sup_n R_α(Z_n)`; the law of `Z` on `[0,∞] ⊂ EReal`; `R_α` of that law |
 | `shannonOverhead`, `Renyi.dAlpha`, `RenyiInf.dA` | [Entropy.lean#L646](CausalSeed/Entropy.lean#L646), [RenyiFinite.lean#L180](CausalSeed/RenyiFinite.lean#L180), [RenyiCountable.lean#L36](CausalSeed/RenyiCountable.lean#L36) | `c⋆ = (1 + 1/ln 2)/2`; `d_α`; `d_α` with `d_1 = c⋆` |
 | `Zero.ZTree` | [ZeroTree.lean#L255](CausalSeed/ZeroTree.lean#L255) | finite tree with nonnegative normalized kernels, all branches kept |
+| `Zero.NNKernel`, `.red`, `.ztree`, `Zero.zcost`, `NNKernel.costBits` | [ZeroKernel.lean#L53](CausalSeed/ZeroKernel.lean#L53), [#L94](CausalSeed/ZeroKernel.lean#L94), [#L117](CausalSeed/ZeroKernel.lean#L117), [#L197](CausalSeed/ZeroKernel.lean#L197), [#L220](CausalSeed/ZeroKernel.lean#L220) | stationary kernel with nonnegative entries; its reduction to the support; the `n`-round tree with all branches; least exact Shannon entropy (bits) of a `ZTree`; `C_n` of the kernel |
+| `OT.IsCoupling`, `OT.W1`, `OT.cdfDist` | [Wasserstein.lean#L21](CausalSeed/Wasserstein.lean#L21), [#L29](CausalSeed/Wasserstein.lean#L29), [#L32](CausalSeed/Wasserstein.lean#L32) | coupling of two laws on `ℝ`; `inf` over couplings of `E|X-Y|` in `[0,∞]`; `∫ |F_μ - F_ν|` |
+| `Sqrt.IncFamily.limitLaw`, `CountableSeed.normLaw`, `seedLaw`, `envLaw` | [SqrtW1.lean#L70](CausalSeed/SqrtW1.lean#L70), [#L87](CausalSeed/SqrtW1.lean#L87), [GapW1.lean#L20](CausalSeed/GapW1.lean#L20), [#L75](CausalSeed/GapW1.lean#L75) | the law with CDF `F_{a,b}`; the law of `(J - c)/s`; the law of `J` for a finite seed; the law with CDF `F*` |
 | `Sqrt.IncFamily.sA`, `sB`, `Flim` | [SqrtDefect.lean#L427](CausalSeed/SqrtDefect.lean#L427), [#L429](CausalSeed/SqrtDefect.lean#L429), [SqrtUniversality.lean#L26](CausalSeed/SqrtUniversality.lean#L26) | `a = max σ_a`, `b = min σ_a`; the limit profile `F_{a,b}` (half-normal if `b = 0`) |
 | `Kernel.EqualEntropy`, `actEntropy`, `hmax`, `floorConst` | [SqrtBridge.lean#L19](CausalSeed/SqrtBridge.lean#L19), [CausalFloor.lean#L145](CausalSeed/CausalFloor.lean#L145), [#L150](CausalSeed/CausalFloor.lean#L150), [#L181](CausalSeed/CausalFloor.lean#L181) | common entropy `h`; `H(K_a)`; `h_max`; the Gaussian integral `K` |
 | `Dyadic.wt`, `massL`, `cdfL` | [DyadicCouple.lean#L18](CausalSeed/DyadicCouple.lean#L18), [#L28](CausalSeed/DyadicCouple.lean#L28), [#L31](CausalSeed/DyadicCouple.lean#L31) | `2^{-k}`; a dyadic law as a list of (level, payload); its expectation functional and information CDF |
@@ -445,6 +497,7 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 
 **Zero-probability branches**
 - `ZeroGame`, `ZeroTree`, `ZeroClosure`: an abstract finite game, trees with nonnegative kernels, the closure theorem.
+- `ZeroKernel`: stationary kernels with zero entries and their reduction.
 
 **Rényi spectrum**
 - `RenyiFinite`: the finite-horizon Rényi sandwich.
@@ -459,7 +512,9 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 - `SqrtProfile`, `SqrtDefect`, `SqrtCompare`: the profile $`F_{a,b}`$, the one-step defect, the CDF comparison.
 - `SqrtTails`, `SqrtMean`, `SqrtRate`, `SqrtBridge`, `SqrtMain`, `SqrtPerturb`, `SqrtGeneral`: Hoeffding tails, the mean identity, the rate, the $`b=0`$ perturbation, the main theorem.
 - `SqrtNumerics`: integer inequalities.
-- `SqrtUniversality`, `SqrtUniversalityCountable`: $`W_1`$ universality.
+- `SqrtUniversality`, `SqrtUniversalityCountable`: $`W_1`$ universality in CDF form.
+- `Wasserstein`, `SqrtW1`, `GapW1`: $`W_1`$ by optimal transport, the quantile coupling, universality and the gap identity for it.
+- `MomentClass`: the $`\Theta(\sqrt n)`$ branch of the moment classification.
 - `CausalFloor`: the causal Shannon floor.
 - `Subadditive`: concatenation of seeds, $`C_{m+n}\le C_m+C_n`$, and the Fekete limit.
 - `DyadicCouple`, `DyadicTree`, `DyadicKernel`: dyadic exactness.
@@ -477,12 +532,8 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 **Scope.**
 - All local alphabets are finite and nonempty.
 - Policies are deterministic and adaptive.
-- Theorem 3 allows zero kernel entries. All other results assume strictly positive
-  kernels; zero entries of a stationary kernel could be dropped without changing any
-  law, but that reduction is not formalized.
-- $`W_1`$ is used in its CDF form $`\int_{\mathbb R}|F_\mu-F_\nu|`$. This Mathlib version
-  has no optimal-transport definition of $`W_1`$, and the identification through the
-  quantile coupling is not formalized.
+- Theorems 3 and 14 allow zero kernel entries; all other results assume strictly
+  positive kernels.
 
 **Open mathematical problems.**
 - The exact value of $`G_{\ast}\in[\tfrac29,c_{\star}]`$, and whether all minimizers are causal
@@ -497,11 +548,14 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 - Infinite-horizon versions of Theorems 5–8 for kernels with zero entries.
 
 **Not yet formalized.**
-- A classification of $`C_n-nh`$, for equal entropies, as $`\Theta(\sqrt n)`$,
-  $`\Theta(\log n)`$ or $`O(1)`$ according to moment matching between the actions.
-- The reduction that removes zero entries from a stationary kernel, so that
-  Theorems 9–13 hold for nonnegative kernels. Lean's stationary model requires
-  positive entries, and no cost is defined there for kernels with zero entries.
+- The $`\Theta(\log n)`$ and $`O(1)`$ branches of the moment classification of
+  $`C_n-nh`$ at equal entropy: the expected statement is $`C_n-nh=\Theta(\log n)`$ when
+  $`a=b`$ but the third moments of the informations differ, and $`C_n-nh=O(1)`$ when the
+  second and third moments all match. Theorem 15 gives only $`o(\sqrt n)`$ when $`a=b`$; the finer orders
+  need an Edgeworth-type expansion of the Bellman envelope beyond the Gaussian profile.
+- Subadditivity (Theorem 12) for kernels with zero entries. Theorem 14 controls
+  $`C_n(K)`$ through the envelope; the identity $`C_n(K)=C_n(K^{\mathrm{red}})`$, which
+  needs a strategy-level correspondence between the two trees, is not formalized.
 
 ## Attribution
 

@@ -43,3 +43,4 @@ import CausalSeed.RenyiCountable
 import CausalSeed.RenyiSource
 import CausalSeed.RenyiLimit
 import CausalSeed.RenyiInfinite
+import CausalSeed.AtomicSpectrum

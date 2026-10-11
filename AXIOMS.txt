@@ -973,8 +973,8 @@ CausalSpectrum.RenyiInf.upper
   depends on axioms: [propext, choice, Quot.sound]
 
 Notes. `Kernel.envelope_tendsto`, `cost_tendsto`, `greedy_tendsto` give the
-square-root asymptotic for all a ≥ b ≥ 0, `cost_rate` the O(n^{-1/4} log n)
-rate for b > 0. The W1 universality corollary is not a theorem.
+square-root asymptotic for all a ≥ b ≥ 0, `cost_rate` the O(n^{1/4} log n)
+remainder for b > 0 (O(n^{-1/4} log n) after dividing by √n). The W1 universality corollary is not a theorem.
 `Zero.zero_closure` is the finite closure under zero probabilities.
 `RenyiInf.one_seed_all_orders` assumes one ordinary exact source exists;
 `RZ ι α` is defined as sup_n R_α(Z_n) (L_∞ at α = 1), not as a moment of a

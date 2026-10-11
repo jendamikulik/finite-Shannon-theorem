@@ -311,14 +311,14 @@ constant policy at a maximizing action controls the lower tail.
 `Kernel.cost_floor_bounds`, `Kernel.causal_floor`, `Kernel.envelope_floor`,
 `Kernel.envelope_le_floor`, `Kernel.floor_le_envelope`.
 
-Provenance: this statement is the "causal Shannon floor"
-$C^{\mathrm{causal}}_\infty=\max\{H(P),H(Q)\}$ of DREAM6 `WHO_PAYS_THE_BILL_v5.tex`
-(Theorem 17.1). The Lean proof takes a different route. It covers any number of actions
-and gives the full limit of $C_n/n$ with an $O(\sqrt n)$ residual; the DREAM6 proof uses
-an anti-diagonal block source along $n=mL$ and gives $O(n^{2/3})$ (its Corollary 17.2).
-The Lean result needs strictly positive kernels (`Kernel.Kpos`). Zero entries can be
-dropped from a stationary kernel without changing any law, but the reduction is not
-formalized.
+Remark: this is the causal Shannon floor
+$C^{\mathrm{causal}}_\infty=\max\{H(P),H(Q)\}$, here for any number of actions.
+The Lean proof gives the full limit of $C_n/n$ with an $O(\sqrt n)$ residual,
+via a recentred Hoeffding bound for the upper tail and a maximizing-action walk
+for the lower tail; a block-source argument along $n=mL$ would give only
+$O(n^{2/3})$. The Lean result needs strictly positive kernels (`Kernel.Kpos`).
+Zero entries can be dropped from a stationary kernel without changing any law,
+but that reduction is not formalized.
 
 ## Structural results
 

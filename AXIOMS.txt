@@ -204,3 +204,32 @@ antitone countable seeds, with entropy in nats. The infima may be infinite.
 It is not the comparison with `L_∞`, and it does not identify `G_*`.
 The limit `atomQ = lim F_∞` is not a theorem.
 No `sorry` or `admit` is used.
+
+--- 11 October 2026, later ---
+
+Seed ranking and envelope bridge.
+
+CausalSpectrum.Completion.CountableSeed.exists_ranked
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.finiteCost_eq_countable
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.infiniteCost_eq_countable
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.CountableSeed.envelope_le_entropy
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.finiteCost_sandwich
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.infiniteCost_bridge
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.infiniteCost_lt_top_iff
+  depends on axioms: [propext, choice, Quot.sound]
+
+Every countable seed admits a ranked rearrangement that preserves cylinder sums,
+the seed measure, entropy (nats), and ExactTo. Ranked finiteCost and infiniteCost
+therefore equal the corresponding infima over all countable seeds.
+LInf ι := sup_n envelopeMean (trunc ι n []) (bits).
+log 2 · LInf ≤ infiniteCost ≤ log 2 · (LInf + shannonOverhead).
+A finite-entropy exact seed exists if and only if LInf < ∞.
+The comparison uses the explicit unit conversion nats = log 2 · bits.
+It does not identify G_*. The limit atomQ = lim F_∞ is not a theorem.
+No sorry or admit is used.

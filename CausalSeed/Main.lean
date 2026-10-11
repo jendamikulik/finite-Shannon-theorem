@@ -15,6 +15,5 @@ import CausalSeed.Capacity
 import CausalSeed.MeasureCompletion
 import CausalSeed.AtomicCapacity
 import CausalSeed.EntropyLimit
-
-
-
+import CausalSeed.SeedRanking
+import CausalSeed.EnvelopeBridge

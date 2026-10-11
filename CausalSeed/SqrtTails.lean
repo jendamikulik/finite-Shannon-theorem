@@ -1,5 +1,5 @@
 /-
-Stage 4 (tails): conditional Hoeffding for adaptive policies, uniform in the
+Conditional Hoeffding for adaptive policies, uniform in the
 policy and in `n`:
 `1 - G_n(x√n) ≤ exp(-x²/(2M²))` and `G_n(-x√n) ≤ exp(-x²/(2M²))`, `x > 0`.
 Needs the increments to be centered (hypothesis `Centered`).

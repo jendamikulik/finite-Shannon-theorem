@@ -1,7 +1,5 @@
 /-
 Strict exact penalty and quantitative stability.
-Written against 36eb2b351303238d59e717c00404d17a127f542a.
-Compiled in the lake build of 11 October 2026 (Lean 4.35.0-rc3, mathlib 7d6757bc).
 This file is independent of the infinite-seed bridges.
 -/
 import CausalSeed.Identity

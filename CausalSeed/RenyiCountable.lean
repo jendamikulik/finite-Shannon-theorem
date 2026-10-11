@@ -1,5 +1,5 @@
 /-
-Rényi spectrum, stage 2: Rényi entropy of countable laws, with infinite values.
+Rényi entropy of countable laws, with infinite values.
 
 A countable law is a weight sequence `w : ℕ → ℝ`, `w ≥ 0`, `∑ w = 1`.
 * `mom α w = ∑' ofReal (w i ^ α)` in `ℝ≥0∞` (may be `∞` for `α < 1`);

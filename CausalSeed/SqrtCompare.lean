@@ -1,5 +1,5 @@
 /-
-Stage 3 (second lemma): Explicit CDF comparison
+Explicit CDF comparison between the Bellman envelope and the profile:
 `sup_z |G_n(z√n) - F_{a,b}(z)| ≤ 2Φ(-R) + 3A/√m + B/m + ℓ a R √(m/(n+m)) + D ln(1+m/n)`.
 -/
 import CausalSeed.SqrtDefect

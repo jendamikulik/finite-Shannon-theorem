@@ -1,5 +1,5 @@
 /-
-Rényi spectrum, stage 1: one finite controlled tree.
+Rényi spectrum on one finite controlled tree.
 
 On a finite tree the greedy seed `J` satisfies the stochastic sandwich
 `Z ≼st J ≼st Z + W` (`seedCDF_le_Fstar`, `survival_le_wMixture`), and every

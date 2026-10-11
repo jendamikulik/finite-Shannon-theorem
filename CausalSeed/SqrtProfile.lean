@@ -1,5 +1,5 @@
 /-
-Stage 2 of the square-root note: the explicit profile `F_{a,b}`.
+The explicit diffusion profile `F_{a,b}` of the square-root asymptotic.
 `F z = (2b/(a+b)) Φ(z/b)` for `z ≤ 0`, `1 - (2a/(a+b)) Φ(-z/a)` for `z > 0`,
 with `Φ(-y) = gaussTail y / √(2π)`.
 Proved: continuity at the junction, `F' = (2/(a+b)) φ(z/s)`,

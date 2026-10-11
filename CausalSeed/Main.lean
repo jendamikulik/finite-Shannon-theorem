@@ -52,3 +52,4 @@ import CausalSeed.CausalFloor
 import CausalSeed.DyadicCouple
 import CausalSeed.DyadicTree
 import CausalSeed.DyadicKernel
+import CausalSeed.Subadditive

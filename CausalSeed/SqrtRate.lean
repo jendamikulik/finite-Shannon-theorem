@@ -1,5 +1,5 @@
 /-
-Stage 4 (end): the rate `O(n^{-1/4} log n)` for the normalized envelope mean when
+The rate `O(n^{-1/4} log n)` for the normalized envelope mean when
 `b > 0`, and the convergence to `√(2/π)(a-b)`.
 -/
 import CausalSeed.SqrtMean

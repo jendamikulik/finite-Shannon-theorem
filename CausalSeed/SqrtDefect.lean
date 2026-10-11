@@ -1,5 +1,6 @@
 /-
-Stage 3 (analytic part): Lemma "One-step defect".
+One-step defect of the explicit profile under the Bellman operator, and the
+variance parameters `a = max σ_j`, `b = min σ_j`.
 -/
 import CausalSeed.SqrtProfile
 import CausalSeed.SqrtTails

@@ -1,6 +1,5 @@
 /-
-Compiled in the lake build of 11 October 2026.
-Lean 4.35.0-rc3, mathlib 7d6757bc18680044fc0ff6efc8ee20494b408556.
+Countable ranked seeds, the projective entropy identity and attainment.
 The seed alphabet is N, with weights in decreasing order (zero padding allowed).
 Entropy is in nats. Costs are extended nonnegative reals, so empty feasible
 sets and divergent entropy are represented by infinity, never by Real.tsum=0.

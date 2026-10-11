@@ -1,5 +1,5 @@
 /-
-Stage 1 of the square-root note: the discrete Bellman envelope.
+The discrete Bellman envelope.
 A finite family of finite increment laws; every round all actions are
 available with the same laws, and an adaptive policy may use the whole
 observed history. `cdfPol π x = P(S_n^π ≤ x)`, `G n x = inf_π P(S_n^π ≤ x)`.

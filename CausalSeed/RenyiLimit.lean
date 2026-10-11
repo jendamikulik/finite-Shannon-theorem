@@ -1,5 +1,5 @@
 /-
-Rényi spectrum, stage 4: the Lemma 2 limit seed.
+The limit seed for the Rényi spectrum.
 
 For each horizon `n` take the ranked greedy seed `G_n` of `trunc ι n`.  If an
 ordinary exact source exists, the stochastic sandwich `J_n ≼st Z_n + W` and

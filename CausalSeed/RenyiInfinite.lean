@@ -1,5 +1,5 @@
 /-
-Rényi spectrum, stage 5: the infinite-horizon theorem.
+Rényi spectrum: the infinite-horizon theorem.
 
 On a locally finite controlled tree `ι` with positive kernels, assuming one
 ordinary exact source exists, there is ONE causal seed `S`, exact at every

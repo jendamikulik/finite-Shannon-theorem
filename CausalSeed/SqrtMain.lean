@@ -1,5 +1,5 @@
 /-
-Stage 4 (main theorem, `b > 0`): for a stationary kernel with common entropy
+Square-root asymptotic with rate, `b > 0`: for a stationary kernel with common entropy
 `h` and positive least varentropy, the envelope mean `L_n`, the optimal exact
 seed entropy `C_n` (in bits), and the greedy seed entropy all equal
 `n h + √(2/π)(a - b)√n + O(n^{1/4} log n)`.

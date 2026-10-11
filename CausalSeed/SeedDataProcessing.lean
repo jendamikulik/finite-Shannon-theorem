@@ -1,4 +1,4 @@
-/- Compiled in the lake build of 11 October 2026 (Lean 4.35.0-rc3, mathlib 7d6757bc). Entropy is in nats, with values in ENNReal. -/
+/- Data processing for countable seeds. Entropy is in nats, with values in ENNReal. -/
 import CausalSeed.SeedRanking
 import CausalSeed.Penalty
 

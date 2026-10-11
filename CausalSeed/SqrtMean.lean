@@ -1,5 +1,5 @@
 /-
-Stage 4: the normalized envelope mean, the explicit mean bound (meanbound).
+The normalized envelope mean, the explicit mean bound (meanbound).
 `Mn n = ∫₀^∞ [1 - G_n(x√n)] dx - ∫₀^∞ G_n(-x√n) dx` is the right side of
 (meanidentity).
 -/

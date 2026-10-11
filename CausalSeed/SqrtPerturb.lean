@@ -1,5 +1,5 @@
 /-
-Stage 5 (part 1): the independent-noise perturbation `X_j + ε ξ`, and the
+The independent-noise perturbation `X_j + ε ξ`, and the
 noise comparison (noisecompare), proved at the level of the Bellman recursion.
 The controller of the perturbed system observes the pair `(y, ξ)`; the
 "randomized policy" step of the note becomes plain averaging over `ξ`.

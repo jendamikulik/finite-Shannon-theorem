@@ -1,5 +1,5 @@
 /-
-Stage 6 (numerical part): the exact integer inequalities of the note.
+Exact integer inequalities used by the square-root asymptotic, checked by `norm_num`.
 -/
 import Mathlib.Tactic
 

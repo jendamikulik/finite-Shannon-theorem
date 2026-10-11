@@ -1,5 +1,5 @@
 /-
-Stage 4 (bridge): the mean identity (meanidentity) for a stationary kernel
+The mean identity (meanidentity) for a stationary kernel
 with common entropy `h`, connecting the repository's `envelopeMean` of
 `κ.rounds n` to the Bellman envelope `G_n` of the centered surprisal
 increments `X_a = -log₂ K_a(Y) - h`.

@@ -1,6 +1,6 @@
 /-
-Stage 5 (part 2): `b = 0 < a` via the perturbation, `a = b = 0`, and the main
-theorem in general: `(L_n - n h)/√n → √(2/π)(a - b)`, hence the same for `C_n`
+The square-root asymptotic in general: `b = 0 < a` via the perturbation,
+`a = b = 0`, and `(L_n - n h)/√n → √(2/π)(a - b)`, hence the same for `C_n`
 and for the greedy seed.
 -/
 import CausalSeed.SqrtPerturb

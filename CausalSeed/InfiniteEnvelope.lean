@@ -1,4 +1,4 @@
-/- Compiled in the lake build of 11 October 2026 (Lean 4.35.0-rc3, mathlib 7d6757bc). L∞ is the actual finite-envelope supremum. -/
+/- The infinite-horizon envelope sandwich in bits. `L∞` is the supremum of the finite envelope means. -/
 import CausalSeed.FiniteSeedExtension
 
 noncomputable section

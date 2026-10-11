@@ -1,5 +1,5 @@
 /-
-Rényi spectrum, stage 3: ordinary sources exact at all horizons.
+Ordinary sources exact at all horizons.
 
 An *ordinary exact source* on a locally finite controlled tree `ι` is a countable
 law `w` together with, for every horizon `n`, a deterministic readout of a joint

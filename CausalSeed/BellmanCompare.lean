@@ -1,5 +1,5 @@
 /-
-Stage 3 (order part): propagation of two translated barriers through `T^n`.
+Propagation of two translated barriers through `T^n`.
 This is the operator-theoretic core of Lemma "Explicit CDF comparison":
 it uses only monotonicity, translation, constants and a per-step defect
 bound. The analytic input (the one-step defect of the explicit profile) is a

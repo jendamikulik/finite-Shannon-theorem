@@ -53,3 +53,8 @@ import CausalSeed.DyadicCouple
 import CausalSeed.DyadicTree
 import CausalSeed.DyadicKernel
 import CausalSeed.Subadditive
+import CausalSeed.Wasserstein
+import CausalSeed.SqrtW1
+import CausalSeed.GapW1
+import CausalSeed.ZeroKernel
+import CausalSeed.MomentClass

@@ -370,24 +370,29 @@ zero-kernel, and Rényi developments.
 | $R_\alpha(Z)$ of the limit envelope law | [RenyiLimitLaw.lean](CausalSeed/RenyiLimitLaw.lean), [RenyiLimitMeasure.lean](CausalSeed/RenyiLimitMeasure.lean) |
 | Strict-penalty compatibility and stability | [StrictPenalty.lean](CausalSeed/StrictPenalty.lean) |
 
-[AXIOMS.txt](AXIOMS.txt) contains historical axiom-audit output for the
-declarations it names. It is not a complete audit of the current import
-closure. Later modules include additional `#print axioms` commands.
-Earlier status paragraphs in that log describe their dated snapshots.
+[AXIOMS.txt](AXIOMS.txt) is a full axiom audit of all 1406 theorems declared in the
+52 project modules (`CausalSeed.*`) reachable from `Main.lean`. Auto-generated
+declarations (equation lemmas, `sizeOf_spec`, injectivity lemmas, instances) are excluded.
+All 1406 depend only on `propext`, `Classical.choice` and `Quot.sound` (3 on none). No
+theorem uses `sorryAx`, the build reports no `sorry` or `admit`, and no `axiom` is
+declared in the project. The notes from earlier dated audit logs are kept at the end
+of the file.
 
 Pinned dependencies:
 
 - Lean `4.35.0-rc3`
 - Mathlib `7d6757bc18680044fc0ff6efc8ee20494b408556`
 
-To check the project with the pinned toolchain:
+To check the project with the pinned toolchain and reproduce the audit:
 
 ```bash
 lake build
+lake env lean scripts/AxiomAudit.lean
 ```
 
-The recorded principal declarations use the standard axioms
-`propext`, `Classical.choice`, and `Quot.sound`.
+The script ([scripts/AxiomAudit.lean](scripts/AxiomAudit.lean)) walks the environment,
+keeps the theorems whose module is `CausalSeed.*`, runs `collectAxioms` on each, and
+prints one line per theorem plus a `TOTAL` line with any non-standard axioms.
 
 Parts of the countable Shannon implementation use extended entropy in **nats**.
 The envelope comparisons explicitly convert between nats and bits.

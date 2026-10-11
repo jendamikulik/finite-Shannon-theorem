@@ -17,3 +17,8 @@ import CausalSeed.AtomicCapacity
 import CausalSeed.EntropyLimit
 import CausalSeed.SeedRanking
 import CausalSeed.EnvelopeBridge
+import CausalSeed.SeedDataProcessing
+import CausalSeed.FiniteSeedExtension
+import CausalSeed.AlphabetSeed
+import CausalSeed.InfiniteEnvelope
+import CausalSeed.StrictPenalty

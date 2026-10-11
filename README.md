@@ -11,13 +11,75 @@ The same seed distribution realizes the prescribed transcript law under
 **every deterministic adaptive policy**, with a decoder consistent at shared
 histories.
 
-The development connects three results:
+The development connects four results:
 
-- **Finite trees:** a universal additive entropy bound.
-- **Infinite trees:** an exact criterion for finite-entropy simulation.
+- **All positive Rényi orders:** one infinite causal seed with simultaneous approximation guarantees against ordinary exact sources.
+- **Finite trees:** a universal additive entropy bound, including nonnegative kernels with all branches retained.
+- **Infinite trees:** atomic-capacity attainment and an exact criterion for finite-entropy simulation.
 - **Stationary kernels:** an explicit square-root asymptotic.
 
-## 1. Finite trees: a universal entropy bound
+## One seed, all Rényi orders
+
+Consider a locally finite controlled tree with strictly positive kernels.
+An **ordinary exact source** is a countable random variable with a
+deterministic readout for every finite-horizon policy law. These readouts
+need not agree at shared histories or across horizons. A **causal exact
+source** uses one total response strategy per seed atom.
+
+Assume an ordinary exact countable source exists. Let $O_\alpha$ and
+$C_\alpha$ be the infima of Rényi entropy over ordinary and causal exact
+sources, respectively. There is **one** countable causal seed $S$, exact
+at every finite horizon, such that simultaneously for every $\alpha>0$,
+
+```math
+\boxed{
+O_\alpha\le C_\alpha\le H_\alpha(S)\le O_\alpha+d_\alpha,
+}
+```
+
+where
+
+```math
+d_\alpha=
+\frac{\log_2\!\left(\frac12+\frac{2^{-\alpha}}{\alpha}\right)}
+{1-\alpha}
+\quad(\alpha\ne1),
+\qquad
+d_1=\frac{1+\log_2e}{2}.
+```
+
+The same seed attains the exact min-entropy optimum:
+
+```math
+H_\infty(S)=C_\infty^{\mathrm{R}}=O_\infty^{\mathrm{R}}.
+```
+
+Here $\mathrm{R}$ distinguishes the Rényi-order endpoint from the
+time-horizon limit below. In particular,
+
+```math
+H_1(S)\le O_1+1.2213475204\ldots,
+\qquad
+H_2(S)\le O_2+\log_2(8/5).
+```
+
+No finite Shannon entropy assumption is required. At each positive order,
+the ordinary optimum, the causal optimum, and the entropy of this same
+seed are finite or infinite together. This is simultaneous approximation,
+not exact minimization at every finite order.
+
+**Main declarations**
+
+- `CausalSpectrum.RenyiInf.one_seed_all_orders`
+- `CausalSpectrum.RenyiInf.simultaneous_finiteness`
+
+See [RenyiInfinite.lean](CausalSeed/RenyiInfinite.lean),
+[RenyiSource.lean](CausalSeed/RenyiSource.lean), and
+[RenyiLimit.lean](CausalSeed/RenyiLimit.lean).
+Exposition: [PDF](universal_causal_seed.pdf) ·
+[LaTeX](universal_causal_seed.tex).
+
+## Finite trees: a universal entropy bound
 
 Let $C(T)$ be the infimum of entropy required for exact causal simulation of
 a finite controlled tree. Let $L(T)$ be the mean of the lower envelope
@@ -59,9 +121,33 @@ to the required marginal laws.
 
 See [Entropy.lean](CausalSeed/Entropy.lean).
 
-## 2. Infinite horizons: bounded envelopes characterize finite entropy
+### Zero-probability branches remain in the tree
 
-For a locally finite infinite controlled tree, let $C_n$ be the infimum
+The finite theorem extends to nonnegative normalized kernels. The
+`CausalSpectrum.Zero.ZTree` model retains the full tree shape, all policies,
+and all total response strategies, including their values at
+zero-probability histories.
+
+The closure theorem constructs a finite law on these strategies satisfying
+the same exact transcript identities and the same bound $L\le H\le L+c_*$.
+It does not require pruning zero-probability branches. The result establishes
+existence; it does not identify the limiting seed with a particular greedy run.
+
+Exactness concerns transcript laws. It does not prescribe conditional
+probabilities given an event of probability zero.
+
+**Main declarations**
+
+- `CausalSpectrum.Zero.zero_closure`
+- `CausalSpectrum.Zero.zero_lower`
+
+See [ZeroClosure.lean](CausalSeed/ZeroClosure.lean),
+[ZeroTree.lean](CausalSeed/ZeroTree.lean), and
+[ZeroGame.lean](CausalSeed/ZeroGame.lean).
+
+## Infinite horizons: bounded envelopes characterize finite entropy
+
+For a locally finite infinite controlled tree with strictly positive kernels, let $C_n$ be the infimum
 of countable-seed entropy needed through horizon $n$, and $C_\infty$
 the infimum for one seed exact at every finite horizon.
 
@@ -150,9 +236,9 @@ tight:
 The spectral identity has a mathematical proof in the manuscript;
 its Lean formalization remains to be added.
 
-## 3. Stationary kernels: the exact square-root coefficient
+## Stationary kernels: the exact square-root coefficient
 
-Suppose the same finite family of output laws is available at every history,
+Suppose the same finite family of strictly positive output laws is available at every history,
 and all actions have the same entropy $h$, in bits.
 
 For $Y_i\sim P_i$, let
@@ -266,9 +352,23 @@ See [Profile.lean](CausalSeed/Profile.lean) and
 The development is imported through
 [CausalSeed/Main.lean](CausalSeed/Main.lean).
 
-The repository reports a successful build without `sorry` or `admit`.
-[AXIOMS.txt](AXIOMS.txt) records axiom dependencies for the declarations
-listed there. Its coverage does not yet include every later declaration.
+The import closure includes the finite, infinite-horizon, square-root,
+zero-kernel, and Rényi developments.
+
+| Result | Principal Lean source |
+| --- | --- |
+| Finite causal realization and Shannon bound | [Entropy.lean](CausalSeed/Entropy.lean) |
+| Finite nonnegative kernels, all branches retained | [ZeroClosure.lean](CausalSeed/ZeroClosure.lean) |
+| Projective entropy identity and attainment | [EntropyLimit.lean](CausalSeed/EntropyLimit.lean) |
+| Ordinary and causal atomic capacities | [AtomicCapacity.lean](CausalSeed/AtomicCapacity.lean) |
+| General square-root limit | [SqrtGeneral.lean](CausalSeed/SqrtGeneral.lean) |
+| One infinite seed for all positive Rényi orders | [RenyiInfinite.lean](CausalSeed/RenyiInfinite.lean) |
+| Strict-penalty compatibility and stability | [StrictPenalty.lean](CausalSeed/StrictPenalty.lean) |
+
+[AXIOMS.txt](AXIOMS.txt) contains historical axiom-audit output for the
+declarations it names. It is not a complete audit of the current import
+closure. Later modules include additional `#print axioms` commands.
+Earlier status paragraphs in that log describe their dated snapshots.
 
 Pinned dependencies:
 
@@ -284,22 +384,24 @@ lake build
 The recorded principal declarations use the standard axioms
 `propext`, `Classical.choice`, and `Quot.sound`.
 
-The infinite-seed implementation uses extended entropy in **nats**.
+Parts of the countable Shannon implementation use extended entropy in **nats**.
 The envelope comparisons explicitly convert between nats and bits.
-The mathematical statements above use **bits** throughout.
+The Rényi layer and the mathematical statements above use **bits** throughout.
 
 ## Scope and open questions
 
-The tree models assume finite nonempty local alphabets and strictly
-positive transition probabilities. Policies are deterministic and adaptive.
+All tree models have finite nonempty local alphabets. The finite zero-kernel
+theorem allows nonnegative transitions and retains the tree shape. The
+infinite and stationary developments still assume strictly positive kernels.
+Policies are deterministic and adaptive.
 
 The following remain unresolved in this development:
 
 - the exact value of $G_*$;
 - compatibility of all minimizers at the endpoint $\kappa=G_*$;
 - a sharp logarithmic asymptotic in the equal-variance regime;
-- an extension retaining zero-probability branches without reformulating
-  the model.
+- optimality of the universal overhead constants;
+- extension of the infinite-horizon results to kernels with zero probabilities.
 
 A separate formalization task remains:
 
@@ -316,3 +418,4 @@ or priority.
 Its purpose is to state the causal simulation results precisely and provide
 their formal proofs. Kernel verification establishes the formal statements;
 historical attribution and comparison with prior work are separate tasks.
+

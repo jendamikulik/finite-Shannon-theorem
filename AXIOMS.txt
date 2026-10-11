@@ -1,8 +1,8 @@
 Axiom audit of every theorem in the project modules (CausalSeed.*), 11 October 2026
 Lean 4.35.0-rc3, mathlib 7d6757bc18680044fc0ff6efc8ee20494b408556
-`lake build`: Build completed successfully (3829 jobs). No `sorry`, `admit` or custom axioms.
+`lake build`: Build completed successfully (3832 jobs). No `sorry`, `admit` or custom axioms.
 
-Summary: 1429 theorems in 53 modules: all depend only on propext, Classical.choice,
+Summary: 1475 theorems in 56 modules: all depend only on propext, Classical.choice,
 Quot.sound (3 on none). No theorem uses sorryAx or any other axiom, and no `axiom`
 is declared in the CausalSeed modules.
 
@@ -624,6 +624,104 @@ CausalSpectrum.transcript_good
 CausalSpectrum.yOf_inj
   depends on axioms: [propext, choice, Quot.sound]
 CausalSpectrum.chosenStrategy.congr_simp
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.DyadicCouple (28 theorems)
+CausalSpectrum.Dyadic.cdfL_append
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.cdfL_cons
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.cdfL_dec
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.cdfL_eq_mass
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.cdfL_eq_zero
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.cdfL_inc
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.cdfL_le_mass
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.cdfL_nil
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.cdfL_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.cdfL_perm
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.cdfL_spl
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.couple
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.couple_single
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.exists_prefix
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.massL_append
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.massL_cons
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.massL_dec
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.massL_inc
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.massL_nil
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.massL_one_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.massL_perm
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.massL_spl
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.spl_cons
+  depends on axioms: [propext]
+CausalSpectrum.Dyadic.spl_levels
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.univ_ne
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.wt_pos
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.wt_succ
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.Couples.congr_simp
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.DyadicKernel (8 theorems)
+CausalSpectrum.Completion.aTerm
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.atomSeed_entropy
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.atomSeed_exactTo
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.atomWeight_nonneg'
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.atoms_hitSum
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Completion.finiteCost_le_atoms
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.cost_eq_envelope_of_dyadic
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.rounds_dyadic
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.DyadicTree (10 theorems)
+CausalSpectrum.Dyadic.cdfL_flatMap
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.cdfL_map_snd
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.cdfL_shift
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.dyadic_exact
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.exists_bound
+  depends on axioms: [propext, Quot.sound]
+CausalSpectrum.Dyadic.exists_dseed
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.infoMass_wt
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.massL_flatMap
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.massL_map_snd
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Dyadic.massL_shift
   depends on axioms: [propext, choice, Quot.sound]
 
 -- CausalSeed.Entropy (115 theorems)

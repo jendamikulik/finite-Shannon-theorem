@@ -976,11 +976,12 @@ CausalSpectrum.RenyiInf.upper
 
 Notes. `Kernel.envelope_tendsto`, `cost_tendsto`, `greedy_tendsto` give the
 square-root asymptotic for all a ≥ b ≥ 0, `cost_rate` the O(n^{1/4} log n)
-remainder for b > 0 (O(n^{-1/4} log n) after dividing by √n). The W1 universality corollary is not a theorem.
+remainder for b > 0 (O(n^{-1/4} log n) after dividing by √n). The W1 universality corollary
+is `Kernel.universality` (SqrtUniversality.lean, see below).
 `Zero.zero_closure` is the finite closure under zero probabilities.
 `RenyiInf.one_seed_all_orders` assumes one ordinary exact source exists;
-`RZ ι α` is defined as sup_n R_α(Z_n) (L_∞ at α = 1), not as a moment of a
-limit variable Z. CountableAlphabet.lean was removed (it was not imported).
+`RZ ι α` is defined as sup_n R_α(Z_n) (L_∞ at α = 1); it equals the moment form
+R_α(Z) of the limit law by `RenyiInf.RZlaw_eq` (RenyiLimitLaw.lean, see below). CountableAlphabet.lean was removed (it was not imported).
 
 --- 11 October 2026, atomic spectrum ---
 
@@ -1020,3 +1021,99 @@ FInf ι t := inf_n Fstar (trunc ι n []) t, the uniform information envelope F_�
 `atomQ_eq_lim_FInf` is Tendsto (FInf ι) atTop (𝓝 (atomQ ι)), i.e.
 atomQ = lim_{t→∞} F_∞(t); `atomQ_eq_iSup_FInf` is the sup form. The per-law
 inequalities are F_P(t) ≤ A_{⌊2^t⌋}(P) and A_K(P) ≤ F_P(t) + K·2^{-t}.
+
+--- 11 October 2026, W1 universality and the limit Rényi variable ---
+
+#print axioms, from the lake build of 11 October 2026 (HEAD 608082c + local changes)
+Lean 4.35.0-rc3, mathlib 7d6757bc18680044fc0ff6efc8ee20494b408556
+`lake build`: Build completed successfully (3826 jobs). No sorry or admit.
+
+-- CausalSeed.SqrtUniversality
+CausalSpectrum.Kernel.Fstar_neg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.atom_le_one
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.gap_total
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.integral_affine
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.seedCDF_mono
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.seedCDF_neg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.universality
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.universality_of_gap
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.Flim_lower
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.Flim_measurable
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.Flim_mem
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.Flim_upper
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.L1_tendsto
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.dom
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.gM_neg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.integrable_gap
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.pointwise
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.sB_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.RenyiLimitLaw
+CausalSpectrum.RenyiInf.FInf_le_one
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.FInf_meas
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.FInf_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.Fstar_anti
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.Fstar_le_one
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.Fstar_meas
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.Fstar_succ_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.Fstar_tendsto
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.RZlaw_eq
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.iSup_ofReal_of_tendsto
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.iSup_ofReal_top
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.integrableOn_gw
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.one_seed_all_orders_law
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.sup_lint
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.tendsto_logb_div
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.zMeanLaw_eq
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.zMomLawR_tendsto
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.zMomLaw_eq
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.zMoment_anti
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.policyCDF_deepen
+  depends on axioms: [propext, choice, Quot.sound]
+
+Notes. W1 between laws on ℝ is formalized in its CDF form ∫_ℝ |F_μ - F_ν|.
+`Sqrt.IncFamily.L1_tendsto` is ∫ |G_n(x√n) - F_{a,b}(x)| dx → 0 for a > 0 (Flim is
+`prof a b` when b > 0 and the half-normal `F0 a` when b = 0). `Kernel.universality` is
+the corollary for exact finite seeds (atom lists) of κ.rounds n with
+(E J_n - C_n)/√n → 0, C_n = costBits n; `universality_of_gap` uses E J_n - L_n instead.
+`RenyiInf.RZlaw` is R_α(Z) computed from the moments of the limit law with CDF
+F_∞ = FInf (tail-integral formula, value +∞ allowed, E Z at α = 1);
+`RZlaw_eq` proves RZlaw ι α = RZ ι α = sup_n R_α(Z_n) for every α > 0 with no extra
+hypothesis, and `one_seed_all_orders_law` restates the main theorem with RZlaw.

@@ -365,7 +365,9 @@ zero-kernel, and Rényi developments.
 | Projective entropy identity and attainment | [EntropyLimit.lean](CausalSeed/EntropyLimit.lean) |
 | Ordinary and causal atomic capacities | [AtomicCapacity.lean](CausalSeed/AtomicCapacity.lean) |
 | General square-root limit | [SqrtGeneral.lean](CausalSeed/SqrtGeneral.lean) |
+| $W_1$ universality of asymptotically optimal seeds | [SqrtUniversality.lean](CausalSeed/SqrtUniversality.lean) |
 | One infinite seed for all positive Rényi orders | [RenyiInfinite.lean](CausalSeed/RenyiInfinite.lean) |
+| $R_\alpha(Z)$ of the limit envelope law | [RenyiLimitLaw.lean](CausalSeed/RenyiLimitLaw.lean) |
 | Strict-penalty compatibility and stability | [StrictPenalty.lean](CausalSeed/StrictPenalty.lean) |
 
 [AXIOMS.txt](AXIOMS.txt) contains historical axiom-audit output for the
@@ -409,11 +411,18 @@ The following remain unresolved in this development:
 The identity $\mathrm{atomQ}=\lim_{t\to\infty}F_\infty(t)$ of
 `atomic_capacity.tex` is now formalized (`atomQ_eq_lim_FInf`).
 
+The $W_1$ universality corollary of the square-root note is formalized in
+[SqrtUniversality.lean](CausalSeed/SqrtUniversality.lean) (`Kernel.universality`, with
+$W_1$ in its CDF form $\int_{\mathbb R}|F_\mu-F_\nu|$, for exact finite seeds), and
+$R_\alpha(Z)$ of the limit envelope law (CDF $F_\infty$, moments by the tail formula,
+infinite values allowed) equals $\sup_n R_\alpha(Z_n)$ for every $\alpha>0$ in
+[RenyiLimitLaw.lean](CausalSeed/RenyiLimitLaw.lean) (`RZlaw_eq`,
+`one_seed_all_orders_law`).
+
 Remaining formalization tasks:
 
-- the $W_1$ universality corollary of the square-root note;
-- $R_\alpha(Z)$ of the infinite envelope as a moment of a limit variable
-  (in Lean it is defined as $\sup_n R_\alpha(Z_n)$).
+- universality for countable (not finite) exact seeds at each horizon;
+- the limit law of $Z$ as a measure on $[0,\infty]$ (now given by its tail function only).
 
 ## Attribution
 

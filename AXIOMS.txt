@@ -138,7 +138,8 @@ as a limit of extended finite greedy strategies. `cylMass h ≤ pathMass h`,
 and `cylMass [] = atomQ`. `resMass` is the nonnegative difference and is
 conserved by every action. This is not a probability realizing the residual,
 not an exact causal seed, and not the equality of ordinary and causal atomic
-capacities. `C_∞ = sup_n C_n` is not a theorem.
+capacities. `C_∞ = sup_n C_n` was not a theorem in this build; it is now
+proved as `Completion.projective_entropy_identity` (build of 11 October 2026).
 
 
 #print axioms, from the lake build of 10 October 2026
@@ -159,7 +160,8 @@ their product. `resMass h = resMass [] * resCyl h` for every history, so
 not depend on the ratio at a history of residual zero. These are identities
 of real cylinder functions. No measure on the strategy space is constructed.
 It is not the equality of ordinary and causal atomic capacities.
-`C_∞ = sup_n C_n` is not a theorem.
+`C_∞ = sup_n C_n` was not a theorem in this build; it is now proved as
+`Completion.projective_entropy_identity` (build of 11 October 2026).
 
 The three sentences above describe the build of 10 October 2026.
 The build of 11 October 2026 supersedes them.
@@ -233,3 +235,747 @@ A finite-entropy exact seed exists if and only if LInf < ∞.
 The comparison uses the explicit unit conversion nats = log 2 · bits.
 It does not identify G_*. The limit atomQ = lim F_∞ is not a theorem.
 No sorry or admit is used.
+
+--- 11 October 2026, final ---
+
+#print axioms, from the lake build of 11 October 2026
+Lean 4.35.0-rc3, mathlib 7d6757bc18680044fc0ff6efc8ee20494b408556
+`lake build`: Build completed successfully (3823 jobs). No sorry or admit.
+
+All 74 declarations listed above were re-checked in this build; their axiom
+sets are unchanged. Below: every public theorem of the Bellman*, Sqrt*,
+Zero* and Renyi* modules (auto-generated equation/injectivity lemmas
+omitted), collected with `Lean.collectAxioms` over the environment of
+CausalSeed.Main. (`choice` is `Classical.choice`.)
+
+-- CausalSeed.Bellman
+CausalSpectrum.Sqrt.IncFamily.G_cdf
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.G_envelope
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.G_eq_iInf
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.G_succ
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.M_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.Ppos
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.Psum
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.T_add_const
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.T_attained
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.T_bounds
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.T_contraction
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.T_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.T_mono
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.T_monotone
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.T_one_right
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.T_rightCont
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.T_translate
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.T_zero_left
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.abs_X_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.expect_add_const
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.expect_const
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.expect_mono
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.hA
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.hY
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.le_T
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.univ_nonempty
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.BellmanCompare
+CausalSpectrum.Sqrt.IncFamily.T_shift_sub
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.barrier_propagation
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.SqrtNumerics
+CausalSpectrum.Sqrt.endpoint_high
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.endpoint_low
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.ratio_bound
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.variance_bound
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.SqrtProfile
+CausalSpectrum.Sqrt.FL_zero_eq_FR_zero
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.continuous_phi
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.continuous_prof''
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.gaussRaw_neg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.gaussTail_zero
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.hasDerivAt_FL
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.hasDerivAt_FR
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.hasDerivAt_dL
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.hasDerivAt_dR
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.hasDerivAt_gaussRaw
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.hasDerivAt_gaussTail
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.hasDerivAt_prof
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.hasDerivAt_prof'
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.hasDerivAt_u_t
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.hasDerivAt_u_x
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.hasDerivAt_u_xx
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.one_sub_prof
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.pde
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.piecewise_hasDerivAt
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.prof''_eq
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.prof''_nonneg_of_nonpos
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.prof''_nonpos_of_pos
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.prof''_zero
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.prof_contDiff
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.prof_mean
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.prof_neg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.prof_zero
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.sqrt2pi_pos
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.SqrtTails
+CausalSpectrum.Sqrt.IncFamily.G_lower_tail
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.G_upper_tail
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.exp_le_chord
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.exponent_opt
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.lower_chernoff
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.mgfPol_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.mgfPol_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.step_mgf
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.upper_chernoff
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.SqrtDefect
+CausalSpectrum.Sqrt.IncFamily.abs_cube_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.constA_eq
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.one_step_defect
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.pde_family
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.sB_le_sA
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.sB_le_sigma
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.sig2_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.sigma_le_sA
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.sigma_sq
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.space_step
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.abs_cube_mul_gaussRaw_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.abs_dddL_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.abs_mul_gaussRaw_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.abs_sq_sub_one_mul_gaussRaw_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.abs_utt_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.abs_z2_prof''_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.abs_z_prof'_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.cube_mul_exp_aux
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.ddL_lipschitz
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.ddR_eq
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.ddR_lipschitz
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.gaussRaw_pos
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.hasDerivAt_comp_scale
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.hasDerivAt_ddL
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.hasDerivAt_psi
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.hasDerivAt_u_t'
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.hasDerivAt_ut
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.inf'_close
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.lipF_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.nonpos_of_second
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.prof''_lipschitz
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.sq_mul_exp_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.taylor2
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.taylor2_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.time_step
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.SqrtCompare
+CausalSpectrum.Sqrt.IncFamily.cdf_comparison
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.PhiNeg_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.PhiNeg_zero
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.phi_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.phi_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.prof'_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.prof'_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.prof_aR_ge
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.prof_le_one
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.prof_lipschitz
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.prof_monotone
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.prof_neg_aR_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.prof_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.sum_cube_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.sum_sq_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.tele_cube
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.time_change
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.SqrtMean
+CausalSpectrum.Sqrt.IncFamily.G_measurable
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.mean_bound
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.sA_le_M
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.sigma_le_M
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.gM_eq
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.gM_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.gaussTail_le_exp
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.integrable_gM
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.prof_lower_tail
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.prof_upper_tail
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.split_integral
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.tail_integral_gM
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.two_PhiNeg_le
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.SqrtRate
+CausalSpectrum.Sqrt.IncFamily.mean_rate
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.mean_tendsto
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.one_le_log_of_three_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.rate_algebra
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.SqrtBridge
+CausalSpectrum.Kernel.Fstar_eq_G
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.G_zero_below
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.X_ge
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.entropy_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.fam_centered
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.infoMass_K_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.infoMass_mul
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.infoMass_one
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.integral_Ioi_sub
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.mean_identity
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.policyCDF_eq
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.toAPol_ofAPol
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.SqrtMain
+CausalSpectrum.Kernel.costBits_sandwich
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.cost_rate
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.envelopeMean_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.envelope_rate
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.greedy_rate
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.sandwich_rate
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.shannonOverhead_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.trunc_toITree
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.SqrtPerturb
+CausalSpectrum.Sqrt.IncFamily.Q_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.Q_le_exp
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.Q_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.noise_compare
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.noise_lower
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.noise_upper
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.perturb_centered
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.perturb_expect
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.perturb_sA_bounds
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.perturb_sB_bounds
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.perturb_sB_pos
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.perturb_sig2
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.perturb_sigma
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.perturb_sum
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.SqrtGeneral
+CausalSpectrum.Kernel.cost_tendsto
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.envelope_tendsto
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Kernel.greedy_tendsto
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.cdfErr_eventually
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.mean_tendsto_b0
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.mean_tendsto_general
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.mean_tendsto_zero
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.pointwise_b0
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.tendsto_FR
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.tendsto_q
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.tendsto_sA_perturb
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.IncFamily.tendsto_sB_perturb
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Sqrt.log_div_quarter_tendsto
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.ZeroGame
+CausalSpectrum.Zero.Fenv.congr_simp
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.Fenv_bounds
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.Fenv_mono
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.Fenv_tendsto
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.Fenv_transport
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.Lenv_le_entropy
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.Lenv_tendsto
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.Lenv_transport
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.Sp_mono
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.Sp_tendsto
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.ae_avoid
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.closure_of_approx
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.continuous_pmfEntropy
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.dyadic_eq_exp
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.entTerm_eq_negMulLog
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.entropy_transport
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.exact_total
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.exact_transport
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.fiber_sum
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.integrableOn_bound
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.integrableOn_one_sub_Fenv
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.integral_piece
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.le_mass
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.one_sub_Sp
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.pmf_transport
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.ZeroTree
+CausalSpectrum.Zero.Lenv_shape_eq
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.Lenv_tree
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.Shape.compat_E
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.Shape.kernelOf_posValid
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.Shape.mass_E
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.Shape.mass_mix_continuous
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.Shape.mass_mix_zero
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.Shape.mass_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.Shape.mix_posValid
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.Shape.posValid_valid
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.Shape.run_E
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.Shape.run_compat
+  does not depend on any axioms
+CausalSpectrum.Zero.Shape.toTree_ofTree
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.ZTree.L_ofTree
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.ZTree.valid
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.dyadic_le_iff
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.ZeroClosure
+CausalSpectrum.Zero.merged_cons
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.merged_entropy
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.merged_exact
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.merged_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.merged_sum
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.shape_seed
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.tree_seed
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.zero_closure
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Zero.zero_lower
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.RenyiFinite
+CausalSpectrum.Renyi.atom_layer
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.continuous_gw
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.coupMoment_pos
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.coupRenyi_ge
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.coup_layer
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.coup_rpow_sum
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.coup_tail_ge
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.dAlpha_two
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.div_bounds
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.finset_layer
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.gw_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.gw_nonpos
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.hasDerivAt_pow2
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.infoMass_nonneg_of_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.interval_gw
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.one_sub_Fstar_eq
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.rpow_eq_moment
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.rpow_two_eq
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.sandwich_of_trace
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.seed_layer
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.seed_renyi_sandwich
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.seed_renyi_vs_ordinary
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.seed_rpow_sum
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.setIntegral_Ioc_gw
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.sum_envInc
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.theta_eq
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.theta_pos
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.trace_data
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.trace_tail_upper
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.w_layer
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.zMoment_layer
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.zMoment_pos
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.zval_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.Renyi.zw_layer
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.RenyiCountable
+CausalSpectrum.RenyiInf.H_of_gt
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.IsLaw.le_one
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.IsLaw.nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.IsLaw.sum
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.bdd
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.dAlpha_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.dp_ge
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.dp_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.exists_pos
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.fib_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.fib_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.fib_rpow
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.fib_summable
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.hinf_real_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.hreal_bounds
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.hreal_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.le_sup
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.mom_eq_of_ge
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.pow_tsum_ge
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.pow_tsum_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.push_event
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.push_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.push_total
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.rpow_le_self
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.rpow_split
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.sup_le_one
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.sup_pos
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.tsum_rpow_le_one
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.tsum_rpow_pos
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.weight_le_push
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.RenyiSource
+CausalSpectrum.Coupling.mk.congr_simp
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.OrdSource.envelope_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.OrdSource.law
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.OrdSource.marginal
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.OrdSource.ofSeed_w
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.OrdSource.one_sub_Fstar_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.OrdSource.push_le_one
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.OrdSource.tailU_tendsto
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.OrdSource.zRenyi_le
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.RenyiLimit
+CausalSpectrum.RenyiInf.CountableSeed'.ranked_tsum_enn
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.CountableSeed'.ranked_tsum_real
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.gr_entropyHead
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.gr_exactTo
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.gr_hasSum
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.gr_mom
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.gr_tail
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.gr_weight
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.lim_head_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.lim_mom_ge
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.lim_mom_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.limit_seed
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.rank_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.rlaw
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.rpow_neg_le_half
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.tail_le_info
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.tight
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.tsum_gWeight
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.wS_anti
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.wS_le_one
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.wS_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.wS_tendsto
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.zw_split
+  depends on axioms: [propext, choice, Quot.sound]
+
+-- CausalSeed.RenyiInfinite
+CausalSpectrum.RenyiInf.O_le_C
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.Oinf_le_Cinf
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.RZ_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.RZ_le_O
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.c_nonneg
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.hinf_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.le_of_ofReal_le
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.one_seed_all_orders
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.simultaneous_finiteness
+  depends on axioms: [propext, choice, Quot.sound]
+CausalSpectrum.RenyiInf.upper
+  depends on axioms: [propext, choice, Quot.sound]
+
+Notes. `Kernel.envelope_tendsto`, `cost_tendsto`, `greedy_tendsto` give the
+square-root asymptotic for all a ≥ b ≥ 0, `cost_rate` the O(n^{-1/4} log n)
+rate for b > 0. The W1 universality corollary is not a theorem.
+`Zero.zero_closure` is the finite closure under zero probabilities.
+`RenyiInf.one_seed_all_orders` assumes one ordinary exact source exists;
+`RZ ι α` is defined as sup_n R_α(Z_n) (L_∞ at α = 1), not as a moment of a
+limit variable Z. CountableAlphabet.lean was removed (it was not imported).

@@ -1,0 +1,266 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\At}{\operatorname{At}}
+\newcommand{\cS}{\mathcal S}
+\newcommand{\E}{\mathbb E}
+\title{Infinite causal seeds:\\atomic capacity and entropy attainment}
+\author{Proof completion for the finite-Shannon-theorem project}
+\date{11 October 2026}
+\begin{document}
+\maketitle
+\noindent\textbf{Verification status.} This document supplies the mathematical arguments
+for the measure and entropy completion. The accompanying Lean sources are
+\emph{uncompiled candidates}; no kernel certificate or publication priority is
+asserted. They extend repository commit \texttt{0244f50}. The finite extraction
+and diagonal results already established there are stated explicitly below as inputs.
+
+\section{Definitions and the inherited inputs}
+Let $T$ be a locally finite controlled history tree, with a finite nonempty
+set of actions at each history and a finite nonempty output set for each
+action. Kernels have positive probabilities; zero-probability outputs can be
+removed. Terminal histories are padded deterministically. Let $p(h)$ be the
+product of the transition probabilities along a valid history $h$, and zero
+on invalid raw histories. Thus $p(\varnothing)=1$ and
+$\sum_y p(hay)=p(h)$ for every available action $a$.
+
+A deterministic strategy gives an output at every history--action pair.
+Its space $\cS$ is a countable product of finite discrete spaces, hence compact
+and metrizable. Let $E_h$ be the clopen set of strategies agreeing with $h$.
+An exact causal law is a Borel probability $\mu$ on $\cS$ satisfying
+$\mu(E_h)=p(h)$ for every $h$.
+
+For the transcript distribution $P_{n,\pi}$ of a deterministic policy at
+depth $n$, set
+\[
+ A_K(P)=\max_{|D|\le K}P(D),\qquad
+ a_K=\inf_{n,\pi}A_K(P_{n,\pi}),\qquad q=\sup_K a_K\in[0,1].
+\]
+An ordinary source has an exact transcript readout for each $(n,\pi)$,
+without any compatibility requirement between the readouts.
+
+The repository's finite extraction and diagonal construction give weights
+$w_i\ge0$ and strategies $s_i\in\cS$, $i\in\mathbb N$, such that
+\begin{equation}\label{eq:input}
+ \sum_iw_i=q,\qquad c(h):=\sum_iw_i\mathbf1_{E_h}(s_i)\le p(h).
+\end{equation}
+In its notation these are \texttt{diagMass\_eq\_tsum\_atomQ} and
+\texttt{cylMass\_le\_path}. Also $r(h):=p(h)-c(h)\ge0$, and
+\begin{equation}\label{eq:flow}
+ r(\varnothing)=1-q,\qquad \sum_y r(hay)=r(h).
+\end{equation}
+These are the only inherited nontrivial inputs to the atomic completion.
+The entropy argument in Section~\ref{sec:entropy} does not require this
+particular greedy sequence.
+
+\section{The missing measure and the sharp converse}
+\begin{theorem}[Attained atomic capacity]\label{th:atomic}
+The maximal atomic mass of an exact causal source and that of an ordinary
+source are both $q$. In particular, an exact countable causal seed exists
+if and only if $q=1$.
+\end{theorem}
+\begin{proof}
+Define $\nu=\sum_iw_i\delta_{s_i}$. Countable additivity and
+\eqref{eq:input} give $\nu(\cS)=q$ and $\nu(E_h)=c(h)$; repeated strategies
+simply accumulate their weights at the same point.
+
+For every history--action coordinate, use the probability distribution
+\[
+ k^r(y\mid h,a)=
+ \begin{cases}
+ r(hay)/r(h),&r(h)>0,\\
+ k(y\mid h,a),&r(h)=0,
+ \end{cases}
+\]
+where $k$ is the original output kernel. Equation~\eqref{eq:flow} proves
+normalization in the first case; the second is already normalized. Take
+the independent product $\lambda$ of these coordinate laws on $\cS$.
+A valid path constrains distinct coordinates, so $\lambda(E_h)$ is the
+product of its successive $k^r$ factors. Induction on its length gives
+\begin{equation}\label{eq:tel}
+ (1-q)\lambda(E_h)=r(h).
+\end{equation}
+Indeed, if the parent residual is positive the next factor is the required
+ratio. If it is zero, every child residual is zero by nonnegativity and
+\eqref{eq:flow}, and both sides remain zero. This also covers $q=1$.
+Invalid histories have an empty cylinder and zero path mass. Therefore
+\[
+ \mu:=\nu+(1-q)\lambda
+ \quad\text{satisfies}\quad
+ \mu(\cS)=1,\qquad \mu(E_h)=c(h)+r(h)=p(h).
+\]
+Since $\mu\ge\nu$, its atomic mass is at least $q$.
+
+For the converse, let $\eta$ be any ordinary source law with measurable
+singletons and exact transcript readouts. A finite set $F$ of $K$ source
+points maps, under each readout, into at most $K$ transcripts. Hence
+\[
+ \eta(F)\le A_K(P_{n,\pi})\quad\text{for every }n,\pi,
+ \qquad \eta(F)\le a_K\le q.
+\]
+Taking the supremum over finite $F$ gives
+$\At(\eta):=\sum_x\eta(\{x\})\le q$. This applies to $\mu$ as well,
+so $\At(\mu)=q$.
+
+A source and its full tuple of transcript readouts yield the same maximum:
+the pushforward tuple law has atomic mass at least that of the source,
+and the preceding upper bound also applies to the tuple law. Thus the
+ordinary-coupling maximum is attained too. If $q=1$, $\nu$ alone is an
+exact probability supported on the countable set $\{s_i:i\in\mathbb N\}$.
+Conversely, a countable exact probability has atomic mass one, so the upper
+bound forces $q=1$.
+\end{proof}
+
+\section{Entropy: no escape of mass}\label{sec:entropy}
+Use natural logarithms in this section. For a countable seed with weights
+$v_i$, set $H(v)=\sum_i-v_i\ln v_i\in[0,\infty]$, with $0\ln0=0$.
+Let $C_n$ be the infimum of seed entropy among sources exact through depth
+$n$, and $C_\infty$ the infimum among seeds exact at every finite depth.
+The infimum of an empty class is $+\infty$.
+
+We may enumerate positive masses in decreasing order and pad a finite
+list with zeros. Here is why this is legitimate even for an infinite
+support. Every nonempty remainder of a summable sequence of positive
+masses has a largest element: its positive supremum is attained among
+the finitely many entries exceeding half that supremum. Successive
+selection of a largest entry exhausts the support, since only finitely
+many masses exceed any fixed positive threshold. Relabeling and deleting
+zero-mass labels preserve entropy and all readouts.
+
+At a finite horizon these definitions agree with optimization over a
+finite distribution on finite strategies. Restriction to depth $n$ maps
+any seed into the finite set of depth-$n$ strategies. Merging equal
+strategies cannot increase entropy: for a group of masses of total $p$,
+\[
+ \sum_j-v_j\ln v_j=-p\ln p+
+       p\sum_j-\frac{v_j}{p}\ln\frac{v_j}{p}\ge -p\ln p
+\]
+when $p>0$, and both sides are zero when $p=0$. Conversely, any finite
+strategy extends by arbitrary outputs beyond depth $n$. Thus these are
+the original finite-horizon costs, not a stronger feasibility requirement.
+The Lean file uses the ranked, zero-padded model as its explicit definition;
+the preceding relabeling and finite-quotient identifications are supplied
+here as mathematical arguments, not as additional compiled declarations.
+
+\begin{lemma}[Uniform tail bound]\label{lem:tail}
+If $v_0\ge v_1\ge\cdots\ge0$, $\sum_iv_i=1$, and $H(v)\le U<\infty$,
+then for every integer $K\ge1$,
+\[
+ \sum_{i\ge K}v_i\le\frac{U}{\ln(K+1)}.
+\]
+\end{lemma}
+\begin{proof}
+$(i+1)v_i\le\sum_{j=0}^iv_j\le1$. Hence, for $i\ge K$ with $v_i>0$,
+$-\ln v_i\ge\ln(K+1)$. Multiply by $v_i$ and sum. Zero terms cause
+no difficulty. All entropy terms are nonnegative.
+\end{proof}
+
+\begin{lemma}[Exact compactness with an entropy bound]\label{lem:compact}
+Suppose seed $j$ has ranked weights $v_i^{(j)}$ and strategy labels
+$s_i^{(j)}$, is exact through depth $j$, and
+$H(v^{(j)})\le b_j$, where $b_j\to B<\infty$ and $b_j\le U<\infty$.
+Then there is a seed exact at all depths with entropy at most $B$.
+\end{lemma}
+\begin{proof}
+The space $[0,1]^{\mathbb N}\times\cS^{\mathbb N}$ is compact metrizable.
+Pass to a subsequence $j_m\to\infty$ on which, for each label $i$,
+$v_i^{(j_m)}\to v_i$ and $s_i^{(j_m)}\to s_i$. The limiting weights
+remain nonnegative and decreasing. Each finite head has mass at most one,
+so $\sum_iv_i\le1$. Lemma~\ref{lem:tail} gives, for every fixed $K\ge1$,
+\[
+ 1-\sum_{i<K}v_i
+   =\lim_m\left(1-\sum_{i<K}v_i^{(j_m)}\right)
+   \le\frac{U}{\ln(K+1)}.
+\]
+Letting $K\to\infty$ proves $\sum_iv_i=1$. This is the essential
+no-escape step; coordinatewise convergence alone would not suffice.
+
+Fix a history $h$. Its cylinder is clopen, so for each fixed $i$ the
+indicators $\mathbf1_{E_h}(s_i^{(j_m)})$ eventually equal
+$\mathbf1_{E_h}(s_i)$. For every $K$, exactness at depth $j_m\ge|h|$ gives
+\begin{align*}
+ \sum_{i<K}v_i^{(j_m)}\mathbf1_{E_h}(s_i^{(j_m)})&\le p(h),\\
+ \sum_{i<K}v_i^{(j_m)}(1-\mathbf1_{E_h}(s_i^{(j_m)}))&\le1-p(h).
+\end{align*}
+Pass first to $m\to\infty$, then to $K\to\infty$. The two limiting
+series sum to one; their upper bounds also sum to one. Both inequalities
+are therefore equalities. In particular,
+$\sum_i v_i\mathbf1_{E_h}(s_i)=p(h)$ for every $h$.
+
+Finally, $x\mapsto-x\ln x$ is continuous on $[0,1]$. For each $K$,
+\[
+ \sum_{i<K}-v_i\ln v_i
+ =\lim_m\sum_{i<K}-v_i^{(j_m)}\ln v_i^{(j_m)}
+ \le\lim_m b_{j_m}=B.
+\]
+Taking the supremum over $K$ proves $H(v)\le B$. No continuity of entropy
+on the full countable simplex has been used.
+\end{proof}
+
+\begin{theorem}[Projective entropy identity and attainment]\label{th:entropy}
+For every locally finite controlled tree,
+\[
+ \boxed{C_\infty=\sup_{n\ge0}C_n.}
+\]
+If this value is finite, one exact countable seed attains it.
+\end{theorem}
+\begin{proof}
+Restriction gives $C_n\le C_{n+1}\le C_\infty$. This proves the result
+if $\sup_nC_n=+\infty$. Otherwise put $B=\sup_nC_n<\infty$.
+By the definition of infimum, choose a depth-$n$ exact seed with
+\[
+ H(v^{(n)})<C_n+\frac1{n+1}\le B+\frac1{n+1}.
+\]
+There is no need to assume existence of finite-horizon minimizers.
+Extend each finite strategy if necessary and rank its weights.
+Apply Lemma~\ref{lem:compact} with $b_n=B+1/(n+1)$ and $U=B+1$.
+The resulting infinite seed has entropy at most $B$. Restriction supplies
+the opposite inequality, proving both equality and attainment.
+\end{proof}
+
+\begin{corollary}[Connection to the finite Shannon bound]
+Return to bits and let $L_n$ denote the finite adaptive-envelope entropy.
+If the finite theorem gives
+$L_n\le C_n\le L_n+c_*$ with $c_*=(1+\log_2 e)/2$, then
+\[
+ L_\infty\le C_\infty\le L_\infty+c_*,\qquad
+ L_\infty:=\sup_n L_n.
+\]
+In particular, $L_\infty<\infty$ if and only if a finite-entropy exact
+seed exists on the whole tree. This condition implies $q=1$.
+\end{corollary}
+\begin{proof}
+Changing logarithm base multiplies all entropy costs by $1/\ln2$.
+Take suprema in the finite bounds and use Theorem~\ref{th:entropy}.
+Attainment provides the seed when the bound is finite. Conversely, any
+finite-entropy exact seed bounds every $L_n$ by restriction. Its countable
+support and Theorem~\ref{th:atomic} imply $q=1$.
+\end{proof}
+
+\section{What is included in the formalization candidate}
+\begin{itemize}
+\item \texttt{MeasureCompletion.lean}: residual product measure, exact
+mixture, cylinder probabilities and probability normalization.
+\item \texttt{AtomicCapacity.lean}: arbitrary-source upper bound,
+attainment, and the countable-seed equivalence $q=1$.
+\item \texttt{EntropyLimit.lean}: ranked-seed definitions, tail estimate,
+compactness, projective entropy identity, attainment, and the exact
+probability measure of the optimal seed. Entropy is in nats in this file.
+\end{itemize}
+The explicit Lean costs optimize over ranked countable seeds. The proof
+of their identification with differently encoded finite optimization
+problems is given above in prose. The envelope corollary combines the
+projective identity with the repository's finite theorem; it is not an
+additional Lean declaration in this package. None of these new files has
+been compiled here. Successful compilation and inspection of
+\texttt{\#print axioms} remain required before claiming a formal certificate.
+
+\begin{thebibliography}{1}
+\bibitem{repo} J. Mikul\'{\i}k, \emph{finite-Shannon-theorem}, repository,
+commit \texttt{0244f50}.
+\url{https://github.com/jendamikulik/finite-Shannon-theorem}.
+\end{thebibliography}
+\end{document}

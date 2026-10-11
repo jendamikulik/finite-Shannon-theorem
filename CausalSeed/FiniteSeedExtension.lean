@@ -1,4 +1,4 @@
-/- Candidate, not locally compiled. Exact finite-to-infinite seed extension. -/
+/- Compiled in the lake build of 11 October 2026 (Lean 4.35.0-rc3, mathlib 7d6757bc). Exact finite-to-infinite seed extension. -/
 import CausalSeed.SeedDataProcessing
 
 noncomputable section

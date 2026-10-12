@@ -21,7 +21,7 @@ over all policies, and its mean $`L`$. Results:
 - For finite trees, the optimal entropy is within the universal constant
   $`c_{\star}=\tfrac12(1+\log_2 e)`$ of $`L`$.
 - The bound extends to infinite horizons, to atomic capacity and to Rényi entropies of
-  every positive order.
+  every positive order, also when kernels have zero entries.
 - For stationary kernels this gives the sharp $`\sqrt n`$ asymptotic, its $`W_1`$
   universality, and the linear growth rate when the actions' entropies differ.
 - For dyadic kernels the overhead vanishes.
@@ -583,6 +583,76 @@ Lean:
 - [`sharp_threshold`](CausalSeed/Profile.lean#L548)
 - [`relabelRepair_iff_countStable`](CausalSeed/Relabel.lean#L1577)
 
+### VI. Zero branches on infinite trees
+
+Let $`T`$ be a locally finite history-dependent tree with nonnegative kernels
+(`ZeroBranch.NNTree`): at each history finitely many actions, and for each action a finite
+law $`K_{h,a}\ge0`$ that may vanish on some outputs. The reduced tree $`T^{+}`$
+(`NNTree.plus`, an `ITree`) keeps at every history only the outputs of positive
+probability, in their original order, without renormalizing. A history of $`T^{+}`$ lifts
+injectively to a history of $`T`$ with the same probability. A causal decoder for $`T`$ on a
+measure space $`(\Omega,\mu)`$ is a map to total response strategies of $`T`$ with
+measurable coordinates. It is exact to horizon $`n`$ if every history of length at most
+$`n`$ is reproduced with its path probability. $`T_n`$ is the depth-$`n`$ tree of $`T`$ with
+all zero branches retained (`NNTree.Zt n`).
+
+**Theorem 22 (zero branches preserve the seed space).** There are maps $`R`$ from total
+strategies of $`T`$ to total strategies of $`T^{+}`$ and $`E`$ in the other direction with
+$`R\circ E=\mathrm{id}`$ and $`E`$ injective, such that the following hold:
+
+1. For every measure space and every $`n`$, an exact causal decoder for $`T`$ to horizon $`n`$
+   exists if and only if one exists for $`T^{+}`$. The same holds with one decoder exact at
+   every horizon. The seed space and its measure are unchanged; only the decoder is
+   composed with $`R`$ or $`E`$.
+2. A measure space carries an ordinary exact source for $`T`$ if and only if it carries one
+   for $`T^{+}`$. The same holds for countable ordinary sources, with the same weights.
+3. The spectrum is unchanged: $`F^{\ast}_{T_n}=F^{\ast}_{T^{+}_n}`$ and $`L(T_n)=L(T^{+}_n)`$
+   for every $`n`$.
+
+Lean (namespace `ZeroBranch.NNTree`):
+- [`R_E`](CausalSeed/ZeroBranch.lean#L319), [`E_injective`](CausalSeed/ZeroBranch.lean#L326),
+  [`pathMass_plus`](CausalSeed/ZeroBranch.lean#L246), [`lift_injective`](CausalSeed/ZeroBranch.lean#L185)
+- [`seed_space_iff`](CausalSeed/ZeroBranchSeed.lean#L130),
+  [`seed_space_iff_all`](CausalSeed/ZeroBranchSeed.lean#L135)
+- [`ordinary_iff`](CausalSeed/ZeroBranchOrdinary.lean#L186),
+  [`ordSrcC_iff`](CausalSeed/ZeroBranchOrdinary.lean#L292)
+- [`F_Zt`](CausalSeed/ZeroBranchSpectrum.lean#L179), [`L_Zt`](CausalSeed/ZeroBranchSpectrum.lean#L183)
+
+**Corollary 23 (Theorems 5–8 for kernels with zero entries).** Define, on $`T`$ itself,
+$`C_n`$ and $`C_\infty`$ over countable seeds of total strategies of $`T`$,
+$`L_\infty=\sup_nL(T_n)`$, $`F_\infty(t)=\inf_nF^{\ast}_{T_n}(t)`$ and $`q=\sup_tF_\infty(t)`$.
+Then:
+
+1. $`C_\infty=\sup_nC_n`$ (nats), and if this is finite one seed exact at every horizon
+   attains it.
+2. $`L_\infty\le C_\infty\le L_\infty+c_{\star}`$ (bits). An exact seed of finite entropy exists
+   if and only if $`L_\infty<\infty`$, and then one attains $`C_\infty`$.
+3. $`F_\infty(t)\to q`$ as $`t\to\infty`$, and $`q=\mathrm{atomQ}(T^{+})`$. Every exact causal
+   decoder and every ordinary exact source of $`T`$ on a probability space with measurable
+   singletons has atomic mass at most $`q`$. Some exact probability law on total strategies
+   of $`T`$, and some ordinary exact source of $`T`$, have atomic mass exactly $`q`$. An exact
+   countable seed exists if and only if $`q=1`$.
+4. If $`T`$ has a countable ordinary exact source, one countable seed $`S`$ on $`T`$, exact at
+   every horizon, satisfies
+   $`R_\alpha(Z)\le O_\alpha(T)\le C_\alpha(T)\le H_\alpha(S)\le R_\alpha(Z)+d_\alpha`$ for every
+   $`\alpha>0`$, and $`H_\infty(S)=C^{\mathrm R}_\infty(T)=O^{\mathrm R}_\infty(T)`$. Here $`Z`$ is
+   the envelope limit variable of $`T^{+}`$, whose CDF on $`[0,\infty)`$ is $`F_\infty`$ of $`T`$.
+
+Lean (namespace `ZeroBranch.NNTree`):
+- [`infiniteCost_eq_iSup`](CausalSeed/ZeroBranchSeed.lean#L256),
+  [`infiniteCost_attained`](CausalSeed/ZeroBranchSeed.lean#L262)
+- [`envelope_sandwich`](CausalSeed/ZeroBranchTransfer.lean#L43),
+  [`finite_seed_iff`](CausalSeed/ZeroBranchTransfer.lean#L50),
+  [`infiniteCost_attained_sandwich`](CausalSeed/ZeroBranchTransfer.lean#L68)
+- [`tendsto_Finf`](CausalSeed/ZeroBranchTransfer.lean#L85), [`q_eq`](CausalSeed/ZeroBranchTransfer.lean#L81),
+  [`atomic_upper`](CausalSeed/ZeroBranchTransfer.lean#L144),
+  [`atomic_attained`](CausalSeed/ZeroBranchTransfer.lean#L156),
+  [`ordinary_atomic_le`](CausalSeed/ZeroBranchOrdinary.lean#L191),
+  [`ordinary_atomic_attained`](CausalSeed/ZeroBranchOrdinary.lean#L197),
+  [`countable_seed_iff_q_one`](CausalSeed/ZeroBranchTransfer.lean#L186)
+- [`one_seed_all_orders_T`](CausalSeed/ZeroBranchOrdinary.lean#L306),
+  [`OalphaT_eq`](CausalSeed/ZeroBranchOrdinary.lean#L295)
+
 ## Verification
 
 The development is the import closure of
@@ -603,8 +673,8 @@ defining module is `CausalSeed.*` and computes its axioms with `collectAxioms`.
 Auto-generated declarations (equation lemmas, `sizeOf_spec`, injectivity lemmas,
 instances) are excluded.
 
-[`AXIOMS.txt`](AXIOMS.txt) records the result. All **1860** theorems in the 74 project
-modules depend only on `propext`, `Classical.choice` and `Quot.sound`; three depend on
+[`AXIOMS.txt`](AXIOMS.txt) records the result. All **2106** theorems in the 88 project
+modules depend only on `propext`, `Classical.choice` and `Quot.sound`; seven depend on
 no axiom. No theorem uses `sorryAx`, the build reports no `sorry` or `admit`, and the
 project declares no `axiom`.
 
@@ -675,6 +745,9 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 **Zero-probability branches**
 - `ZeroGame`, `ZeroTree`, `ZeroClosure`: an abstract finite game, trees with nonnegative kernels, the closure theorem.
 - `ZeroKernel`, `ZeroCost`: stationary kernels with zero entries, their reduction, and the equality of costs.
+- `ZeroBranch`, `ZeroBranchSeed`: infinite trees with nonnegative kernels, the reduced tree, the maps $`R`$ and $`E`$, preservation of the seed space and transfer of the costs (Theorem 22, Corollary 23).
+- `ZeroBranchSpectrum`, `ZeroBranchLeaves`: equality of the finite-horizon envelopes, and the policy and transcript maps between $`T_n`$ and $`T^{+}_n`$.
+- `ZeroBranchTransfer`, `ZeroBranchOrdinary`: the envelope sandwich, atomic capacity and Rényi seed on $`T`$, and ordinary sources.
 
 **Rényi spectrum**
 - `RenyiFinite`: the finite-horizon Rényi sandwich.
@@ -717,8 +790,8 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 **Scope.**
 - All local alphabets are finite and nonempty.
 - Policies are deterministic and adaptive.
-- Theorems 3 and 14 and the nonnegative-kernel parts of Theorems 15 and 16 allow zero kernel
-  entries; all other results assume strictly positive kernels.
+- Theorems 3, 14, 22 and Corollary 23 and the nonnegative-kernel parts of Theorems 15 and 16
+  allow zero kernel entries; all other results assume strictly positive kernels.
 
 **Open mathematical problems.**
 - The exact value of $`G_{\ast}\in[\tfrac29,c_{\star}]`$, and whether all minimizers are causal
@@ -726,7 +799,6 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 - The second-order term of $`C_n-nh`$ when $`a=b`$, where the $`\sqrt n`$ coefficient
   vanishes.
 - Optimality of the constants $`c_{\star}`$ and $`d_\alpha`$.
-- Infinite-horizon versions of Theorems 5–8 for kernels with zero entries.
 
 **Hypotheses of Theorem 16.** Parts 1 and 2 require a reference action whose law has two
 distinct values and whose variance (and, for part 2, third moment) every action shares.

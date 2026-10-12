@@ -85,3 +85,12 @@ import CausalSeed.MaxEntropyHoeffding
 import CausalSeed.MaxEntropy
 import CausalSeed.MaxEntropyReduction
 import CausalSeed.MaxEntropyExample
+import CausalSeed.LogWidth
+import CausalSeed.LogExample
+import CausalSeed.LogAmp
+import CausalSeed.LogGauss
+import CausalSeed.LogCorrector
+import CausalSeed.LogTaylor
+import CausalSeed.LogResidual
+import CausalSeed.LogFinal
+import CausalSeed.LogCost

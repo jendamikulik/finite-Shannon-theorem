@@ -466,9 +466,92 @@ Lean:
   [`recursion_solve`](CausalSeed/MomentWidth.lean#L598),
   [`ofReal_eG_le_Wint`](CausalSeed/MomentUpper.lean#L159)
 
+**Theorem 17 (monotone residual; deterministic images).** For every stationary positive
+kernel and every action $`j`$, $`C_{n+1}\ge H(K_j)+C_n`$. Hence the residual
+$`C_n-nh_{\max}`$ is nonnegative and nondecreasing, and it converges to a finite limit
+whenever it is bounded. If every output law is a deterministic image of one action's law,
+$`K_a=(f_a)_\#K_{j_0}`$, then $`H(K_{j_0})=h_{\max}`$ and $`C_n=nh_{\max}`$ for every $`n`$.
+
+The first inequality conditions an exact horizon-$`(n+1)`$ seed on the first output of
+action $`j`$; each conditional seed is exact to horizon $`n`$, and the chain rule gives the
+bound. The second statement uses one sample of $`K_{j_0}`$ per round, read through
+$`f_a`$, together with subadditivity and Theorem 13.
+
+Lean:
+- [`Kernel.costBits_succ_ge`](CausalSeed/GapImage.lean#L293)
+- [`Kernel.residual_mono`](CausalSeed/GapImage.lean#L306),
+  [`residual_nonneg`](CausalSeed/GapImage.lean#L313),
+  [`residual_tendsto`](CausalSeed/GapImage.lean#L318)
+- [`Kernel.costBits_eq_of_image`](CausalSeed/GapImage.lean#L120),
+  with [`Kernel.IsImage`](CausalSeed/GapImage.lean#L19)
+
+**Theorem 18 (zero set of the residual).** For every stationary positive kernel the
+following are equivalent: (i) $`C_1=h_{\max}`$; (ii) there are an action $`j_0`$ and maps
+$`f_a`$ with $`K_a=(f_a)_\#K_{j_0}`$ for every $`a`$; (iii) $`C_n=nh_{\max}`$ for every $`n`$.
+Equivalently, the limit of the residual is $`0`$ if and only if every output law is a
+deterministic image of a maximizing law.
+
+An exact horizon-1 seed induces a coupling of the output laws (the tuple of first answers),
+and by data processing $`C_1`$ is at least the least entropy of a coupling. The couplings
+form a compact set, so this least entropy is attained. A coupling whose entropy does not
+exceed $`H(K_{j})=h_{\max}`$ has point-mass conditional laws given the $`j`$-th coordinate
+(strict subadditivity of $`-x\log x`$), so the other coordinates are functions of it.
+
+Lean:
+- [`Kernel.zero_set`](CausalSeed/GapZero.lean#L223)
+- [`Kernel.exists_min_cpl`](CausalSeed/GapZero.lean#L149),
+  [`Kernel.finiteCost_one_ge`](CausalSeed/GapZero.lean#L156),
+  [`Kernel.image_of_cpl`](CausalSeed/GapZero.lean#L167)
+- [`Kernel.residual_bdd_of_subseq`](CausalSeed/GapZero.lean#L255): a bound along any
+  unbounded sequence of horizons bounds the residual everywhere.
+
+**Theorem 19 (strict entropy gap: bounded residual).** Let $`\kappa`$ be a stationary
+strictly positive kernel in which exactly one action $`j_0`$ attains
+$`h_{\max}=\max_a H(K_a)`$, i.e. $`H(K_a)<H(K_{j_0})`$ for every $`a\ne j_0`$. Then there is
+a constant $`K`$, independent of $`n`$, with
+
+```math
+nh_{\max}\le C_n\le nh_{\max}+K\qquad\text{for all }n .
+```
+
+Consequently $`\ell=\lim_{n\to\infty}(C_n-nh_{\max})`$ exists and is finite, and by
+Theorem 18, $`\ell=0`$ if and only if every output law is a deterministic image of a
+maximizing law.
+
+Proof outline. Let $`g=H(K_{j_0})-h'_{\max}>0`$, where $`h'_{\max}`$ is the maximal entropy of
+the subkernel on the other actions, and set $`\delta_x=g/4`$, $`\delta=g/8`$. A *pair* couples
+$`p`$ i.i.d. samples of $`K_{j_0}`$ with an exact finite seed (from causal truncation) for
+the subkernel on a window of length $`q`$, by the interval coupling whose tail atoms are
+merged. Its entropy is at most
+$`p\,H(K_{j_0})+\varepsilon(p,q)`$, where $`\varepsilon`$ collects the Hoeffding lower tail of the
+product information, the split-atom term and the tail entropy $`T_q`$ of the subfamily
+seed (bounded by the Chernoff upper tail of the Bellman envelope). With
+$`D+2`$ pairs of sizes $`p_i=D+1-i`$ and windows $`q_i=p_{i-1}`$ arranged anti-diagonally, an
+interleaved decoder reads action-$`j_0`$ outputs from the product samples and the other
+outputs from the windows; every block is consumed before it is needed, so the decoder is
+exact for adaptive policies at horizon $`n_D=\sum_i p_i`$. The middle excesses
+$`\varepsilon(p,p+1)`$ are $`O(p\rho^p)`$ with $`\rho<1`$, hence summable, which bounds the
+residual along $`n_D`$; monotonicity of the residual extends the bound to all $`n`$.
+
+Lean:
+- [`Kernel.residual_bdd`](CausalSeed/GapBound.lean#L374), with
+  [`Kernel.UniqueMax`](CausalSeed/GapBound.lean#L161)
+- [`Kernel.residual_limit`](CausalSeed/GapBound.lean#L428),
+  [`Kernel.residual_limit_zero_iff`](CausalSeed/GapBound.lean#L435)
+- Block absorption: [`Gap.heavy_mass_le`](CausalSeed/GapProduct.lean#L89) (Hoeffding lower
+  tail of product information), [`Gap.tail_entropy_le`](CausalSeed/GapTail.lean#L102) (tail
+  entropy $`T_q`$), [`Gap.piC_entropy_le'`](CausalSeed/GapPair.lean#L212) (pair coupling),
+  [`Kernel.mkComp_entropy`](CausalSeed/GapComp.lean#L136)
+- Interleaved decoder: [`Kernel.pathMass_split`](CausalSeed/GapDecoder.lean#L144),
+  [`Kernel.decoder_exact`](CausalSeed/GapInterleave.lean#L324),
+  [`Kernel.finiteCost_le_plan`](CausalSeed/GapInterleave.lean#L389)
+- Block arithmetic and $`K`$: [`Gap.sep_family`](CausalSeed/GapBound.lean#L106),
+  [`Kernel.costBits_family`](CausalSeed/GapBound.lean#L136),
+  [`Kernel.summable_Fexc`](CausalSeed/GapBound.lean#L226)
+
 ### V. Structure of the causal constraint
 
-**Theorem 16 (exact penalty).** Let $`G_{\ast}=\sup_T\bigl(C(T)-O(T)\bigr)`$, where $`O(T)`$
+**Theorem 20 (exact penalty).** Let $`G_{\ast}=\sup_T\bigl(C(T)-O(T)\bigr)`$, where $`O(T)`$
 is the least entropy of an exact coupling that need not be causal. Then
 $`\tfrac29\le G_{\ast}\le c_{\star}`$. For every $`\kappa\ge G_{\ast}`$,
 
@@ -487,7 +570,7 @@ Lean:
 - [`global_minimizer_above_gap_is_causal`](CausalSeed/StrictPenalty.lean#L74)
 - [`near_minimizer_badMass_le`](CausalSeed/StrictPenalty.lean#L18)
 
-**Theorem 17 (arithmetic rigidity).** Let $`w`$ be a positive weight vector with total
+**Theorem 21 (arithmetic rigidity).** Let $`w`$ be a positive weight vector with total
 mass one. Every exact policy-indexed decoder family on every finite tree is causally
 realizable if and only if all subset sums of $`w`$ are distinct. With marginal error
 $`\varepsilon\ge0`$, every $`\varepsilon`$-accurate family is realizable if and only if
@@ -520,7 +603,7 @@ defining module is `CausalSeed.*` and computes its axioms with `collectAxioms`.
 Auto-generated declarations (equation lemmas, `sizeOf_spec`, injectivity lemmas,
 instances) are excluded.
 
-[`AXIOMS.txt`](AXIOMS.txt) records the result. All **1810** theorems in the 71 project
+[`AXIOMS.txt`](AXIOMS.txt) records the result. All **1860** theorems in the 74 project
 modules depend only on `propext`, `Classical.choice` and `Quot.sound`; three depend on
 no axiom. No theorem uses `sorryAx`, the build reports no `sorry` or `admit`, and the
 project declares no `axiom`.
@@ -610,6 +693,12 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 - `Wasserstein`, `SqrtW1`, `GapW1`: $`W_1`$ by optimal transport, the quantile coupling, universality and the gap identity for it.
 - `MomentClass`: the $`\Theta(\sqrt n)`$ branch of the moment classification.
 - `MomentFourier`, `MomentLower`: the Fourier lower bound for $`\int|E_jG_n-E_kG_n|`$ and the $`\Omega(\log n)`$ lower bound.
+- `GapImage`: one-step superadditivity, the monotone residual, and deterministic images.
+- `GapZero`: the zero set of the residual (Theorem 18).
+- `GapCoupling`: the interval coupling of two finite laws and its entropy bound (the finite core of block absorption).
+- `GapProduct`, `GapTail`, `GapPair`, `GapComp`: product samples and their Hoeffding tail, the subfamily tail entropy, the pair coupling and its entropy.
+- `GapDecoder`, `GapBlocks`, `GapInterleave`: the subkernel, history splitting, block utilities, and exactness of the interleaved decoder.
+- `GapBound`: the anti-diagonal block family, the constant $`K`$, and Theorem 19.
 - `MomentTaylor`, `MomentDecay`, `MomentSmooth`, `MomentWidth`, `MomentUpper`, `MomentAssembly`: the Taylor bound, total-variation decay, uniform splines, the width recursion, and the $`O(\log n)`$, $`O(1)`$ and $`\Theta(\log n)`$ theorems.
 - `CausalFloor`: the causal Shannon floor.
 - `Subadditive`: concatenation of seeds, $`C_{m+n}\le C_m+C_n`$, and the Fekete limit.
@@ -637,10 +726,6 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 - The second-order term of $`C_n-nh`$ when $`a=b`$, where the $`\sqrt n`$ coefficient
   vanishes.
 - Optimality of the constants $`c_{\star}`$ and $`d_\alpha`$.
-- Whether $`C_n-nh_{\max}=O(1)`$ when exactly one action attains $`h_{\max}`$.
-  Theorems 11 and 13 give $`0\le C_n-nh_{\max}\le K\sqrt n+c_{\star}`$. When two
-  maximizing actions have different variances, Theorem 9 shows the excess grows
-  like $`\sqrt n`$.
 - Infinite-horizon versions of Theorems 5–8 for kernels with zero entries.
 
 **Hypotheses of Theorem 16.** Parts 1 and 2 require a reference action whose law has two

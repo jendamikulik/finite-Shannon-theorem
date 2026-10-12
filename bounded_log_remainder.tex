@@ -1,0 +1,300 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,microtype}
+\usepackage[a4paper,margin=26mm]{geometry}
+\usepackage[colorlinks=true,urlcolor=blue,citecolor=blue]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\norm}[1]{\left\|#1\right\|_1}
+\title{A Bounded Remainder in the\protect\\Sharp Logarithmic Causal Entropy Law}
+\author{Jan Mikul\'ik}
+\date{12 October 2026\quad---\quad Analytic proof manuscript}
+\begin{document}
+\maketitle
+\begin{abstract}
+For finitely many centered finite increment laws of common positive
+variance, the upper Bellman semigroup has uniformly bounded integrated
+amplification on sufficiently broad Gaussian densities. A Gaussian
+telescoping argument proves this by induction, using a summable
+$t^{-3/2}$ defect. Combined with the existing pointwise residual bound
+for the logarithmic corrector, it yields an $O(1)$ remainder in both
+the mean and the unscaled $W_1$ Gaussian approximation. Consequently,
+for a stationary kernel of common entropy $h$ and common information
+variance $v>0$, the optimal causal seed entropy is
+$nh+(\kappa_+-\kappa_-)(3v\sqrt{2\pi e})^{-1}\ln n+O(1)$.
+\end{abstract}
+
+\paragraph{Verification status.}
+The new Gaussian amplification argument below is an analytic proof,
+not a Lean-checked extension. Its input from the existing development
+is the explicit corrector and pointwise residual majorant, not the
+conclusion that its error propagates boundedly. Historical priority
+has not been established. A convergent constant remainder is not claimed.
+
+\section{Setting and main result}
+Let $X_1,\ldots,X_d$ have finitely supported laws satisfying
+\[
+ \E X_i=0,\qquad \E X_i^2=v>0.
+\]
+Set $\kappa_i=\E X_i^3$, $\kappa_-=\min_i\kappa_i$,
+$\kappa_+=\max_i\kappa_i$, and
+\[
+ A_i f(x)=\E f(x-X_i),\qquad
+ Tf=\min_i A_i f,\qquad Uf=\max_i A_i f.
+\]
+Both operators preserve order and commute with translations. The
+operator $U$ is positively homogeneous and subadditive, and
+\begin{equation}\label{eq:lip}
+ |Tf-Tg|\le U|f-g|,\qquad |Uf-Ug|\le U|f-g|.
+\end{equation}
+Let $H=\mathbf1_{[0,\infty)}$, $G_n=T^nH$, and let $\nu_n$ be the
+probability law with CDF $G_n$. The mean of this envelope law is
+$e_n=\int_\R(H-G_n)$. The family is fixed throughout; constants
+are permitted to depend on it. Write $\phi,\Phi$ for the standard
+Gaussian density and CDF.
+
+\begin{theorem}\label{thm:main}
+With $c=(\kappa_+-\kappa_-)/(3v\sqrt{2\pi e})$, there is a finite
+constant $K$ such that for all integers $n\ge1$,
+\begin{equation}\label{eq:main}
+ \boxed{W_1\bigl(\nu_n,N(c\ln n,vn)\bigr)\le K,
+ \qquad |e_n-c\ln n|\le K.}
+\end{equation}
+No lattice or aperiodicity assumption is needed.
+\end{theorem}
+
+\begin{corollary}\label{cor:cost}
+For any finite stationary kernel with common action entropy $h$ and
+common positive information variance $v$, in bits,
+\[
+ \boxed{C_n=nh+\frac{\kappa_+-\kappa_-}{3v\sqrt{2\pi e}}\ln n+O(1),}
+\]
+where $\kappa_i=\E(-\log_2P_i(Y_i)-h)^3$. The same expansion holds
+for the envelope mean and for exact seeds of entropy within a bounded
+additive amount of that mean.
+\end{corollary}
+\begin{proof}[Proof of the corollary from Theorem~\ref{thm:main}]
+The centered transcript-information envelope is $G_n$, and
+$L_n=nh+e_n$. Use the finite-tree sandwich
+$L_n\le C_n\le L_n+c_\star$ from~\cite{repo}.
+\end{proof}
+
+\section{Uniform Gaussian amplification}
+For $t>0$ denote the $N(0,vt)$ density by
+\[
+ \gamma_t(x)=\frac{1}{\sqrt{2\pi vt}}e^{-x^2/(2vt)}.
+\]
+Let $P$ be convolution with $N(0,v)$, so $P\gamma_t=\gamma_{t+1}$.
+This is a comparison operator, not an additional available action.
+
+\begin{lemma}[One-step Gaussian defect]\label{lem:defect}
+There is $D<\infty$ such that for all $t\ge1$ and $x\in\R$,
+\begin{equation}\label{eq:defect}
+ |U\gamma_t(x)-\gamma_{t+1}(x)|
+ \le D t^{-3/2}\gamma_{8t}(x).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $M=\max_i\max\{|y|:y\in\operatorname{supp}X_i\}$.
+Centered Taylor expansion and equality of the second moments give
+\[
+ \left|A_i\gamma_t-\gamma_t-\frac v2\gamma_t''\right|(x)
+ \le\frac{\E|X_i|^3}{6}
+       \sup_{|a|\le M}|\gamma_t'''(x-a)|.
+\]
+Also $\partial_t\gamma_t=(v/2)\gamma_t''$, whence
+\[
+ \left|\gamma_{t+1}-\gamma_t-\frac v2\gamma_t''\right|(x)
+ \le\frac12\sup_{t\le s\le t+1}|\partial_s^2\gamma_s(x)|.
+\]
+For finite constants $D_3,D_4$, uniformly in $t\ge1$,
+\begin{align}
+ \sup_{|a|\le M}|\gamma_t'''(x-a)|
+    &\le D_3t^{-3/2}\gamma_{8t}(x),\label{eq:window3}\\
+ \sup_{t\le s\le t+1}|\partial_s^2\gamma_s(x)|
+    &\le D_4t^{-2}\gamma_{8t}(x).\label{eq:window4}
+\end{align}
+Here is a direct justification of uniformity in $x$. With
+$z=x/\sqrt{vt}$, $b=a/\sqrt{vt}$, one has $|b|\le M/\sqrt v$
+and $(z-b)^2\ge z^2/2-b^2$. Gaussian spatial derivatives are a
+polynomial times their Gaussian density. Thus the ratio in
+\eqref{eq:window3}, after removing $t^{-3/2}$, is bounded by a
+constant times $(1+|z|)^3e^{-3z^2/16}$. For~\eqref{eq:window4},
+use $\partial_s^2\gamma_s=(v^2/4)\gamma_s''''$ and
+$1\le s/t\le2$; the analogous ratio is bounded by a constant times
+$(1+|z|)^4e^{-3z^2/16}$. Both suprema are finite.
+Finally $t^{-2}\le t^{-3/2}$ and
+$|\max_i a_i-b|\le\max_i|a_i-b|$, proving~\eqref{eq:defect}.
+\end{proof}
+
+\begin{lemma}[Bounded integrated amplification]\label{lem:amp}
+Choose $A\ge1$ with $3D/\sqrt A\le1/2$, where $D$ is from
+Lemma~\ref{lem:defect}. Then for every $t\ge A$, every $m\in\R$
+and every integer $n\ge0$,
+\begin{equation}\label{eq:amp}
+ \boxed{\int_\R U^n\bigl[\gamma_t(\cdot-m)\bigr](x)\,dx\le2.}
+\end{equation}
+For example $A=\max\{1,36D^2\}$ is admissible.
+\end{lemma}
+\begin{proof}
+Translation invariance reduces the proof to $m=0$. Positivity,
+subadditivity,~\eqref{eq:lip}, and $P^r\gamma_t=\gamma_{t+r}$ give
+the pointwise telescoping bound
+\begin{equation}\label{eq:telescope}
+ U^n\gamma_t\le\gamma_{t+n}
+ +D\sum_{r=0}^{n-1}(t+r)^{-3/2}
+                   U^{n-1-r}\gamma_{8(t+r)}.
+\end{equation}
+For clarity, obtain this by comparing $U^n\gamma_t$ with
+$U^{n-1}\gamma_{t+1}$, then $U^{n-2}\gamma_{t+2}$, and so forth;
+each difference is bounded by the appropriate iterate of $U$ applied
+to $|U\gamma_{t+r}-\gamma_{t+r+1}|$.
+
+Use strong induction on $n$, simultaneously for every real $t\ge A$.
+The assertion at $n=0$ is the Gaussian integral, equal to one.
+In~\eqref{eq:telescope}, every remaining horizon is less than $n$
+and every Gaussian time $8(t+r)$ is at least $A$. The induction
+hypothesis therefore bounds its integral by two. Since
+\[
+ \sum_{r=0}^\infty(t+r)^{-3/2}
+ \le t^{-3/2}+\int_0^\infty(t+s)^{-3/2}\,ds
+ \le\frac3{\sqrt t},
+\]
+the integrated right side of~\eqref{eq:telescope} is at most
+$1+6D/\sqrt t\le2$. This closes the induction. There is no assumption
+that the supremum over all horizons is already finite.
+\end{proof}
+
+\paragraph{A general stability consequence.}
+If $|f-g|\le b\gamma_t(\cdot-m)$ with $b\ge0$ and $t\ge A$, then
+\begin{equation}\label{eq:stab}
+ \norm{T^nf-T^ng}\le2b\qquad(n\ge0).
+\end{equation}
+This follows from~\eqref{eq:lip} and Lemma~\ref{lem:amp}.
+The same holds for sums of such majorants, with $2\sum b$ on the
+right. A further consequence, for $f\ge0$ integrable, is
+$\int U^n(\gamma_t*f)\le2\norm f$ when $t\ge A$:
+take the supremum over policies inside the nonnegative integral
+against $f$, and apply Tonelli and~\eqref{eq:amp}.
+
+\section{The existing corrector input}
+We now use the following explicit analytic objects and bounds from
+the logarithmic-coefficient proof~\cite{sharp,repo}. Define
+\[
+ f(z)=\min_i\left[-\frac{\kappa_i}{6v^{3/2}}(z^2-1)\phi(z)\right],
+ \quad a=\int f=-\frac{c}{\sqrt v},
+\]
+\[
+ J(z)=\int_{-\infty}^z2(a\phi(y)-f(y))\,dy,\qquad
+ B(z)=\phi(z)\int_0^z\frac{J(y)}{\phi(y)}\,dy.
+\]
+The corrector solves $B''+zB'+B=2(a\phi-f)$, is integrable,
+and is bounded in absolute value by a polynomial times $\phi$.
+For $t\ge1$, set
+\[
+ z_t(x)=\frac{x-c\ln t}{\sqrt{vt}},\qquad
+ u_t(x)=\Phi(z_t(x))+t^{-1/2}B(z_t(x)).
+\]
+The established pointwise residual bound is
+\begin{equation}\label{eq:input}
+ |u_{t+1}(x)-Tu_t(x)|
+ \le K_0t^{-2}(1+z_t(x)^2)^4e^{-z_t(x)^2/8}.
+\end{equation}
+In the repository namespace \texttt{CausalSpectrum.LogGauss}, this is
+\texttt{residual\_pointwise}, and
+\texttt{residual\_majorant} packages it with its Gaussian window.
+These statements assume only centering, common variance $v>0$,
+and the finite increment family. We do not assume any bounded
+propagation statement for these residuals.
+
+Let $D_E=64^4e^{-63/16}$. Maximizing
+$(1+z^2)^4e^{-z^2/16}$ shows it is at most $D_E$. Therefore
+\eqref{eq:input} implies, with $b_0=K_0D_E\sqrt{16\pi v}$,
+\begin{equation}\label{eq:gaussres}
+ |u_{t+1}-Tu_t|(x)
+ \le b_0t^{-3/2}\gamma_{8t}(x-c\ln t).
+\end{equation}
+The right side has summable mass, and Lemma~\ref{lem:amp} prevents
+that mass from growing with the remaining horizon.
+
+\section{Proof of the bounded remainder}
+Fix any real $T\ge\max\{A,2\}$ once and for all, independently of $n$.
+The initial error has a Gaussian majorant
+\begin{equation}\label{eq:initial}
+ |H(x)-u_T(x)|\le b_1\gamma_{s_0}(x-c\ln T)
+\end{equation}
+for some finite $b_1$ and some $s_0\ge A$.
+To verify this, choose $s_0=8T$. On each sufficiently distant tail,
+$H-\Phi(z_T)$ is a Gaussian tail and $B(z_T)$ is bounded by a
+polynomial times $\phi(z_T)$. Dividing by the broader Gaussian
+$\gamma_{8T}(x-c\ln T)$ gives a bounded ratio tending to zero.
+On the remaining compact interval the numerator is bounded and
+the denominator has a positive minimum. The jump of $H$ at zero
+does not affect this pointwise bound.
+
+Using~\eqref{eq:lip} repeatedly, followed by~\eqref{eq:amp},
+\eqref{eq:gaussres}, and~\eqref{eq:initial}, gives
+\begin{align}
+ \norm{G_n-u_{T+n}}
+ &\le\int U^n|H-u_T|
+    +\sum_{j=0}^{n-1}\int U^{n-1-j}|u_{T+j+1}-Tu_{T+j}|\notag\\
+ &\le2b_1+2b_0\sum_{j=0}^{n-1}(T+j)^{-3/2}\notag\\
+ &\le2b_1+\frac{6b_0}{\sqrt T}=:K_1.\label{eq:bounded}
+\end{align}
+This is uniform in $n$. Moreover
+\[
+ \norm{u_t-\Phi(z_t)}=\sqrt v\norm B.
+\]
+Finally the Gaussians with means $c\ln(n+T)$ and $c\ln n$,
+and variances $v(n+T)$ and $vn$, can be coupled using the same
+standard normal variable. Their $W_1$ distance is at most
+\[
+ |c|\ln(1+T/n)
+ +\sqrt{2v/\pi}\,(\sqrt{n+T}-\sqrt n),
+\]
+which tends to zero and is bounded for $n\ge1$.
+The one-dimensional formula $W_1(\mu,\nu)=\int|F_\mu-F_\nu|$
+and~\eqref{eq:bounded} prove the first part of~\eqref{eq:main}.
+The difference of means is bounded by $W_1$, proving the second.
+This proves Theorem~\ref{thm:main}.\hfill$\square$
+
+\section{Concrete consequence and scope}
+For the dyadic pair
+\[
+ P=(1/4,\underbrace{1/16,\ldots,1/16}_{12}),\qquad
+ Q=(\underbrace{1/8,\ldots,1/8}_{6},
+       \underbrace{1/32,\ldots,1/32}_{8}),
+\]
+one has $h=7/2$, $v=3/4$, and $\kappa_\pm=\pm3/4$.
+Dyadic exactness additionally gives $C_n=L_n$ at every horizon.
+Consequently
+\[
+ \boxed{C_n=\frac72n+\frac{2}{3\sqrt{2\pi e}}\ln n+O(1).}
+\]
+The proof concerns the infimum over all exact causal seeds. It does
+not restrict seeds to a particular construction.
+
+The new argument does not use the logarithmic envelope-width bound;
+it controls the positive residuals directly. The broad Gaussian time
+in Lemma~\ref{lem:amp} is an auxiliary smoothing parameter, not a
+change to the original kernel. All constants may deteriorate as the
+kernel or its variance varies. We do not prove that
+$C_n-nh-c\ln n$ converges, identify a constant term, or treat
+unequal action entropies here. The value of $G_\ast$ is unaffected.
+
+\begin{thebibliography}{9}
+\bibitem{repo} J.~Mikul\'ik, \emph{Finite Shannon theorem},
+\url{https://github.com/jendamikulik/finite-Shannon-theorem},
+retrieved 12 October 2026. Inputs:
+\texttt{CausalSeed/LogCorrector.lean},
+\texttt{LogResidual.lean}, \texttt{LogAmp.lean}, and the finite
+entropy sandwich. The bounded remainder proved here is a new
+analytic extension, not asserted to be present in those files.
+\bibitem{sharp} J.~Mikul\'ik, \emph{The Sharp Logarithmic Coefficient
+of a Controlled Information Envelope}, research manuscript,
+12 October 2026, available in the same repository.
+\end{thebibliography}
+\end{document}

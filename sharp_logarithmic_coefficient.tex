@@ -1,0 +1,392 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,microtype,booktabs}
+\usepackage[a4paper,margin=26mm]{geometry}
+\usepackage[colorlinks=true,urlcolor=blue,citecolor=blue]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\TV}{\mathrm{TV}}
+\newcommand{\norm}[1]{\left\|#1\right\|_1}
+\title{The Sharp Logarithmic Coefficient\protect\\of a Controlled Information Envelope}
+\author{Jan Mikul\'ik}
+\date{12 October 2026\quad---\quad Research manuscript}
+\begin{document}
+\maketitle
+\begin{abstract}
+For finitely many centered, finitely supported increment laws with a
+common positive variance, we identify the logarithmic displacement of
+their adaptive lower CDF envelope. Its coefficient is the range of the
+third moments divided by $3v\sqrt{2\pi e}$. The proof uses the established
+logarithmic envelope-width bound, an explicit Ornstein--Uhlenbeck
+corrector, and an integrated stability estimate. It does not differentiate
+the actual Bellman envelope. The resulting error is
+$O(\sqrt{\log n\log\log n})$, both in the mean and in unscaled
+$W_1$ distance from a translated Gaussian. The finite causal entropy
+sandwich transfers the coefficient to optimal seed entropy.
+\end{abstract}
+
+\paragraph{Status and dependency.}
+This is an analytic proof manuscript, not a Lean certificate or an
+independently reviewed paper. It uses the logarithmic moment bound from
+the accompanying repository as an explicit input, stated below.
+No priority claim is made. In particular, an $O(1)$ remainder is
+\emph{not} proved here.
+
+\section{Statement}
+Let $\mu_1,\ldots,\mu_d$ be finitely supported probability laws on $\R$,
+with
+\[
+ \E X_i=0,\qquad \E X_i^2=v>0,\qquad
+ \kappa_i=\E X_i^3.
+\]
+Put $\kappa_- =\min_i\kappa_i$, $\kappa_+=\max_i\kappa_i$ and
+\[
+ A_i f(x)=\E f(x-X_i),\quad Tf=\min_i A_i f,\quad
+ Uf=\max_i A_i f,\quad H(x)=\mathbf1_{[0,\infty)}(x).
+\]
+The $n$-step lower and upper policy CDF envelopes are
+$G_n=T^nH$ and $V_n=U^nH$. Policies may depend on the complete observed
+history. Their terminal increment sums have CDFs between $G_n$ and $V_n$.
+Write $\nu_n$ for the law with CDF $G_n$, and
+$e_n=\int_\R(H-G_n)$ for its mean. Let $\phi,\Phi$ denote the standard
+normal density and CDF. All logarithms in asymptotic terms are natural.
+
+\begin{theorem}\label{thm:main}
+For every fixed family as above, with
+\begin{equation}\label{eq:c}
+ c=\frac{\kappa_+-\kappa_-}{3v\sqrt{2\pi e}},
+\end{equation}
+one has, as $n\to\infty$,
+\begin{align}
+ W_1\bigl(\nu_n,N(c\ln n,vn)\bigr)
+   &=O\bigl(\sqrt{\ln n\ln\ln n}\bigr),\label{eq:W1}\\
+ e_n&=c\ln n+O\bigl(\sqrt{\ln n\ln\ln n}\bigr).
+ \label{eq:mean}
+\end{align}
+The constants may depend on the fixed increment family. No lattice,
+aperiodicity or nonlattice hypothesis is imposed.
+\end{theorem}
+
+\begin{corollary}[Causal seed entropy]\label{cor:cost}
+For a finite stationary kernel whose action laws $P_i$ have common
+entropy $h$ and common positive information variance $v$, set
+$\kappa_i=\E(-\log_2P_i(Y_i)-h)^3$. In bits,
+\[
+ \boxed{C_n=nh+
+ \frac{\kappa_+-\kappa_-}{3v\sqrt{2\pi e}}\ln n
+ +O\bigl(\sqrt{\ln n\ln\ln n}\bigr).}
+\]
+The same expansion holds for the lower envelope mean and for any exact
+seeds whose entropy is within a bounded additive amount of that mean.
+\end{corollary}
+\begin{proof}
+Center each action's information by $h$. The centered envelope is $G_n$,
+and $L_n-nh=e_n$. Apply Theorem~\ref{thm:main} and the finite-tree
+sandwich $L_n\le C_n\le L_n+c_\star$ from~\cite{repo}.
+\end{proof}
+
+\section{The existing input and integrated stability}
+\paragraph{Input: logarithmic moment bound.}
+For every finite centered increment family of common positive variance,
+the repository proves $0\le e_n\le K(1+\ln(n+1))$.
+The declaration is
+\texttt{CausalSpectrum.Sqrt.IncFamily.eG\_log\_upper} in
+\texttt{MomentAssembly.lean}. Its nondegeneracy assumption is automatic:
+a finite law of positive variance has two distinct atoms, a positive
+equal-mass part of which is a translated symmetric two-point law.
+This input is an order bound, not an assumption of the coefficient to be proved.
+
+Apply the same result to the reflected increment family $(-X_i)_i$.
+Reflection exchanges the upper and lower envelopes, apart from irrelevant
+values at their finitely many jump points. Consequently
+\begin{equation}\label{eq:width}
+ w_n:=\int_\R(V_n-G_n)=e_n+e_n^{\mathrm{ref}}
+ \le K(1+\ln(n+1)).
+\end{equation}
+In particular $\bar w_n:=\max_{0\le j\le n}w_j=O(\ln(n+2))$.
+
+\begin{lemma}[Integrated amplification]\label{lem:amp}
+For $r\in L^1(\R)\cap BV(\R)$,
+\begin{equation}\label{eq:amp}
+ \int_\R U^n|r|(x)\,dx\le\norm{r}+w_n\TV(r).
+\end{equation}
+For bounded functions $f,g$ with $f-g\in L^1\cap BV$,
+\begin{equation}\label{eq:stability}
+ \norm{T^nf-T^ng}\le\norm{f-g}+w_n\TV(f-g).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Fix a reference policy repeating one action, and let $F_0$ be its
+$n$-step CDF. For any policy $\pi$, its CDF $F_\pi$ and $F_0$ lie
+between $G_n$ and $V_n$. For absolutely continuous $r$, integration by
+parts, with $r(\pm\infty)=0$, gives
+\[
+ \E_\pi|r(x-S_n)|\le
+ \E_0|r(x-S_n)|+
+ \int_\R |r'(x-y)|(V_n(y)-G_n(y))\,dy.
+\]
+The bound is independent of $\pi$. Take the supremum over policies,
+integrate in $x$, and apply Tonelli. This proves~\eqref{eq:amp} for
+absolutely continuous $r$. Mollification proves the $BV$ version:
+variation does not increase; for a fixed horizon there are finitely
+many policies, so their finite-translation operators are continuous on
+$L^1$, and the supremum passes to the limit in $L^1$.
+Finally $|T^nf-T^ng|\le U^n|f-g|$ pointwise, which proves
+\eqref{eq:stability}.
+\end{proof}
+
+\section{An explicit resonant corrector}
+Define
+\begin{align}
+ f(z)&=\min_i\left[-\frac{\kappa_i}{6v^{3/2}}
+                      (z^2-1)\phi(z)\right],\label{eq:forcing}\\
+ a&=\int_\R f(z)\,dz=-\frac{\kappa_+-\kappa_-}{3v^{3/2}}\phi(1)
+       =-\frac{c}{\sqrt v},\label{eq:a}\\
+ g(z)&=2(a\phi(z)-f(z)),\qquad
+ J(z)=\int_{-\infty}^z g(y)\,dy,\label{eq:J}\\
+ B(z)&=\phi(z)\int_0^z\frac{J(y)}{\phi(y)}\,dy.\label{eq:B}
+\end{align}
+Indeed $\int(z^2-1)\phi=0$ and
+$\int|z^2-1|\phi=4\phi(1)$, proving~\eqref{eq:a}.
+Since $\int g=0$, formula~\eqref{eq:B} decays at both ends and solves
+\begin{equation}\label{eq:ODE}
+ B''+zB'+B=2(a\phi-f).
+\end{equation}
+
+\paragraph{Regularity and tails, explicitly.}
+The function $f$ is continuous, smooth off $\{-1,1\}$, and has only
+derivative jumps there. Thus $B\in C^2$, with locally absolutely
+continuous second derivative. For $z<-1$ and $z>1$, respectively,
+\[
+ \frac{J(z)}{\phi(z)}=
+ 2a\frac{\Phi(z)}{\phi(z)}-\frac{\kappa_+z}{3v^{3/2}},
+ \qquad
+ \frac{J(z)}{\phi(z)}=
+ -2a\frac{1-\Phi(z)}{\phi(z)}-\frac{\kappa_+z}{3v^{3/2}}.
+\]
+The elementary Gaussian tail inequality
+$1-\Phi(z)\le\phi(z)/z$ for $z>0$, and its reflected version,
+show that the integral in~\eqref{eq:B} is $O(1+z^2)$.
+The equation $B'+zB=J$ and~\eqref{eq:ODE}, followed by its
+almost-everywhere derivative, then show that $B,B',B'',B'''$ are
+bounded by a polynomial times $\phi$ on each tail. All their
+polynomially weighted absolute integrals are finite. In particular
+$B\in W^{3,1}(\R)$. No fourth classical derivative of $B$ is required.
+
+For $t\ge1$, put
+\begin{equation}\label{eq:profile}
+ z=\frac{x-c\ln t}{\sqrt{vt}},\qquad
+ p_t(x)=\Phi(z),\quad q_t(x)=t^{-1/2}B(z),\quad u_t=p_t+q_t.
+\end{equation}
+The function $u_t$ need not be a CDF; it is used only as a bounded
+comparison profile. Its limiting values are zero and one. Direct
+differentiation using~\eqref{eq:ODE} gives
+\begin{equation}\label{eq:PDE}
+ \partial_tu_t-\frac v2\partial_x^2u_t
+ =t^{-3/2}f(z)-\frac{c}{\sqrt v}\,t^{-2}B'(z).
+\end{equation}
+The translation $c\ln t$ absorbs the resonant Gaussian mode exactly.
+
+\section{Summable discrete residuals}
+\begin{lemma}\label{lem:res}
+There is a finite $K$, depending only on the increment family, such that
+for every real $t\ge1$, the residual $R_t=u_{t+1}-Tu_t$ belongs to
+$W^{1,1}(\R)$ and
+\begin{equation}\label{eq:res}
+ \norm{R_t}+\norm{R_t'}\le Kt^{-3/2}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+We give the derivative estimates as well as the value estimate, since
+the derivative is essential to integrated stability. The regularity
+above and the change of variables $dx=\sqrt{vt}\,dz$ imply
+\begin{align*}
+ \norm{\partial_x^k p_t}&=O(t^{-(k-1)/2})\quad(k\ge1),\\
+ \norm{\partial_x^k q_t}&=O(t^{-k/2})\quad(0\le k\le3),\\
+ \norm{\partial_t^2u_t}&=O(t^{-3/2}),\qquad
+ \norm{\partial_t\partial_xq_t}=O(t^{-3/2}).
+\end{align*}
+For the last two estimates, use
+$\partial_tz=-z/(2t)-c/(\sqrt v\,t^{3/2})$; only weighted
+$B,B',B''$ occur. Also
+$\partial_tp_t=(v/2)p_t''-(c/t)p_t'$.
+All $O$ constants here are finite and uniform for $t\ge1$.
+
+Taylor's formula under translation, in $L^1$, gives for each action
+\[
+ A_ip_t=p_t+\frac v2p_t''-\frac{\kappa_i}{6}p_t'''+e_{i,t},
+ \qquad \norm{e_{i,t}}\le\frac{\E|X_i|^4}{24}\norm{p_t''''}
+ =O(t^{-3/2}),
+\]
+and
+\[
+ A_iq_t=q_t+\frac v2q_t''+b_{i,t},\qquad
+ \norm{b_{i,t}}\le\frac{\E|X_i|^3}{6}\norm{q_t'''}
+ =O(t^{-3/2}).
+\]
+The scalar minimum is Lipschitz with respect to the maximum norm.
+Since $\min_i[-\kappa_i p_t'''/6]=t^{-3/2}f(z)$, summing these
+error bounds yields
+\[
+ \norm{Tu_t-u_t-\tfrac v2u_t''-t^{-3/2}f(z)}=O(t^{-3/2}).
+\]
+Taylor expansion in time,~\eqref{eq:PDE}, and
+$\norm{t^{-2}B'(z)}=O(t^{-3/2})$ prove the estimate for $R_t$.
+
+For its derivative, write
+$d_{i,t}=A_i u_t-u_t-(v/2)u_t''$.
+Taylor expansion to order two for $p_t'$ gives
+\[
+ \norm{A_ip_t'-p_t'-\tfrac v2p_t'''}
+ \le\frac{\E|X_i|^3}{6}\norm{p_t''''}=O(t^{-3/2}).
+\]
+Centered Taylor expansion to order one for $q_t'$, followed by
+the triangle inequality, gives
+\[
+ \norm{A_iq_t'-q_t'-\tfrac v2q_t'''}
+ \le v\norm{q_t'''}=O(t^{-3/2}).
+\]
+Hence $\norm{d_{i,t}'}=O(t^{-3/2})$.
+The minimum of finitely many $W^{1,1}$ functions has derivative
+bounded almost everywhere by the sum of the absolute derivatives.
+Finally
+\[
+ \norm{p_{t+1}'-p_t'-\tfrac v2p_t'''}=O(t^{-3/2}).
+\]
+To verify this last estimate, integrate
+$\partial_s p_s'=(v/2)p_s'''-(c/s)p_s''$ on $[t,t+1]$;
+$\norm{p_s''}=O(s^{-1/2})$ and
+$\norm{\partial_s p_s'''}=O(s^{-2})$.
+For $q_t$, the preceding time-derivative bound and
+$\norm{q_t'''}=O(t^{-3/2})$ give the same estimate.
+Differentiating
+$R_t=u_{t+1}-u_t-(v/2)u_t''-\min_i d_{i,t}$ now proves
+the derivative bound. All derivatives in this paragraph may be read
+as weak derivatives, so the two switching points cause no missing term.
+\end{proof}
+
+\section{From a late-start profile to the actual envelope}
+For any $t_0\ge1$, successive one-step comparisons and positivity of $U$
+give the pointwise bound
+\[
+ |T^nu_{t_0}-u_{t_0+n}|
+ \le\sum_{j=0}^{n-1}U^{n-1-j}|R_{t_0+j}|.
+\]
+Here one uses $|Tf-Tg|\le U|f-g|$ and subadditivity of $U$.
+By Lemmas~\ref{lem:amp} and~\ref{lem:res},
+\begin{equation}\label{eq:prop}
+ \norm{T^nu_{t_0}-u_{t_0+n}}
+ \le K\frac{1+\bar w_n}{\sqrt{t_0}}.
+\end{equation}
+Thus a summable residual is sufficient after its derivative's
+amplification by the envelope width has also been accounted for.
+
+It remains to compare the step initial condition with a Gaussian.
+Let $s=\sqrt{vt_0}$, $b(x)=\Phi(x/s)$, choose $R>0$, and put
+$A=sR$, $\varepsilon=1-\Phi(R)$. The pointwise inequalities
+\[
+ H(x)\le b(x+A)+r_+(x),\qquad
+ b(x-A)\le H(x)+r_-(x)
+\]
+hold with
+$r_+(x)=\mathbf1_{x\ge0}(1-b(x+A))$ and
+$r_-(x)=\mathbf1_{x<0}b(x-A)$.
+They satisfy
+\[
+ \norm{r_\pm}\le s\phi(R),\qquad \TV(r_\pm)=2\varepsilon.
+\]
+Propagate the inequalities with $T$, use translation invariance and
+Lemma~\ref{lem:amp}, and integrate the positive and negative parts.
+Since $T^nb$ is a CDF, its integral difference from a translate by $A$
+is exactly $A$. Therefore
+\begin{equation}\label{eq:initial}
+ \norm{G_n-T^nb}\le2A+2s\phi(R)+4\varepsilon w_n.
+\end{equation}
+The Gaussian $p_{t_0}$ is $b$ translated by $c\ln t_0$, so
+$\norm{T^np_{t_0}-T^nb}=|c\ln t_0|$.
+Furthermore $\norm{q_{t_0}}=\sqrt v\norm{B}$ and
+$\TV(q_{t_0})=t_0^{-1/2}\norm{B'}$. Thus
+\begin{equation}\label{eq:initialB}
+ \norm{T^nu_{t_0}-T^np_{t_0}}
+ \le \sqrt v\norm B+w_n t_0^{-1/2}\norm{B'}.
+\end{equation}
+
+Take $t_0=\ln(n+e^2)$ and $R=\sqrt{2\ln t_0}$.
+Then $\phi(R)=(2\pi)^{-1/2}/t_0$,
+$\varepsilon\le\phi(R)/R$, and $\bar w_n=O(t_0)$ by
+\eqref{eq:width}. Equations~\eqref{eq:prop}--\eqref{eq:initialB} imply
+\begin{equation}\label{eq:last}
+ \norm{G_n-u_{n+t_0}}
+ =O\bigl(\sqrt{\ln n\ln\ln n}\bigr).
+\end{equation}
+Since $\norm{u_t-p_t}=\sqrt v\norm B$, this also holds with
+$p_{n+t_0}$ in place of $u_{n+t_0}$.
+Coupling Gaussians with the same standard normal variable shows
+\[
+ W_1\bigl(N(c\ln(n+t_0),v(n+t_0)),N(c\ln n,vn)\bigr)
+ \le |c|\ln(1+t_0/n)
+ +\sqrt{2v/\pi}\,(\sqrt{n+t_0}-\sqrt n)=o(1).
+\]
+The one-dimensional identity $W_1(\mu,\nu)=\int|F_\mu-F_\nu|$
+proves~\eqref{eq:W1}. The difference of means is at most $W_1$,
+proving~\eqref{eq:mean} and completing Theorem~\ref{thm:main}.\hfill$\square$
+
+\section{A concrete dyadic information pair}
+Take
+\[
+ P=(1/4,\underbrace{1/16,\ldots,1/16}_{12}),\qquad
+ Q=(\underbrace{1/8,\ldots,1/8}_{6},
+       \underbrace{1/32,\ldots,1/32}_{8}).
+\]
+Their entropies are $h=7/2$, their information variances are $v=3/4$,
+and their centered third moments are $-3/4$ and $3/4$.
+Every atom is a power of $1/2$, so dyadic exactness gives $C_n=L_n$
+at every horizon. Hence
+\[
+ \boxed{C_n=\frac72n+
+ \frac{2}{3\sqrt{2\pi e}}\ln n
+ +O\bigl(\sqrt{\ln n\ln\ln n}\bigr).}
+\]
+The coefficient is $0.161313816346\ldots$ bits per unit of $\ln n$.
+The result is about the unrestricted optimal causal seed, not a
+particular block construction.
+
+\paragraph{Scope.}
+Only the extreme third moments enter the logarithmic coefficient.
+Intermediate actions and higher moments can affect the remainder.
+When the third moments all agree, the existing moment classification
+already gives the stronger bounded-excess conclusion; this manuscript
+is principally useful when $\kappa_+>\kappa_-$.
+It does not prove a bounded remainder, a pointwise $1/n$ limit for
+$e_{n+1}-e_n$, or a uniform theorem as $v\downarrow0$ or the kernel varies.
+The profiles $u_t$ are auxiliary functions, not asserted probability laws.
+
+\paragraph{Related work and provenance.}
+Rates in martingale central limit theorems and nonlinear central limit
+theorems have a substantial literature; see~\cite{mourrat,fang}.
+Those references provide context, not the coefficient calculation in
+this proof. The nonstandard analytic input here is specifically the
+\emph{integrated envelope-width} bound~\eqref{eq:width}, supplied by
+the repository's moment theorem. A bound for each fixed policy in
+$W_1$ alone would not justify taking the pointwise envelope.
+
+\begin{thebibliography}{9}
+\bibitem{repo} J.~Mikul\'ik, \emph{Finite Shannon theorem},
+\url{https://github.com/jendamikulik/finite-Shannon-theorem},
+retrieved 12 October 2026. Analytic input:
+\texttt{CausalSeed/MomentAssembly.lean}, theorem
+\texttt{Sqrt.IncFamily.eG\_log\_upper}; compare also
+\texttt{MomentWidth.lean}, theorem \texttt{polE\_abs\_le}.
+The new corrector and coefficient theorem in this manuscript are not
+claimed to be formalized there.
+\bibitem{mourrat} J.-C.~Mourrat, On the rate of convergence in the
+martingale central limit theorem, \emph{Bernoulli} \textbf{19}(2)
+(2013), 633--645. \href{https://doi.org/10.3150/12-BEJ417}{doi:10.3150/12-BEJ417}.
+\bibitem{fang} X.~Fang, S.~Peng, Q.-M.~Shao and Y.~Song,
+\emph{Limit theorems with rate of convergence under sublinear expectations},
+\url{https://arxiv.org/abs/1711.10649}.
+\end{thebibliography}
+\end{document}

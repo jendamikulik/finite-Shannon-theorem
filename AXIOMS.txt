@@ -1,8 +1,8 @@
 Axiom audit of every theorem in the project modules (CausalSeed.*), 12 October 2026
 Lean 4.35.0-rc3, mathlib 7d6757bc18680044fc0ff6efc8ee20494b408556
-`lake build`: Build completed successfully (3960 jobs). No `sorry`, `admit` or custom axioms.
+`lake build`: Build completed successfully (3961 jobs). No `sorry`, `admit` or custom axioms.
 
-Summary: 2488 theorems in 105 modules: all depend only on propext, Classical.choice,
+Summary: 2528 theorems in 106 modules: all depend only on propext, Classical.choice,
 Quot.sound (7 on none). No theorem uses sorryAx or any other axiom, and no `axiom`
 is declared in the CausalSeed modules.
 
@@ -794,6 +794,46 @@ CausalSeed.LogAmp CausalSpectrum.Sqrt.IncFamily.Majorant.integ : [propext, Class
 CausalSeed.LogAmp CausalSpectrum.Sqrt.IncFamily.Majorant.lim : [propext, Classical.choice, Quot.sound]
 CausalSeed.LogAmp CausalSpectrum.Sqrt.IncFamily.Majorant.measurable : [propext, Classical.choice, Quot.sound]
 CausalSeed.LogAmp CausalSpectrum.Sqrt.IncFamily.Majorant.nonneg : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.Kernel.cost_bounded : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.DE_pos : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.Emaj_le_DE : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.abs_gam2_le : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.amp_bounded : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.amp_gauss : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.amp_shift : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.bounded_L1 : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.bounded_mean : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.continuous_gam : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.defect : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.exp_sixteen_eq : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.exp_sixteen_eq' : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.gam_eq : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.gam_nonneg : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.hasDerivAt_gam : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.hasDerivAt_gam1 : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.initial_gauss : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.inv_wv : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.lintegral_gam : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.pow_four_mul_exp_le : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.propagation_bounded : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.residual_gauss : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.spatial_gam : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.stability_gauss : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.taylor_phi : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.telescope : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.time_gam : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.wv_anti : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.wv_cube : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.wv_pos : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.wv_sq : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.LogGauss.zt_eq : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.Kernel.LogPair.cost_bounded : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.Sqrt.IncFamily.Tmax_smul_le : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.Sqrt.IncFamily.Tmax_translate : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.Sqrt.IncFamily.U_add_le : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.Sqrt.IncFamily.U_smul_le : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.Sqrt.IncFamily.U_succ' : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogBounded CausalSpectrum.Sqrt.IncFamily.U_translate : [propext, Classical.choice, Quot.sound]
 CausalSeed.LogCorrector CausalSpectrum.LogGauss.abs_cB_le : [propext, Classical.choice, Quot.sound]
 CausalSeed.LogCorrector CausalSpectrum.LogGauss.abs_cJ_le : [propext, Classical.choice, Quot.sound]
 CausalSeed.LogCorrector CausalSpectrum.LogGauss.abs_cdB_le : [propext, Classical.choice, Quot.sound]
@@ -2650,4 +2690,4 @@ CausalSeed.ZeroTree CausalSpectrum.Zero.Shape.run_compat : []
 CausalSeed.ZeroTree CausalSpectrum.Zero.Shape.toTree_ofTree : [propext, Classical.choice, Quot.sound]
 CausalSeed.ZeroTree CausalSpectrum.Zero.ZTree.L_ofTree : [propext, Classical.choice, Quot.sound]
 CausalSeed.ZeroTree CausalSpectrum.Zero.ZTree.valid : [propext, Classical.choice, Quot.sound]
-TOTAL 2488 theorems; 7 depend on no axioms; non-standard: []; axioms declared in CausalSeed: []
+TOTAL 2528 theorems; 7 depend on no axioms; non-standard: []; axioms declared in CausalSeed: []

@@ -25,6 +25,7 @@ over all policies, and its mean $`L`$. Results:
 - For stationary kernels this gives the sharp $`\sqrt n`$ asymptotic, its $`W_1`$
   universality, and the linear growth rate when the actions' entropies differ. With
   unequal entropies, the $`\sqrt n`$ term is determined by the maximizing actions alone.
+- With equal entropies and variances, $`C_n=nh+\frac{\kappa_+-\kappa_-}{3v\sqrt{2\pi e}}\ln n+O(1)`$.
 - For dyadic kernels the overhead vanishes. With one uniform action, the optimal cost is an
   exact random-walk maximum, given by Spitzer's identity.
 
@@ -941,7 +942,8 @@ c\log n\le C_n-\tfrac72n\le C\log n
 ```
 
 for all large $`n`$ (and the same for $`L_n`$), and Theorem 33 applies. Theorem 41 sharpens this to
-$`C_n=\tfrac72n+\tfrac{2}{3\sqrt{2\pi e}}\ln n+O(\sqrt{\ln n\ln\ln n})`$. The predicted
+$`C_n=\tfrac72n+\tfrac{2}{3\sqrt{2\pi e}}\ln n+O(\sqrt{\ln n\ln\ln n})`$. Theorem 46 improves the
+remainder to $`O(1)`$. The predicted
 coefficient $`(\kappa_+-\kappa_-)/(3v\sqrt{2\pi e})=2/(3\sqrt{2\pi e})`$ lies in
 $`(0.1613,\,0.1614)`$. A floating-point Bellman computation on the half-bit lattice gives
 $`e_n-0.161314\ln n=0.6254`$ to four decimals for $`n=10^3,\dots,3\cdot10^5`$; this numerical
@@ -1105,6 +1107,71 @@ Lean:
 - [`Kernel.LogPair.cost_sharp`](CausalSeed/LogCost.lean#L102), with [`Kernel.LogPair.isDyadic`](CausalSeed/LogCost.lean#L80),
   [`Kernel.LogPair.kmax_eq`](CausalSeed/LogCost.lean#L83), [`Kernel.LogPair.kmin_eq`](CausalSeed/LogCost.lean#L91)
 
+### X. The bounded logarithmic remainder
+
+The manuscript [`bounded_log_remainder`](bounded_log_remainder.tex) improves the remainder in
+Theorems 40 and 41 from $`O(\sqrt{\ln n\ln\ln n})`$ to $`O(1)`$. Throughout,
+$`\gamma_t(x)=(vt)^{-1/2}\varphi(x/\sqrt{vt})`$ is the centered Gaussian density of variance
+$`vt`$, $`T`$ is the one-step Bellman operator of the centered surprisal family and $`U`$ its
+monotone, subadditive and positively homogeneous majorant. The hypotheses are those of Theorem 40:
+a centered increment family with common variance $`v>0`$.
+
+**Theorem 42 (Gaussian defect).** There is $`D\ge0`$ such that for all $`t\ge1`$
+$`|T_{\max}\gamma_t-\gamma_{t+1}|\le D\,t^{-3/2}\gamma_{8t}`$ pointwise. The window
+constant is $`D_E=64^4e^{-63/16}=\max_{y\ge0}(1+y)^4e^{-y/16}`$, and the
+majorant $`E`$ of the corrector satisfies $`E(z)\le D_Ee^{-z^2/16}`$.
+
+Lean:
+- [`LogGauss.defect`](CausalSeed/LogBounded.lean#L352), [`LogGauss.DE`](CausalSeed/LogBounded.lean#L100), [`LogGauss.pow_four_mul_exp_le`](CausalSeed/LogBounded.lean#L105), [`LogGauss.Emaj_le_DE`](CausalSeed/LogBounded.lean#L119)
+
+**Theorem 43 (bounded amplification).** Let $`A\ge2`$ with $`6D\le\sqrt A`$ (in the proof,
+$`A=2+36D^2`$). Then $`\int U^n\gamma_t\le2`$ for every $`n\ge0`$ and every $`t\ge A`$. The
+proof is by strong induction on $`n`$ through the Gaussian telescoping
+$`U^n\gamma_t\le\gamma_{t+n}+D\sum_{r<n}(t+r)^{-3/2}U^{n-1-r}\gamma_{8(t+r)}`$. Consequently
+$`\|T^nf-T^ng\|_1\le2b`$ whenever $`|f-g|\le b\,\gamma_t(\cdot-m)`$ with $`t\ge A`$.
+
+Lean:
+- [`LogGauss.telescope`](CausalSeed/LogBounded.lean#L411), [`LogGauss.amp_bounded`](CausalSeed/LogBounded.lean#L447), [`LogGauss.amp_gauss`](CausalSeed/LogBounded.lean#L520), [`LogGauss.stability_gauss`](CausalSeed/LogBounded.lean#L543)
+
+**Theorem 44 (Gaussian inputs).** With $`u_t`$ the corrected profile of Theorem 39, there is
+$`b_0`$ (namely $`K_0D_E\sqrt{16\pi v}`$) with
+$`|u_{t+1}-Tu_t|\le b_0t^{-3/2}\gamma_{8t}(\cdot-c\ln t)`$ for $`t\ge1`$. For each fixed
+$`T_0\ge1`$ there is $`b_1`$ with $`|H-u_{T_0}|\le b_1\gamma_{8T_0}(\cdot-c\ln T_0)`$, where $`H`$ is
+the unit step. Propagation then gives $`\|T^nu_{T_0}-u_{T_0+n}\|_1\le4b_0`$ for $`T_0\ge A`$.
+
+Lean:
+- [`LogGauss.residual_gauss`](CausalSeed/LogBounded.lean#L571), [`LogGauss.initial_gauss`](CausalSeed/LogBounded.lean#L598), [`LogGauss.propagation_bounded`](CausalSeed/LogBounded.lean#L679)
+
+**Theorem 45 (bounded remainder).** There is $`K`$ such that for every $`n\ge1`$
+
+```math
+\int_{\mathbb R}\Bigl|G_n(x)-\Phi\Bigl(\frac{x-c\ln n}{\sqrt{vn}}\Bigr)\Bigr|\,dx\le K,
+\qquad |e_n-c\ln n|\le K .
+```
+
+The first bound is the $`W_1`$ distance between $`\nu_n`$ and $`N(c\ln n,vn)`$ in its CDF
+form. The proof chains stability from $`H`$ to $`u_A`$ ($`2b_1`$), propagation ($`4b_0`$), removal
+of the corrector ($`K_B\sqrt v\int E`$), the scale change $`\sqrt{v(A+n)}\to\sqrt{vn}`$
+($`2\varphi(0)\sqrt v\,A`$) and the shift $`c\ln(A+n)\to c\ln n`$ ($`|c|A`$).
+
+Lean:
+- [`LogGauss.bounded_L1`](CausalSeed/LogBounded.lean#L737), [`LogGauss.bounded_mean`](CausalSeed/LogBounded.lean#L840)
+
+**Theorem 46 (bounded remainder for the seed entropy).** Under the hypotheses of Theorem 41
+there is $`K`$ such that for every $`n\ge1`$
+
+```math
+\Bigl|C_n-nh-\frac{\kappa_+-\kappa_-}{3v\sqrt{2\pi e}}\ln n\Bigr|\le K
+```
+
+(bits), and the same for $`L_n`$. Hence $`C_n=nh+c\ln n+O(1)`$. For the dyadic pair of
+Proposition 35, $`C_n=L_n`$ and $`|C_n-7n/2-\tfrac{2}{3\sqrt{2\pi e}}\ln n|\le K`$ for all
+$`n\ge1`$. Numerically (half-bit lattice Bellman recursion) $`e_n-c\ln n`$ equals
+0.6086, 0.6238, 0.6253, 0.6254 at $`n=10,10^2,10^3,10^4`$.
+
+Lean:
+- [`Kernel.cost_bounded`](CausalSeed/LogBounded.lean#L878), [`Kernel.LogPair.cost_bounded`](CausalSeed/LogBounded.lean#L905)
+
 ## Verification
 
 The development is the import closure of
@@ -1125,7 +1192,7 @@ defining module is `CausalSeed.*` and computes its axioms with `collectAxioms`.
 Auto-generated declarations (equation lemmas, `sizeOf_spec`, injectivity lemmas,
 instances) are excluded.
 
-[`AXIOMS.txt`](AXIOMS.txt) records the result. All **2488** theorems in the 105 project
+[`AXIOMS.txt`](AXIOMS.txt) records the result. All **2528** theorems in the 106 project
 modules depend only on `propext`, `Classical.choice` and `Quot.sound`; seven depend on
 no axiom. No theorem uses `sorryAx`, the build reports no `sorry` or `admit`, and the
 project declares no `axiom`.
@@ -1252,10 +1319,12 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 - `LogResidual`: the coefficient and forcing links, Taylor expansions and the residual lemma (Theorem 39).
 - `LogFinal`: the sandwich, Chernoff bounds, Gaussian `L¹` comparisons, the choice of $`t_0`$ and the sharp coefficient (Theorem 40).
 - `LogCost`: the sharp coefficient for $`C_n`$ and $`L_n`$, and the dyadic pair (Theorem 41).
+- `LogBounded`: the Gaussian defect, bounded amplification, Gaussian inputs and the bounded remainder (Theorems 42 to 46).
 
 **Mathematical expositions** (LaTeX/PDF at the repository root)
 - `bellman_square_root`: the square-root asymptotic.
 - `sharp_logarithmic_coefficient`: the logarithmic coefficient (formalized as Theorems 36 to 41).
+- `bounded_log_remainder`: the bounded remainder (formalized as Theorems 42 to 46).
 - `universal_causal_seed`: the Rényi spectrum.
 - `atomic_capacity`: atomic capacity.
 - `completion_proof`: infinite seeds and entropy attainment.
@@ -1273,12 +1342,12 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 **Open mathematical problems.**
 - The exact value of $`G_{\ast}\in[\tfrac29,c_{\star}]`$, and whether all minimizers are causal
   at $`\kappa=G_{\ast}`$.
-- The size of the remainder in the sharp logarithmic expansion. Theorems 40 and 41 formalize
-  $`C_n-nh=\frac{\kappa_+-\kappa_-}{3v\sqrt{2\pi e}}\ln n+O(\sqrt{\ln n\ln\ln n})`$ for equal
-  entropies and variances. Whether the remainder is $`O(1)`$ is open (the numerics of
-  Proposition 35 suggest a finite limit). For a kernel with unequal entropies, Theorem 29
-  relates $`C_n`$ to its maximizing subfamily only up to $`O(\log n)`$, so the coefficient is
-  not transferred there.
+- The constant term of the sharp logarithmic expansion. Theorems 45 and 46 show
+  $`C_n-nh-\frac{\kappa_+-\kappa_-}{3v\sqrt{2\pi e}}\ln n=O(1)`$ for equal entropies and
+  variances. Whether this bounded sequence converges, and to which constant, is open (for the
+  pair of Proposition 35 the numerics suggest $`e_n-c\ln n\to0.6254\ldots`$). For a kernel with
+  unequal entropies, Theorem 29 relates $`C_n`$ to its maximizing subfamily only up to
+  $`O(\log n)`$, so the coefficient is not transferred there.
 - Whether $`C_n-C^{\ast}_n`$ in Theorem 29 is bounded when several actions attain the
   maximal entropy (Theorem 19 gives this for one maximizing action).
 - Optimality of the constants $`c_{\star}`$ and $`d_\alpha`$.

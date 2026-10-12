@@ -94,3 +94,4 @@ import CausalSeed.LogTaylor
 import CausalSeed.LogResidual
 import CausalSeed.LogFinal
 import CausalSeed.LogCost
+import CausalSeed.LogBounded

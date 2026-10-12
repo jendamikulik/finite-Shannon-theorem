@@ -23,7 +23,8 @@ over all policies, and its mean $`L`$. Results:
 - The bound extends to infinite horizons, to atomic capacity and to Rényi entropies of
   every positive order, also when kernels have zero entries.
 - For stationary kernels this gives the sharp $`\sqrt n`$ asymptotic, its $`W_1`$
-  universality, and the linear growth rate when the actions' entropies differ.
+  universality, and the linear growth rate when the actions' entropies differ. With
+  unequal entropies, the $`\sqrt n`$ term is determined by the maximizing actions alone.
 - For dyadic kernels the overhead vanishes. With one uniform action, the optimal cost is an
   exact random-walk maximum, given by Spitzer's identity.
 
@@ -751,6 +752,125 @@ Lean (namespace `Walk.Family`; $`h=d+2`$, `A d` is the kernel):
 - [`Walk.Law.tl_le_rpow`](CausalSeed/WalkFamily.lean#L46), [`Walk.Law.tl_lower`](CausalSeed/WalkFamily.lean#L67),
   [`Walk.Law.EM_tendsto`](CausalSeed/WalkFamily.lean#L152)
 
+### VIII. Maximal-entropy reduction
+
+Let $`\kappa`$ be a stationary positive kernel, write $`I_a=-\log_2K_a(Y)`$ for
+$`Y\sim K_a`$, and let $`F_n`$, $`L_n`$, $`C_n`$ be the envelope (`Fstar (κ.rounds n)`), its
+mean and the optimal cost at horizon $`n`$, in bits. For a nonempty set $`S`$ of actions,
+$`\kappa_S`$ (`κ.sub S hS`) is the kernel of the actions in $`S`$, with envelope $`F^{\ast}_n`$,
+mean $`L^{\ast}_n`$ and cost $`C^{\ast}_n`$. An action $`i_0\in S`$ *dominates at rate*
+$`\theta>0`$ (`Dominates S i₀ θ`) if
+
+```math
+\mathbb E\,e^{\theta I_j}\;\mathbb E\,e^{-\theta I_{i_0}}\le1\qquad\text{for every }j\notin S .
+```
+
+Theorems 11, 13 and 19 already treat unequal entropies: they give the rate
+$`h_{\max}`$, the bound $`C_n\ge nh_{\max}`$, and a bounded residual when exactly one action
+attains $`h_{\max}`$. The results below cover any number of maximizing actions: the
+second-order behaviour of $`C_n`$ is that of the maximizing subfamily alone, whatever the
+variances of the other actions.
+
+**Theorem 28 (exponential comparison).** If $`i_0\in S`$ dominates at rate $`\theta`$, then
+for every $`n`$, every real $`x`$ and every $`r\ge0`$,
+
+```math
+F^{\ast}_n(x-r)-e^{-\theta r}\le F_n(x)\le F^{\ast}_n(x).
+```
+
+Domination holds whenever $`I_a\le M`$ for all actions and outputs, every $`j\notin S`$ has
+$`H(K_j)+\Delta\le H(K_{i_0})`$, and $`0<\theta\le4\Delta/M^2`$ (Hoeffding's lemma applied to
+each factor). The proof is a finite induction on the Bellman recursion: for a dominated
+action the bound is applied pointwise on the product of the two output laws, with the
+shift $`r+I_{i_0}-I_j`$.
+
+Lean:
+- [`Kernel.Fstar_compare`](CausalSeed/MaxEntropy.lean#L162), with
+  [`Kernel.Dominates`](CausalSeed/MaxEntropy.lean#L60) and [`Kernel.sub`](CausalSeed/MaxEntropy.lean#L27)
+- [`Kernel.sub_shift_le`](CausalSeed/MaxEntropy.lean#L68), [`Kernel.G_le_sub`](CausalSeed/MaxEntropy.lean#L51)
+- [`Kernel.dominates_of_gap`](CausalSeed/MaxEntropy.lean#L186),
+  [`MaxEntropy.finite_hoeffding`](CausalSeed/MaxEntropyHoeffding.lean#L13)
+
+**Theorem 29 (mean and cost comparison).** Restricting a seed of $`\kappa`$ to the actions of
+$`S`$ keeps it exact, so $`C^{\ast}_n\le C_n`$ for every $`S`$. If moreover $`i_0\in S`$
+dominates at rate $`\theta`$ and $`0\le I_a\le M`$, then with
+$`B_n=\bigl(1+\ln(1+\theta nM)\bigr)/\theta`$,
+
+```math
+0\le L_n-L^{\ast}_n\le B_n,\qquad 0\le C_n-C^{\ast}_n\le B_n+c_{\star}.
+```
+
+Here $`L_n-L^{\ast}_n=\int_0^{nM}(F^{\ast}_n-F_n)`$, which is bounded by
+$`r+nMe^{-\theta r}`$ for every $`r\ge0`$ and optimized at $`r=\ln(1+\theta nM)/\theta`$.
+
+Lean:
+- [`Kernel.envelopeMean_compare`](CausalSeed/MaxEntropy.lean#L263)
+- [`Kernel.costBits_compare`](CausalSeed/MaxEntropy.lean#L396)
+- [`Kernel.costBits_sub_le`](CausalSeed/MaxEntropy.lean#L384),
+  [`Kernel.restrictSeed_exactTo`](CausalSeed/MaxEntropy.lean#L375)
+
+**Theorem 30 (maximal-entropy reduction).** In the setting of Theorem 29, suppose all
+actions of $`S`$ have the same entropy $`h`$ (for instance, $`S`$ is the set of maximizing
+actions), and let $`a_{\ast}`$, $`b_{\ast}`$ be the largest and smallest standard deviation of
+$`I_i`$ over $`i\in S`$. Then
+
+```math
+C_n=nh+\sqrt{\tfrac{2}{\pi}}\,(a_{\ast}-b_{\ast})\sqrt n+o(\sqrt n),
+```
+
+and the same holds for $`L_n`$ and for the entropy of any seeds $`S_n`$ with
+$`L_n\le H(S_n)\le L_n+c_{\star}`$. If $`b_{\ast}>0`$, the remainder in the expansion of
+$`C_n`$ is at most $`K\,n^{1/4}\log n`$ for all $`n\ge3`$.
+
+Lean:
+- [`Kernel.cost_tendsto_maxEntropy`](CausalSeed/MaxEntropyReduction.lean#L68)
+- [`Kernel.envelope_tendsto_maxEntropy`](CausalSeed/MaxEntropyReduction.lean#L80)
+- [`Kernel.greedy_tendsto_maxEntropy`](CausalSeed/MaxEntropyReduction.lean#L96)
+- [`Kernel.cost_rate_maxEntropy`](CausalSeed/MaxEntropyReduction.lean#L117)
+
+**Corollary 31 (no intermediate power-law regime).** In the setting of Theorem 30:
+1. If $`a_{\ast}>b_{\ast}`$, there are $`c,C>0`$ with $`c\sqrt n\le C_n-nh\le C\sqrt n`$ for all
+   large $`n`$.
+2. If all actions of $`S`$ have the same surprisal variance and one of them satisfies the
+   symmetric-pair hypothesis of Theorem 16 (every law with two distinct values does), then
+   $`C_n-nh\le C(1+\log n)`$ for all $`n\ge1`$.
+3. If all actions of $`S`$ have the same surprisal variance and two of them have different
+   third centered moments, then $`c\log n\le C_n-nh\le C\log n`$ for all large $`n`$.
+
+Lean:
+- [`Kernel.excess_sqrt_order`](CausalSeed/MaxEntropyReduction.lean#L155)
+- [`Kernel.excess_log_upper_maxEntropy`](CausalSeed/MaxEntropyReduction.lean#L174)
+- [`Kernel.excess_log_theta_maxEntropy`](CausalSeed/MaxEntropyReduction.lean#L199)
+
+**Proposition 32 (a separating example).** Let
+
+```math
+P=(\tfrac14,\tfrac14,\tfrac14,\tfrac14),\quad Q=(\tfrac12,\tfrac18,\tfrac18,\tfrac18,\tfrac18),\quad
+R=(\tfrac12,\tfrac14,\tfrac18,\tfrac1{16},\tfrac1{16}).
+```
+
+Then $`H(P)=H(Q)=2`$, $`H(R)=\tfrac{15}8`$, and the surprisal variances are $`0`$, $`1`$ and
+$`\tfrac{71}{64}`$. With $`S=\{P,Q\}`$, $`\theta=\ln\tfrac65`$ and $`M=4`$,
+
+```math
+\mathbb E\,e^{\theta I_R}\;\mathbb E\,e^{-\theta I_P}=\tfrac{299}{300},
+```
+
+so $`0\le C_n-C^{\ast}_n\le\bigl(1+\ln(1+4\theta n)\bigr)/\theta+c_{\star}`$ and
+
+```math
+\frac{C_n-2n}{\sqrt n}\longrightarrow\sqrt{\tfrac{2}{\pi}} .
+```
+
+The action with the largest variance does not enter the $`\sqrt n`$ term.
+
+Lean (namespace `Kernel.PQR`):
+- [`H_P`](CausalSeed/MaxEntropyExample.lean#L59), [`H_Q`](CausalSeed/MaxEntropyExample.lean#L62),
+  [`H_R`](CausalSeed/MaxEntropyExample.lean#L65), [`var_P`](CausalSeed/MaxEntropyExample.lean#L70),
+  [`var_Q`](CausalSeed/MaxEntropyExample.lean#L73), [`var_R`](CausalSeed/MaxEntropyExample.lean#L76)
+- [`certificate`](CausalSeed/MaxEntropyExample.lean#L98), [`dominates`](CausalSeed/MaxEntropyExample.lean#L104)
+- [`cost_compare`](CausalSeed/MaxEntropyExample.lean#L160), [`cost_tendsto`](CausalSeed/MaxEntropyExample.lean#L152)
+
 ## Verification
 
 The development is the import closure of
@@ -771,7 +891,7 @@ defining module is `CausalSeed.*` and computes its axioms with `collectAxioms`.
 Auto-generated declarations (equation lemmas, `sizeOf_spec`, injectivity lemmas,
 instances) are excluded.
 
-[`AXIOMS.txt`](AXIOMS.txt) records the result. All **2224** theorems in the 92 project
+[`AXIOMS.txt`](AXIOMS.txt) records the result. All **2281** theorems in the 96 project
 modules depend only on `propext`, `Classical.choice` and `Quot.sound`; seven depend on
 no axiom. No theorem uses `sorryAx`, the build reports no `sorry` or `admit`, and the
 project declares no `axiom`.
@@ -813,6 +933,7 @@ the theorems above. Line numbers refer to the current revision.
 | `Kernel.EqualEntropy`, `actEntropy`, `hmax`, `floorConst` | [SqrtBridge.lean#L19](CausalSeed/SqrtBridge.lean#L19), [CausalFloor.lean#L145](CausalSeed/CausalFloor.lean#L145), [#L150](CausalSeed/CausalFloor.lean#L150), [#L181](CausalSeed/CausalFloor.lean#L181) | common entropy `h`; `H(K_a)`; `h_max`; the Gaussian integral `K` |
 | `Dyadic.wt`, `massL`, `cdfL` | [DyadicCouple.lean#L18](CausalSeed/DyadicCouple.lean#L18), [#L28](CausalSeed/DyadicCouple.lean#L28), [#L31](CausalSeed/DyadicCouple.lean#L31) | `2^{-k}`; a dyadic law as a list of (level, payload); its expectation functional and information CDF |
 | `Dyadic.DyadicTree`, `Kernel.IsDyadic` | [DyadicTree.lean#L17](CausalSeed/DyadicTree.lean#L17), [DyadicKernel.lean#L132](CausalSeed/DyadicKernel.lean#L132) | every kernel entry is `(1/2)^c` with `c : ℕ` |
+| `Kernel.sub`, `Kernel.Dominates`, `Kernel.H` | [MaxEntropy.lean#L27](CausalSeed/MaxEntropy.lean#L27), [#L60](CausalSeed/MaxEntropy.lean#L60), [#L174](CausalSeed/MaxEntropy.lean#L174) | the kernel of the actions in `S`; $`\mathbb E e^{\theta I_j}\,\mathbb E e^{-\theta I_{i_0}}\le1`$ for `j ∉ S`; `H(K_a)` in bits |
 
 ## Repository layout
 
@@ -881,6 +1002,12 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 - `WalkLimit`: the tail bound, the exponential-moment bounds, and the negative-drift corollary (Corollary 26).
 - `WalkFamily`: tails of maxima for increments in $`\{-1,0,1\}`$, and the reciprocal-gap family (Theorem 27).
 
+**Maximal-entropy reduction**
+- `MaxEntropyHoeffding`: Hoeffding's lemma for finite weighted averages.
+- `MaxEntropy`: the subkernel of a set of actions, exponential domination, the comparison of envelopes, means and costs, and restriction of seeds (Theorems 28 and 29).
+- `MaxEntropyReduction`: the reduction to the maximizing subfamily and the dichotomy between $`\sqrt n`$ and logarithmic growth (Theorem 30, Corollary 31).
+- `MaxEntropyExample`: the three dyadic laws $`P,Q,R`$ (Proposition 32).
+
 **Mathematical expositions** (LaTeX/PDF at the repository root)
 - `bellman_square_root`: the square-root asymptotic.
 - `universal_causal_seed`: the Rényi spectrum.
@@ -901,13 +1028,17 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 - The exact value of $`G_{\ast}\in[\tfrac29,c_{\star}]`$, and whether all minimizers are causal
   at $`\kappa=G_{\ast}`$.
 - The second-order term of $`C_n-nh`$ when $`a=b`$, where the $`\sqrt n`$ coefficient
-  vanishes.
+  vanishes. By Theorem 29 this question is the same for a kernel with unequal entropies and
+  for its maximizing subfamily, up to $`O(\log n)`$.
+- Whether $`C_n-C^{\ast}_n`$ in Theorem 29 is bounded when several actions attain the
+  maximal entropy (Theorem 19 gives this for one maximizing action).
 - Optimality of the constants $`c_{\star}`$ and $`d_\alpha`$.
 
 **Hypotheses of Theorem 16.** Parts 1 and 2 require a reference action whose law has two
 distinct values and whose variance (and, for part 2, third moment) every action shares.
 The excluded case, in which every action is a point mass, is not covered by the formal
-statement.
+statement. Likewise, part 2 of Corollary 31 does not cover the case in which every action
+of $`S`$ is uniform.
 
 ## Attribution
 

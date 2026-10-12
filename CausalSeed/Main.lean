@@ -81,3 +81,7 @@ import CausalSeed.WalkMax
 import CausalSeed.WalkEnvelope
 import CausalSeed.WalkLimit
 import CausalSeed.WalkFamily
+import CausalSeed.MaxEntropyHoeffding
+import CausalSeed.MaxEntropy
+import CausalSeed.MaxEntropyReduction
+import CausalSeed.MaxEntropyExample

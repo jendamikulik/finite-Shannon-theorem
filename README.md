@@ -871,6 +871,86 @@ Lean (namespace `Kernel.PQR`):
 - [`certificate`](CausalSeed/MaxEntropyExample.lean#L98), [`dominates`](CausalSeed/MaxEntropyExample.lean#L104)
 - [`cost_compare`](CausalSeed/MaxEntropyExample.lean#L160), [`cost_tendsto`](CausalSeed/MaxEntropyExample.lean#L152)
 
+### IX. Toward the sharp logarithmic coefficient
+
+Let $`X_1,\dots,X_d`$ be centered, finitely supported increments with common variance
+$`v>0`$ and third moments $`\kappa_i`$, and let $`\kappa_\pm`$ be the largest and smallest of
+them. Write $`A_if(x)=\mathbb E f(x-X_i)`$, $`Tf=\min_iA_if`$, $`Uf=\max_iA_if`$, and
+$`G_n=T^nH`$, $`V_n=U^nH`$ for the lower and upper policy envelopes. Put
+$`e_n=\int(H-G_n)`$ (`eG (G n)`) and $`w_n=\int(V_n-G_n)`$ (`Wint n`). For a stationary
+kernel with common entropy $`h`$, $`e_n=L_n-nh`$.
+
+**Theorem 33 (envelope width).** There is a constant $`C`$ with
+
+```math
+e_n\le C(1+\log n),\qquad w_n\le C(1+\log n)\qquad\text{for all }n .
+```
+
+No further hypothesis is needed: a centered law of positive variance has two distinct atoms,
+so the symmetric-pair hypothesis of Theorem 16 holds automatically. The width is bounded
+directly, by the same recursion that bounds $`e_n`$ in Theorem 16.
+
+Lean:
+- [`Sqrt.IncFamily.width_log_upper`](CausalSeed/LogWidth.lean#L119)
+- [`Sqrt.IncFamily.Wint_log_upper`](CausalSeed/LogWidth.lean#L67),
+  [`Sqrt.IncFamily.nondeg_of_sig2_pos`](CausalSeed/LogWidth.lean#L22)
+
+**Theorem 34 (integrated amplification and propagation).**
+1. For $`R\in C^1`$ with $`R'`$ continuous and integrable and $`R\to0`$ at $`-\infty`$,
+   ```math
+   \int U^n|R|\le\|R\|_1+\|R'\|_1\,w_n .
+   ```
+2. For all functions $`f,g`$, $`|T^nf-T^ng|\le U^n|f-g|`$ pointwise.
+3. For every sequence of functions $`u_0,u_1,\dots`$, with $`R_j=u_{j+1}-Tu_j`$,
+   ```math
+   |T^nu_0-u_n|\le\sum_{j<n}U^{\,n-1-j}|R_j|\qquad\text{pointwise.}
+   ```
+
+Together with Theorem 33, these reduce an $`L^1`$ comparison of $`G_n`$ with any smooth
+profile to $`L^1`$ bounds on the one-step residuals and their derivatives.
+
+Lean:
+- [`Sqrt.IncFamily.amp_lintegral`](CausalSeed/LogWidth.lean#L138)
+- [`Sqrt.IncFamily.abs_Tit_sub_le`](CausalSeed/LogWidth.lean#L238),
+  [`Sqrt.IncFamily.abs_T_sub_le`](CausalSeed/LogWidth.lean#L217), with
+  [`Sqrt.IncFamily.Tit_H`](CausalSeed/LogWidth.lean#L182) ($`T^nH=G_n`$)
+- [`Sqrt.IncFamily.propagation`](CausalSeed/LogWidth.lean#L245)
+
+**Analytic result (not formalized).** The manuscript
+[`sharp_logarithmic_coefficient`](sharp_logarithmic_coefficient.pdf) derives
+
+```math
+e_n=\frac{\kappa_+-\kappa_-}{3v\sqrt{2\pi e}}\,\ln n+O\bigl(\sqrt{\ln n\,\ln\ln n}\bigr),
+```
+
+and the same expansion for $`C_n-nh`$ in bits. It combines Theorems 33 and 34 with an explicit
+corrector $`u_t=\Phi(z)+t^{-1/2}B(z)`$, $`z=(x-c\ln t)/\sqrt{vt}`$, where $`B`$ solves
+$`B''+zB'+B=2(a\phi-f)`$, and with $`L^1`$ Taylor bounds $`\|R_t\|_1+\|R_t'\|_1=O(t^{-3/2})`$ for
+the residuals of that profile. Those analytic parts (the corrector, its Sobolev regularity,
+the residual bounds and the extension of item 1 to $`W^{1,1}`$ functions) are not formalized.
+The repository does not claim the coefficient as a Lean theorem.
+
+**Proposition 35 (a dyadic pair).** Let $`P=(\tfrac14,\tfrac1{16}^{\times12})`$ and
+$`Q=(\tfrac18^{\times6},\tfrac1{32}^{\times8})`$. Both have entropy $`\tfrac72`$ bits and
+information variance $`\tfrac34`$, and their centered third moments are $`-\tfrac34`$ and
+$`\tfrac34`$. Hence there are $`0<c\le C`$ with
+
+```math
+c\log n\le C_n-\tfrac72n\le C\log n
+```
+
+for all large $`n`$ (and the same for $`L_n`$), and Theorem 33 applies. The predicted
+coefficient $`(\kappa_+-\kappa_-)/(3v\sqrt{2\pi e})=2/(3\sqrt{2\pi e})`$ lies in
+$`(0.1613,\,0.1614)`$. A floating-point Bellman computation on the half-bit lattice gives
+$`e_n-0.161314\ln n=0.6254`$ to four decimals for $`n=10^3,\dots,3\cdot10^5`$; this numerical
+evidence is not part of the formal development.
+
+Lean (namespace `Kernel.LogPair`):
+- [`equalEntropy`](CausalSeed/LogExample.lean#L46), [`sig2_eq`](CausalSeed/LogExample.lean#L55),
+  [`m3_P`](CausalSeed/LogExample.lean#L62), [`m3_Q`](CausalSeed/LogExample.lean#L68)
+- [`excess_log_theta`](CausalSeed/LogExample.lean#L76), [`width_log_upper`](CausalSeed/LogExample.lean#L86)
+- [`coeff_bounds`](CausalSeed/LogExample.lean#L99)
+
 ## Verification
 
 The development is the import closure of
@@ -891,7 +971,7 @@ defining module is `CausalSeed.*` and computes its axioms with `collectAxioms`.
 Auto-generated declarations (equation lemmas, `sizeOf_spec`, injectivity lemmas,
 instances) are excluded.
 
-[`AXIOMS.txt`](AXIOMS.txt) records the result. All **2281** theorems in the 96 project
+[`AXIOMS.txt`](AXIOMS.txt) records the result. All **2305** theorems in the 98 project
 modules depend only on `propext`, `Classical.choice` and `Quot.sound`; seven depend on
 no axiom. No theorem uses `sorryAx`, the build reports no `sorry` or `admit`, and the
 project declares no `axiom`.
@@ -1008,8 +1088,13 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 - `MaxEntropyReduction`: the reduction to the maximizing subfamily and the dichotomy between $`\sqrt n`$ and logarithmic growth (Theorem 30, Corollary 31).
 - `MaxEntropyExample`: the three dyadic laws $`P,Q,R`$ (Proposition 32).
 
+**Logarithmic coefficient**
+- `LogWidth`: the width bound without nondegeneracy hypothesis, integrated amplification, stability and propagation (Theorems 33 and 34).
+- `LogExample`: the dyadic pair $`P,Q`$ and the coefficient bounds (Proposition 35).
+
 **Mathematical expositions** (LaTeX/PDF at the repository root)
 - `bellman_square_root`: the square-root asymptotic.
+- `sharp_logarithmic_coefficient`: the logarithmic coefficient (analytic; see Section IX).
 - `universal_causal_seed`: the Rényi spectrum.
 - `atomic_capacity`: atomic capacity.
 - `completion_proof`: infinite seeds and entropy attainment.
@@ -1027,9 +1112,12 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 **Open mathematical problems.**
 - The exact value of $`G_{\ast}\in[\tfrac29,c_{\star}]`$, and whether all minimizers are causal
   at $`\kappa=G_{\ast}`$.
-- The second-order term of $`C_n-nh`$ when $`a=b`$, where the $`\sqrt n`$ coefficient
-  vanishes. By Theorem 29 this question is the same for a kernel with unequal entropies and
-  for its maximizing subfamily, up to $`O(\log n)`$.
+- A formal proof of the sharp logarithmic coefficient when $`a=b`$: the analytic argument of
+  Section IX gives $`C_n-nh=\frac{\kappa_+-\kappa_-}{3v\sqrt{2\pi e}}\ln n+O(\sqrt{\ln n\ln\ln n})`$;
+  Theorems 33 and 34 are formalized, the corrector and residual bounds are not. Whether the
+  remainder is $`O(1)`$ is open (the numerics of Proposition 35 suggest a finite limit). By
+  Theorem 29 the question is the same for a kernel with unequal entropies and for its
+  maximizing subfamily, up to $`O(\log n)`$.
 - Whether $`C_n-C^{\ast}_n`$ in Theorem 29 is bounded when several actions attain the
   maximal entropy (Theorem 19 gives this for one maximizing action).
 - Optimality of the constants $`c_{\star}`$ and $`d_\alpha`$.

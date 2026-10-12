@@ -1,8 +1,8 @@
 Axiom audit of every theorem in the project modules (CausalSeed.*), 12 October 2026
 Lean 4.35.0-rc3, mathlib 7d6757bc18680044fc0ff6efc8ee20494b408556
-`lake build`: Build completed successfully (3950 jobs). No `sorry`, `admit` or custom axioms.
+`lake build`: Build completed successfully (3953 jobs). No `sorry`, `admit` or custom axioms.
 
-Summary: 2281 theorems in 96 modules: all depend only on propext, Classical.choice,
+Summary: 2305 theorems in 98 modules: all depend only on propext, Classical.choice,
 Quot.sound (7 on none). No theorem uses sorryAx or any other axiom, and no `axiom`
 is declared in the CausalSeed modules.
 
@@ -784,6 +784,30 @@ CausalSeed.InfiniteEnvelope CausalSpectrum.Completion.infinite_envelope_sandwich
 CausalSeed.InfiniteEnvelope CausalSpectrum.Completion.natPerBit_ne_top : [propext, Classical.choice, Quot.sound]
 CausalSeed.InfiniteEnvelope CausalSpectrum.Completion.natPerBit_ne_zero : [propext, Classical.choice, Quot.sound]
 CausalSeed.InfiniteEnvelope CausalSpectrum.Completion.ofReal_nats : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogExample CausalSpectrum.Kernel.LogPair.coeff_bounds : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogExample CausalSpectrum.Kernel.LogPair.coeff_eq : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogExample CausalSpectrum.Kernel.LogPair.equalEntropy : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogExample CausalSpectrum.Kernel.LogPair.excess_log_theta : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogExample CausalSpectrum.Kernel.LogPair.infoMass_w : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogExample CausalSpectrum.Kernel.LogPair.m3_P : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogExample CausalSpectrum.Kernel.LogPair.m3_Q : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogExample CausalSpectrum.Kernel.LogPair.sig2_eq : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogExample CausalSpectrum.Kernel.LogPair.sum_pow : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogExample CausalSpectrum.Kernel.LogPair.width_log_upper : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogWidth CausalSpectrum.Sqrt.IncFamily.Tit_H : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogWidth CausalSpectrum.Sqrt.IncFamily.Tmax_add_le : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogWidth CausalSpectrum.Sqrt.IncFamily.Tmax_mono : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogWidth CausalSpectrum.Sqrt.IncFamily.Tmax_sum_le : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogWidth CausalSpectrum.Sqrt.IncFamily.U_mono : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogWidth CausalSpectrum.Sqrt.IncFamily.Wint_le_of_sums : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogWidth CausalSpectrum.Sqrt.IncFamily.Wint_log_upper : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogWidth CausalSpectrum.Sqrt.IncFamily.abs_T_sub_le : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogWidth CausalSpectrum.Sqrt.IncFamily.abs_Tit_sub_le : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogWidth CausalSpectrum.Sqrt.IncFamily.amp_lintegral : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogWidth CausalSpectrum.Sqrt.IncFamily.expect_add : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogWidth CausalSpectrum.Sqrt.IncFamily.nondeg_of_sig2_pos : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogWidth CausalSpectrum.Sqrt.IncFamily.propagation : [propext, Classical.choice, Quot.sound]
+CausalSeed.LogWidth CausalSpectrum.Sqrt.IncFamily.width_log_upper : [propext, Classical.choice, Quot.sound]
 CausalSeed.MaxEntropy CausalSpectrum.Kernel.Fstar_compare : [propext, Classical.choice, Quot.sound]
 CausalSeed.MaxEntropy CausalSpectrum.Kernel.Fstar_eq_G0 : [propext, Classical.choice, Quot.sound]
 CausalSeed.MaxEntropy CausalSpectrum.Kernel.G_bounds : [propext, Classical.choice, Quot.sound]
@@ -2443,4 +2467,4 @@ CausalSeed.ZeroTree CausalSpectrum.Zero.Shape.run_compat : []
 CausalSeed.ZeroTree CausalSpectrum.Zero.Shape.toTree_ofTree : [propext, Classical.choice, Quot.sound]
 CausalSeed.ZeroTree CausalSpectrum.Zero.ZTree.L_ofTree : [propext, Classical.choice, Quot.sound]
 CausalSeed.ZeroTree CausalSpectrum.Zero.ZTree.valid : [propext, Classical.choice, Quot.sound]
-TOTAL 2281 theorems; 7 depend on no axioms; non-standard: []; axioms declared in CausalSeed: []
+TOTAL 2305 theorems; 7 depend on no axioms; non-standard: []; axioms declared in CausalSeed: []

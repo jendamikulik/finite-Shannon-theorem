@@ -1,0 +1,216 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm}
+\usepackage[margin=25mm]{geometry}
+\usepackage[colorlinks=true,urlcolor=blue,linkcolor=blue]{hyperref}
+\setlength{\emergencystretch}{3em}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\PP}{\mathbb P}
+\title{Zero branches preserve the entire class of causal seed laws}
+\author{Research note for the finite-Shannon-theorem project}
+\date{11 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For a locally finite controlled tree with nonnegative normalized kernels,
+we prove that positive-support reduction preserves exactly which probability
+spaces can serve as causal seeds, simultaneously at every finite horizon.
+The seed is unchanged; only the decoder is transformed. The analogous
+statement holds for ordinary policy-indexed sources. Consequently the
+positive-kernel infinite-horizon theorems transfer to the original tree,
+with its zero-probability branches retained and its decoder total there.
+This is a mathematical extension, not a new Lean certificate or a claim
+of historical priority. The underlying support-reduction idea is standard.
+\end{abstract}
+
+\section{Model and an exact equivalence}
+At each finite history $h$, let $A(h)$ be a finite nonempty action set;
+for $a\in A(h)$ let $Y(h,a)$ be a finite nonempty output set, with
+\[
+ p(y\mid h,a)\ge0,\qquad \sum_{y\in Y(h,a)}p(y\mid h,a)=1.
+\]
+Neither stationarity nor a uniform positive lower bound is assumed.
+A terminal history, if present, can be continued by a deterministic dummy
+action and output. The set of finite histories is countable.
+
+Call a history \emph{positive} if all transition probabilities along it
+are positive, and let $H^+$ be their set, including the empty history.
+The auxiliary tree $T^+$ keeps the same actions at histories in $H^+$
+and replaces $Y(h,a)$ by
+$Y^+(h,a)=\{y:p(y\mid h,a)>0\}$. Its transition probabilities are
+unchanged: there is no renormalization. Write $j$ for inclusion of its
+histories into those of the original tree $T$.
+
+On a probability space $(\Omega,\mathcal F,\mu)$, a causal decoder is a
+measurable response $D(\omega,h,a)\in Y(h,a)$ for every history and action.
+It is exact if every deterministic adaptive policy has the prescribed
+finite transcript laws. Measurability means measurability of each finite
+output coordinate. An ordinary source instead has separate measurable
+transcript readouts for each finite horizon and policy, with the same
+exact marginals and without consistency requirements between readouts.
+
+\begin{theorem}[Preservation of the seed space]\label{thm:seed}
+For every probability space $(\Omega,\mathcal F,\mu)$,
+\[
+ \boxed{\quad
+ (\Omega,\mu)\text{ admits an exact causal decoder for }T
+ \iff
+ (\Omega,\mu)\text{ admits one for }T^+ .\quad}
+\]
+The equivalence holds both at any fixed horizon and simultaneously at
+all finite horizons. It also holds with ``causal decoder'' replaced by
+``ordinary source.'' All conversions leave $\Omega$, $\mathcal F$, and
+$\mu$ unchanged. On total strategy spaces the extension map is an
+injective measurable section of the restriction map.
+\end{theorem}
+
+\begin{proof}
+Choose a positive default output $y_*(h,a)\in Y^+(h,a)$ at every original
+history and action; normalization ensures existence. Put
+\[
+ r_{h,a}(y)=
+ \begin{cases}y,&p(y\mid h,a)>0,\\y_*(h,a),&p(y\mid h,a)=0.\end{cases}
+\]
+For a full decoder $D$ define its reduced decoder by
+\[
+ RD(\omega,h,a)=r_{j(h),a}(D(\omega,j(h),a)).
+\]
+Conversely, for a reduced decoder $D^+$, define a \emph{total} full decoder
+\[
+ ED^+(\omega,h,a)=
+ \begin{cases}
+ D^+(\omega,j^{-1}(h),a),&h\in H^+,\\
+ y_*(h,a),&h\notin H^+.
+ \end{cases}
+\]
+Both maps are measurable coordinatewise, and $RED^+=D^+$ pointwise.
+In particular $E$ is injective. The definitions do not depend on a horizon.
+
+Suppose first that $D^+$ is exact. For any full policy $\pi$, restrict
+its choices to positive histories, obtaining $\pi^+$. Running $ED^+$
+under $\pi$ stays in $H^+$ for \emph{every} seed value and is precisely
+the included run of $D^+$ under $\pi^+$. Under the prescribed full law,
+any path leaving $H^+$ has probability zero, while every positive path
+has its unchanged product probability. Thus $ED^+$ is exact.
+
+Now suppose $D$ is exact. Extend a reduced policy $\pi^+$ to a full
+policy $\pi$ by arbitrary legal choices outside $H^+$. For each finite
+horizon, the $D$-run under $\pi$ has probability zero of taking a zero
+transition, by its exact transcript law. Until such a transition, the
+$D$-run and the $RD$-run coincide. Therefore the reduced run has exactly
+the required law. This proves exactness at every horizon using the
+single decoder $RD$ above; it is not an argument that chooses separate
+seeds or decoders for each horizon.
+
+There is also a common full-measure set on which $D$ never chooses a zero
+output at any history reachable under any policy. For each finite path
+ending in a zero transition, consider the event that $D$ agrees with
+all its specified outputs. A policy that follows the specified actions
+on that path shows that this event has measure zero. There are countably
+many such paths, so their union is null. No uncountable union over
+infinite policies is needed. This statement concerns reachable histories,
+not arbitrary unused coordinates of a strategy.
+
+For ordinary sources, reduced-to-full conversion restricts a full policy,
+uses its reduced readout, and includes the resulting transcript.
+In the other direction, extend the reduced policy and use the full
+readout. A positive transcript is restricted; replace a nonpositive one
+by any fixed positive transcript compatible with the reduced policy.
+The replacement event has measure zero, and the readout remains measurable.
+This construction works separately at each readout index, exactly as the
+definition of an ordinary source permits. Throughout, the seed law is
+literally unchanged.
+\end{proof}
+
+\section{Spectra and the infinite consequences}
+For a fixed policy and horizon, support reduction preserves the multiset
+of positive transcript masses. Every full policy restricts and every
+reduced policy extends. Consequently, for every $n,t,K$,
+\begin{equation}\label{eq:spectrum}
+ F_{T_n}^*(t)=F_{T_n^+}^*(t),\qquad
+ \inf_\pi A_K(P^T_{n,\pi})=\inf_\pi A_K(P^{T^+}_{n,\pi}).
+\end{equation}
+Here $A_K$ is the sum of the $K$ largest masses, padded with zeros if
+necessary. Information distributions sum over positive transcript masses.
+Zero-mass leaves contribute no probability at $+\infty$.
+
+\begin{corollary}\label{cor:transfer}
+The positive-tree infinite-horizon results extend to $T$ with all zero
+branches retained. In particular:
+\begin{enumerate}
+\item For countable-seed Shannon cost, in a single consistent unit,
+\[
+ C_\infty(T)=\sup_n C_n(T).
+\]
+If finite, the optimum is attained by a countable seed on the original tree.
+\item In bits, with $L_\infty=\sup_n L(T_n)$ and
+$c_*=(1+\log_2e)/2$,
+\[
+ L_\infty\le C_\infty(T)\le L_\infty+c_*.
+\]
+An exact finite-entropy seed exists if and only if $L_\infty<\infty$.
+\item For sources with measurable singletons, define
+$q=\sup_K\inf_{n,\pi}A_K(P^T_{n,\pi})$ and
+$F_\infty(t)=\inf_nF_{T_n}^*(t)$. The maximal ordinary and causal atomic
+capacities equal $q$, the causal capacity is attained, and
+\[
+ q=\lim_{t\to\infty}F_\infty(t)=\sup_t F_\infty(t).
+\]
+An exact countably supported causal seed exists if and only if $q=1$.
+\item If a countable ordinary exact source exists, there is one countable
+causal seed $S$, exact at all horizons, for which simultaneously for all
+$\alpha>0$,
+\[
+ R_\alpha(Z)\le O_\alpha(T)\le C_\alpha(T)
+ \le H_\alpha(S)\le R_\alpha(Z)+d_\alpha,
+\]
+with the same constants as for the positive tree. Its min-entropy attains
+both the ordinary and causal optima. Here $Z$ is the envelope-limit law,
+including its possible mass $1-q$ at $+\infty$.
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+Theorem~\ref{thm:seed} identifies, at every finite horizon and at the
+infinite horizon, the sets of admissible countable seed probability laws.
+Thus Shannon costs and all ordinary and causal R\'enyi costs agree with
+those of $T^+$. Entropy attainment and the simultaneous choice of a seed
+transfer by $E$, without altering that seed's weights.
+Equation~\eqref{eq:spectrum} gives equality of $L_\infty$, $F_\infty$,
+$q$, and the envelope-limit law, so all the displayed spectral bounds
+follow from the positive-tree theorems.
+
+For atomic capacity, apply the ordinary upper bound to the unchanged
+source space using $R$. To transfer attainment as a measure on total
+strategies, push the positive-tree attaining measure through $E$.
+Because $E$ is injective, every target singleton has as preimage either
+one singleton or the empty set; total singleton mass is preserved.
+The pushed-forward law is exact by Theorem~\ref{thm:seed}. This also
+justifies attainment in the strategy-space formulation, rather than
+only on an abstract seed space.
+\end{proof}
+
+\section{Scope, dependencies, and what remains open}
+The extension retains a total decoder on the original tree. The positive
+tree is an auxiliary proof device, not a replacement of the final model.
+No limiting perturbation $p\mapsto p+\varepsilon$ is used, so there is no
+interchange of a positivity limit with an infinite horizon.
+
+The input results are Theorems 5--8 of the repository README and its
+atomic spectral identity; the new mathematical obligation is entirely
+Theorem~\ref{thm:seed} and \eqref{eq:spectrum}. Relevant Lean modules are
+\texttt{EntropyLimit}, \texttt{InfiniteEnvelope}, \texttt{AtomicCapacity},
+\texttt{AtomicSpectrum}, and \texttt{RenyiLimitMeasure}. The repository
+already has finite stationary support reduction in \texttt{ZeroKernel}
+and \texttt{ZeroCost}; this note supplies the general horizon-independent
+argument for history-dependent trees. It has not been formalized or
+compiled in Lean.
+
+A stronger claim that adjoining arbitrary strictly lower-entropy actions
+changes every $C_n$ by at most a constant is \emph{not proved here}.
+The bounded-excess theorem for a unique maximizing action does not alone
+establish that claim when several actions maximize entropy.
+The exact $G_*$, endpoint minimizers, optimal overhead constants, and the
+equal-variance next-order problem remain unresolved by these arguments.
+
+\end{document}

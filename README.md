@@ -916,7 +916,7 @@ Lean:
   [`Sqrt.IncFamily.Tit_H`](CausalSeed/LogWidth.lean#L182) ($`T^nH=G_n`$)
 - [`Sqrt.IncFamily.propagation`](CausalSeed/LogWidth.lean#L245)
 
-**Analytic result (not formalized).** The manuscript
+**Analytic result (formalized for the CDF envelopes, Theorem 40).** The manuscript
 [`sharp_logarithmic_coefficient`](sharp_logarithmic_coefficient.pdf) derives
 
 ```math
@@ -925,10 +925,11 @@ e_n=\frac{\kappa_+-\kappa_-}{3v\sqrt{2\pi e}}\,\ln n+O\bigl(\sqrt{\ln n\,\ln\ln 
 
 and the same expansion for $`C_n-nh`$ in bits. It combines Theorems 33 and 34 with an explicit
 corrector $`u_t=\Phi(z)+t^{-1/2}B(z)`$, $`z=(x-c\ln t)/\sqrt{vt}`$, where $`B`$ solves
-$`B''+zB'+B=2(a\phi-f)`$, and with $`L^1`$ Taylor bounds $`\|R_t\|_1+\|R_t'\|_1=O(t^{-3/2})`$ for
-the residuals of that profile. Those analytic parts (the corrector, its Sobolev regularity,
-the residual bounds and the extension of item 1 to $`W^{1,1}`$ functions) are not formalized.
-The repository does not claim the coefficient as a Lean theorem.
+$`B''+zB'+B=2(a\phi-f)`$, and with $`L^1`$ Taylor bounds for the residuals of that profile.
+Amplification in majorant form (Theorem 36), the Gaussian norms (Theorem 37), the corrector
+(Theorem 38), the residual lemma (Theorem 39) and the propagation with the choice of $`t_0`$
+(Theorem 40) are formal. Theorem 40 gives both the $`W_1`$ statement, in its CDF form, and the
+mean statement for $`e_n`$, and Theorem 41 transfers the expansion to $`C_n`$ and $`L_n`$.
 
 **Proposition 35 (a dyadic pair).** Let $`P=(\tfrac14,\tfrac1{16}^{\times12})`$ and
 $`Q=(\tfrac18^{\times6},\tfrac1{32}^{\times8})`$. Both have entropy $`\tfrac72`$ bits and
@@ -939,7 +940,8 @@ $`\tfrac34`$. Hence there are $`0<c\le C`$ with
 c\log n\le C_n-\tfrac72n\le C\log n
 ```
 
-for all large $`n`$ (and the same for $`L_n`$), and Theorem 33 applies. The predicted
+for all large $`n`$ (and the same for $`L_n`$), and Theorem 33 applies. Theorem 41 sharpens this to
+$`C_n=\tfrac72n+\tfrac{2}{3\sqrt{2\pi e}}\ln n+O(\sqrt{\ln n\ln\ln n})`$. The predicted
 coefficient $`(\kappa_+-\kappa_-)/(3v\sqrt{2\pi e})=2/(3\sqrt{2\pi e})`$ lies in
 $`(0.1613,\,0.1614)`$. A floating-point Bellman computation on the half-bit lattice gives
 $`e_n-0.161314\ln n=0.6254`$ to four decimals for $`n=10^3,\dots,3\cdot10^5`$; this numerical
@@ -950,6 +952,158 @@ Lean (namespace `Kernel.LogPair`):
   [`m3_P`](CausalSeed/LogExample.lean#L62), [`m3_Q`](CausalSeed/LogExample.lean#L68)
 - [`excess_log_theta`](CausalSeed/LogExample.lean#L76), [`width_log_upper`](CausalSeed/LogExample.lean#L86)
 - [`coeff_bounds`](CausalSeed/LogExample.lean#L99)
+
+**Theorem 36 (amplification under a majorant).** Call $`S`$ a $`C^1`$ majorant if $`S\ge0`$,
+$`S'`$ is continuous and integrable, and $`S(x)\to0`$ as $`x\to-\infty`$. Then:
+
+1. if $`|R|\le S`$ pointwise, $`\int U^n|R|\le\|S\|_1+\|S'\|_1\,w_n`$, with no regularity
+   required of $`R`$;
+2. if $`|f-g|\le S`$, then $`\|T^nf-T^ng\|_1\le\|S\|_1+\|S'\|_1\,w_n`$;
+3. if every residual satisfies $`|u_{j+1}-Tu_j|\le S_j`$ with $`C^1`$ majorants $`S_j`$, then
+
+   ```math
+   \|T^nu_0-u_n\|_1\le\sum_{j<n}\bigl(\|S_j\|_1+\|S_j'\|_1\,w_{n-1-j}\bigr).
+   ```
+
+This removes the need for a $`W^{1,1}`$ or BV extension of Theorem 34: the residuals of the
+corrector (which involve a minimum over actions) and the initial comparison (which involves
+the step $`H`$) only have to be dominated by smooth majorants.
+
+Lean:
+- [`Sqrt.IncFamily.Majorant`](CausalSeed/LogAmp.lean#L27), [`Sqrt.IncFamily.U_nonneg`](CausalSeed/LogAmp.lean#L19)
+- [`Sqrt.IncFamily.amp_majorant`](CausalSeed/LogAmp.lean#L39)
+- [`Sqrt.IncFamily.stability_lintegral`](CausalSeed/LogAmp.lean#L50)
+- [`Sqrt.IncFamily.propagation_lintegral`](CausalSeed/LogAmp.lean#L60)
+
+**Theorem 37 (Gaussian derivative norms).** Let $`\phi(z)=e^{-z^2/2}/\sqrt{2\pi}`$. Then
+$`\phi'=-z\phi`$, $`\phi''=(z^2-1)\phi`$, all three are integrable, and
+
+```math
+\int\phi=1,\qquad\int\phi'=\int\phi''=0,\qquad\int|\phi'|=2\phi(0),\qquad\int|\phi''|=4\phi(1).
+```
+
+For every profile $`g`$ and $`s>0`$, $`\int|g((x-m)/s)|\,dx=s\int|g|`$. In particular the first
+three $`x`$-derivatives of $`\Phi((x-m)/s)`$ have $`L^1`$ norms $`1`$, $`2\phi(0)/s`$ and
+$`4\phi(1)/s^2`$.
+
+Lean:
+- [`LogGauss.hasDerivAt_phi`](CausalSeed/LogGauss.lean#L27), [`LogGauss.hasDerivAt_dphi`](CausalSeed/LogGauss.lean#L34),
+  [`LogGauss.integrable_ddphi`](CausalSeed/LogGauss.lean#L59)
+- [`LogGauss.integral_phi`](CausalSeed/LogGauss.lean#L80), [`LogGauss.integral_ddphi`](CausalSeed/LogGauss.lean#L90),
+  [`LogGauss.integral_abs_dphi`](CausalSeed/LogGauss.lean#L95), [`LogGauss.integral_abs_ddphi`](CausalSeed/LogGauss.lean#L115)
+- [`LogGauss.integral_abs_comp_affine`](CausalSeed/LogGauss.lean#L141), [`LogGauss.gauss_scaled_norms`](CausalSeed/LogGauss.lean#L157)
+
+**Theorem 38 (the resonant corrector).** Let $`\beta\le\alpha`$ be real; in the application
+$`\alpha=\kappa_+/(6v^{3/2})`$ and $`\beta=\kappa_-/(6v^{3/2})`$. Put
+
+```math
+f(z)=\min\bigl(-\alpha\phi''(z),-\beta\phi''(z)\bigr),\quad a=\int f,\quad g=2(a\phi-f),\quad
+J(z)=\int_{-\infty}^zg,\quad B(z)=\phi(z)\int_0^z\frac{J}{\phi}.
+```
+
+Then:
+
+1. $`f=-\alpha\phi''+(\alpha-\beta)\mathbf 1_{[-1,1]}\phi''`$ and $`a=-2(\alpha-\beta)\phi(1)`$, so $`\int g=0`$;
+2. $`B\in C^2`$, with $`B'=J-zB`$ and $`B''=g-B-zB'`$; in particular
+   $`B''+zB'+B=2(a\phi-f)`$;
+3. $`|J|\le K(1+|z|)^2\phi`$, $`|B|\le K(1+|z|)^3\phi`$, $`|B'|\le K(1+|z|)^4\phi`$ and
+   $`|B''|\le K(1+|z|)^5\phi`$ for a finite $`K`$; hence $`B,B',B''`$ are integrable.
+
+The tail bounds use the primitive $`-(y^2+2)\phi(y)`$ of $`y^3\phi(y)`$ instead of Mills'
+ratio. The local Lipschitz bound for $`B''`$ (the weak $`B'''`$) is part of the residual
+lemma.
+
+Lean:
+- [`LogGauss.cf_eq`](CausalSeed/LogCorrector.lean#L97), [`LogGauss.ca_eq`](CausalSeed/LogCorrector.lean#L112), [`LogGauss.integral_cg`](CausalSeed/LogCorrector.lean#L131)
+- [`LogGauss.hasDerivAt_cJ`](CausalSeed/LogCorrector.lean#L159), [`LogGauss.hasDerivAt_cB`](CausalSeed/LogCorrector.lean#L287),
+  [`LogGauss.hasDerivAt_cdB`](CausalSeed/LogCorrector.lean#L293), [`LogGauss.cB_first_order`](CausalSeed/LogCorrector.lean#L299), [`LogGauss.cB_ode`](CausalSeed/LogCorrector.lean#L303)
+- [`LogGauss.abs_cJ_le`](CausalSeed/LogCorrector.lean#L205), [`LogGauss.abs_cB_le`](CausalSeed/LogCorrector.lean#L325), [`LogGauss.abs_cdB_le`](CausalSeed/LogCorrector.lean#L351),
+  [`LogGauss.abs_cddB_le`](CausalSeed/LogCorrector.lean#L370), [`LogGauss.integrable_cddB`](CausalSeed/LogCorrector.lean#L403)
+
+**Theorem 39 (the residual lemma in majorant form).** Let the increment family be centered
+with common variance $`v>0`$, let $`\kappa_\pm`$ be the largest and smallest third moments, and
+put $`\alpha=\kappa_+/(6v^{3/2})`$, $`\beta=\kappa_-/(6v^{3/2})`$, $`c=-\sqrt v\,a`$. Then:
+
+1. $`c=(\kappa_+-\kappa_-)/(3v\sqrt{2\pi e})`$, and $`\min_j\bigl[-\tfrac{\kappa_j}{6v^{3/2}}\phi''(z)\bigr]=f(z)`$;
+2. $`|B''(w)-B''(z)|\le L\,E(z)\,|w-z|`$ for $`|w-z|\le D`$, where $`E(z)=(1+z^2)^4e^{-z^2/8}`$;
+3. with $`z=(x-c\ln t)/\sqrt{vt}`$ and $`u_t(x)=\Phi(z)+t^{-1/2}B(z)`$, there is $`K`$ such that for all
+   $`t\ge1`$ and $`x`$
+
+   ```math
+   \bigl|u_{t+1}(x)-(Tu_t)(x)\bigr|\le K\,t^{-2}E(z).
+   ```
+
+   The right side $`S_t`$ is a $`C^1`$ majorant with $`\|S_t\|_1=K_1t^{-3/2}`$ and
+   $`\|S_t'\|_1=K_2t^{-2}`$.
+
+The proof uses Taylor remainders in $`z`$ for the spatial translations, a time Taylor
+expansion with an explicit second derivative, and the profile identity
+$`\partial_tu-\tfrac v2\partial_x^2u=t^{-3/2}f(z)-(c/\sqrt v)\,t^{-2}B'(z)`$. Gaussian windows
+$`(1+|w|)^k\phi(w)\le C_DE(z)`$ for $`|w-\lambda z|\le D`$ with $`\lambda^2\ge\frac12`$ handle every remainder.
+This is the manuscript's estimate $`\|R_t\|_1+\|R_t'\|_1\le Kt^{-3/2}`$ in the form Theorem 36
+consumes: a pointwise bound by a smooth majorant replaces the weak derivative of $`R_t`$.
+
+Lean:
+- [`LogGauss.cdrift_eq`](CausalSeed/LogResidual.lean#L267), [`LogGauss.inf'_eq_cf`](CausalSeed/LogResidual.lean#L241), [`LogGauss.ca_eq_neg_cdrift`](CausalSeed/LogResidual.lean#L262)
+- [`LogGauss.cddB_lip`](CausalSeed/LogResidual.lean#L93), [`LogGauss.taylor_Phi`](CausalSeed/LogResidual.lean#L155), [`LogGauss.taylor_cB`](CausalSeed/LogResidual.lean#L191)
+- [`LogGauss.window`](CausalSeed/LogTaylor.lean#L105), [`LogGauss.ladder`](CausalSeed/LogTaylor.lean#L59), [`LogGauss.majorant_scaled`](CausalSeed/LogTaylor.lean#L205)
+- [`LogGauss.spatial`](CausalSeed/LogResidual.lean#L308), [`LogGauss.dFx_eq`](CausalSeed/LogResidual.lean#L741), [`LogGauss.time_taylor`](CausalSeed/LogResidual.lean#L716)
+- [`LogGauss.residual_pointwise`](CausalSeed/LogResidual.lean#L764), [`LogGauss.residual_majorant`](CausalSeed/LogResidual.lean#L817)
+
+**Theorem 40 (sharp logarithmic coefficient).** Let the increment family be centered with
+common variance $`v>0`$ and put $`c=(\kappa_+-\kappa_-)/(3v\sqrt{2\pi e})`$. There is a
+constant $`C`$, depending on the family, such that for all $`n\ge16`$
+
+```math
+\int_{\mathbb R}\Bigl|G_n(x)-\Phi\Bigl(\frac{x-c\ln n}{\sqrt{vn}}\Bigr)\Bigr|\,dx
+\le C\sqrt{\ln n\,\ln\ln n},\qquad
+|e_n-c\ln n|\le C\sqrt{\ln n\,\ln\ln n}.
+```
+
+The left integral is $`W_1(\nu_n,N(c\ln n,vn))`$ written as the $`L^1`$ distance of the two
+distribution functions. That identity is the standard one-dimensional formula and is not itself
+formalized: the Lean statement is the CDF form. The explicit threshold $`n\ge16`$ replaces
+"as $`n\to\infty`$"; it makes $`\ln\ln n>1`$.
+
+The proof follows the manuscript. Put $`t_0=\ln n`$, $`R^2=\tfrac83\ln t_0`$ and
+$`A=\sqrt{vt_0}\,R+|c\ln t_0|`$. The truncated profile $`\tilde b`$ is $`0`$ below $`-A`$,
+$`\Phi(z_{t_0})`$ on $`[-A,A)`$ and $`1`$ from $`A`$ on. Monotonicity and translation
+invariance of $`T`$ give $`T^n\tilde b(\cdot-A)\le G_n\le T^n\tilde b(\cdot+A)`$, and for a
+nondecreasing $`\beta`$ with values in $`[0,1]`$, $`\int(\beta(x+h)-\beta(x))\,dx\le h`$. So
+$`\|G_n-T^n\tilde b\|_1\le2A`$. The Chernoff bounds $`\Phi(z)\le e^{\lambda z+\lambda^2/2}`$
+and $`1-\Phi(z)\le e^{-\lambda z+\lambda^2/2}`$ ($`\lambda\ge0`$) dominate
+$`|\tilde b-u_{t_0}|`$ by $`(t_0^{-1}+K_Bt_0^{-1/2})E(z_{t_0})`$. Integrated stability
+(Theorem 36), propagation with Theorem 39, the width bound $`w_n=O(\ln n)`$ and
+$`\sum_j(t_0+j)^{-3/2}\le2(t_0-1)^{-1/2}`$ give the comparison with $`u_{t_0+n}`$. Removing the
+corrector, the $`L^1`$ scale comparison $`\|\Phi(\cdot/s_2)-\Phi(\cdot/s_1)\|_1\le2\phi(0)(s_2-s_1)s_2/s_1`$
+and the shift comparison $`\|\Phi(\cdot-m_1)-\Phi(\cdot-m_2)\|_1\le|m_1-m_2|`$ finish the
+$`L^1`$ bound. The mean follows from $`\int(H-\Phi((x-m)/s))\,dx=m`$.
+
+Lean:
+- [`Sqrt.IncFamily.Tit_mono`](CausalSeed/LogFinal.lean#L18), [`Sqrt.IncFamily.Tit_translate`](CausalSeed/LogFinal.lean#L22), [`Sqrt.IncFamily.Tit_monotone`](CausalSeed/LogFinal.lean#L30)
+- [`LogGauss.lintegral_shift_le`](CausalSeed/LogFinal.lean#L58), [`LogGauss.lintegral_G_sub_Tit_bt`](CausalSeed/LogFinal.lean#L473), [`LogGauss.abs_bt_sub_le`](CausalSeed/LogFinal.lean#L452)
+- [`LogGauss.Phi_le_exp_mgf`](CausalSeed/LogFinal.lean#L135), [`LogGauss.one_sub_Phi_le_exp_mgf`](CausalSeed/LogFinal.lean#L150), [`LogGauss.integral_H_sub_Phi`](CausalSeed/LogFinal.lean#L249)
+- [`LogGauss.lintegral_Phi_scale`](CausalSeed/LogFinal.lean#L341), [`LogGauss.lintegral_Phi_shift`](CausalSeed/LogFinal.lean#L370), [`LogGauss.sum_pow_three_halves`](CausalSeed/LogFinal.lean#L379)
+- [`LogGauss.main_L1`](CausalSeed/LogFinal.lean#L524), [`LogGauss.main_mean`](CausalSeed/LogFinal.lean#L829), with [`LogGauss.cdrift_eq`](CausalSeed/LogResidual.lean#L267) for the value of $`c`$
+
+**Theorem 41 (sharp coefficient for the seed entropy).** For a finite stationary kernel
+whose action laws $`P_i`$ have common entropy $`h`$ and common information variance $`v>0`$, put
+$`\kappa_i=\mathbb E(-\log_2P_i(Y_i)-h)^3`$. There is $`C`$ such that for all $`n\ge16`$
+
+```math
+\Bigl|C_n-nh-\frac{\kappa_+-\kappa_-}{3v\sqrt{2\pi e}}\ln n\Bigr|\le C\sqrt{\ln n\,\ln\ln n}
+```
+
+(bits), and the same for the envelope mean $`L_n`$ and for any sequence within a bounded
+additive amount of $`L_n`$. The proof uses $`L_n-nh=e_n`$, Theorem 40 and the sandwich
+$`L_n\le C_n\le L_n+c_\star`$. For the dyadic pair of Proposition 35, $`C_n=L_n`$ at every
+horizon and the coefficient is $`2/(3\sqrt{2\pi e})`$. The manuscript's clause about exact
+seeds is stated for an arbitrary real sequence $`s_n`$ with $`|s_n-L_n|\le D`$.
+
+Lean:
+- [`Kernel.cost_sharp`](CausalSeed/LogCost.lean#L31), [`Kernel.near_envelope_sharp`](CausalSeed/LogCost.lean#L57)
+- [`Kernel.LogPair.cost_sharp`](CausalSeed/LogCost.lean#L102), with [`Kernel.LogPair.isDyadic`](CausalSeed/LogCost.lean#L80),
+  [`Kernel.LogPair.kmax_eq`](CausalSeed/LogCost.lean#L83), [`Kernel.LogPair.kmin_eq`](CausalSeed/LogCost.lean#L91)
 
 ## Verification
 
@@ -971,7 +1125,7 @@ defining module is `CausalSeed.*` and computes its axioms with `collectAxioms`.
 Auto-generated declarations (equation lemmas, `sizeOf_spec`, injectivity lemmas,
 instances) are excluded.
 
-[`AXIOMS.txt`](AXIOMS.txt) records the result. All **2305** theorems in the 98 project
+[`AXIOMS.txt`](AXIOMS.txt) records the result. All **2488** theorems in the 105 project
 modules depend only on `propext`, `Classical.choice` and `Quot.sound`; seven depend on
 no axiom. No theorem uses `sorryAx`, the build reports no `sorry` or `admit`, and the
 project declares no `axiom`.
@@ -1091,10 +1245,17 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 **Logarithmic coefficient**
 - `LogWidth`: the width bound without nondegeneracy hypothesis, integrated amplification, stability and propagation (Theorems 33 and 34).
 - `LogExample`: the dyadic pair $`P,Q`$ and the coefficient bounds (Proposition 35).
+- `LogAmp`: amplification, stability and propagation under $`C^1`$ majorants (Theorem 36).
+- `LogGauss`: the Gaussian density, its derivatives, exact $`L^1`$ norms and scaling (Theorem 37).
+- `LogCorrector`: the forcing, the resonant mass $`a`$, the corrector $`B`$, its ODE and tail bounds (Theorem 38).
+- `LogTaylor`: $`\Phi`$, the mean-value ladder, the Gaussian window lemma and the majorant profile $`E`$.
+- `LogResidual`: the coefficient and forcing links, Taylor expansions and the residual lemma (Theorem 39).
+- `LogFinal`: the sandwich, Chernoff bounds, Gaussian `L¹` comparisons, the choice of $`t_0`$ and the sharp coefficient (Theorem 40).
+- `LogCost`: the sharp coefficient for $`C_n`$ and $`L_n`$, and the dyadic pair (Theorem 41).
 
 **Mathematical expositions** (LaTeX/PDF at the repository root)
 - `bellman_square_root`: the square-root asymptotic.
-- `sharp_logarithmic_coefficient`: the logarithmic coefficient (analytic; see Section IX).
+- `sharp_logarithmic_coefficient`: the logarithmic coefficient (formalized as Theorems 36 to 41).
 - `universal_causal_seed`: the Rényi spectrum.
 - `atomic_capacity`: atomic capacity.
 - `completion_proof`: infinite seeds and entropy attainment.
@@ -1112,12 +1273,12 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 **Open mathematical problems.**
 - The exact value of $`G_{\ast}\in[\tfrac29,c_{\star}]`$, and whether all minimizers are causal
   at $`\kappa=G_{\ast}`$.
-- A formal proof of the sharp logarithmic coefficient when $`a=b`$: the analytic argument of
-  Section IX gives $`C_n-nh=\frac{\kappa_+-\kappa_-}{3v\sqrt{2\pi e}}\ln n+O(\sqrt{\ln n\ln\ln n})`$;
-  Theorems 33 and 34 are formalized, the corrector and residual bounds are not. Whether the
-  remainder is $`O(1)`$ is open (the numerics of Proposition 35 suggest a finite limit). By
-  Theorem 29 the question is the same for a kernel with unequal entropies and for its
-  maximizing subfamily, up to $`O(\log n)`$.
+- The size of the remainder in the sharp logarithmic expansion. Theorems 40 and 41 formalize
+  $`C_n-nh=\frac{\kappa_+-\kappa_-}{3v\sqrt{2\pi e}}\ln n+O(\sqrt{\ln n\ln\ln n})`$ for equal
+  entropies and variances. Whether the remainder is $`O(1)`$ is open (the numerics of
+  Proposition 35 suggest a finite limit). For a kernel with unequal entropies, Theorem 29
+  relates $`C_n`$ to its maximizing subfamily only up to $`O(\log n)`$, so the coefficient is
+  not transferred there.
 - Whether $`C_n-C^{\ast}_n`$ in Theorem 29 is bounded when several actions attain the
   maximal entropy (Theorem 19 gives this for one maximizing action).
 - Optimality of the constants $`c_{\star}`$ and $`d_\alpha`$.

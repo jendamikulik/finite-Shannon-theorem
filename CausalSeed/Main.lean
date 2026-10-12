@@ -77,3 +77,7 @@ import CausalSeed.ZeroBranchSpectrum
 import CausalSeed.ZeroBranchLeaves
 import CausalSeed.ZeroBranchTransfer
 import CausalSeed.ZeroBranchOrdinary
+import CausalSeed.WalkMax
+import CausalSeed.WalkEnvelope
+import CausalSeed.WalkLimit
+import CausalSeed.WalkFamily

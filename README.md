@@ -24,7 +24,8 @@ over all policies, and its mean $`L`$. Results:
   every positive order, also when kernels have zero entries.
 - For stationary kernels this gives the sharp $`\sqrt n`$ asymptotic, its $`W_1`$
   universality, and the linear growth rate when the actions' entropies differ.
-- For dyadic kernels the overhead vanishes.
+- For dyadic kernels the overhead vanishes. With one uniform action, the optimal cost is an
+  exact random-walk maximum, given by Spitzer's identity.
 
 Every result listed below is checked by the Lean kernel, with no `sorry` and no
 axioms beyond Lean's standard three.
@@ -653,6 +654,103 @@ Lean (namespace `ZeroBranch.NNTree`):
 - [`one_seed_all_orders_T`](CausalSeed/ZeroBranchOrdinary.lean#L306),
   [`OalphaT_eq`](CausalSeed/ZeroBranchOrdinary.lean#L295)
 
+### VII. Random-walk maxima
+
+Let $`m\ge1`$ and let $`Q`$ be a strictly positive law on a finite alphabet. The stationary
+two-action kernel `Walk.TwoAction.kernel` has action $`U`$, uniform on $`m`$ symbols, and action
+$`Q`$. Put $`h=\log_2 m`$, let $`Y_1,Y_2,\ldots`$ be i.i.d. with law $`Q`$, and set
+$`X_j=-\log_2Q(Y_j)-h`$, $`S_k=X_1+\dots+X_k`$ and $`M_n=\max_{0\le k\le n}S_k`$. In Lean, the law
+of $`(X_1,\dots,X_n)`$ is the finite product law on words of length $`n`$ (`Walk.Law.E`), so every
+probability and expectation below is a finite weighted sum. $`C_n`$ is `Kernel.costBits n`.
+The dyadic assumptions are $`m=2^{d}`$ for some $`d\in\mathbb N`$ and every atom of $`Q`$ a
+power of $`1/2`$ (`TwoAction.Dyadic`).
+
+**Theorem 24 (exact envelope identity).** For every $`n\ge0`$ and every real $`x`$,
+
+```math
+F^{\ast}_n(nh+x)=\Pr(M_n\le x),\qquad L_n=nh+\mathbb E M_n ,
+```
+
+and $`nh+\mathbb E M_n\le C_n\le nh+\mathbb E M_n+c_{\star}`$. Under the dyadic assumptions,
+$`C_n=nh+\mathbb E M_n`$. No assumption on the sign of $`H(Q)-h`$ is needed.
+
+Lean (namespace `Walk.TwoAction`):
+- [`envelope_eq_cdfM`](CausalSeed/WalkEnvelope.lean#L107), [`envelopeMean_eq`](CausalSeed/WalkEnvelope.lean#L127)
+- [`cost_sandwich`](CausalSeed/WalkEnvelope.lean#L150), [`cost_eq`](CausalSeed/WalkEnvelope.lean#L177)
+
+**Theorem 25 (Spitzer's identity and the exact finite-horizon formula).** For every finite
+increment law,
+
+```math
+\mathbb E M_n=\sum_{k=1}^n\frac{\mathbb E(S_k)_+}{k} .
+```
+
+Hence under the dyadic assumptions $`C_n=nh+\sum_{k=1}^n\mathbb E(S_k)_+/k`$, and in general this
+expression is a lower bound on $`C_n`$ within $`c_{\star}`$. The proof is combinatorial: a cyclic
+lemma shows that the $`n`$ rotations of any real word satisfy
+$`\sum_i\bigl(\min_{1\le l\le n}S_l(\mathrm{rot}_i\,x)\bigr)_+=(S_n)_+`$, and
+exchangeability gives $`\mathbb E M_n-\mathbb E M_{n-1}=\mathbb E(S_n)_+/n`$.
+
+Lean:
+- [`Walk.Law.spitzer`](CausalSeed/WalkMax.lean#L410), [`Walk.Law.EM_succ`](CausalSeed/WalkMax.lean#L396)
+- [`Walk.cyclic_sum`](CausalSeed/WalkMax.lean#L172), [`Walk.sum_rot`](CausalSeed/WalkMax.lean#L222)
+- [`Walk.TwoAction.cost_eq_spitzer`](CausalSeed/WalkEnvelope.lean#L182),
+  [`Walk.TwoAction.cost_sandwich_spitzer`](CausalSeed/WalkEnvelope.lean#L156)
+
+**Corollary 26 (negative drift).** Assume the dyadic assumptions and $`H(Q)<h`$, and let
+$`\ell=\sum_{k\ge1}\mathbb E(S_k)_+/k`$. Then the series converges, $`C_n-nh`$ is nondecreasing,
+and $`C_n-nh\to\ell=\sup_n(C_n-nh)`$. Some $`\theta>0`$ has
+$`\lambda=\mathbb E e^{\theta X_1}<1`$, and for every such $`\theta`$ and every $`n`$,
+
+```math
+0\le\ell-(C_n-nh)\le\frac{\lambda^{n+1}}{\theta(n+1)(1-\lambda)} .
+```
+
+Here $`\ell`$ is characterized as the sum of the series and as the supremum of
+$`\mathbb E M_n`$. The random variable $`M_\infty`$ is not constructed in Lean.
+
+Lean:
+- [`Walk.TwoAction.negative_drift`](CausalSeed/WalkLimit.lean#L182)
+- [`Walk.Law.tail_bound`](CausalSeed/WalkLimit.lean#L38), [`Walk.Law.ESp_le_mgf`](CausalSeed/WalkLimit.lean#L89),
+  [`Walk.Law.exists_theta`](CausalSeed/WalkLimit.lean#L125)
+
+**Theorem 27 (reciprocal-gap family).** For an integer $`h\ge2`$, let $`U_h`$ be uniform on
+$`2^h`$ symbols. Let $`Q_h`$ have $`2^{h-2}`$ atoms of mass $`2^{-(h-1)}`$, one atom of mass
+$`2^{-h}`$ and $`2^h-2`$ atoms of mass $`2^{-(h+1)}`$. Write $`\Delta=2^{-h}`$, $`p=\tfrac12-\Delta`$
+and $`q=\tfrac12`$. These are positive probabilities summing to one. The centered surprisals
+are $`-1,0,1`$, $`H(U_h)-H(Q_h)=\Delta`$, and
+
+```math
+\lim_{n\to\infty}(C_n-nh)=\frac1{2\Delta}-1=2^{h-1}-1 .
+```
+
+With $`\theta=\tfrac12\ln(q/p)`$ and $`\lambda=\Delta+2\sqrt{pq}<1`$, for every $`n`$,
+
+```math
+0\le\frac1{2\Delta}-1-(C_n-nh)\le\frac{\lambda^{n+1}}{(e^\theta-1)(n+1)(1-\lambda)} .
+```
+
+The limit is identified without martingales: $`\Pr(M_n\ge j)\le r^j`$ with $`r=p/q`$, and
+$`r^j-\Pr(M_n\ge j)\le r^{j/2}\lambda^n`$ for integers $`j\ge0`$. For $`h=2`$,
+$`U_2=(\tfrac14,\tfrac14,\tfrac14,\tfrac14)`$ and $`Q_2=(\tfrac12,\tfrac14,\tfrac18,\tfrac18)`$ give
+$`C_1-2=\tfrac14`$, $`C_2-4=\tfrac38`$ and $`C_n-2n\to1`$. The limits for $`h=2,3,4,8`$ are
+$`1,3,7,127`$ bits.
+
+Along the family every centered increment lies in $`\{-1,0,1\}`$, while
+$`\Delta\cdot\lim_n(C_n-nh)\to\tfrac12`$ as $`h\to\infty`$. So no bound of the form
+$`o(1/\Delta)`$ on the limiting excess holds uniformly over kernels with gap $`\Delta`$ and
+increments in $`[-1,1]`$. The alphabets grow with $`h`$, and each fixed member has bounded
+excess.
+
+Lean (namespace `Walk.Family`; $`h=d+2`$, `A d` is the kernel):
+- [`class_sum`](CausalSeed/WalkFamily.lean#L237) (masses), [`gap`](CausalSeed/WalkFamily.lean#L305),
+  [`cost_limit`](CausalSeed/WalkFamily.lean#L360), [`limit_value`](CausalSeed/WalkFamily.lean#L366)
+- [`sharper_bound`](CausalSeed/WalkFamily.lean#L419), [`mgf_θ`](CausalSeed/WalkFamily.lean#L402)
+- [`example_h2`](CausalSeed/WalkFamily.lean#L461), [`limits_examples`](CausalSeed/WalkFamily.lean#L473),
+  [`gap_times_limit`](CausalSeed/WalkFamily.lean#L480)
+- [`Walk.Law.tl_le_rpow`](CausalSeed/WalkFamily.lean#L46), [`Walk.Law.tl_lower`](CausalSeed/WalkFamily.lean#L67),
+  [`Walk.Law.EM_tendsto`](CausalSeed/WalkFamily.lean#L152)
+
 ## Verification
 
 The development is the import closure of
@@ -673,7 +771,7 @@ defining module is `CausalSeed.*` and computes its axioms with `collectAxioms`.
 Auto-generated declarations (equation lemmas, `sizeOf_spec`, injectivity lemmas,
 instances) are excluded.
 
-[`AXIOMS.txt`](AXIOMS.txt) records the result. All **2106** theorems in the 88 project
+[`AXIOMS.txt`](AXIOMS.txt) records the result. All **2224** theorems in the 92 project
 modules depend only on `propext`, `Classical.choice` and `Quot.sound`; seven depend on
 no axiom. No theorem uses `sorryAx`, the build reports no `sorry` or `admit`, and the
 project declares no `axiom`.
@@ -776,6 +874,12 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 - `CausalFloor`: the causal Shannon floor.
 - `Subadditive`: concatenation of seeds, $`C_{m+n}\le C_m+C_n`$, and the Fekete limit.
 - `DyadicCouple`, `DyadicTree`, `DyadicKernel`: dyadic exactness.
+
+**Random-walk maxima**
+- `WalkMax`: finite i.i.d. words, exchangeability, the cyclic lemma and Spitzer's identity.
+- `WalkEnvelope`: the two-action kernel, the exact envelope identity, and the exact cost (Theorems 24 and 25).
+- `WalkLimit`: the tail bound, the exponential-moment bounds, and the negative-drift corollary (Corollary 26).
+- `WalkFamily`: tails of maxima for increments in $`\{-1,0,1\}`$, and the reciprocal-gap family (Theorem 27).
 
 **Mathematical expositions** (LaTeX/PDF at the repository root)
 - `bellman_square_root`: the square-root asymptotic.

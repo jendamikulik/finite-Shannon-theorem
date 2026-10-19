@@ -1,3 +1,13 @@
+Note (19 October 2026). CausalSeed/Vanishing.lean was added after the audit below.
+It is imported by CausalSeed.lean, not by CausalSeed.Main. `lake build CausalSeed.Vanishing`
+completes with no sorry or admit. The module declares no axiom. Its theorems are in
+namespace Vanishing and concern only the entropy identities of the explicit sparse-activity
+coordinates: geometric entropy 2, coordinate entropy h2(p)+2p, the finite excess 2*sum p,
+and h2(p) >= p on (0, 1/2]. The causal embedding, the infinite-horizon trichotomy, and the
+log2 ln n asymptotic are not in this module. A full re-audit of the project including
+Vanishing has not been run. The listing below is the 12 October audit of the Main import
+closure.
+
 Axiom audit of every theorem in the project modules (CausalSeed.*), 12 October 2026
 Lean 4.35.0-rc3, mathlib 7d6757bc18680044fc0ff6efc8ee20494b408556
 `lake build`: Build completed successfully (3961 jobs). No `sorry`, `admit` or custom axioms.

@@ -1172,10 +1172,54 @@ $`n\ge1`$. Numerically (half-bit lattice Bellman recursion) $`e_n-c\ln n`$ equal
 Lean:
 - [`Kernel.cost_bounded`](CausalSeed/LogBounded.lean#L878), [`Kernel.LogPair.cost_bounded`](CausalSeed/LogBounded.lean#L905)
 
+
+### XI. Sparse-activity entropy identities
+
+The note *The Entropy Cost of Vanishing Activity* constructs, for a time-inhomogeneous
+binary process whose success probabilities are at most $`p_t\in(0,1/2]`$, an explicit
+countable coordinate whose entropy is $`h_2(p_t)+2p_t`$. The quantitative identities
+behind that coordinate are formalized in namespace `Vanishing`. They do not use the
+tree or seed types of `CausalSpectrum`.
+
+**Theorem 47 (geometric seed).** The law $`P(k)=2^{-k}`$ on the positive integers has
+Shannon entropy exactly $`2`$ bits.
+
+**Theorem 48 (explicit coordinate).** For every $`0<p<1`$ the law
+$`P(0)=1-p`$, $`P(k)=p\cdot 2^{-k}`$ ($`k\ge 1`$) is a probability measure and has
+Shannon entropy $`h_2(p)+2p`$.
+
+**Theorem 49 (finite excess).** For a finite family of real numbers $`(p_i)`$,
+
+```math
+\Bigl(\sum_i\bigl(h_2(p_i)+2p_i\bigr)\Bigr)-\sum_i h_2(p_i)=2\sum_i p_i.
+```
+
+If every $`p_i\ge 0`$, the left-hand difference is nonnegative, so the sum of the
+coordinate entropies is at least the Bernoulli lower bound $`\sum_i h_2(p_i)`$.
+
+**Theorem 50 (comparison).** On $`(0,1/2]`$, $`h_2(p)\ge p`$. Consequently, for a
+sequence with $`0<p_t\le 1/2`$, summability of $`h_2(p_t)`$ implies summability of
+$`p_t`$.
+
+Lean:
+- [`Vanishing.geometric_entropy`](CausalSeed/Vanishing.lean#L85)
+- [`Vanishing.sparseCoordinate_entropy`](CausalSeed/Vanishing.lean#L115)
+- [`Vanishing.zProb_tsum`](CausalSeed/Vanishing.lean#L109)
+- [`Vanishing.sparseActivity_excess`](CausalSeed/Vanishing.lean#L179)
+- [`Vanishing.h2_ge_self`](CausalSeed/Vanishing.lean#L153)
+- [`Vanishing.summable_prob_of_summable_h2`](CausalSeed/Vanishing.lean#L174)
+
+Not formalized in this module: the embedding of these coordinates into one common exact
+causal seed for every adaptive policy, the infinite-horizon trichotomy, and the
+$`\log_2\ln n`$ asymptotic of the note. Those statements remain mathematical claims of
+the note, not Lean theorems.
+
 ## Verification
 
 The development is the import closure of
-[`CausalSeed/Main.lean`](CausalSeed/Main.lean). Pinned toolchain:
+[`CausalSeed/Main.lean`](CausalSeed/Main.lean), together with
+[`CausalSeed/Vanishing.lean`](CausalSeed/Vanishing.lean), which is imported by
+[`CausalSeed.lean`](CausalSeed.lean) and not by `Main`. Pinned toolchain:
 
 - Lean `4.35.0-rc3` ([`lean-toolchain`](lean-toolchain))
 - Mathlib `7d6757bc18680044fc0ff6efc8ee20494b408556` ([`lakefile.toml`](lakefile.toml))
@@ -1192,10 +1236,15 @@ defining module is `CausalSeed.*` and computes its axioms with `collectAxioms`.
 Auto-generated declarations (equation lemmas, `sizeOf_spec`, injectivity lemmas,
 instances) are excluded.
 
-[`AXIOMS.txt`](AXIOMS.txt) records the result. All **2528** theorems in the 106 project
-modules depend only on `propext`, `Classical.choice` and `Quot.sound`; seven depend on
-no axiom. No theorem uses `sorryAx`, the build reports no `sorry` or `admit`, and the
-project declares no `axiom`.
+[`AXIOMS.txt`](AXIOMS.txt) records the result of the 12 October audit of the
+`Main` import closure. All **2528** theorems in those 106 project modules depend only
+on `propext`, `Classical.choice` and `Quot.sound`; seven depend on no axiom. No theorem
+uses `sorryAx`, that build reports no `sorry` or `admit`, and the project declares no
+`axiom`.
+
+`CausalSeed/Vanishing.lean` was added on 19 October, after that audit. It builds with
+`lake build CausalSeed.Vanishing`, contains no `sorry` or `admit`, and declares no
+`axiom`. A full re-audit including this module has not been run.
 
 ## Trusted definitions
 
@@ -1321,6 +1370,13 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 - `LogCost`: the sharp coefficient for $`C_n`$ and $`L_n`$, and the dyadic pair (Theorem 41).
 - `LogBounded`: the Gaussian defect, bounded amplification, Gaussian inputs and the bounded remainder (Theorems 42 to 46).
 
+**Sparse activity**
+- `Vanishing`: the geometric entropy identity $`H=2`$, the explicit coordinate
+  entropy $`h_2(p)+2p`$, the finite excess $`2\sum p_i`$, and the comparison
+  $`h_2(p)\ge p`$ on $`(0,1/2]`$ (Theorems 47 to 50). The causal embedding, the
+  infinite-horizon trichotomy and the $`\log_2\ln n`$ asymptotic are not in this
+  module.
+
 **Mathematical expositions** (LaTeX/PDF at the repository root)
 - `bellman_square_root`: the square-root asymptotic.
 - `sharp_logarithmic_coefficient`: the logarithmic coefficient (formalized as Theorems 36 to 41).
@@ -1351,6 +1407,9 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 - Whether $`C_n-C^{\ast}_n`$ in Theorem 29 is bounded when several actions attain the
   maximal entropy (Theorem 19 gives this for one maximizing action).
 - Optimality of the constants $`c_{\star}`$ and $`d_\alpha`$.
+- The causal embedding, infinite-horizon trichotomy and $`\log_2\ln n`$ asymptotic
+  of the vanishing-activity note. Theorems 47 to 50 formalize only the entropy
+  identities of the explicit coordinates.
 
 **Hypotheses of Theorem 16.** Parts 1 and 2 require a reference action whose law has two
 distinct values and whose variance (and, for part 2, third moment) every action shares.

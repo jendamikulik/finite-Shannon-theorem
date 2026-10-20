@@ -1209,10 +1209,21 @@ Lean:
 - [`Vanishing.h2_ge_self`](CausalSeed/Vanishing.lean#L153)
 - [`Vanishing.summable_prob_of_summable_h2`](CausalSeed/Vanishing.lean#L174)
 
-Not formalized in this module: the embedding of these coordinates into one common exact
-causal seed for every adaptive policy, the infinite-horizon trichotomy, and the
-$`\log_2\ln n`$ asymptotic of the note. Those statements remain mathematical claims of
-the note, not Lean theorems.
+Also checked, still without a strategy space:
+[`Vanishing.gate_exact`](CausalSeed/Vanishing.lean) turns a binary expansion of $`q/p`$
+into response probability $`q`$; [`Vanishing.prod_one_sub_tendsto_zero`](CausalSeed/Vanishing.lean)
+sends $`\prod(1-p_t)`$ to $`0`$ when $`\sum p`$ diverges;
+[`Vanishing.one_sub_listProd_le_sum`](CausalSeed/Vanishing.lean) is the union bound
+$`1-\prod(1-x)\le\sum x`$; and
+[`Vanishing.fairBit_image_ne_quarter`](CausalSeed/Vanishing.lean) with
+[`Vanishing.endpoint_entropy_three_halves`](CausalSeed/Vanishing.lean) show that a function
+of one fair bit cannot have success probability $`1/4`$, while the three-atom law
+$`(1/2,1/4,1/4)`$ has entropy $`3/2`$.
+
+Not formalized: history-indexed strategies, cylinder exactness for every adaptive policy,
+the infinite-horizon trichotomy, total-variation approximation of strategy laws, and the
+$`\log_2\ln n`$ asymptotic. Those statements remain mathematical claims of the note,
+not Lean theorems.
 
 ## Verification
 

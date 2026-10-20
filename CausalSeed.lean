@@ -6,4 +6,4 @@ import CausalSeed.VanishingLastEvent
 import CausalSeed.VanishingBridge
 import CausalSeed.LocalSeparation
 import CausalSeed.CapacityScale
-
+import CausalSeed.LinearLocal

@@ -1300,6 +1300,15 @@ satisfies $`-1\le C-f\le 1+a\log_2(e(f+1))`$. The bound $`H`$ and the floor prox
 $`t`$ are hypotheses. This is not a construction of the processes in that note,
 and it is not $`\mathrm{atomQ}=a`$ or $`C_n\sim f(n)`$.
 
+**Theorem 57 (exact local cost on a linear family).** Let $`m=2^k-1`$ with
+$`k\ge 1`$. The uniform seed on $`\mathbb F_2^k`$, evaluated on the $`m`$
+nonzero linear forms, is a finite law of pairwise independent fair bits, and
+its Shannon entropy is exactly $`k=\log_2(m+1)`$. Every pairwise fair law on
+these $`m`$ coordinates costs at least $`k`$, so the construction is optimal.
+This is the matching upper bound from linear forms. It is not the existence of
+a Hadamard matrix of order $`m+1`$, and it is not the approximate coefficient
+$`(1-4\varepsilon)\log_2\log_2 m`$.
+
 [`Vanishing.LastEvent.last_event_entropy_bounds`](CausalSeed/VanishingBridge.lean)
 and [`Vanishing.Approximation.uniform_policy_event_bound`](CausalSeed/VanishingBridge.lean)
 are finite interfaces for the wholeness and approximation notes: the last-success
@@ -1318,10 +1327,13 @@ Lean:
 - [`CapacityScale.fairBlock_heavy_mass`](CausalSeed/CapacityScale.lean)
 - [`CapacityScale.h2_le_one`](CausalSeed/CapacityScale.lean)
 - [`CapacityScale.mixture_scale_error`](CausalSeed/CapacityScale.lean)
+- [`LinearLocal.f2_exact`](CausalSeed/LinearLocal.lean)
+- [`LinearLocal.f2_optimal`](CausalSeed/LinearLocal.lean)
 
 Not formalized, in addition to the list at the end of Section XI: the sharp
-coefficient $`(1-4\varepsilon)\log_2\log_2 m`$, a matching local upper bound via
-linear forms over $`\mathbb F_2`$, equivalence with a Hadamard matrix, the
+coefficient $`(1-4\varepsilon)\log_2\log_2 m`$, a matching local upper bound for
+every $`m`$ rather than the linear family $`m=2^k-1`$, equivalence with a
+Hadamard matrix, the
 locality statements for countable seeds, the entropy-rate triangle
 $`0\le R\le 1-a`$, $`C_{\mathrm{app}}(\varepsilon)=\log_2(1/\varepsilon)+O(1)`$,
 the total-variation distance of $`Q_v`$ from the local set, and the realization
@@ -1336,8 +1348,9 @@ The development is the import closure of
 [`CausalSeed/VanishingClose.lean`](CausalSeed/VanishingClose.lean),
 [`CausalSeed/VanishingLastEvent.lean`](CausalSeed/VanishingLastEvent.lean),
 [`CausalSeed/VanishingBridge.lean`](CausalSeed/VanishingBridge.lean),
-[`CausalSeed/LocalSeparation.lean`](CausalSeed/LocalSeparation.lean) and
-[`CausalSeed/CapacityScale.lean`](CausalSeed/CapacityScale.lean),
+[`CausalSeed/LocalSeparation.lean`](CausalSeed/LocalSeparation.lean),
+[`CausalSeed/CapacityScale.lean`](CausalSeed/CapacityScale.lean) and
+[`CausalSeed/LinearLocal.lean`](CausalSeed/LinearLocal.lean),
 imported by [`CausalSeed.lean`](CausalSeed.lean) and not by `Main`. Pinned toolchain:
 
 - Lean `4.35.0-rc3` ([`lean-toolchain`](lean-toolchain))
@@ -1508,6 +1521,8 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 - `CapacityScale`: entropy of a uniform binary block, the heavy-atom mass bound,
   $`h_2\le 1`$, and the numerical mixture-error shape (Theorem 56). Not
   $`\mathrm{atomQ}`$ and not $`C_n\sim f(n)`$.
+- `LinearLocal`: the exact local cost $`k` for $`m=2^k-1`$ pairwise fair bits
+  (Theorem 57). Not a Hadamard matrix, and not the approximate coefficient.
 
 **Mathematical expositions** (LaTeX/PDF at the repository root)
 - `bellman_square_root`: the square-root asymptotic.
@@ -1528,6 +1543,10 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 - `Atomic_Capacity_Does_Not_Determine_Sublinear_Causal_Entropy_Growth.pdf`:
   Theorem 56 only. Not $`\mathrm{atomQ}=a`$ and not $`C_n\sim f(n)`$.
 - `Full_Support_Regularization_with_Uniform_Entropy_Control.pdf`: not formalized.
+  The seed identity $`H=h_2(p)+2p`$ used in its construction is Theorem 48.
+- `Unbounded_Failure_of_Horizonwise_Optimality_for_Exact_Causal_Seeds.pdf`:
+  not formalized.
+- `closure_atomic_capacity_one_seed.pdf`: not formalized.
   The countable seed in its construction is the coordinate of Theorem 48,
   whose entropy is $`h_2(p)+2p`$. The perturbation, preservation of atomic mass,
   and the uniform-positivity lower bound $`nh_{\min}`$ are not Lean theorems.
@@ -1560,6 +1579,8 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
   is the finite last-event identity. Theorems 54 and 55 are the finite locality
   obstructions. Theorem 56 is the uniform-block identity and the numerical
   mixture bound, not the realization $`\mathrm{atomQ}=a`$, $`C_n\sim f(n)`$.
+  Theorem 57 is the exact linear-form cost for $`m=2^k-1`$, not a Hadamard
+  equivalence.
   A countable seed when $`\sum p`$ converges,
   and finite entropy when $`\sum h_2`$ converges, are not formalized.
 

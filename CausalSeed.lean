@@ -7,3 +7,4 @@ import CausalSeed.VanishingBridge
 import CausalSeed.LocalSeparation
 import CausalSeed.CapacityScale
 import CausalSeed.LinearLocal
+import CausalSeed.ClosureScale

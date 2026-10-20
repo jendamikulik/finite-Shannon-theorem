@@ -1309,6 +1309,33 @@ This is the matching upper bound from linear forms. It is not the existence of
 a Hadamard matrix of order $`m+1`$, and it is not the approximate coefficient
 $`(1-4\varepsilon)\log_2\log_2 m`$.
 
+**Theorem 58 (finite record and scalar contraction).** One fair bit followed by
+independent Bernoulli flips of probabilities $`p_t\in[0,1]`$ has Shannon entropy
+
+```math
+1+\sum_t h_2(p_t).
+```
+
+If $`0\le p_t\le 1/2`$, every atom of that law is at most
+$`(1/2)\prod_t(1-p_t)`$. If $`0\le p_t<1`$, that cylinder is at most
+$`(1/2)\exp(-\sum_t p_t)`$. The scalar recurrence
+$`d_{j+1}\le q_{j+1}d_j+\varepsilon_{j+1}`$, with $`q_{j+1}\ge 0`$, iterates to
+
+```math
+d_n\le\Bigl(\prod_{j=1}^{n}q_j\Bigr)d_0+\sum_{k=1}^{n}\varepsilon_k\prod_{j=k+1}^{n}q_j.
+```
+
+If $`0\le q_j\le q<1`$, $`0\le\varepsilon_j\le\varepsilon`$ and $`d_0\ge 0`$, then
+
+```math
+d_n\le q^n d_0+\varepsilon\frac{1-q^n}{1-q}.
+```
+
+This is the finite identity behind $`C_n=1+\sum_j h_2(p_j)`$ and the scalar form
+of the contraction bound in the closure note. It is not a quantum instrument,
+not atomic capacity of an infinite-path law, not Borel--Cantelli, and not a
+theorem that a finite prefix cannot identify infinite atomic capacity.
+
 [`Vanishing.LastEvent.last_event_entropy_bounds`](CausalSeed/VanishingBridge.lean)
 and [`Vanishing.Approximation.uniform_policy_event_bound`](CausalSeed/VanishingBridge.lean)
 are finite interfaces for the wholeness and approximation notes: the last-success
@@ -1329,6 +1356,11 @@ Lean:
 - [`CapacityScale.mixture_scale_error`](CausalSeed/CapacityScale.lean)
 - [`LinearLocal.f2_exact`](CausalSeed/LinearLocal.lean)
 - [`LinearLocal.f2_optimal`](CausalSeed/LinearLocal.lean)
+- [`ClosureScale.record_entropy`](CausalSeed/ClosureScale.lean)
+- [`ClosureScale.record_atom_le`](CausalSeed/ClosureScale.lean)
+- [`ClosureScale.record_cylinder_le_exp`](CausalSeed/ClosureScale.lean)
+- [`ClosureScale.contraction_iterate`](CausalSeed/ClosureScale.lean)
+- [`ClosureScale.uniform_contraction`](CausalSeed/ClosureScale.lean)
 
 Not formalized, in addition to the list at the end of Section XI: the sharp
 coefficient $`(1-4\varepsilon)\log_2\log_2 m`$, a matching local upper bound for
@@ -1337,7 +1369,8 @@ Hadamard matrix, the
 locality statements for countable seeds, the entropy-rate triangle
 $`0\le R\le 1-a`$, $`C_{\mathrm{app}}(\varepsilon)=\log_2(1/\varepsilon)+O(1)`$,
 the total-variation distance of $`Q_v`$ from the local set, and the realization
-$`\mathrm{atomQ}=a`$, $`C_n\sim f(n)`$.
+$`\mathrm{atomQ}=a`$, $`C_n\sim f(n)`$. Theorem 58 does not include a quantum
+instrument, atomic capacity of an infinite-path law, or Borel--Cantelli.
 
 ## Verification
 
@@ -1349,8 +1382,9 @@ The development is the import closure of
 [`CausalSeed/VanishingLastEvent.lean`](CausalSeed/VanishingLastEvent.lean),
 [`CausalSeed/VanishingBridge.lean`](CausalSeed/VanishingBridge.lean),
 [`CausalSeed/LocalSeparation.lean`](CausalSeed/LocalSeparation.lean),
-[`CausalSeed/CapacityScale.lean`](CausalSeed/CapacityScale.lean) and
-[`CausalSeed/LinearLocal.lean`](CausalSeed/LinearLocal.lean),
+[`CausalSeed/CapacityScale.lean`](CausalSeed/CapacityScale.lean),
+[`CausalSeed/LinearLocal.lean`](CausalSeed/LinearLocal.lean) and
+[`CausalSeed/ClosureScale.lean`](CausalSeed/ClosureScale.lean),
 imported by [`CausalSeed.lean`](CausalSeed.lean) and not by `Main`. Pinned toolchain:
 
 - Lean `4.35.0-rc3` ([`lean-toolchain`](lean-toolchain))
@@ -1523,6 +1557,9 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
   $`\mathrm{atomQ}`$ and not $`C_n\sim f(n)`$.
 - `LinearLocal`: the exact local cost $`k` for $`m=2^k-1`$ pairwise fair bits
   (Theorem 57). Not a Hadamard matrix, and not the approximate coefficient.
+- `ClosureScale`: the finite record entropy $`1+\sum h_2(p_t)`$, the cylinder
+  bound, and the scalar contraction (Theorem 58). Not a quantum instrument, and
+  not atomic capacity of an infinite-path law.
 
 **Mathematical expositions** (LaTeX/PDF at the repository root)
 - `bellman_square_root`: the square-root asymptotic.
@@ -1546,10 +1583,13 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
   The seed identity $`H=h_2(p)+2p`$ used in its construction is Theorem 48.
 - `Unbounded_Failure_of_Horizonwise_Optimality_for_Exact_Causal_Seeds.pdf`:
   not formalized.
-- `closure_atomic_capacity_one_seed.pdf`: not formalized.
-  The countable seed in its construction is the coordinate of Theorem 48,
-  whose entropy is $`h_2(p)+2p`$. The perturbation, preservation of atomic mass,
-  and the uniform-positivity lower bound $`nh_{\min}`$ are not Lean theorems.
+- `closure_atomic_capacity_one_seed.pdf`: Theorem 58 is the finite identity
+  $`1+\sum h_2(p_t)`$ and the scalar contraction bound only. Not a quantum
+  instrument, not atomic capacity of an infinite-path law, and not
+  Borel--Cantelli. The countable seed in its construction is the coordinate of
+  Theorem 48, whose entropy is $`h_2(p)+2p`$. The perturbation, preservation of
+  atomic mass, and the uniform-positivity lower bound $`nh_{\min}`$ are not
+  Lean theorems.
 - The sharp locality coefficient $`(1-4\varepsilon)\log_2\log_2 m`$ is not formalized.
 
 ## Scope and open problems
@@ -1580,7 +1620,8 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
   obstructions. Theorem 56 is the uniform-block identity and the numerical
   mixture bound, not the realization $`\mathrm{atomQ}=a`$, $`C_n\sim f(n)`$.
   Theorem 57 is the exact linear-form cost for $`m=2^k-1`$, not a Hadamard
-  equivalence.
+  equivalence. Theorem 58 is the finite record identity and the scalar
+  contraction, not a quantum instrument and not an infinite-path capacity.
   A countable seed when $`\sum p`$ converges,
   and finite entropy when $`\sum h_2`$ converges, are not formalized.
 

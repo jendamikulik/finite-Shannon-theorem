@@ -1209,6 +1209,12 @@ Lean:
 - [`Vanishing.h2_ge_self`](CausalSeed/Vanishing.lean#L153)
 - [`Vanishing.summable_prob_of_summable_h2`](CausalSeed/Vanishing.lean#L174)
 
+[`VanishingEmbed.shannonTerm_group`](CausalSeed/VanishingEmbed.lean) and
+[`VanishingEmbed.entropy_prod`](CausalSeed/VanishingEmbed.lean) are the two analytic
+steps of the finite-horizon sandwich: merging masses cannot raise the Shannon sum, and a
+product of two laws has entropy equal to the sum of the factors. The readout and the
+identification $`C_n`$ are not assembled yet.
+
 Also checked, still without a strategy space:
 [`Vanishing.gate_exact`](CausalSeed/Vanishing.lean) turns a binary expansion of $`q/p`$
 into response probability $`q`$; [`Vanishing.prod_one_sub_tendsto_zero`](CausalSeed/Vanishing.lean)

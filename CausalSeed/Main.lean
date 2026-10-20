@@ -95,3 +95,9 @@ import CausalSeed.LogResidual
 import CausalSeed.LogFinal
 import CausalSeed.LogCost
 import CausalSeed.LogBounded
+
+import CausalSeed.Vanishing
+import CausalSeed.VanishingEmbed
+import CausalSeed.VanishingClose
+import CausalSeed.VanishingLastEvent
+import CausalSeed.VanishingBridge

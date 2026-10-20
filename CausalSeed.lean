@@ -3,3 +3,7 @@ import CausalSeed.Vanishing
 import CausalSeed.VanishingEmbed
 import CausalSeed.VanishingClose
 import CausalSeed.VanishingLastEvent
+import CausalSeed.VanishingBridge
+import CausalSeed.LocalSeparation
+import CausalSeed.CapacityScale
+

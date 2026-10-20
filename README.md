@@ -1266,14 +1266,78 @@ one measure on all response tables, total-variation approximation of strategy la
 $`\log_2\ln n`$ asymptotic. Those statements remain mathematical claims of the note,
 not Lean theorems.
 
+### XII. Finite locality and a capacity-scale bound
+
+The notes *An Unbounded Entropy Cost of Localizing a Decoder*,
+*Identical Information Spectra, Different Causal Feasibility*,
+*A Sharp Entropy–Accuracy Threshold for Local Simulation* and
+*Atomic Capacity Does Not Determine Sublinear Causal Entropy Growth* are not
+Lean-certified as written. The finite statements below are.
+
+**Theorem 54 (pairwise fair bits).** The uniform law on four points has Shannon
+entropy $`2`$. A finite seed pushed onto that law has entropy at least $`2`$.
+Every finite law of pairwise independent fair bits on $`n`$ coordinates has atoms
+of mass at most $`1/(n+1)`$ and Shannon entropy at least $`\log_2(n+1)`$. The gap
+$`\log_2(n+1)-2`$ is unbounded in $`n`$. The subtracted $`2`$ is the entropy of the
+centralized four-point seed, not a theorem that $`C_{\mathrm{central}}(W_m)=2`$
+for the behavior $`W_m`$.
+
+**Theorem 55 (finite CHSH obstruction).** Every deterministic local CHSH table
+takes a value in $`\{-2,2\}`$, so no finite convex combination equals $`4v`$ when
+$`v>1/2`$. The mixture $`(3/4)\cdot 1+(1/4)\cdot(-1)`$ has correlation $`1/2`$,
+and $`h_2(1/4)=2-(3/4)\log_2 3`$.
+
+**Theorem 56 (uniform block and mixture error).** The uniform law on $`\{0,1\}^k`$
+has Shannon entropy $`k`$, and any $`K`$ of its atoms have total mass at most
+$`K\cdot 2^{-k}`$. On $`[0,1]`$, $`h_2\le 1`$. If $`0\le a\le 1`$, $`0\le H`$,
+$`H\le\log_2(e(f+1))`$ and $`t\le f\le t+1`$, the number
+
+```math
+C=h_2(a)+a(f+H)+(1-a)t
+```
+
+satisfies $`-1\le C-f\le 1+a\log_2(e(f+1))`$. The bound $`H`$ and the floor proxy
+$`t`$ are hypotheses. This is not a construction of the processes in that note,
+and it is not $`\mathrm{atomQ}=a`$ or $`C_n\sim f(n)`$.
+
+[`Vanishing.LastEvent.last_event_entropy_bounds`](CausalSeed/VanishingBridge.lean)
+and [`Vanishing.Approximation.uniform_policy_event_bound`](CausalSeed/VanishingBridge.lean)
+are finite interfaces for the wholeness and approximation notes: the last-success
+deficit is at most an explicit majorant, and one shared mismatch set bounds the
+event error of every policy in a finite family. The tail set of weight
+$`\sum_{t>N}p_t`$ is not constructed.
+
+Lean:
+- [`LocalSeparation.central_entropy_ge_two`](CausalSeed/LocalSeparation.lean)
+- [`LocalSeparation.atom_le`](CausalSeed/LocalSeparation.lean)
+- [`LocalSeparation.pairwise_entropy_ge`](CausalSeed/LocalSeparation.lean)
+- [`LocalSeparation.locality_gap_unbounded`](CausalSeed/LocalSeparation.lean)
+- [`LocalSeparation.not_local_chsh_mixture`](CausalSeed/LocalSeparation.lean)
+- [`LocalSeparation.h2_quarter`](CausalSeed/LocalSeparation.lean)
+- [`CapacityScale.fairBlock_entropy`](CausalSeed/CapacityScale.lean)
+- [`CapacityScale.fairBlock_heavy_mass`](CausalSeed/CapacityScale.lean)
+- [`CapacityScale.h2_le_one`](CausalSeed/CapacityScale.lean)
+- [`CapacityScale.mixture_scale_error`](CausalSeed/CapacityScale.lean)
+
+Not formalized, in addition to the list at the end of Section XI: the sharp
+coefficient $`(1-4\varepsilon)\log_2\log_2 m`$, a matching local upper bound via
+linear forms over $`\mathbb F_2`$, equivalence with a Hadamard matrix, the
+locality statements for countable seeds, the entropy-rate triangle
+$`0\le R\le 1-a`$, $`C_{\mathrm{app}}(\varepsilon)=\log_2(1/\varepsilon)+O(1)`$,
+the total-variation distance of $`Q_v`$ from the local set, and the realization
+$`\mathrm{atomQ}=a`$, $`C_n\sim f(n)`$.
+
 ## Verification
 
 The development is the import closure of
 [`CausalSeed/Main.lean`](CausalSeed/Main.lean), together with
 [`CausalSeed/Vanishing.lean`](CausalSeed/Vanishing.lean),
 [`CausalSeed/VanishingEmbed.lean`](CausalSeed/VanishingEmbed.lean),
-[`CausalSeed/VanishingClose.lean`](CausalSeed/VanishingClose.lean) and
+[`CausalSeed/VanishingClose.lean`](CausalSeed/VanishingClose.lean),
 [`CausalSeed/VanishingLastEvent.lean`](CausalSeed/VanishingLastEvent.lean),
+[`CausalSeed/VanishingBridge.lean`](CausalSeed/VanishingBridge.lean),
+[`CausalSeed/LocalSeparation.lean`](CausalSeed/LocalSeparation.lean) and
+[`CausalSeed/CapacityScale.lean`](CausalSeed/CapacityScale.lean),
 imported by [`CausalSeed.lean`](CausalSeed.lean) and not by `Main`. Pinned toolchain:
 
 - Lean `4.35.0-rc3` ([`lean-toolchain`](lean-toolchain))
@@ -1297,9 +1361,11 @@ on `propext`, `Classical.choice` and `Quot.sound`; seven depend on no axiom. No 
 uses `sorryAx`, that build reports no `sorry` or `admit`, and the project declares no
 `axiom`.
 
-`CausalSeed/Vanishing.lean` was added on 19 October, after that audit. It builds with
-`lake build CausalSeed.Vanishing`, contains no `sorry` or `admit`, and declares no
-`axiom`. A full re-audit including this module has not been run.
+`CausalSeed/Vanishing.lean` was added on 19 October, after that audit.
+`VanishingBridge`, `LocalSeparation` and `CapacityScale` were added on 20 October.
+Each builds with `lake build`, contains no `sorry` or `admit`, and declares no
+`axiom`. A full re-audit including these modules has not been run. `AXIOMS.txt`
+remains the 12 October listing of the `Main` import closure.
 
 ## Trusted definitions
 
@@ -1434,6 +1500,14 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
   (Theorems 51 and 52). Not adaptive policies, and not the existence half of the trichotomy.
 - `VanishingLastEvent`: the finite last-event identity (Theorem 53). Not an infinite
   causal simulation.
+- `VanishingBridge`: the last-success deficit bound and one shared mismatch bound
+  for a finite family of policies. Not the tail $`\sum_{t>N}p_t`$.
+- `LocalSeparation`: the finite pairwise-fair lower bound and the finite CHSH
+  obstruction (Theorems 54 and 55). Not the sharp locality coefficient, and not
+  a Hadamard equivalence.
+- `CapacityScale`: entropy of a uniform binary block, the heavy-atom mass bound,
+  $`h_2\le 1`$, and the numerical mixture-error shape (Theorem 56). Not
+  $`\mathrm{atomQ}`$ and not $`C_n\sim f(n)`$.
 
 **Mathematical expositions** (LaTeX/PDF at the repository root)
 - `bellman_square_root`: the square-root asymptotic.
@@ -1444,6 +1518,20 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 - `completion_proof`: infinite seeds and entropy attainment.
 - `arithmetic_causality`: arithmetic rigidity.
 - `causal_spectrum.pdf`, `one_seed_entropy.pdf`.
+- `Entropy_Cost_of_Vanishing_Activity.pdf`, `bounded_excess_binary.pdf`,
+  `Wholeness_as_Lossless_Causal_Compression.pdf`, `optimal_causal_approximation.pdf`:
+  Theorems 47 to 53 and the finite bridge in `VanishingBridge`. Not adaptive
+  trees, not $`\log_2\ln n`$, and not $`C_{\mathrm{app}}(\varepsilon)`$.
+- `Identical_Information_Spectra__Different_Causal_Feasibility.pdf`: Theorems 54
+  and 55 only. Not the distance of $`Q_v`$ from the local set.
+- `atomic_capacity_entropy_rate.pdf`: the entropy-rate triangle. Not formalized.
+- `Atomic_Capacity_Does_Not_Determine_Sublinear_Causal_Entropy_Growth.pdf`:
+  Theorem 56 only. Not $`\mathrm{atomQ}=a`$ and not $`C_n\sim f(n)`$.
+- `Full_Support_Regularization_with_Uniform_Entropy_Control.pdf`: not formalized.
+  The countable seed in its construction is the coordinate of Theorem 48,
+  whose entropy is $`h_2(p)+2p`$. The perturbation, preservation of atomic mass,
+  and the uniform-positivity lower bound $`nh_{\min}`$ are not Lean theorems.
+- The sharp locality coefficient $`(1-4\varepsilon)\log_2\log_2 m`$ is not formalized.
 
 ## Scope and open problems
 
@@ -1469,7 +1557,10 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
   measure on all response tables, total-variation approximation, and the
   $`\log_2\ln n`$ asymptotic of the vanishing-activity note. Theorems 51 and 52
   are the maximizing-bit sandwich and the two divergence obstructions. Theorem 53
-  is the finite last-event identity. A countable seed when $`\sum p`$ converges,
+  is the finite last-event identity. Theorems 54 and 55 are the finite locality
+  obstructions. Theorem 56 is the uniform-block identity and the numerical
+  mixture bound, not the realization $`\mathrm{atomQ}=a`$, $`C_n\sim f(n)`$.
+  A countable seed when $`\sum p`$ converges,
   and finite entropy when $`\sum h_2`$ converges, are not formalized.
 
 **Hypotheses of Theorem 16.** Parts 1 and 2 require a reference action whose law has two

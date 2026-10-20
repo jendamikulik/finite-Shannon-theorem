@@ -1,25 +1,14 @@
 /-
-1:1 transfer of the finite claims in the 5 October 2026 note, on top of
-`one_seed_shannon`.
+Finite constants and numerical facts on top of `one_seed_shannon`.
 
-Proved here, with no `sorry`:
-* survival of `W = A(1+E)` integrates to `c⋆`, and `W` is stochastically
-  smaller than the exponential used in the older sandwich
-* `c⋆ < log₂ e`, so the original `log₂ e` bound is not sharp
-* on every finite tree the greedy gap is strictly smaller than `c⋆`
-* Věta 9, the scale arithmetic: an excess `o(rₙ)` forces the `W₁` gap to `o(rₙ)`
-* Věta 4, the constants: `E[2^{-λ E}] = 1/(λ+1)`, `θ₂ = 5/8`, `g̃₂ = log₂(8/5)`
-* Věta 5, second half: a kernel repeated `n` times has min-entropy `n` times
-  the one-round min-entropy
-* Věta 19, the rational brackets. The `n ≥ 16` assembly still uses the
-  profile comparison, which is not in this file
-
-Not in this file, because the note either leaves them open or rests them on
-analysis that is not the finite certificate:
-* convergence of the Bellman profile to `F` (Věta 1)
-* rigidity, moments, and quantiles that ride on that limit (Věty 15–18)
-* the Fan–Grama–Liu input to the logarithmic regime
-* optimality of `c⋆`. The note does not claim it
+* the survival function of `W = A(1+E)` integrates to `c⋆`, and `W` is
+  stochastically smaller than the exponential used in the older sandwich;
+* `c⋆ < log₂ e`;
+* on every finite tree the greedy gap is strictly smaller than `c⋆`;
+* scale arithmetic: an excess `o(rₙ)` forces the `W₁` gap to be `o(rₙ)`;
+* the constants `E[2^{-λ E}] = 1/(λ+1)`, `θ₂ = 5/8`, `g̃₂ = log₂(8/5)`;
+* a kernel repeated `n` times has `n` times the one-round min-entropy;
+* rational brackets for the numerical constants.
 -/
 import CausalSeed.Gap
 import Mathlib.Analysis.Complex.Exponential
@@ -138,7 +127,7 @@ theorem integral_wSurvival :
     simpa [zero_add] using htail
   rw [iA, iB, shannonOverhead_expand]
 
-/-! Věta 4, the scalar identities. The comparison of moments against the tree
+/-! The scalar identities. The comparison of moments against the tree
 is the same monotone-weight argument as the Shannon sandwich; these are the
 constants that argument produces. -/
 
@@ -198,7 +187,7 @@ theorem coarse_g_two : Real.logb 2 2 / (2 - 1) = (1 : ℝ) := by
   rw [Real.logb_self_eq_one (by norm_num : (1 : ℝ) < 2)]
   norm_num
 
-/-! Věta 9, arithmetic half. Scaling multiplies `W₁` by `1/rₙ`. -/
+/-! Scale arithmetic. Scaling multiplies `W₁` by `1/rₙ`. -/
 
 theorem excess_controls_gap {L C H : ℝ}
     (hC : C ≤ H) (hH : H ≤ L + shannonOverhead) :
@@ -464,7 +453,7 @@ theorem finite_gap_strict (T : Tree) {atoms : List (Atom T)}
     linarith [hH, hM, hpos]
   linarith [hgap]
 
-/-! Věta 5, repeated kernel. -/
+/-! Repeated kernel. -/
 
 theorem memory_min_entropy (κ : Kernel) (n : ℕ) :
     infoMass (bottleneck (Field.p (κ.rounds n))) =
@@ -474,7 +463,7 @@ theorem memory_min_entropy (κ : Kernel) (n : ℕ) :
   rw [Real.logb_pow]
   ring
 
-/-! Věta 19, rational brackets. Not the `n ≥ 16` transport, which needs Věta 1. -/
+/-! Rational brackets. -/
 
 theorem crash_lower_pow : (41 : ℕ) ^ 16 > 2 ^ 19 * 18 ^ 16 := by norm_num
 

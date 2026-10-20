@@ -1,0 +1,1590 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,longtable,microtype}
+\usepackage[margin=27mm]{geometry}
+\usepackage{xurl,xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\hypersetup{pdftitle={One Seed for Every Adaptive Policy: Exact Causal Simulation and Sharp Entropy Asymptotics},pdfauthor={Jan Mikulik}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\Prb}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\cS}{\mathcal S}
+\newcommand{\At}{\operatorname{At}}
+\newcommand{\st}{\preceq_{\mathrm{st}}}
+\newcommand{\cstar}{c_\star}
+\newcommand{\norm}[1]{\left\|#1\right\|_1}
+\newcommand{\TV}{\mathrm{TV}}
+\newcommand{\repo}{https://github.com/jendamikulik/finite-Shannon-theorem}
+\numberwithin{equation}{section}
+\setlength{\emergencystretch}{2em}
+\title{One Seed for Every Adaptive Policy:\\Exact Causal Simulation and Sharp Entropy Asymptotics}
+\author{Jan Mikul\'ik}
+\date{13 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We study the least entropy of a random seed that simulates a controlled
+history tree exactly under every deterministic adaptive policy, using a
+single decoder consistent at shared histories. For a finite tree, let $L$
+be the mean of the pointwise lower envelope of the policy information
+CDFs. A causal greedy construction gives $L\le C\le L+c_\star$, where
+$c_\star=(1+\log_2 e)/2$. We extend the result to locally finite infinite
+trees: $C_\infty=\sup_n C_n$, with attainment whenever this value is finite.
+We also identify the attained atomic capacity and construct one countable
+causal seed satisfying simultaneous R\'enyi bounds.
+For stationary finite kernels with common entropy $h$, the excess is
+$\sqrt{2/\pi}(\sigma_{\max}-\sigma_{\min})\sqrt n+o(\sqrt n)$.
+When the information variances coincide at $v>0$, we prove the finer law
+\[
+ C_n=nh+\frac{\kappa_{\max}-\kappa_{\min}}{3v\sqrt{2\pi e}}\ln n+O(1),
+\]
+where the $\kappa_i$ are centered third information moments. The proof
+combines an explicit Gaussian corrector with uniformly bounded integrated
+Bellman amplification. No lattice assumption is required. The main
+statements are linked to their Lean formalizations in a fixed repository
+revision. The numerical additive constant and the nonlinear diffusion
+profile are attributed to prior work.
+\end{abstract}
+\noindent\textbf{Keywords:} exact simulation; shared randomness; adaptive policies;
+minimum entropy coupling; information spectrum; Bellman equation; formal verification.
+\setcounter{tocdepth}{1}
+\tableofcontents
+\clearpage
+
+\section{Introduction and main results}\label{sec:intro}
+A simulator receives an action, produces a random response, and repeats.
+The next action may depend on the entire observed history. We ask how much
+randomness must be drawn at the start so that every later response is a
+deterministic function of that seed, the history, and the current action.
+Exactness is required for every policy, with the same seed law and decoder.
+
+The compatibility requirement is substantive. Coupling the transcript
+laws of all policies does not, by itself, ensure that two policies receive
+the same response when they have the same history and choose the same
+action. We impose this agreement atom by atom by taking seed values to
+specify total response strategies. Entropy measures the information in
+the initial seed, not the size of a representation of the decoder or its
+running time.
+
+\subsection{The finite theorem}
+For a finite controlled tree $T$, let $I_\pi$ be the information, in bits,
+of its random transcript under policy $\pi$. Write
+\[
+ F_*(t)=\min_\pi\Pp(I_\pi\le t),\qquad
+ L(T)=\int_0^\infty(1-F_*(t))\,dt.
+\]
+Let $C(T)$ be the minimum entropy of an exact causal seed. A seed may
+be finite or countable; these give the same optimum on a finite tree.
+
+\begin{theorem}[Finite causal Shannon theorem]\label{thm:finite}
+Every finite controlled tree admits a finite exact causal seed $S_G$ with
+\begin{equation}\label{eq:sandwich}
+ L(T)\le C(T)\le H(S_G)\le L(T)+c_\star,
+ \qquad c_\star=\frac{1+\log_2 e}{2}.
+\end{equation}
+More precisely, if $Z$ has CDF $F_*$ and $J_G$ is the information of $S_G$,
+then
+\begin{equation}\label{eq:stoch}
+ Z\st J_G\st Z+W,\qquad
+ W=A(1+E),\quad A\sim\mathrm{Bernoulli}(1/2),\quad
+ E\sim\mathrm{Exp}(\ln2),
+\end{equation}
+where $Z,A,E$ on the right are independent.
+\end{theorem}
+The bound is independent of depth and of all finite local alphabet sizes.
+The constant $c_\star$ is the ordinary greedy-coupling constant of
+Compton et al.~\cite{compton}; the proof below supplies a compatible
+strategy construction on a controlled tree.
+
+\subsection{Infinite horizons}
+Let $T_n$ be the depth-$n$ truncation of a locally finite tree, and let
+$C_\infty$ be the infimum of the entropy of one countable seed exact at
+every finite horizon. An empty feasible class has cost $+\infty$.
+\begin{theorem}[Projective identity]\label{thm:infinite}
+\[
+ C_\infty=\sup_n C(T_n),\qquad
+ L_\infty\le C_\infty\le L_\infty+c_\star,
+ \quad L_\infty=\sup_n L(T_n).
+\]
+If $C_\infty<\infty$, a countable exact seed attains the infimum.
+Consequently a finite-entropy exact seed exists if and only if
+$\sup_n L(T_n)<\infty$.
+\end{theorem}
+Section~\ref{sec:infinite} also treats atomic capacity when the best exact
+representation has a nonatomic component. Section~\ref{sec:renyi} gives
+one countable causal seed with simultaneous bounds for every positive
+R\'enyi order. These are distinct assertions: countable support need not
+imply finite Shannon entropy, and a simultaneous approximation need not
+attain the Shannon minimum.
+
+\subsection{The stationary hierarchy}
+Suppose a fixed finite family $(P_i)$ is available at every history, with
+common entropy $h$. Put
+\[
+ X_i=-\log_2P_i(Y_i)-h,\quad Y_i\sim P_i,\quad
+ \sigma_i^2=\E X_i^2,\quad \kappa_i=\E X_i^3.
+\]
+Let $C_n$ denote the optimal seed entropy for $n$ rounds.
+\begin{theorem}[Stationary entropy asymptotics]\label{thm:hierarchy}
+Set $a=\max_i\sigma_i$ and $b=\min_i\sigma_i$.
+\begin{enumerate}
+\item For $a>b\ge0$,
+\[
+ C_n=nh+\sqrt{2/\pi}(a-b)\sqrt n+o(\sqrt n).
+\]
+If $b>0$, the remainder is $O(n^{1/4}\ln n)$.
+\item If every $\sigma_i^2=v>0$, then
+\begin{equation}\label{eq:logmain}
+ \boxed{C_n=nh+c\ln n+O(1),\qquad
+ c=\frac{\kappa_+-\kappa_-}{3v\sqrt{2\pi e}},}
+\end{equation}
+where $\kappa_+=\max_i\kappa_i$ and $\kappa_-=\min_i\kappa_i$.
+\item If $a=b=0$, then $C_n=nh$ for every $n$.
+\end{enumerate}
+All asymptotic constants refer to a fixed kernel. In parts 1 and 2,
+the same expansion holds for the envelope mean and the greedy seed entropy.
+\end{theorem}
+The third assertion is elementary: zero information variance means each
+law is uniform on its support. Equal entropy makes all support sizes the
+same integer $m$. A sequence of $n$ independent uniform labels in
+$\{1,\ldots,m\}$, relabeled for each action, is exact with entropy $n\log_2m$.
+The fixed-policy entropy lower bound gives equality.
+
+For $v>0$, the first three centered information moments therefore determine
+which of the following orders occurs:
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Moment condition (common entropy) & Excess $C_n-nh$ \\
+\midrule
+Different variances & $\Theta(\sqrt n)$ \\
+Common variance, different third moments & $c\ln n+O(1)$, $c>0$ \\
+Common variance and third moment & $O(1)$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The last row is a boundedness assertion, not a positive lower bound or a
+claim that the bounded remainder converges.
+
+\subsection{Relation to previous work}
+Minimum entropy coupling and functional representation provide the
+ordinary, marginal version of the problem. Li~\cite{li} treats approximate
+couplings for multiple, including infinite, families of distributions.
+Shkel and Yadav~\cite{shkel} develop information-spectrum converses.
+Compton et al.~\cite{compton} obtain the additive constant $c_\star$ through
+the profile method. We use that constant with explicit attribution and
+prove the requisite residual-mass estimate for compatible tree strategies.
+A later approximation scheme of Compton~\cite{ptas} concerns the ordinary
+finite-marginal optimization problem; our construction does not assert a
+polynomial running time in a succinct description of the controlled tree.
+
+The controlled diffusion underlying the square-root regime belongs to the
+nonlinear central limit theory of Peng~\cite{peng}. The one-sided capacity
+profile appears in Peng and Zhou~\cite{pz}; convergence rates under
+sublinear expectations are studied by Fang et al.~\cite{fang}. We include
+a discrete comparison proof to establish the precise connection with
+causal seed entropy and to make the passage to means explicit.
+The equal-variance analysis instead resolves the logarithmic displacement
+through a third-moment corrector and a bounded amplification lemma.
+We do not claim historical novelty for the ordinary coupling bound, the
+nonlinear heat profile, or the underlying information-spectrum converse.
+
+\subsection{Conventions and formalization}
+All entropies and information variables in this paper are in bits;
+$\ln$ is the natural logarithm. In particular $c$ in
+\eqref{eq:logmain} is measured per unit of $\ln n$.
+We use $0\log 0=0$. Unless stated otherwise, local kernels are positive;
+Section~\ref{sec:zero} explains the extension that keeps zero branches.
+
+The exposition is tied to repository revision
+\href{https://github.com/jendamikulik/finite-Shannon-theorem/tree/5741ee193bd5ff7f4addd4c09b2d65edfe238c20}{\texttt{5741ee193bd5}}.
+Section~\ref{sec:formal} maps the principal statements to Lean declarations
+and specifies what the recorded axiom audit establishes. This paper is an
+exposition of the selected main results, not a claim that every auxiliary
+result in the repository is reproduced here.
+
+\section{Finite controlled trees and exact seeds}\label{sec:finite}
+At a history $v$, a finite nonempty set of actions is available. Each
+action $a$ has a finite nonempty output set $\mathcal Y(v,a)$ and a
+probability kernel $K_v(y\mid a)$. The child history is $vay$. Put
+\[
+ p(\varnothing)=1,\qquad p(vay)=p(v)K_v(y\mid a).
+\]
+Terminal histories may occur at different depths. A policy selects an
+action at every nonterminal history; a response strategy $d$ selects an
+output at every history-action pair. Together they determine one terminal
+transcript, denoted $\operatorname{run}(\pi,d)$.
+
+Write $\chi_d(v)$ for the indicator that $d$ agrees with every output
+along $v$. For each action, $\sum_y\chi_d(vay)=\chi_d(v)$.
+A seed with label weights $(w_j)$ and response strategies $(d_j)$ is exact
+when
+\begin{equation}\label{eq:exact}
+ \sum_j w_j\chi_{d_j}(v)=p(v)\qquad\text{for every history }v.
+\end{equation}
+This is equivalent to the prescribed transcript law under every policy.
+For one direction sum over the terminal continuations of a history under
+a policy following its actions; for the other apply \eqref{eq:exact} to
+terminal histories compatible with the policy. Choices at histories
+incompatible with a strategy still belong to its total decoder.
+
+There are finitely many strategies. Coarsening any countable seed by its
+strategy preserves exactness and cannot increase entropy. The exact laws
+on strategies form a nonempty compact polytope. Nonemptiness follows by
+independently sampling a response at each history-action pair. Continuity
+of finite Shannon entropy shows that $C(T)$ is a minimum.
+
+\subsection{An information-spectrum converse}
+For every policy, a seed atom of mass $w$ is mapped into a transcript atom
+of mass $p\ge w$. Thus seed information $J$ dominates transcript information
+under the induced coupling. Consequently
+\begin{equation}\label{eq:lowercdf}
+ F_J(t)\le F_{I_\pi}(t)\quad\text{for every }\pi,
+ \qquad F_J(t)\le F_*(t).
+\end{equation}
+The minimum $F_*$ is a CDF because there are finitely many policies.
+Integration gives $H(S)\ge L(T)$. This converse also holds for ordinary
+couplings of the policy transcripts without shared-history consistency.
+For any exact seed with finite entropy, the one-dimensional transport
+identity gives
+\begin{equation}\label{eq:Wgap}
+ W_1(\mathcal L(J),\mathcal L(Z))
+ =\int_\R|F_J-F_*|=H(S)-L(T).
+\end{equation}
+
+\subsection{Bottleneck minimax and extraction}
+A residual flow $r$ is nonnegative and satisfies
+$\sum_y r(vay)=r(v)$ for every action. Define
+\[
+ B_r(v)=r(v)\quad(v\text{ terminal}),\qquad
+ B_r(v)=\min_a\max_y B_r(vay)\quad(v\text{ nonterminal}).
+\]
+\begin{lemma}[Tree minimax]\label{lem:minimax}
+If $\mathcal L(d)$ and $\mathcal L_\pi$ denote the leaves compatible with
+strategy $d$ and policy $\pi$, respectively, then
+\[
+ \max_d\min_{v\in\mathcal L(d)}r(v)
+ =B_r(\varnothing)
+ =\min_\pi\max_{v\in\mathcal L_\pi}r(v).
+\]
+This is the largest $w$ for which $r-w\chi_d$ is a nonnegative flow for
+some strategy $d$.
+\end{lemma}
+\begin{proof}
+Induct on the tree. A strategy chooses an output for each action and a
+continuation on every selected child. Maximizing its smallest compatible
+leaf mass gives $\min_a\max_y B_r(vay)$, since the choices for distinct
+actions are independent. A policy chooses one action and continuations
+for every output, giving the same recursion for its smallest achievable
+largest leaf mass. The leaf case is immediate. Nonnegativity on the
+leaves implies nonnegativity on every cylinder by flow conservation.
+Subtracting $w\chi_d$ preserves that conservation. This proves the last
+assertion as well.
+\end{proof}
+Starting with $r=p$, extract a maximizing strategy with weight
+$w=B_r(\varnothing)$ and subtract $w\chi_d$. Positive root mass gives
+positive bottleneck by induction. At least one previously positive leaf
+becomes zero. Hence extraction terminates in at most the number of leaves
+of the full controlled tree. The extracted weights are nonincreasing,
+sum to one, and satisfy \eqref{eq:exact}. This is the seed $S_G$.
+
+\subsection{The refined cutoff and the universal constant}
+Fix $0<\delta\le1$ and stop just after all weights greater than $\delta$
+have been extracted. The remaining root mass is
+$R=\sum_{j:w_j\le\delta}w_j$. By Lemma~\ref{lem:minimax}, some policy has
+every residual leaf mass at most $\delta$. On this policy a leaf with
+original mass $p>\delta$ must already have lost a weight greater than
+$\delta$. Its residual is therefore at most
+\[
+ a_\delta(p)=\begin{cases}
+ p,&p\le\delta,\\
+ \min\{\delta,p-\delta\},&p>\delta.
+ \end{cases}
+\]
+Define the nondecreasing function
+\[
+ \psi(u)=\begin{cases}
+ u,&0\le u\le1/2,\\
+ 1/2,&1/2<u<1,\\
+ 1,&u\ge1.
+ \end{cases}
+\]
+For every $p>0$, $a_\delta(p)\le p\psi(\delta/p)$: equality holds
+outside $\delta<p<2\delta$, and on that interval the inequality is
+$p-\delta\le p/2$. Thus
+\begin{align}
+ \sum_{j:w_j\le\delta}w_j
+ &\le\max_\pi\sum_{v\in\mathcal L_\pi}a_\delta(p(v))\notag\\
+ &\le\max_\pi\E\psi(\delta2^{I_\pi})
+ \le\E\psi(\delta2^Z).\label{eq:cutoff}
+\end{align}
+The last step uses $I_\pi\st Z$. It is distinct from the preceding
+pointwise majorization: $a_\delta(p)/p$ itself is not monotone in information.
+
+For the variable $W$ in \eqref{eq:stoch}, its inclusive survival at $s$ is
+$1$ for $s\le0$, $1/2$ for $0<s<1$, and $2^{-s}$ for $s\ge1$.
+Setting $\delta=2^{-t}$ in \eqref{eq:cutoff} therefore gives
+\[
+ \Pp(J_G\ge t)\le\E\psi(2^{Z-t})=\Pp(Z+W\ge t).
+\]
+Passing to thresholds decreasing to $t$ proves the strict-tail inequality,
+including atoms. Together with \eqref{eq:lowercdf}, this proves
+\eqref{eq:stoch}. Finally
+$\E W=(1+1/\ln2)/2=c_\star$, completing
+Theorem~\ref{thm:finite}.
+
+\begin{remark}
+The constant is a universal upper bound, not an overhead paid by every
+instance. If all actions request one fixed law, up to bijective
+relabeling, an independent sequence with that law is an optimal seed and
+$C_n=nh$. Nor does the theorem assert that a minimum-entropy ordinary
+coupling is compatible; it constructs a separate causal seed.
+\end{remark}
+
+\section{Infinite horizons and atomic capacity}\label{sec:infinite}\subsection{Strategy space and capacity}
+Let $T$ be a rooted controlled history tree. At every finite history $h$
+there are finitely many available actions, each with a finite nonempty
+output alphabet and a prescribed probability kernel. We assume the
+alphabets are finite at every node, not uniformly bounded. Terminal nodes
+can be padded by a forced action and output. Zero-probability outputs may
+be deleted; deterministic singleton alphabets are permitted.
+
+Write $p(h)$ for the product of output probabilities along $h$.
+For every available action $a$,
+\[
+ p(\varnothing)=1,\qquad \sum_y p(hay)=p(h).
+\]
+At each finite depth there are finitely many histories. A deterministic
+response strategy selects one output at every history--action pair.
+The space $\cS$ of all such strategies is a countable product of finite
+discrete spaces, hence compact and metrizable. For a history $h$, let
+$E_h\subseteq\cS$ be the set of strategies agreeing with its output
+choices. This is a clopen cylinder, and
+\[
+ E_h=\bigsqcup_y E_{hay}\quad\text{for every action }a.
+\]
+A Borel probability measure $\mu$ on $\cS$ is an exact causal
+representation if $\mu(E_h)=p(h)$ for every finite history $h$.
+This is equivalent to exactness for every deterministic adaptive policy
+at every finite horizon, and therefore for the corresponding infinite
+path laws.
+
+Let $P_{n,\pi}$ be the finite transcript law at horizon $n$ under policy
+$\pi$. Put
+\begin{align}
+ A_K(P)&=\max_{D:\,|D|\le K}P(D),\\
+ a_K(T)&=\inf_{n,\pi} A_K(P_{n,\pi}),\qquad
+ q(T)=\lim_{K\to\infty}a_K(T).\label{inf:eq:q}
+\end{align}
+The limit exists by monotonicity and belongs to $[0,1]$.
+For a Borel probability on a compact metrizable space define its total
+atomic mass by
+\[
+ \At(\mu)=\sum_{s:\,\mu(\{s\})>0}\mu(\{s\}).
+\]
+There are at most countably many terms.
+
+Ordinary couplings below are Borel probability laws on the countable
+product of the transcript spaces indexed by all pairs $(n,\pi)$, with
+the specified coordinate marginals. They need not be compatible with a
+single strategy or even consistent between horizons.
+
+\begin{theorem}[Atomic capacity]\label{inf:th:main}
+For every such tree,
+\[
+ \boxed{\quad
+ \max_{\mu\ \mathrm{exact\ causal}}\At(\mu)
+ =\max_{\Gamma\ \mathrm{ordinary}}\At(\Gamma)
+ =q(T).\quad}
+\]
+Both maxima are attained. In particular, an exact countably supported
+causal seed for the entire infinite tree exists if and only if $q(T)=1$.
+If $q(T)<1$, every exact causal representation has nonatomic mass at
+least $1-q(T)$, and a representation attaining this minimum exists.
+\end{theorem}
+
+\subsection{A finite concentration estimate}
+We use the bottleneck construction proved in Section~\ref{sec:finite}. After a
+finite number of causal greedy extractions, the residual cylinder masses
+form a nonnegative controlled flow. If its root mass is $R$, its next
+extractable strategy weight $w$ equals the smallest, over policies, of
+the largest residual transcript mass. Extraction terminates on each
+finite tree and gives an exact finite seed.
+
+\begin{lemma}\label{inf:lem:concentration}
+Suppose every policy on a finite controlled tree has $K$ transcripts
+carrying total mass at least $a$. The first $M$ greedy atoms, padded with
+zeros if extraction has ended, have total mass at least
+\[
+ a\bigl[1-(1-1/K)^M\bigr].\label{inf:eq:head}
+\]
+Consequently the same is true of the $M$ largest seed atoms.
+\end{lemma}
+\begin{proof}
+Let $R_m$ be the residual root mass after $m$ steps, with $R_0=1$.
+The minimax identity supplies a policy all of whose residual transcript
+masses are at most the next weight $w_{m+1}$. On this policy select at
+most $K$ original transcripts of mass at least $a$. The residual mass
+outside this set is at most $1-a$, so
+\[
+ R_m-(1-a)\le K w_{m+1}.
+\]
+Since $R_{m+1}=R_m-w_{m+1}$,
+\[
+ R_{m+1}-(1-a)\le(1-1/K)(R_m-(1-a)).
+\]
+Iteration gives $R_M\le1-a+a(1-1/K)^M$. The same bound holds after
+termination. Subtract from one. For $K=1$ and $M\ge1$ the displayed
+formula has its usual value $a$.
+\end{proof}
+
+\subsection{Attainment of atomic capacity}
+\begin{proof}[Proof of Theorem~\ref{inf:th:main}]
+\emph{Upper bound, even without causality.}
+Take any $m$ atoms of an ordinary coupling, of total mass $b$. Their
+images in any one transcript coordinate lie in at most $m$ transcripts,
+so $b\le A_m(P_{n,\pi})$ for every $(n,\pi)$. Hence $b\le a_m\le q$.
+Exhausting all its atoms gives $\At(\Gamma)\le q$. The same argument
+applies directly to a causal representation by projecting each atom
+through a policy.
+
+\emph{Limits of weights and strategies.}
+For each horizon $n$, take a finite greedy causal seed, order its weights
+as $w^{(n)}_1\ge w^{(n)}_2\ge\cdots\ge0$, and pad by zeros.
+Extend each finite strategy arbitrarily to an element $s^{(n)}_i$ of
+$\cS$. By compactness and diagonal selection there is one subsequence
+$n_j\to\infty$ such that, for every $i$,
+\[
+ w_i^{(n_j)}\to w_i,\qquad s_i^{(n_j)}\to s_i.
+\]
+Set $\nu=\sum_iw_i\delta_{s_i}$ and $A=\sum_iw_i\le1$; repeated
+limit strategies are simply merged as measures. For fixed $K,M$,
+Lemma~\ref{inf:lem:concentration}, with $a=a_K(T)$, gives
+\[
+ \sum_{i=1}^M w_i
+ \ge a_K(T)\bigl[1-(1-1/K)^M\bigr].
+\]
+First let $M\to\infty$ and then $K\to\infty$. It follows that
+$A\ge q$.
+
+\emph{No invalid passage of infinitely many atoms through a limit.}
+For fixed $h$ and $M$, convergence of strategies makes membership in
+the clopen set $E_h$ eventually constant for each of the first $M$
+indices. For large $j$, the finite seed is exact at $h$. Thus
+\[
+ \sum_{i=1}^M w_i\mathbf1_{E_h}(s_i)
+ =\lim_j\sum_{i=1}^M w_i^{(n_j)}\mathbf1_{E_h}(s_i^{(n_j)})
+ \le p(h).
+\]
+Monotone convergence in $M$ proves $\nu(E_h)\le p(h)$. Define
+\[
+ r(h)=p(h)-\nu(E_h)\ge0.
+\]
+Since the $E_{hay}$ partition $E_h$ for each action,
+$\sum_y r(hay)=r(h)$ and $r(\varnothing)=1-A$.
+
+\emph{Realization of the missing mass.}
+If $A<1$, assign, independently at every history--action pair, an output
+with probabilities $r(hay)/r(h)$ whenever $r(h)>0$, and any distribution
+when $r(h)=0$. The countable product law $\lambda$ of these response
+choices satisfies
+\[
+ \lambda(E_h)=r(h)/(1-A).
+\]
+Indeed this follows by induction along $h$ from the displayed ratios;
+after a zero residual prefix both sides vanish. Hence
+$\mu=\nu+(1-A)\lambda$ is exact. If $A=1$, simply set $\mu=\nu$.
+As $\nu$ is atomic of mass $A$, $\At(\mu)\ge A\ge q$.
+The upper bound already proved gives $\At(\mu)=A=q$. In particular,
+the residual law in this construction has no atoms when $q<1$.
+
+Finally map $s\in\cS$ to its full tuple of finite-policy transcripts.
+This is a measurable map into the countable product of finite spaces.
+The image of $\mu$ is an ordinary coupling and has atomic mass at least
+$q$, since images of atoms remain atoms. The upper bound makes its
+atomic mass exactly $q$. This proves attainment on both sides.
+\end{proof}
+
+\subsection{Information spectrum and entropy attainment}
+All logarithms in this section have base two. Define
+\[
+ F_n(t)=\min_\pi P_{n,\pi}\{-\log P_{n,\pi}(X)\le t\},\quad
+ F_\infty(t)=\inf_n F_n(t),\quad t\ge0.
+\]
+Refining a transcript cannot reduce its information, and policies extend
+to longer horizons. Therefore $F_n(t)$ decreases with $n$.
+For an individual finite law $P$, writing its information CDF as $F_P$,
+\[
+ F_P(t)\le A_{\lfloor2^t\rfloor}(P),\qquad
+ A_K(P)\le F_P(t)+K2^{-t}.
+\]
+Taking infima over all finite-policy laws proves
+\[
+ \boxed{q(T)=\lim_{t\to\infty}F_\infty(t).}
+\]
+Thus atomic capacity is precisely the mass that does not escape to
+infinite information in the uniform policy envelope. This statement
+does not require treating a possibly defective $F_\infty$ as a
+probability CDF.
+
+Let $C_n$ be the minimum entropy of an exact seed for the depth-$n$
+tree. Let $C_\infty$ be the infimum entropy among countably supported
+exact seeds for the full tree, with value $+\infty$ if there is no such
+seed. Set
+\[
+ L_n=\int_0^\infty(1-F_n(t))\,dt,\quad
+ L_\infty=\sup_nL_n,\quad c_*=(1+\log e)/2.
+\]
+
+\begin{theorem}[No extra entropy at the projective limit]
+In the extended real numbers,
+\[
+ \boxed{C_\infty=\sup_n C_n.}
+\]
+If the right-hand side is finite, the infimum on the left is attained.
+Consequently the finite Shannon theorem implies
+\[
+ L_\infty\le C_\infty\le L_\infty+c_*.
+\]
+In particular, $L_\infty<\infty$ is equivalent to the existence of one
+finite-entropy exact causal seed for the entire infinite tree.
+\end{theorem}
+\begin{proof}
+Restriction of a seed proves $C_n\le C_{n+1}\le C_\infty$. If
+$B=\sup_n C_n=+\infty$, this already proves the equality.
+Assume $B<\infty$ and choose a minimizing finite seed at each horizon.
+Such minimizers exist: one can minimize entropy over the compact
+finite-dimensional polytope of laws on finite strategies, merging
+identical strategies if necessary. Order and pad weights as above.
+For $i>K$, $w_i^{(n)}\le1/(K+1)$, whence
+\[
+ \sum_{i>K}w_i^{(n)}\le \frac{B}{\log(K+1)}.\tag{*}
+\]
+Diagonal compactness gives limiting weights and strategies. The uniform
+tail bound (*) forces $\sum_iw_i=1$. The cylinder argument in the
+previous proof gives $\nu(E_h)\le p(h)$. Since both are probability
+flows, equality follows at each depth by summing over the leaves of
+any policy following $h$, or by passing the uniformly small tails
+directly through the limit.
+
+The countable label seed $i$ with masses $w_i$ realizes these strategies.
+With $0\log0=0$, continuity of each summand and Fatou's lemma give
+\[
+ H(w)=\sum_i-w_i\log w_i
+ \le\liminf_j H(w^{(n_j)})=B.
+\]
+Together with restriction this yields $C_\infty=B$, with attainment.
+Finally the finite theorem gives $L_n\le C_n\le L_n+c_*$;
+take suprema. No continuity of Shannon entropy on an unrestricted
+countable simplex is being assumed.
+\end{proof}
+
+\paragraph{Three regimes.}
+If $q<1$, every exact representation has an unavoidable nonatomic
+component. If $q=1$ but $L_\infty=\infty$, a countable exact seed exists
+but all such seeds have infinite entropy. If $L_\infty<\infty$, an
+optimal finite-entropy countable seed exists. Countable support is not
+the same as finite support.
+
+\subsection{Pointwise versus uniform simulability}
+Consider a deterministic waiting chain. At waiting stage $m\ge1$ the
+controller can either wait for the next stage or trigger an experiment.
+Triggering at stage $m$ produces $m$ independent fair bits and then
+stops; there are no choices during the experiment. A policy that never
+triggers has a deterministic infinite transcript. The tree is locally
+finite, with at most two actions and at most two outputs at every node.
+
+Every individual deterministic policy therefore has a finite-support
+full-path law: either one path, or $2^m$ paths for some finite $m$.
+Nevertheless, for each fixed $K$, choosing arbitrarily large $m$ yields
+\[
+ a_K\le K2^{-m},\qquad a_K=0,\qquad q=0.
+\]
+Hence \emph{every exact common representation is atomless}, even
+without a causality requirement. An elementary direct proof is that
+an atom of mass $w>0$ would have to map into a transcript of mass
+$2^{-m}<w$ for a sufficiently large triggered experiment.
+This example illustrates why separate finite-support simulations do
+not imply one discrete seed. It is not claimed as a new counterexample
+in the general theory of ordinary coupling.
+
+For any prescribed $q_0\in(0,1)$, first choose a deterministic absorbing
+branch with probability $q_0$ and the waiting construction with
+probability $1-q_0$. Then $a_K=q_0$ for every $K\ge1$: the absorbing
+transcript gives the lower bound, and triggering an arbitrarily long
+experiment gives the upper bound. Thus the full interval of atomic
+capacities is realized even with binary branching.
+
+
+\section{One seed for all positive R\'enyi orders}\label{sec:renyi}
+Fix a rooted controlled history tree with finite nonempty action and output
+sets at every history and strictly positive transition probabilities.
+Finite horizons therefore have finitely many histories and policies.
+Terminal histories may be padded by deterministic steps.
+
+A \emph{causal seed} is a countable probability law on total response
+strategies: a strategy specifies an output at every history--action pair.
+It is exact if it realizes the prescribed law under every deterministic
+adaptive policy at every finite horizon. An \emph{ordinary source} is a
+countable random variable with a deterministic readout for each such
+policy and horizon; agreement between the readouts at shared histories is
+not required. Assume at least one ordinary exact source exists.
+
+All logarithms and entropies are in bits. Write
+\[
+ O_\alpha=\inf_{U\text{ ordinary exact}}H_\alpha(U),\qquad
+ C_\alpha=\inf_{U\text{ causal exact}}H_\alpha(U),
+\]
+where $H_\alpha(p)=(1-\alpha)^{-1}\log_2\sum_i p_i^\alpha$ for
+$\alpha\ne1$, $H_1$ is Shannon entropy, and
+$H_\infty(p)=-\log_2\sup_i p_i$. Infinite values are allowed.
+
+\begin{theorem}\label{ren:thm:main}
+There exists a single exact countable causal seed $S$ such that, simultaneously
+for every $0<\alpha<\infty$,
+\[
+ \boxed{O_\alpha\le C_\alpha\le H_\alpha(S)\le O_\alpha+d_\alpha,}
+\]
+where
+\[
+ d_\alpha=\frac{\log_2\!\left(\frac12+\frac{2^{-\alpha}}{\alpha}\right)}
+ {1-\alpha}\quad(\alpha\ne1),\qquad
+ d_1=\frac{1+\log_2 e}{2}.
+\]
+Moreover $H_\infty(S)=C_\infty=O_\infty$.
+Here $\infty$ denotes the R\'enyi order, not the time horizon.
+\end{theorem}
+
+\subsection{A distributional compactness argument}
+For the horizon-$n$ transcript law $P_{n,\pi}$, put
+\[
+ F_n(t)=\min_\pi P_{n,\pi}\{-\log_2P_{n,\pi}(X)\le t\},
+ \qquad F(t)=\inf_nF_n(t).
+\]
+Zero-probability transcripts carry no mass in this expression.
+Extending a policy and refining its transcript shows $F_{n+1}\le F_n$.
+Each $F_n$ is a CDF; $F$ is nondecreasing and right-continuous. For the latter,
+use $F(t)=\inf_n\inf_{u>t}F_n(u)=\inf_{u>t}F(u)$.
+
+Let $I_U=-\log_2 p_U(U)$ for any countable source.
+Deterministic readouts merge atoms, so exactness gives
+\begin{equation}\label{ren:eq:lower}
+ F_{I_U}(t)\le F_n(t)\quad\hbox{for all }n,t.
+\end{equation}
+Consequently $F(t)\to1$ as $t\to\infty$ whenever an ordinary countable source
+exists. Thus $F$ is the CDF of a finite nonnegative random variable $Z$.
+Let $Z_n$ have CDF $F_n$; then $Z_n\st Z$ and $Z_n\Rightarrow Z$.
+
+\paragraph{Finite input.}
+The finite theorem of Section~\ref{sec:finite} gives a finite exact causal seed
+at each horizon, with information $J_n$, for which
+\begin{equation}\label{ren:eq:finite}
+ Z_n\st J_n\st Z_n+W,
+ \qquad
+ W=A(1+E),\quad A\sim{\rm Bernoulli}(1/2),\quad
+ E\sim{\rm Exp}(\ln2).
+\end{equation}
+Here $A,E,Z_n$ are independent. The lower comparison is the deterministic-readout inequality.
+
+\begin{lemma}\label{ren:lem:limit}
+There exists an exact countable causal seed $S$ with information $J$ such that
+\[
+ \boxed{Z\st J\st Z+W,}
+\]
+with $Z$ and $W$ independent on the right-hand side.
+\end{lemma}
+\begin{proof}
+List the finite greedy atom weights in decreasing order, pad by zeros, and
+write them as $p_{n,i}$, $i\ge1$. Extend each finite response strategy
+arbitrarily to the full infinite tree. As $Z_n\st Z$, \eqref{ren:eq:finite} gives
+$J_n\st Z+W$. For $t\ge0$, at most $\lfloor2^t\rfloor$ atoms have weight
+at least $2^{-t}$. Hence
+\begin{equation}\label{ren:eq:tight}
+ \sum_{i>\lfloor2^t\rfloor}p_{n,i}
+ \le \Pp(J_n>t)\le\Pp(Z+W>t).
+\end{equation}
+This is a uniform tail estimate for the \emph{ranked weights}, with no
+entropy assumption.
+
+The full strategy space is a countable product of finite discrete sets.
+Diagonal extraction gives a subsequence $n_j\to\infty$ such that, for every
+$i$, $p_{n_j,i}\to p_i$ and the associated strategies converge coordinatewise
+to $s_i$. Finite partial sums have limits. By \eqref{ren:eq:tight}, their tails
+are uniformly arbitrarily small, so $\sum_i p_i=1$ and
+$\sum_i|p_{n_j,i}-p_i|\to0$.
+
+Give label $i$ weight $p_i$ and response strategy $s_i$, discarding zero
+weights. Fix a finite horizon, policy and transcript. The indicator that
+strategy $s_{n_j,i}$ generates that transcript eventually equals its limit
+for each fixed $i$, because it depends on finitely many coordinates.
+Splitting the weighted sum at a finite rank, and then using the uniform
+tail estimate, proves exactness of the limit. This works for every finite
+policy law.
+
+For completeness, $J_{n_j}\Rightarrow J$ follows directly from the same
+argument. For bounded continuous $f$, write
+\[
+ \E f(J_{n_j})=\sum_i p_{n_j,i}f(-\log_2p_{n_j,i}).
+\]
+A fixed positive limiting weight gives convergence of its term; a zero
+limiting weight gives a term tending to zero in absolute value. Uniformly
+small rank tails control the remaining sum. Thus the expectations converge
+to $\sum_{i:p_i>0}p_i f(-\log_2p_i)$.
+
+Finally $Z_{n_j}\Rightarrow Z$ and $Z_{n_j}+W\Rightarrow Z+W$.
+First-order stochastic order is closed under weak convergence: test against
+bounded continuous increasing functions. Passing to the limit in
+\eqref{ren:eq:finite} proves the lemma.
+\end{proof}
+
+\subsection{Entropy comparisons}
+\begin{proof}[Proof of Theorem \ref{ren:thm:main}]
+Take the single seed of Lemma \ref{ren:lem:limit}. For $\alpha\ne1$, define
+\[
+ R_\alpha(Z)=\frac{1}{1-\alpha}\log_2\E 2^{(1-\alpha)Z}.
+\]
+The stochastic sandwich and independence give
+\begin{equation}\label{ren:eq:renyi}
+ R_\alpha(Z)\le H_\alpha(S)\le
+ R_\alpha(Z)+\frac{\log_2\E2^{(1-\alpha)W}}{1-\alpha}.
+\end{equation}
+For $0<\alpha<1$ these follow by monotonicity of the increasing exponential;
+infinite moments are permitted. For $\alpha>1$ the exponential is decreasing,
+and division by $1-\alpha<0$ reverses the inequality once more. Its
+expectation is strictly positive because $Z$ is finite almost surely.
+
+Since $1-\alpha<1$, the exponential moment of $W$ is finite, and
+\[
+ \E2^{(1-\alpha)W}
+ =\frac12+\frac12\,2^{1-\alpha}
+   \int_0^\infty(\ln2)\,2^{-\alpha x}\,dx
+ =\frac12+\frac{2^{-\alpha}}{\alpha}.
+\]
+For $\alpha=1$, use the nonnegative means directly:
+\[
+ \E Z\le H_1(S)\le \E Z+\E W,\qquad
+ \E W=\frac12\left(1+\frac1{\ln2}\right)=d_1.
+\]
+This also agrees with the continuous extension of $d_\alpha$ at $1$.
+
+For any ordinary exact source $U$, \eqref{ren:eq:lower} says $Z\st I_U$.
+Therefore $R_\alpha(Z)\le H_\alpha(U)$, and $\E Z\le H_1(U)$.
+Taking the infimum over such $U$ in \eqref{ren:eq:renyi} yields
+$H_\alpha(S)\le O_\alpha+d_\alpha$. The other inequalities follow from
+inclusion of feasible classes and feasibility of $S$.
+
+For the endpoint, fix any ordinary exact $U$. The preceding bound gives
+$H_\alpha(S)\le H_\alpha(U)+d_\alpha$ for every $\alpha>1$.
+For a countable probability law, $H_\alpha\to H_\infty$ as
+$\alpha\to\infty$, whereas $d_\alpha\to0$. Consequently
+$H_\infty(S)\le H_\infty(U)$ for every $U$. Taking the infimum and using
+$O_\infty\le C_\infty\le H_\infty(S)$ proves equality.
+No interchange of an infimum with a limit is needed.
+\end{proof}
+
+\begin{corollary}[Simultaneous finiteness]
+For the same seed $S$, and for each $0<\alpha\le1$,
+\[
+ H_\alpha(S)<\infty
+ \iff
+ \text{some ordinary exact countable source has finite }H_\alpha.
+\]
+In particular the set of orders with finite R\'enyi entropy is realized
+by one causal source, even when its Shannon entropy is infinite.
+\end{corollary}
+\begin{proof}
+The forward implication uses $S$ itself as an ordinary source. The reverse
+implication follows from the theorem and the finite constant $d_\alpha$.
+\end{proof}
+
+\paragraph{Examples of the bounds.}
+The same $S$ satisfies
+\[
+ H_1(S)\le O_1+1.2213475204\ldots,\qquad
+ H_2(S)\le O_2+\log_2(8/5),\qquad H_\infty(S)=O_\infty.
+\]
+These are simultaneous approximation statements, not exact simultaneous
+minimization at finite orders. The construction does not claim that $S$
+also attains the Shannon optimum.
+
+
+
+\section{Keeping zero-probability branches}\label{sec:zero}
+The simulation model can retain every branch of a nonnegative normalized
+kernel. For information and moment expressions, only positive atoms are
+sampled. Let $T^+$ be the subtree of histories whose path probability is
+positive, with zero entries omitted from each local output alphabet.
+Normalization makes every reduced alphabet nonempty.
+
+Restriction gives a map $R$ from full strategies to reduced strategies:
+at a positive history, keep a positive output, and replace any zero output
+by a fixed positive default. Extension gives a map $E$ in the other
+direction by choosing defaults at all omitted histories. Both maps are
+measurable, and deterministic when applied to seed labels.
+
+For an exact full law, the event that a positive history is reached and
+a zero-probability response is selected has probability zero. There are
+only countably many history-action-output triples. Outside their union,
+restriction therefore preserves every positive-history cylinder.
+Induction on the path length shows that $R$ sends every exact full seed
+to an exact reduced seed. Conversely $E$ sends any exact reduced seed
+to an exact full seed: every omitted path has a first zero transition,
+which is never selected along a reached positive history.
+
+Using the same label weights preserves seed entropy in either direction;
+merging labels after a deterministic map can only decrease a positive-order
+R\'enyi entropy. Hence the full and reduced entropy infima agree, for
+finite and infinite horizons. The policy laws have the same positive
+transcript masses, so their information envelopes also agree. Applying
+the preceding theorems on $T^+$ and extending the resulting strategies
+proves their versions on the full tree. Zero branches are retained in the
+final decoder, although the proof uses the support reduction.
+
+\section{Stationary kernels and the square-root regime}\label{sec:sqrt}
+Use the centered variables $X_i$ of Section~\ref{sec:intro}; put
+$a=\max_i\sqrt{\E X_i^2}$, $b=\min_i\sqrt{\E X_i^2}$, and
+$M=\max_i\|X_i\|_\infty$. The proof applies to arbitrary finitely supported
+centered increments, even if they are not information variables.
+The conclusions to prove are
+\begin{align}
+ C_n&=nh+\sqrt{2/\pi}(a-b)\sqrt n+o(\sqrt n),\label{sq:asymptotic}\\
+ C_n&=nh+\sqrt{2/\pi}(a-b)\sqrt n+O(n^{1/4}\ln n)\quad(b>0).
+ \label{sq:rate}
+\end{align}
+\subsection{The discrete Bellman envelope}
+For a policy $\pi$, let $S_n^\pi=\sum_{k=1}^n X_{A_k}$, with the fresh
+increment drawn after the predictable choice $A_k$. Set
+\[
+ G_n(x)=\inf_\pi\Prb(S_n^\pi\le x),\qquad
+ (Tf)(x)=\min_{j\in\mathcal A}\E f(x-X_j).
+\]
+Condition on the first action and outcome. Continuation policies can be
+chosen separately for each outcome; finite horizon and finite alphabets
+ensure the minima are attained. Thus
+\begin{equation}\label{sq:bellman}
+ G_0(x)=\mathbf1_{\{x\ge0\}},\qquad G_{n+1}=TG_n.
+\end{equation}
+The operator is monotone, commutes with spatial translations and addition
+of constants, and satisfies $\|Tf-Tg\|_\infty\le\|f-g\|_\infty$.
+Moreover $G_n$ is a CDF: it is the minimum of finitely many CDFs with bounded
+support. By the chain rule for transcript probabilities,
+\begin{equation}\label{sq:meanidentity}
+ \frac{L_n-nh}{\sqrt n}
+ =\int_0^\infty[1-G_n(x\sqrt n)]\,dx
+  -\int_0^\infty G_n(-x\sqrt n)\,dx.
+\end{equation}
+There is no exchange of an infimum with an integral in this identity.
+The envelope is formed first, and then its mean is integrated.
+
+\subsection{A quantitative comparison for positive least variance}
+Assume $0<b\le a$. Write $\phi(z)=(2\pi)^{-1/2}e^{-z^2/2}$ and let $\Phi$
+be its CDF. Define
+\begin{equation}\label{sq:profile}
+ F_{a,b}(z)=
+ \begin{cases}
+ \dfrac{2b}{a+b}\Phi(z/b),&z\le0,\\[3pt]
+ 1-\dfrac{2a}{a+b}\Phi(-z/a),&z\ge0.
+ \end{cases}
+ \qquad u(t,x)=F_{a,b}(x/\sqrt t),\quad t>0.
+\end{equation}
+Both values at zero are $b/(a+b)$. On either half-line, with $s=b$ on the
+negative side and $s=a$ on the positive side,
+\[
+ F'(z)=\frac{2}{a+b}\phi(z/s),\qquad
+ F''(z)=-\frac{2z}{(a+b)s^2}\phi(z/s).
+\]
+Consequently $F\in C^2(\R)$, $F''(0)=0$, and
+\begin{equation}\label{sq:pde}
+ u_t=\min_j\frac{\sigma_j^2}{2}u_{xx}.
+\end{equation}
+Indeed, $u_{xx}\ge0$ for $x<0$, selecting $b^2$, and $u_{xx}\le0$ for $x>0$,
+selecting $a^2$; both sides vanish at zero. No classical third derivative at
+zero is required.
+
+Fix $M=\max_j\|X_j\|_\infty$ and $\phi_0=(2\pi)^{-1/2}$. Define
+\begin{align*}
+ A&=\frac{M^3\phi_0}{3(a+b)b^2},&
+ B&=\frac{a\phi_0}{2(a+b)}
+       \bigl(3e^{-1/2}+3\sqrt3\,e^{-3/2}\bigr),\\
+ \ell&=\frac{2\phi_0}{a+b},&
+ D&=\frac{a\phi_0 e^{-1/2}}{a+b}.
+\end{align*}
+
+\begin{lemma}[One-step defect]\label{sq:local}
+For every $t>0$,
+\begin{equation}\label{sq:defect}
+ \|Tu(t,\cdot)-u(t+1,\cdot)\|_\infty
+ \le A t^{-3/2}+\frac B2 t^{-2}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+On each open half-line,
+\[
+ F'''(z)=\frac{2}{(a+b)s^2}\bigl((z/s)^2-1\bigr)\phi(z/s).
+\]
+Since $\sup_y|(y^2-1)\phi(y)|=\phi_0$ and $F''$ is continuous at zero,
+$F''$ is globally Lipschitz with constant $2\phi_0/((a+b)b^2)$.
+Taylor's integral remainder therefore gives, also across zero,
+\[
+ \left|\E u(t,x-X_j)-u(t,x)-\frac{\sigma_j^2}{2}u_{xx}(t,x)\right|
+ \le A t^{-3/2}.
+\]
+The linear term vanishes because $\E X_j=0$. Taking the minimum changes
+neither this bound nor its uniformity in $x$. Equation \eqref{sq:pde} identifies
+the quadratic part with $u_t$.
+
+For $z=x/\sqrt t$,
+\[
+ u_{tt}(t,x)=\frac{3zF'(z)+z^2F''(z)}{4t^2}.
+\]
+The elementary maxima $\sup_y|y|\phi(y)=\phi_0e^{-1/2}$ and
+$\sup_y|y|^3\phi(y)=3\sqrt3\phi_0e^{-3/2}$ give
+$\|u_{tt}(t,\cdot)\|_\infty\le B/t^2$. Integrating this bound over a
+unit time step supplies the second remainder $B/(2t^2)$.
+\end{proof}
+
+\begin{lemma}[Explicit CDF comparison]\label{sq:cdf}
+For $n\ge1$, $m\ge1$ and $R\ge0$,
+\begin{align}\label{sq:cdfbound}
+ \sup_z|G_n(z\sqrt n)-F_{a,b}(z)|\le{}&2\Phi(-R)
+   +\frac{3A}{\sqrt m}+\frac Bm\\
+ &+\ell aR\sqrt{\frac m{n+m}}
+   +D\ln(1+m/n).\nonumber
+\end{align}
+In particular the left side is $O(n^{-1/4}\sqrt{\log n})$ for $n\ge2$.
+\end{lemma}
+\begin{proof}
+Let $d=aR\sqrt m$ and $\delta=2\Phi(-R)$. Directly from \eqref{sq:profile},
+\[
+ u(m,x-d)-\delta\le\mathbf1_{\{x\ge0\}}
+                       \le u(m,x+d)+\delta.
+\]
+Apply $T^n$, preserving order and the translations. By the contraction
+property and Lemma~\ref{sq:local}, the accumulated defect is at most
+\[
+ E_m:=\sum_{k=0}^{n-1}\left(\frac A{(m+k)^{3/2}}
+                         +\frac B{2(m+k)^2}\right)
+ \le\frac{3A}{\sqrt m}+\frac Bm.
+\]
+Thus $u(n+m,x-d)-\delta-E_m\le G_n(x)
+\le u(n+m,x+d)+\delta+E_m$.
+The spatial translation costs at most $\ell d/\sqrt{n+m}$.
+Also $\sup_x|u_t(t,x)|\le D/t$, so changing time from $n+m$ to $n$
+costs at most $D\ln(1+m/n)$. This proves \eqref{sq:cdfbound}.
+Choose $m=\sqrt n$, $R=\sqrt{\ln n}$, and use
+$2\Phi(-R)\le e^{-R^2/2}$ to obtain the stated order.
+\end{proof}
+
+\subsection{The mean: uniform tails, an explicit error bound, and the coefficient}
+Under every policy, the increments are martingale differences in $[-M,M]$.
+Conditional Hoeffding's bound and iteration give
+$\E e^{\theta S_n^\pi}\le e^{n\theta^2M^2/2}$.
+Markov's inequality, optimized at $\theta=x/(M^2\sqrt n)$ and applied also
+to $-S_n^\pi$, yields, for $x>0$,
+\begin{equation}\label{sq:tails}
+ 1-G_n(x\sqrt n)\le e^{-x^2/(2M^2)},\qquad
+ G_n(-x\sqrt n)\le e^{-x^2/(2M^2)}.
+\end{equation}
+These bounds are uniform in both $n$ and the adaptive policy. The same
+bounds hold for $1-F_{a,b}(x)$ and $F_{a,b}(-x)$ since $a\le M$.
+Dominated convergence in \eqref{sq:meanidentity} is now justified.
+Moreover, if $e_n$ denotes the right side of \eqref{sq:cdfbound}, then, for every $r>0$,
+\begin{equation}\label{sq:meanbound}
+ \left|\frac{L_n-nh}{\sqrt n}-\mu_{a,b}\right|
+ \le 2r e_n+\frac{4M^2}{r}e^{-r^2/(2M^2)},
+\end{equation}
+where $\mu_{a,b}$ is the mean of $F_{a,b}$. Split the CDF-distance integral
+at $\pm r$ to obtain this inequality, using
+$\int_r^\infty e^{-x^2/(2M^2)}dx\le(M^2/r)e^{-r^2/(2M^2)}$.
+With $r=M\sqrt{2\ln n}$, Lemma~\ref{sq:cdf} makes \eqref{sq:meanbound}
+$O(n^{-1/4}\ln n)$.
+
+Finally, $\int_0^\infty\Phi(-x/s)\,dx=s/\sqrt{2\pi}$ gives
+\begin{equation}\label{sq:coefficient}
+ \mu_{a,b}
+ =\frac{2a^2-2b^2}{(a+b)\sqrt{2\pi}}
+ =\sqrt{\frac2\pi}(a-b).
+\end{equation}
+Equations \eqref{sq:meanbound}, \eqref{sq:coefficient} and \eqref{eq:sandwich}
+prove both claims of Theorem~\ref{thm:hierarchy}(1) when $b>0$. In particular,
+\eqref{sq:cdfbound} and \eqref{sq:meanbound}, plus $\cstar/\sqrt n$, are an
+explicit finite-$n$ bound for the normalized optimal entropy error.
+
+\subsection{Zero least variance: a controlled perturbation argument}
+Assume $b=0<a$. For $\varepsilon>0$, replace every increment by
+$X_j+\varepsilon\xi$, where each fresh $\xi$ is an independent symmetric
+sign. The controller is allowed to observe the pair of outcomes. The Bellman
+state is still the partial sum: the conditional future laws depend only on
+the next action, so observing the pair rather than its sum changes no value.
+Let $G_n^\varepsilon$ be this envelope. Its extreme standard deviations are
+$a_\varepsilon=\sqrt{a^2+\varepsilon^2}$ and $b_\varepsilon=\varepsilon$;
+the previous proof applies to this bounded, centered family.
+
+For every $\eta>0$ and $x\in\R$,
+\begin{equation}\label{sq:noisecompare}
+ G_n^\varepsilon((x-\eta)\sqrt n)-\varepsilon^2/\eta^2
+ \le G_n(x\sqrt n)
+ \le G_n^\varepsilon((x+\eta)\sqrt n)+\varepsilon^2/\eta^2.
+\end{equation}
+To verify this, couple the original and perturbed sums using the same
+actions and original outcomes. Their difference is
+$\varepsilon\sum_{k=1}^n\xi_k$, whose tail beyond $\eta\sqrt n$ is at most
+$\varepsilon^2/\eta^2$. An original policy can be used in the perturbed
+system by ignoring the signs. Conversely, a perturbed policy can be run in
+the original system using independent auxiliary signs. Such randomization
+does not improve an infimum of event probabilities: conditional on its
+entire independent random tape it is a deterministic causal policy, so its
+event probability is an average of probabilities of admissible policies.
+These two comparisons, with shifted thresholds, prove \eqref{sq:noisecompare}.
+
+First let $n\to\infty$ for fixed $\varepsilon,\eta$, then set
+$\eta=\sqrt\varepsilon$ and let $\varepsilon\downarrow0$. The explicit
+profiles tend to the continuous CDF
+\[
+ F_{a,0}(x)=\begin{cases}0,&x\le0,\\2\Phi(x/a)-1,&x>0.\end{cases}
+\]
+Equation \eqref{sq:noisecompare} proves $G_n(x\sqrt n)\to F_{a,0}(x)$ at
+every $x$. The original-family bound \eqref{sq:tails} still holds, so dominated
+convergence gives mean $a\sqrt{2/\pi}$. This proves \eqref{sq:asymptotic}
+for $b=0<a$, without asserting the remainder \eqref{sq:rate} in that case.
+If $a=b=0$, every increment is zero almost surely, $G_n=G_0$, and
+\eqref{eq:sandwich} immediately gives \eqref{sq:asymptotic}. This finishes the proof.
+
+\subsection{Universality of near-optimal seed information}
+\begin{corollary}[Universality of asymptotically optimal seeds]
+Suppose $a>0$. Let $J_n=-\log_2 w_n(S_n)$ be the self-information of an
+exact countable seed with finite entropy, and suppose $\E J_n-C_n=o(\sqrt n)$.
+Then the law of $(J_n-nh)/\sqrt n$ converges in $W_1$ to the law with CDF
+$F_{a,b}$ (with the half-normal convention when $b=0$).
+\end{corollary}
+\begin{proof}
+Every seed atom is no heavier than any transcript to which it is mapped.
+Thus its self-information stochastically dominates each policy transcript,
+and its CDF is at most their lower envelope. If $Z_n$ has that envelope CDF,
+then $Z_n\preceq_{\rm st}J_n$, and
+$W_1(\mathcal L(J_n),\mathcal L(Z_n))=\E J_n-L_n$.
+By \eqref{eq:sandwich} this is $o(\sqrt n)$. The CDF convergence and uniform
+tail bound above give $W_1$ convergence of $(Z_n-nh)/\sqrt n$ to $F_{a,b}$.
+The triangle inequality proves the claim.
+\end{proof}
+
+The profile is not the limiting transcript law of one policy when $a>b$:
+every centered transcript has mean zero and the uniform tail bound forces
+any weak limit to have mean zero. The envelope profile has strictly positive
+mean. Different thresholds may need different minimizing policies. Treating
+the whole envelope as one policy law would invalidate the argument.
+
+
+\section{The logarithmic regime with bounded remainder}\label{sec:log}
+Let $X_1,\ldots,X_d$ have finitely supported laws satisfying
+\[
+ \E X_i=0,\qquad \E X_i^2=v>0.
+\]
+Set $\kappa_i=\E X_i^3$, $\kappa_-=\min_i\kappa_i$,
+$\kappa_+=\max_i\kappa_i$, and
+\[
+ A_i f(x)=\E f(x-X_i),\qquad
+ Tf=\min_i A_i f,\qquad Uf=\max_i A_i f.
+\]
+Both operators preserve order and commute with translations. The
+operator $U$ is positively homogeneous and subadditive, and
+\begin{equation}\label{log:eq:lip}
+ |Tf-Tg|\le U|f-g|,\qquad |Uf-Ug|\le U|f-g|.
+\end{equation}
+Let $H=\mathbf1_{[0,\infty)}$, $G_n=T^nH$, and let $\nu_n$ be the
+probability law with CDF $G_n$. The mean of this envelope law is
+$e_n=\int_\R(H-G_n)$. The family is fixed throughout; constants
+are permitted to depend on it. Write $\phi,\Phi$ for the standard
+Gaussian density and CDF.
+
+\begin{theorem}\label{log:thm:main}
+With $c=(\kappa_+-\kappa_-)/(3v\sqrt{2\pi e})$, there is a finite
+constant $K$ such that for all integers $n\ge1$,
+\begin{equation}\label{log:eq:main}
+ \boxed{W_1\bigl(\nu_n,N(c\ln n,vn)\bigr)\le K,
+ \qquad |e_n-c\ln n|\le K.}
+\end{equation}
+No lattice or aperiodicity assumption is needed.
+\end{theorem}
+
+\begin{corollary}\label{log:cor:cost}
+For any finite stationary kernel with common action entropy $h$ and
+common positive information variance $v$, in bits,
+\[
+ \boxed{C_n=nh+\frac{\kappa_+-\kappa_-}{3v\sqrt{2\pi e}}\ln n+O(1),}
+\]
+where $\kappa_i=\E(-\log_2P_i(Y_i)-h)^3$. The same expansion holds
+for the envelope mean and for exact seeds of entropy within a bounded
+additive amount of that mean.
+\end{corollary}
+\begin{proof}[Proof of the corollary from Theorem~\ref{log:thm:main}]
+The centered transcript-information envelope is $G_n$, and
+$L_n=nh+e_n$. Use the finite-tree sandwich~\eqref{eq:sandwich}.
+\end{proof}
+
+
+\subsection{Uniform Gaussian amplification}
+For $t>0$ denote the $N(0,vt)$ density by
+\[
+ \gamma_t(x)=\frac{1}{\sqrt{2\pi vt}}e^{-x^2/(2vt)}.
+\]
+Let $P$ be convolution with $N(0,v)$, so $P\gamma_t=\gamma_{t+1}$.
+This is a comparison operator, not an additional available action.
+
+\begin{lemma}[One-step Gaussian defect]\label{log:lem:defect}
+There is $0\le D<\infty$ such that for all $t\ge1$ and $x\in\R$,
+\begin{equation}\label{log:eq:defect}
+ |U\gamma_t(x)-\gamma_{t+1}(x)|
+ \le D t^{-3/2}\gamma_{8t}(x).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $M=\max_i\max\{|y|:y\in\operatorname{supp}X_i\}$.
+Centered Taylor expansion and equality of the second moments give
+\[
+ \left|A_i\gamma_t-\gamma_t-\frac v2\gamma_t''\right|(x)
+ \le\frac{\E|X_i|^3}{6}
+       \sup_{|a|\le M}|\gamma_t'''(x-a)|.
+\]
+Also $\partial_t\gamma_t=(v/2)\gamma_t''$, whence
+\[
+ \left|\gamma_{t+1}-\gamma_t-\frac v2\gamma_t''\right|(x)
+ \le\frac12\sup_{t\le s\le t+1}|\partial_s^2\gamma_s(x)|.
+\]
+For finite constants $D_3,D_4$, uniformly in $t\ge1$,
+\begin{align}
+ \sup_{|a|\le M}|\gamma_t'''(x-a)|
+    &\le D_3t^{-3/2}\gamma_{8t}(x),\label{log:eq:window3}\\
+ \sup_{t\le s\le t+1}|\partial_s^2\gamma_s(x)|
+    &\le D_4t^{-2}\gamma_{8t}(x).\label{log:eq:window4}
+\end{align}
+Here is a direct justification of uniformity in $x$. With
+$z=x/\sqrt{vt}$, $b=a/\sqrt{vt}$, one has $|b|\le M/\sqrt v$
+and $(z-b)^2\ge z^2/2-b^2$. Gaussian spatial derivatives are a
+polynomial times their Gaussian density. Thus the ratio in
+\eqref{log:eq:window3}, after removing $t^{-3/2}$, is bounded by a
+constant times $(1+|z|)^3e^{-3z^2/16}$. For~\eqref{log:eq:window4},
+use $\partial_s^2\gamma_s=(v^2/4)\gamma_s''''$ and
+$1\le s/t\le2$; the analogous ratio is bounded by a constant times
+$(1+|z|)^4e^{-3z^2/16}$. Both suprema are finite.
+Finally $t^{-2}\le t^{-3/2}$ and
+$|\max_i a_i-b|\le\max_i|a_i-b|$, proving~\eqref{log:eq:defect}.
+\end{proof}
+
+\begin{lemma}[Bounded integrated amplification]\label{log:lem:amp}
+Choose $A\ge1$ with $3D/\sqrt A\le1/2$, where $D$ is from
+Lemma~\ref{log:lem:defect}. Then for every $t\ge A$, every $m\in\R$
+and every integer $n\ge0$,
+\begin{equation}\label{log:eq:amp}
+ \boxed{\int_\R U^n\bigl[\gamma_t(\cdot-m)\bigr](x)\,dx\le2.}
+\end{equation}
+For example $A=\max\{1,36D^2\}$ is admissible.
+\end{lemma}
+\begin{proof}
+Translation invariance reduces the proof to $m=0$. Positivity,
+subadditivity,~\eqref{log:eq:lip}, and $P^r\gamma_t=\gamma_{t+r}$ give
+the pointwise telescoping bound
+\begin{equation}\label{log:eq:telescope}
+ U^n\gamma_t\le\gamma_{t+n}
+ +D\sum_{r=0}^{n-1}(t+r)^{-3/2}
+                   U^{n-1-r}\gamma_{8(t+r)}.
+\end{equation}
+For clarity, obtain this by comparing $U^n\gamma_t$ with
+$U^{n-1}\gamma_{t+1}$, then $U^{n-2}\gamma_{t+2}$, and so forth;
+each difference is bounded by the appropriate iterate of $U$ applied
+to $|U\gamma_{t+r}-\gamma_{t+r+1}|$.
+
+Use strong induction on $n$, simultaneously for every real $t\ge A$.
+The assertion at $n=0$ is the Gaussian integral, equal to one.
+In~\eqref{log:eq:telescope}, every remaining horizon is less than $n$
+and every Gaussian time $8(t+r)$ is at least $A$. The induction
+hypothesis therefore bounds its integral by two. Since
+\[
+ \sum_{r=0}^\infty(t+r)^{-3/2}
+ \le t^{-3/2}+\int_0^\infty(t+s)^{-3/2}\,ds
+ \le\frac3{\sqrt t},
+\]
+the integrated right side of~\eqref{log:eq:telescope} is at most
+$1+6D/\sqrt t\le2$. This closes the induction. There is no assumption
+that the supremum over all horizons is already finite.
+\end{proof}
+
+\paragraph{A general stability consequence.}
+If $|f-g|\le b\gamma_t(\cdot-m)$ with $b\ge0$ and $t\ge A$, then
+\begin{equation}\label{log:eq:stab}
+ \norm{T^nf-T^ng}\le2b\qquad(n\ge0).
+\end{equation}
+This follows from~\eqref{log:eq:lip} and Lemma~\ref{log:lem:amp}.
+The same holds for sums of such majorants, with $2\sum b$ on the
+right. A further consequence, for $f\ge0$ integrable, is
+$\int U^n(\gamma_t*f)\le2\norm f$ when $t\ge A$:
+take the supremum over policies inside the nonnegative integral
+against $f$, and apply Tonelli and~\eqref{log:eq:amp}.
+
+
+\subsection{The resonant corrector}
+Define
+\begin{align}
+ f(z)&=\min_i\left[-\frac{\kappa_i}{6v^{3/2}}
+                      (z^2-1)\phi(z)\right],\label{cor:eq:forcing}\\
+ a_0&=\int_\R f(z)\,dz=-\frac{\kappa_+-\kappa_-}{3v^{3/2}}\phi(1)
+       =-\frac{c}{\sqrt v},\label{cor:eq:a}\\
+ g(z)&=2(a_0\phi(z)-f(z)),\qquad
+ J(z)=\int_{-\infty}^z g(y)\,dy,\label{cor:eq:J}\\
+ B(z)&=\phi(z)\int_0^z\frac{J(y)}{\phi(y)}\,dy.\label{cor:eq:B}
+\end{align}
+Indeed $\int(z^2-1)\phi=0$ and
+$\int|z^2-1|\phi=4\phi(1)$, proving~\eqref{cor:eq:a}.
+Since $\int g=0$, formula~\eqref{cor:eq:B} decays at both ends and solves
+\begin{equation}\label{cor:eq:ODE}
+ B''+zB'+B=2(a_0\phi-f).
+\end{equation}
+
+\paragraph{Regularity and tails, explicitly.}
+The function $f$ is continuous, smooth off $\{-1,1\}$, and has only
+derivative jumps there. Thus $B\in C^2$, with locally absolutely
+continuous second derivative. For $z<-1$ and $z>1$, respectively,
+\[
+ \frac{J(z)}{\phi(z)}=
+ 2a_0\frac{\Phi(z)}{\phi(z)}-\frac{\kappa_+z}{3v^{3/2}},
+ \qquad
+ \frac{J(z)}{\phi(z)}=
+ -2a_0\frac{1-\Phi(z)}{\phi(z)}-\frac{\kappa_+z}{3v^{3/2}}.
+\]
+The elementary Gaussian tail inequality
+$1-\Phi(z)\le\phi(z)/z$ for $z>0$, and its reflected version,
+show that the integral in~\eqref{cor:eq:B} is $O(1+z^2)$.
+The equation $B'+zB=J$ and~\eqref{cor:eq:ODE}, followed by its
+almost-everywhere derivative, then show that $B,B',B'',B'''$ are
+bounded by a polynomial times $\phi$ on each tail. All their
+polynomially weighted absolute integrals are finite. In particular
+$B\in W^{3,1}(\R)$. No fourth classical derivative of $B$ is required.
+
+For $t\ge1$, put
+\begin{equation}\label{cor:eq:profile}
+ z=z_t(x)=\frac{x-c\ln t}{\sqrt{vt}},\qquad
+ p_t(x)=\Phi(z),\quad q_t(x)=t^{-1/2}B(z),\quad u_t=p_t+q_t.
+\end{equation}
+The function $u_t$ need not be a CDF; it is used only as a bounded
+comparison profile. Its limiting values are zero and one. Direct
+differentiation using~\eqref{cor:eq:ODE} gives
+\begin{equation}\label{cor:eq:PDE}
+ \partial_tu_t-\frac v2\partial_x^2u_t
+ =t^{-3/2}f(z)-\frac{c}{\sqrt v}\,t^{-2}B'(z).
+\end{equation}
+The translation $c\ln t$ absorbs the resonant Gaussian mode exactly.
+
+
+\subsection{Pointwise discrete residual}\label{sec:residual}
+The following estimate closes the analytic input needed for bounded
+propagation. All constants below depend only on the fixed increment family.
+Put
+\[
+ E_0(z)=(1+z^2)^4e^{-z^2/8}.
+\]
+\begin{lemma}\label{log:lem:residual}
+There is $K_0<\infty$ such that for every real $t\ge1$ and $x\in\R$,
+\begin{equation}\label{log:eq:input}
+ |u_{t+1}(x)-Tu_t(x)|\le K_0t^{-2}E_0(z_t(x)).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $p_t(x)=\Phi(z_t(x))$ and $q_t(x)=t^{-1/2}B(z_t(x))$.
+We first specify the uniform Gaussian bounds used in Taylor's formula.
+The corrector construction gives
+\[
+ |B^{(j)}(z)|\le C(1+|z|)^{j+2}\phi(z),\qquad 0\le j\le3,
+\]
+where the last derivative is interpreted almost everywhere. For $j=0$
+this follows from the integral representation and the Gaussian tail bound;
+$B'=J-zB$, $B''=2(a_0\phi-f)-zB'-B$, and the almost-everywhere derivative
+of the last identity give $j=1,2,3$. On the compact interval $[-1,1]$
+all these bounds follow by boundedness, enlarging $C$ if necessary.
+
+Let $M$ bound every increment. For a spatial shift $|y|\le M$, the
+standardized argument changes from $z=z_t(x)$ by at most $M/\sqrt v$.
+For $t\le s\le t+1$ the time-changed argument is
+\[
+ z_s(x)=\sqrt{t/s}\,z+
+       \frac{c\ln(t/s)}{\sqrt{vs}}.
+\]
+Here $\sqrt{t/s}\in[1/\sqrt2,1]$, and the additive term is uniformly
+bounded. The inequality $(r z+d)^2\ge r^2z^2/2-d^2$, valid for all real
+$z,d$, shows that any polynomial of degree at most eight times
+$\phi(rz+d)$ is bounded by a constant times $E_0(z)$ in these windows.
+For spatial shifts use $r=1$; for time changes use $r\ge1/\sqrt2$.
+Thus the constants in the following derivative estimates are uniform
+in $t,x$ and throughout the indicated Taylor segments:
+\begin{align*}
+ \sup_{|y|\le M}|p_t^{(4)}(x-y)|&\le Ct^{-2}E_0(z),\\
+ \operatorname*{ess\,sup}_{|y|\le M}|q_t^{(3)}(x-y)|
+      &\le Ct^{-2}E_0(z),\\
+ \sup_{s\in[t,t+1]}|\partial_s^2u_s(x)|&\le Ct^{-2}E_0(z).
+\end{align*}
+For the last line, differentiate
+$z_t'=-z_t/(2t)-c/(\sqrt v\,t^{3/2})$ once more. The resulting terms
+involve only $\phi,\phi',B,B',B''$, multiplied by polynomials of degree
+at most two and by powers no larger than $t^{-2}$ for $t\ge1$.
+The preceding window estimate applies to every term.
+
+Centered spatial Taylor expansion, first to order three and then to
+order two, gives
+\begin{align*}
+ A_i p_t&=p_t+\frac v2p_t''-\frac{\kappa_i}{6}p_t'''+r_{i,t},\\
+ A_i q_t&=q_t+\frac v2q_t''+s_{i,t},
+\end{align*}
+with $|r_{i,t}(x)|+|s_{i,t}(x)|\le Ct^{-2}E_0(z)$.
+Indeed the two integral remainders are bounded by
+$\E|X_i|^4/24$ and $\E|X_i|^3/6$ times the respective derivative
+suprema. The $C^2$ regularity and local absolute continuity of $B''$
+justify Taylor's formula across the switching points $\pm1$.
+Taking the minimum over $i$ is Lipschitz in the maximum norm, so
+\[
+ Tu_t=u_t+\frac v2u_t''+t^{-3/2}f(z)+O(t^{-2}E_0(z)).
+\]
+On the other hand, the corrector equation gives exactly
+\[
+ \partial_tu_t-\frac v2u_t''
+   =t^{-3/2}f(z)-\frac c{\sqrt v}t^{-2}B'(z).
+\]
+Time Taylor expansion on $[t,t+1]$ and the time-derivative estimate above yield
+\[
+ u_{t+1}=u_t+\frac v2u_t''+t^{-3/2}f(z)+O(t^{-2}E_0(z)).
+\]
+Subtracting proves the claim.
+\end{proof}
+
+Let $D_E=64^4e^{-63/16}$. Maximizing
+$(1+z^2)^4e^{-z^2/16}$ shows that it is at most $D_E$. Consequently,
+with $b_0=K_0D_E\sqrt{16\pi v}$,
+\begin{equation}\label{log:eq:gaussres}
+ |u_{t+1}-Tu_t|(x)\le b_0t^{-3/2}\gamma_{8t}(x-c\ln t).
+\end{equation}
+The mass of this majorant is summable over $t=T,T+1,\ldots$.
+The amplification lemma ensures that summability survives every remaining
+Bellman iteration.
+
+\subsection{Completion of the bounded-remainder proof}
+Fix any real $T\ge\max\{A,2\}$ once and for all, independently of $n$.
+The initial error has a Gaussian majorant
+\begin{equation}\label{log:eq:initial}
+ |H(x)-u_T(x)|\le b_1\gamma_{s_0}(x-c\ln T)
+\end{equation}
+for some finite $b_1$ and some $s_0\ge A$.
+To verify this, choose $s_0=8T$. On each sufficiently distant tail,
+$H-\Phi(z_T)$ is a Gaussian tail and $B(z_T)$ is bounded by a
+polynomial times $\phi(z_T)$. Dividing by the broader Gaussian
+$\gamma_{8T}(x-c\ln T)$ gives a bounded ratio tending to zero.
+On the remaining compact interval the numerator is bounded and
+the denominator has a positive minimum. The jump of $H$ at zero
+does not affect this pointwise bound.
+
+Using~\eqref{log:eq:lip} repeatedly, followed by~\eqref{log:eq:amp},
+\eqref{log:eq:gaussres}, and~\eqref{log:eq:initial}, gives
+\begin{align}
+ \norm{G_n-u_{T+n}}
+ &\le\int U^n|H-u_T|
+    +\sum_{j=0}^{n-1}\int U^{n-1-j}|u_{T+j+1}-Tu_{T+j}|\notag\\
+ &\le2b_1+2b_0\sum_{j=0}^{n-1}(T+j)^{-3/2}\notag\\
+ &\le2b_1+\frac{6b_0}{\sqrt T}=:K_1.\label{log:eq:bounded}
+\end{align}
+This is uniform in $n$. Moreover
+\[
+ \norm{u_t-\Phi(z_t)}=\sqrt v\norm B.
+\]
+Finally the Gaussians with means $c\ln(n+T)$ and $c\ln n$,
+and variances $v(n+T)$ and $vn$, can be coupled using the same
+standard normal variable. Their $W_1$ distance is at most
+\[
+ |c|\ln(1+T/n)
+ +\sqrt{2v/\pi}\,(\sqrt{n+T}-\sqrt n),
+\]
+which tends to zero and is bounded for $n\ge1$.
+The one-dimensional formula $W_1(\mu,\nu)=\int|F_\mu-F_\nu|$
+and~\eqref{log:eq:bounded} prove the first part of~\eqref{log:eq:main}.
+The difference of means is bounded by $W_1$, proving the second.
+This proves Theorem~\ref{log:thm:main}.\hfill$\square$
+
+
+
+\subsection{An explicit information pair}
+Take
+\[
+ P=(1/4,\underbrace{1/16,\ldots,1/16}_{12}),\qquad
+ Q=(\underbrace{1/8,\ldots,1/8}_{6},
+       \underbrace{1/32,\ldots,1/32}_{8}).
+\]
+For $P$, centered information is $-3/2$ with probability $1/4$ and
+$1/2$ with probability $3/4$. For $Q$, it is $-1/2$ with probability
+$3/4$ and $3/2$ with probability $1/4$. Direct calculation yields
+\[
+ h=7/2,\qquad v=3/4,\qquad \kappa_P=-3/4,\quad\kappa_Q=3/4.
+\]
+Therefore
+\[
+ \boxed{C_n=\frac72 n+\frac{2}{3\sqrt{2\pi e}}\ln n+O(1).}
+\]
+This is the optimum over all exact causal seeds, not the cost of a
+restricted block architecture. The coefficient is
+$0.161313816346\ldots$ bits per unit of $\ln n$.
+The example's dyadic structure is not used in proving this asymptotic.
+A separate dyadic refinement theorem in the repository additionally
+identifies $C_n=L_n$ at every horizon.
+
+\subsection{What bounded amplification resolves}
+A summable local residual alone would be insufficient if its propagation
+could grow with the remaining horizon. Lemma~\ref{log:lem:amp} controls
+precisely that growth on the Gaussian majorants produced by the corrector.
+A fixed starting time then suffices. No smoothness of the actual envelope
+$G_n$, nonlattice hypothesis, or prior logarithmic bound on its width is
+needed in this proof. In particular, when the third moments all agree,
+$c=0$ and the same argument proves bounded excess directly.
+
+\section{Formalization, reproducibility, and scope}\label{sec:formal}
+The formal development is available at
+\begin{center}\url{https://github.com/jendamikulik/finite-Shannon-theorem}.\end{center}
+The revision used for this paper is
+\begin{center}\texttt{5741ee193bd5ff7f4addd4c09b2d65edfe238c20}.\end{center}
+It pins Lean \texttt{4.35.0-rc3} and Mathlib revision
+\path{7d6757bc18680044fc0ff6efc8ee20494b408556}.
+The import root is \path{CausalSeed/Main.lean}. The repository supplies the
+commands
+\begin{verbatim}
+lake build
+lake env lean scripts/AxiomAudit.lean
+\end{verbatim}
+for compilation and enumeration of theorem dependencies.
+The recorded \path{AXIOMS.txt} lists 2528 project theorems; all recorded
+dependencies are among \texttt{propext}, \texttt{Classical.choice}, and
+\texttt{Quot.sound}, and seven theorems use none. It reports no nonstandard
+axioms and no project axiom declarations. The audit includes
+\path{Kernel.cost_bounded} and \path{LogGauss.bounded_L1}.
+These are the recorded results for the cited revision, not a report of a
+new build performed while typesetting this manuscript.
+
+\subsection{Statement-to-source map}
+All names below lie under \path{CausalSpectrum}. Paths are relative to
+\path{CausalSeed/}. Names are provided instead of unstable line numbers.
+\begingroup\small
+\begin{longtable}{p{0.26\textwidth}p{0.68\textwidth}}
+\toprule
+Mathematical statement & Module and principal declaration \\
+\midrule\endhead
+Finite Shannon bound & \path{Entropy.lean}: \path{one_seed_shannon}, \path{causal_realization} \\[3pt]
+Information converse & \path{Penalty.lean}: \path{entropy_ge_envelope}; \path{Entropy.lean}: \path{seedCDF_le_Fstar} \\[3pt]
+CDF/transport identity & \path{GapW1.lean}: \path{wasserstein_gap_W1}; \path{Wasserstein.lean}: \path{OT.W1_eq_cdfDist} \\[3pt]
+Projective identity & \path{EntropyLimit.lean}: \path{Completion.projective_entropy_identity}, \path{Completion.entropy_attained} \\[3pt]
+Infinite sandwich & \path{InfiniteEnvelope.lean}: \path{Completion.infinite_envelope_sandwich} \\[3pt]
+Atomic capacity & \path{AtomicCapacity.lean}: \path{Completion.causal_atomic_capacity_attained}, \path{Completion.countable_seed_iff_atomQ_one} \\[3pt]
+Capacity from the envelope & \path{AtomicSpectrum.lean}: \path{atomQ_eq_lim_FInf} \\[3pt]
+Simultaneous R\'enyi bound & \path{RenyiLimitMeasure.lean}: \path{RenyiInf.one_seed_all_orders_meas} \\[3pt]
+Zero branches & \path{ZeroClosure.lean}; \path{ZeroBranchTransfer.lean}; \path{ZeroBranchOrdinary.lean} \\[3pt]
+Square-root asymptotic & \path{SqrtGeneral.lean}: \path{Kernel.cost_tendsto}; \path{SqrtMain.lean}: \path{Kernel.cost_rate} \\[3pt]
+Universality & \path{SqrtW1.lean}: \path{Kernel.universality_W1} \\[3pt]
+Corrector and residual & \path{LogCorrector.lean}: \path{LogGauss.cB_ode}; \path{LogResidual.lean}: \path{LogGauss.residual_pointwise} \\[3pt]
+Gaussian amplification & \path{LogBounded.lean}: \path{LogGauss.amp_bounded} \\[3pt]
+Bounded logarithmic remainder & \path{LogBounded.lean}: \path{LogGauss.bounded_L1}, \path{LogGauss.bounded_mean}, \path{Kernel.cost_bounded} \\[3pt]
+Explicit dyadic pair & \path{LogBounded.lean}: \path{Kernel.LogPair.cost_bounded} \\
+\bottomrule
+\end{longtable}\endgroup
+
+\subsection{Definitions and the verification boundary}
+The finite objects \path{Tree}, \path{Policy}, \path{Strategy},
+\path{run}, and \path{leafMass} are defined in \path{Spectrum.lean}.
+The functions \path{Fstar} and \path{envelopeMean} in \path{Entropy.lean}
+represent the information envelope and its mean. The infinite model uses
+\path{ITree}, \path{Completion.CountableSeed}, and its predicates
+\path{ExactTo} and \path{Exact}. Ranking and finite restriction are
+connected to arbitrary countable seed alphabets by the bridge modules.
+The infinite implementation uses extended entropy in nats;
+\path{Kernel.costBits} and the envelope bridges convert to bits.
+
+An axiom audit checks logical dependencies of the formal statements.
+Reading the definitions and their hypotheses is still necessary to assess
+whether those statements express the intended simulation problem. In
+particular, the minimum over transcript CDFs is taken pointwise; it is
+not assumed to be the law of one policy. The fixed-kernel constants in
+Section~\ref{sec:log} are existential and need not be uniform as the
+variance or the kernel varies. Formal verification does not establish
+historical priority or numerical practicality.
+
+\subsection{Open questions}
+The bounded logarithmic remainder need not be treated as a convergent
+constant. This paper proves neither convergence of $C_n-nh-c\ln n$ nor
+an expansion for its successive differences. Even if the envelope mean
+has a limiting constant, the bounded entropy gap must still be controlled
+to transfer such a limit to $C_n$.
+
+Other questions in the accompanying development include the optimal
+universal additive constants and the exact supremum $G_*$ of the causal
+minus ordinary Shannon optimum. Its recorded bounds are
+$2/9\le G_*\le c_\star$; the endpoint behavior of exact penalties at
+$G_*$ is separate from the asymptotic theorem here. For unequal action
+entropies, an $O(\ln n)$ comparison with the maximal-entropy subfamily
+does not transfer a logarithmic coefficient. We therefore impose common
+entropy throughout the sharp logarithmic theorem.
+
+\paragraph{Acknowledgment of assistance.}
+AI systems, including ChatGPT and Grok, were used during the development
+of mathematical arguments, code, formalization, and exposition. The cited
+source revision and the explicit statements above delimit the mathematical
+claims; the use of these systems is not evidence of their correctness.
+
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{compton}
+S. Compton, D. Katz, B. Qi, K. Greenewald, and M. Kocaoglu.
+Minimum-Entropy Coupling Approximation Guarantees Beyond the Majorization
+Barrier. In \emph{Proceedings of AISTATS}, PMLR \textbf{206},
+10445--10469, 2023.
+\url{https://proceedings.mlr.press/v206/compton23a.html}.
+
+\bibitem{shkel}
+Y. Y. Shkel and A. K. Yadav.
+\emph{Information Spectrum Converse for Minimum Entropy Couplings and
+Functional Representations}. 2023 IEEE International Symposium on
+Information Theory; preprint arXiv:2305.05745.
+\url{https://arxiv.org/abs/2305.05745}.
+
+\bibitem{li}
+C. T. Li. Efficient Approximate Minimum Entropy Coupling of Multiple
+Probability Distributions. \emph{IEEE Transactions on Information Theory}
+\textbf{67}(8), 5259--5268, 2021.
+\href{https://doi.org/10.1109/TIT.2021.3076986}{doi:10.1109/TIT.2021.3076986}.
+
+\bibitem{ptas}
+S. Compton. \emph{Efficient $\varepsilon$-approximate minimum-entropy
+couplings}. Preprint arXiv:2509.19598, 2025.
+\url{https://arxiv.org/abs/2509.19598}.
+
+\bibitem{peng}
+S. Peng. \emph{A New Central Limit Theorem under Sublinear Expectations}.
+Preprint arXiv:0803.2656, 2008.
+\url{https://arxiv.org/abs/0803.2656}.
+
+\bibitem{pz}
+S. Peng and Q. Zhou. \emph{A hypothesis-testing perspective on the
+$G$-normal distribution theory}. Preprint arXiv:1909.03530, 2019.
+\url{https://arxiv.org/abs/1909.03530}.
+
+\bibitem{fang}
+X. Fang, S. Peng, Q.-M. Shao, and Y. Song.
+\emph{Limit theorems with rate of convergence under sublinear expectations}.
+Preprint arXiv:1711.10649, 2017, revised 2018.
+\url{https://arxiv.org/abs/1711.10649}.
+
+\bibitem{repo}
+J. Mikul\'ik. \emph{Finite Shannon theorem}. Lean source repository,
+revision \texttt{5741ee193bd5ff7f4addd4c09b2d65edfe238c20}, 12 October 2026.
+\url{https://github.com/jendamikulik/finite-Shannon-theorem/tree/5741ee193bd5ff7f4addd4c09b2d65edfe238c20}.
+\end{thebibliography}
+\end{document}

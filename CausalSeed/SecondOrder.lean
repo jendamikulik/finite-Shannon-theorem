@@ -1,17 +1,13 @@
 /-
-Second order of Theorem 1 in the 5 October 2026 note.
+Gaussian integrals for the second-order term.
 
-Proved here, with no `sorry`:
 * `∫_{0}^{∞} x exp(-x²/2) dx = 1`
 * `∫_{0}^{∞} ∫_{t}^{∞} exp(-x²/2) dx dt = 1`
-* the mean of profile (13) is `√(2/π) (a - b)`, for `0 < b` and for `b = 0 < a`
-* an additive gap of at most `c⋆` does not change a `√n` coefficient.
-  This is the last step of the proof of Theorem 1: once the envelope mean
-  has that second order, so does every seed between the envelope and the
-  envelope plus `c⋆`, in particular the greedy seed
+* the mean of the profile `F_{a,b}` is `√(2/π) (a - b)`, for `0 < b` and for `b = 0 < a`
+* an additive gap of at most `c⋆` does not change a `√n` coefficient, so every
+  seed between the envelope and the envelope plus `c⋆` has the same second order.
 
-Not proved here: `Gₙ(x√n) → F(x)`, dominated convergence of the means, and
-the Fan–Grama–Liu logarithm.
+The convergence `Gₙ(x√n) → F(x)` is proved in `SqrtGeneral`.
 -/
 import CausalSeed.Note
 import Mathlib.Analysis.Calculus.MeanValue

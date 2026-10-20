@@ -1,10 +1,8 @@
 /-
 The finite-tree consequences that sit directly on `one_seed_shannon`.
 
-This is the 1:1 transfer of the distributional comparison, the Wasserstein
-identity, and exact min-entropy from `causal_spectrum.pdf` (5 October 2026),
-Lemma 8 and Theorem 5. The square-root asymptotic, the logarithmic regime,
-and the crash-pair certificate are not in this file.
+The distributional comparison, the Wasserstein identity, and exact
+min-entropy (see `causal_spectrum.pdf`).
 
 `W₁` is the one-dimensional identity used in the note:
 `∫ |F - G| =` the entropy gap, once `seedCDF ≤ F⋆`.

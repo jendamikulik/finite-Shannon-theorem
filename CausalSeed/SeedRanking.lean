@@ -365,5 +365,61 @@ theorem infiniteCost_eq_countable (ι : ITree) :
 #print axioms finiteCost_eq_countable
 #print axioms infiniteCost_eq_countable
 
+
+/-! ## Compatibility names (`Seed` API used by the downstream modules) -/
+
+abbrev Seed (ι : ITree) := CountableSeed ι
+
+namespace Seed
+variable {ι : ITree}
+abbrev entropy (S : Seed ι) : ℝ≥0∞ := CountableSeed.entropy S
+abbrev hit (S : Seed ι) (h : List (ℕ × ℕ)) (i : ℕ) : ℝ := CountableSeed.hit S h i
+abbrev ExactTo (S : Seed ι) (n : ℕ) : Prop := CountableSeed.ExactTo S n
+abbrev Exact (S : Seed ι) : Prop := CountableSeed.Exact S
+abbrev ranked (S : Seed ι) : RankedSeed ι := CountableSeed.ranked S
+theorem ranked_entropy (S : Seed ι) : S.ranked.entropy = S.entropy :=
+  CountableSeed.ranked_entropy S
+theorem ranked_hit (S : Seed ι) (h) : ∑' i, S.ranked.hit h i = ∑' i, S.hit h i :=
+  CountableSeed.ranked_hit S h
+theorem ranked_exactTo (S : Seed ι) (n) : S.ranked.ExactTo n ↔ S.ExactTo n :=
+  CountableSeed.ranked_exactTo_iff S n
+theorem ranked_exact (S : Seed ι) : S.ranked.Exact ↔ S.Exact :=
+  CountableSeed.ranked_exact_iff S
+end Seed
+
+def RankedSeed.forget {ι : ITree} (S : RankedSeed ι) : Seed ι := S.toCountable
+
+theorem RankedSeed.forget_entropy {ι : ITree} (S : RankedSeed ι) :
+    S.forget.entropy = S.entropy := S.toCountable_entropy
+
+def countableFiniteCost (ι : ITree) (n : ℕ) : ℝ≥0∞ :=
+  ⨅ S : {S : Seed ι // S.ExactTo n}, S.val.entropy
+
+def countableInfiniteCost (ι : ITree) : ℝ≥0∞ :=
+  ⨅ S : {S : Seed ι // S.Exact}, S.val.entropy
+
+theorem countableFiniteCost_eq (ι : ITree) (n : ℕ) :
+    countableFiniteCost ι n = finiteCost ι n :=
+  (finiteCost_eq_countable ι n).symm
+
+theorem countableInfiniteCost_eq (ι : ITree) :
+    countableInfiniteCost ι = infiniteCost ι :=
+  (infiniteCost_eq_countable ι).symm
+
+theorem countable_projective_entropy_identity (ι : ITree) :
+    countableInfiniteCost ι = ⨆ n, countableFiniteCost ι n := by
+  simp only [countableInfiniteCost_eq, countableFiniteCost_eq,
+    projective_entropy_identity]
+
+theorem countable_entropy_attained (ι : ITree)
+    (h : (⨆ n, countableFiniteCost ι n) ≠ ∞) :
+    ∃ S : Seed ι, S.Exact ∧ S.entropy = countableInfiniteCost ι := by
+  simp only [countableFiniteCost_eq] at h
+  obtain ⟨S, hex, he⟩ := entropy_attained ι h
+  refine ⟨S.forget, hex, ?_⟩
+  rw [S.forget_entropy, he, countableInfiniteCost_eq, projective_entropy_identity]
+
+#print axioms countable_entropy_attained
+
 end CausalSpectrum.Completion
 end

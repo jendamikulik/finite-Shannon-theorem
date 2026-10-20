@@ -1,1 +1,5 @@
 import CausalSeed.Main
+import CausalSeed.Vanishing
+import CausalSeed.VanishingEmbed
+import CausalSeed.VanishingClose
+import CausalSeed.VanishingLastEvent

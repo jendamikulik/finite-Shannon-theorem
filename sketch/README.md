@@ -9,7 +9,7 @@ Pořád nejsou součást knihovny `CausalSeed`, nejsou importované z `Main.lean
 - `sketch/QuestionsStructure.lean` — elementární kostra poznámky o otázkách a kauzální simulaci.
 - `sketch/RelativeRest.lean` — relativní klid. Věta 1 (přesná redukce), tři významy klidu, Věta 2, živá skrytá souřadnice, Věta 3, krabice `F`/`R`, nosičový skok ceny a nosičová forma výběru.
 
-Není tam Shannonova entropie, stochastická lumpabilita ani `Cₓ` jako entropické infimum.
+Není tam Shannonova entropie, stochastická lumpabilita ani `Cₙ` jako entropické infimum.
 
 ## Popisek
 

@@ -7,7 +7,7 @@ characterization of observable rest (Věta 2), a live hidden coordinate
 (oddíl 4), monotonicity under more interventions (Věta 3), and the
 box that is frozen for `F` and separated by `R`. The support forms of
 the seed-cost jump and of target selection are included. Shannon
-entropy, stochastic lumpability and `Cₓ` as an entropy infimum are not.
+entropy, stochastic lumpability and `Cₙ` as an entropy infimum are not.
 
 Checked by `lake env lean sketch/RelativeRest.lean` on
 `leanprover/lean4:v4.35.0-rc3`. Not part of `CausalSeed`.

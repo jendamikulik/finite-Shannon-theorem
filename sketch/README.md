@@ -1,12 +1,8 @@
 # Náčrt: otázky, struktura, kauzální simulace
 
-Stav: **neověřený náčrt**. Není součástí knihovny `CausalSeed`, není importovaný z `Main.lean` a nebyl tu spuštěný `lake build`. Certifikát z toho bude až po úspěšném
+Stav: **`lake env lean sketch/QuestionsStructure.lean` prošel** na `leanprover/lean4:v4.35.0-rc3` s mathlibem `7d6757bc18680044fc0ff6efc8ee20494b408556`.
 
-```sh
-lake env lean sketch/QuestionsStructure.lean
-```
-
-na `leanprover/lean4:v4.35.0-rc3` s připnutým mathlibem.
+Pořád není součást knihovny `CausalSeed`, není importovaný z `Main.lean` a není to rozšíření certifikátu o ceně semínka.
 
 Zdroj: [`questions_structure_causal_simulation.pdf`](../questions_structure_causal_simulation.pdf).
 

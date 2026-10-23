@@ -22,7 +22,6 @@ namespace QuestionsStructure
 
 /-! ## Observable quotient -/
 
-/-- `A x = A y`. -/
 def Obs.setoid {Ω α : Type*} (A : Ω → α) : Setoid Ω where
   r x y := A x = A y
   iseqv := {
@@ -31,7 +30,6 @@ def Obs.setoid {Ω α : Type*} (A : Ω → α) : Setoid Ω where
     trans := fun h1 h2 => h1.trans h2
   }
 
-/-- The class-to-response map of Theorem 2.1. -/
 def Obs.factor {Ω α : Type*} (A : Ω → α) : Quotient (Obs.setoid A) → α :=
   Quotient.lift A (fun _ _ h => h)
 
@@ -46,16 +44,19 @@ theorem Obs.factor_injective {Ω α : Type*} (A : Ω → α) :
   | mk x =>
     induction q2 using Quotient.ind with
     | mk y =>
-      exact Quotient.sound (by simpa [Obs.factor] using h)
+      apply Quotient.sound
+      have hxy :
+          Obs.factor A (Quotient.mk (Obs.setoid A) x) =
+            Obs.factor A (Quotient.mk (Obs.setoid A) y) := h
+      rw [Obs.factor_mk, Obs.factor_mk] at hxy
+      exact hxy
 
-/-- A map constant on response classes factors through the quotient. -/
 theorem Obs.factorsThrough {Ω α β : Type*} (A : Ω → α) (f : Ω → β)
     (h : ∀ x y, A x = A y → f x = f y) :
     ∃ fbar : Quotient (Obs.setoid A) → β,
       ∀ x, fbar (Quotient.mk (Obs.setoid A) x) = f x := by
   refine ⟨Quotient.lift f (fun x y hxy => h x y hxy), fun _ => rfl⟩
 
-/-- More questions give a finer quotient and a surjection onto the coarser one. -/
 theorem Obs.refines {Ω α β : Type*} (A : Ω → α) (B : Ω → β)
     (h : ∀ x y, B x = B y → A x = A y) :
     ∃ ρ : Quotient (Obs.setoid B) → Quotient (Obs.setoid A),
@@ -80,7 +81,6 @@ instance piEmpty_subsingleton {Y : Empty → Type*} :
     Subsingleton ((i : Empty) → Y i) :=
   ⟨fun f g => funext fun i => i.elim⟩
 
-/-- No questions: a nonempty carrier has one class, not zero states. -/
 theorem Obs.emptyQuestions_oneClass {Ω : Type*} {Y : Empty → Type*} [Nonempty Ω]
     (A : Ω → ((i : Empty) → Y i)) :
     ∃ q : Quotient (Obs.setoid A), ∀ q', q' = q := by
@@ -91,7 +91,6 @@ theorem Obs.emptyQuestions_oneClass {Ω : Type*} {Y : Empty → Type*} [Nonempty
   | mk x =>
     exact (Quotient.sound (Subsingleton.elim (A x) (A x0))).symm
 
-/-- A longer answer list implies the tail constraint. -/
 def agrees {Ω α : Type*} : List (Ω → α) → List α → Ω → Prop
   | [], [], _ => True
   | q :: qs, y :: ys, x => q x = y ∧ agrees qs ys x
@@ -105,12 +104,10 @@ theorem agrees_tail {Ω α : Type*} (q : Ω → α) (qs : List (Ω → α))
 
 /-! ## Future questions -/
 
-/-- Apply a word of actions, head first. -/
 def wordStep {S A : Type*} (step : A → S → S) : List A → S → S
   | [], s => s
   | a :: w, s => wordStep step w (step a s)
 
-/-- Equality of responses to words of length at most `k`. -/
 def relK {S A Y : Type*} (o : S → Y) (step : A → S → S) : Nat → S → S → Prop
   | 0, x, x' => o x = o x'
   | k + 1, x, x' =>
@@ -127,7 +124,7 @@ theorem words_of_relK {S A Y : Type*} (o : S → Y) (step : A → S → S) :
     ∀ k x x', relK o step k x x' →
       ∀ w, w.length ≤ k → o (wordStep step w x) = o (wordStep step w x')
   | 0, x, x', h, [], _ => h
-  | 0, _, _, _, _ :: _, hw => by simp at hw
+  | 0, _, _, _, _ :: _, hw => by omega
   | k + 1, x, x', h, [], _ => relK_zero o step (k + 1) x x' h
   | k + 1, x, x', h, a :: w, hw =>
       words_of_relK o step k (step a x) (step a x') (h.2 a) w
@@ -137,7 +134,7 @@ theorem relK_of_words {S A Y : Type*} (o : S → Y) (step : A → S → S) :
     ∀ k x x',
       (∀ w, w.length ≤ k → o (wordStep step w x) = o (wordStep step w x')) →
         relK o step k x x'
-  | 0, x, x', h => h [] (Nat.zero_le _)
+  | 0, _, _, h => h [] (Nat.zero_le _)
   | k + 1, x, x', h => by
       constructor
       · exact relK_of_words o step k x x'
@@ -147,7 +144,6 @@ theorem relK_of_words {S A Y : Type*} (o : S → Y) (step : A → S → S) :
         intro w hw
         exact h (a :: w) (Nat.succ_le_succ hw)
 
-/-- Future observation profile. -/
 def behSetoid {S A Y : Type*} (o : S → Y) (step : A → S → S) : Setoid S where
   r x y := ∀ w, o (wordStep step w x) = o (wordStep step w y)
   iseqv := {
@@ -156,7 +152,6 @@ def behSetoid {S A Y : Type*} (o : S → Y) (step : A → S → S) : Setoid S wh
     trans := fun h1 h2 w => (h1 w).trans (h2 w)
   }
 
-/-- A transition congruence in the sense of Theorem 3.1. -/
 structure DynCong {S A Y : Type*} (o : S → Y) (step : A → S → S) where
   r : S → S → Prop
   refl : ∀ x, r x x
@@ -223,7 +218,6 @@ inductive Three where
   | two
   deriving DecidableEq
 
-/-- Example 3.3: equal present responses, unequal next responses. -/
 def obs3 : Three → Bool
   | .zero => false
   | .one => false
@@ -266,13 +260,12 @@ theorem universal_reachability_const {S A V : Type*}
     I x = I y :=
   reaches_preserves_invariant hI (hreach x y)
 
-/-- Remark 5.3: only constant invariants, but `true` cannot reach `false`. -/
 def stepStuck : Unit → Bool → Bool := fun _ _ => true
 
 theorem word_stuck_true (w : List Unit) : wordStep stepStuck w true = true := by
   induction w with
   | nil => rfl
-  | succ a w ih =>
+  | cons a w ih =>
     rw [show wordStep stepStuck (a :: w) true =
         wordStep stepStuck w (stepStuck a true) from rfl, stepStuck, ih]
 
@@ -290,8 +283,6 @@ theorem stuck_not_universal : ¬ Reaches stepStuck true false := by
 
 /-! ## Selection, support bound -/
 
-/-- Exact selection of every target in `Fin n` needs at least `n` controls.
-This is the support half of Theorem 6.1, not the entropy inequality. -/
 theorem selection_support {k n : Nat} (f : Fin k → Fin n)
     (hf : Function.Surjective f) : n ≤ k := by
   simpa using Fintype.card_le_of_surjective f hf
@@ -306,11 +297,15 @@ theorem empty_fun_image_empty {S : Type*} (f : Empty → S) (s : S) :
   intro ⟨i, _⟩
   exact i.elim
 
-def unitArrow {α : Type*} : (Unit → α) ≃ α where
-  toFun f := f ()
-  invFun s := fun _ => s
-  left_inv f := funext fun u => by cases u; rfl
-  right_inv _ := rfl
+def fromUnit {α : Type*} (f : Unit → α) : α := f ()
+
+def toUnit {α : Type*} (s : α) : Unit → α := fun _ => s
+
+theorem unit_left {α : Type*} (f : Unit → α) : toUnit (fromUnit f) = f :=
+  funext fun u => by cases u; rfl
+
+theorem unit_right {α : Type*} (s : α) : fromUnit (toUnit s) = s :=
+  rfl
 
 def swap2 : Fin 2 → Fin 2
   | 0 => 1
@@ -340,15 +335,10 @@ theorem swap2_surjective : Function.Surjective swap2 :=
   fun i => ⟨swap2 i, swap2_swap2 i⟩
 
 theorem swap2_ne (i : Fin 2) : swap2 i ≠ i := by
-  intro h
   rcases fin2_eq i with rfl | rfl
-  · have hv := congrArg Fin.val h
-    simp [swap2] at hv
-  · have hv := congrArg Fin.val h
-    simp [swap2] at hv
+  · decide
+  · decide
 
-/-- Theorem 7.2 on a two-element set: a point fixed by every bijection
-does not exist. -/
 theorem no_bijection_fixed_point :
     ¬ ∃ c : Fin 2, ∀ f : Fin 2 → Fin 2,
       Function.Injective f → Function.Surjective f → f c = c := by
@@ -357,7 +347,6 @@ theorem no_bijection_fixed_point :
 
 /-! ## Generation -/
 
-/-- Iterate `R` from the empty set. -/
 def grow {S : Type*} (R : S → S → Prop) : Nat → S → Prop
   | 0, _ => False
   | n + 1, y => grow R n y ∨ ∃ x, grow R n x ∧ R x y
@@ -392,8 +381,6 @@ def extStep {S E A : Type*} (step : A → S → S) (G : A → S → E → E) :
 def extObs {S E Y : Type*} (o : S → Y) : S × E → Y :=
   fun p => o p.1
 
-/-- An observation-based policy. The argument is the observation history
-collected so far, oldest first, including the observation just read. -/
 def run {S A Y : Type*} (step : A → S → S) (o : S → Y) (π : List Y → A) :
     Nat → S → List Y → List Y
   | 0, _, hist => hist
@@ -414,10 +401,12 @@ theorem hidden_run {S E A Y : Type*} (step : A → S → S) (G : A → S → E �
   | succ n ih =>
     intro s e hist
     rw [run, run]
-    have hG : extStep step G (π (hist ++ [o s])) (s, e) =
+    have hobs : extObs o (s, e) = o s := rfl
+    rw [hobs]
+    have hstep : extStep step G (π (hist ++ [o s])) (s, e) =
         (step (π (hist ++ [o s])) s, G (π (hist ++ [o s])) s e) := rfl
-    rw [hG]
-    exact ih (step (π (hist ++ [extObs o (s, e)])) s)
-      (G (π (hist ++ [o s])) s e) (hist ++ [extObs o (s, e)])
+    rw [hstep]
+    exact ih (step (π (hist ++ [o s])) s)
+      (G (π (hist ++ [o s])) s e) (hist ++ [o s])
 
 end QuestionsStructure

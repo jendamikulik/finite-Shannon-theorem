@@ -1336,6 +1336,21 @@ of the contraction bound in the closure note. It is not a quantum instrument,
 not atomic capacity of an infinite-path law, not Borel--Cantelli, and not a
 theorem that a finite prefix cannot identify infinite atomic capacity.
 
+**Theorem 59 (exact decoding and one invariant orbit).** Let $`D_{\#}\mu=P`$.
+For every measurable event $`B`$,
+
+```math
+\mu(D^{-1}(B))=P(B).
+```
+
+If $`P(B)>0`$, every exact decoder charges $`B`$. Two seeds with the same
+pushforward charge every event equally; a one-point seed and a fair bit, both
+decoded to a single outcome, are an instance. If $`x_0\in A`$, $`F(A)\subseteq A`$
+and $`A\cap B=\emptyset`$, then $`F^n(x_0)\notin B`$ for every $`n\ge 0`$.
+Exact decoding does not imply that orbit statement, and one missed orbit does
+not set the mass of the missed event to zero. Neither statement is a theorem
+about human invulnerability.
+
 [`Vanishing.LastEvent.last_event_entropy_bounds`](CausalSeed/VanishingBridge.lean)
 and [`Vanishing.Approximation.uniform_policy_event_bound`](CausalSeed/VanishingBridge.lean)
 are finite interfaces for the wholeness and approximation notes: the last-success
@@ -1361,6 +1376,13 @@ Lean:
 - [`ClosureScale.record_cylinder_le_exp`](CausalSeed/ClosureScale.lean)
 - [`ClosureScale.contraction_iterate`](CausalSeed/ClosureScale.lean)
 - [`ClosureScale.uniform_contraction`](CausalSeed/ClosureScale.lean)
+- [`EventFidelity.event_preserved`](CausalSeed/EventFidelity.lean)
+- [`EventFidelity.positive_not_eliminated`](CausalSeed/EventFidelity.lean)
+- [`EventFidelity.seed_change_preserves`](CausalSeed/EventFidelity.lean)
+- [`EventFidelity.dirac_and_fair_agree`](CausalSeed/EventFidelity.lean)
+- [`EventFidelity.unreachable_of_invariant`](CausalSeed/EventFidelity.lean)
+- [`EventFidelity.exactness_does_not_give_unreachability`](CausalSeed/EventFidelity.lean)
+- [`EventFidelity.missed_orbit_does_not_zero_mass`](CausalSeed/EventFidelity.lean)
 
 Not formalized, in addition to the list at the end of Section XI: the sharp
 coefficient $`(1-4\varepsilon)\log_2\log_2 m`$, a matching local upper bound for
@@ -1371,6 +1393,8 @@ $`0\le R\le 1-a`$, $`C_{\mathrm{app}}(\varepsilon)=\log_2(1/\varepsilon)+O(1)`$,
 the total-variation distance of $`Q_v`$ from the local set, and the realization
 $`\mathrm{atomQ}=a`$, $`C_n\sim f(n)`$. Theorem 58 does not include a quantum
 instrument, atomic capacity of an infinite-path law, or Borel--Cantelli.
+Theorem 59 is the pushforward identity and one invariant orbit. It is not a
+theorem about human invulnerability.
 
 ## Verification
 
@@ -1384,7 +1408,8 @@ The development is the import closure of
 [`CausalSeed/LocalSeparation.lean`](CausalSeed/LocalSeparation.lean),
 [`CausalSeed/CapacityScale.lean`](CausalSeed/CapacityScale.lean),
 [`CausalSeed/LinearLocal.lean`](CausalSeed/LinearLocal.lean) and
-[`CausalSeed/ClosureScale.lean`](CausalSeed/ClosureScale.lean),
+[`CausalSeed/ClosureScale.lean`](CausalSeed/ClosureScale.lean) and
+[`CausalSeed/EventFidelity.lean`](CausalSeed/EventFidelity.lean),
 imported by [`CausalSeed.lean`](CausalSeed.lean) and not by `Main`. Pinned toolchain:
 
 - Lean `4.35.0-rc3` ([`lean-toolchain`](lean-toolchain))
@@ -1560,6 +1585,9 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 - `ClosureScale`: the finite record entropy $`1+\sum h_2(p_t)`$, the cylinder
   bound, and the scalar contraction (Theorem 58). Not a quantum instrument, and
   not atomic capacity of an infinite-path law.
+- `EventFidelity`: exact decoding preserves event probabilities, and an
+  invariant set keeps its orbit out of a disjoint set (Theorem 59). Not human
+  invulnerability. The two statements do not imply each other.
 
 **Mathematical expositions** (LaTeX/PDF at the repository root)
 - `bellman_square_root`: the square-root asymptotic.
@@ -1590,6 +1618,11 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
   Theorem 48, whose entropy is $`h_2(p)+2p`$. The perturbation, preservation of
   atomic mass, and the uniform-positivity lower bound $`nh_{\min}`$ are not
   Lean theorems.
+- `questions_structure_causal_simulation.pdf`: not formalized. Observable
+  quotients, behavioral reduction, lumpability, the selection bound
+  $`\log_2 N`$, empty inputs, and hidden extensions are not Lean theorems.
+  Theorem 59 is the separate pushforward identity and one invariant orbit,
+  not this note.
 - The sharp locality coefficient $`(1-4\varepsilon)\log_2\log_2 m`$ is not formalized.
 
 ## Scope and open problems
@@ -1622,6 +1655,8 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
   Theorem 57 is the exact linear-form cost for $`m=2^k-1`$, not a Hadamard
   equivalence. Theorem 58 is the finite record identity and the scalar
   contraction, not a quantum instrument and not an infinite-path capacity.
+  Theorem 59 is the pushforward identity and one invariant orbit, not a
+  statement about human invulnerability.
   A countable seed when $`\sum p`$ converges,
   and finite entropy when $`\sum h_2`$ converges, are not formalized.
 

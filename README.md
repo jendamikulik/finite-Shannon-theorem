@@ -1389,6 +1389,28 @@ Theorem 60 does not include an adaptive transcript law for a lumpable
 stochastic kernel, agreement of one-seed costs, countable-seed existence,
 atomic capacity, or Fano's inequality. It is not claimed to be new.
 
+**Theorem 61 (observable identity and exact simulation).** The complete
+response profile of a state is exactly the relation used to form the behavioral
+quotient already constructed in Theorem 60. The quotient observation and
+transitions are well-defined, and every adaptive policy produces the same
+transcripts on the quotient as on the original system. An arbitrary hidden
+extension (extra internal coordinate with arbitrary dynamics) produces exactly
+the same observation transcripts. Exact deterministic decoding preserves the
+probability of every measurable event (the pushforward identity of Theorem 59).
+An invariant region disjoint from a forbidden set is never entered by any finite
+action sequence; exact decoding does not by itself yield that statement.
+A property of states factors through the response profile if and only if it is
+constant on the fibers of the profile. The Gaussian fixed-point statement of
+the accompanying note is recorded but not re-proved (Schwartz-space Fourier
+analysis is not imported). The infinite-information remark (a uniform seed on
+$[0,1)$ can encode infinitely many independent fair bits) is not a finite
+discrete Shannon-entropy statement and is not formalized.
+
+Theorem 61 does not establish consciousness transfer, an afterlife, or human
+invulnerability. It is a synthesis of the constructions already present in
+Theorems 59 and 60, together with the fiber-constancy criterion for
+identifiability.
+
 [`Vanishing.LastEvent.last_event_entropy_bounds`](CausalSeed/VanishingBridge.lean)
 and [`Vanishing.Approximation.uniform_policy_event_bound`](CausalSeed/VanishingBridge.lean)
 are finite interfaces for the wholeness and approximation notes: the last-success
@@ -1437,6 +1459,13 @@ Lean:
 - [`QuestionStructure.no_perm_invariant_nat`](CausalSeed/QuestionStructure.lean)
 - [`QuestionStructure.product_marginal`](CausalSeed/QuestionStructure.lean)
 - [`QuestionStructure.hidden_extension_transcript`](CausalSeed/QuestionStructure.lean)
+- [`ObservableIdentity.quotient_preserves_transcripts`](CausalSeed/ObservableIdentity.lean)
+- [`ObservableIdentity.hidden_extension_same_transcripts`](CausalSeed/ObservableIdentity.lean)
+- [`ObservableIdentity.event_preservation`](CausalSeed/ObservableIdentity.lean)
+- [`ObservableIdentity.invariant_region_criterion`](CausalSeed/ObservableIdentity.lean)
+- [`ObservableIdentity.exactness_does_not_imply_invariance`](CausalSeed/ObservableIdentity.lean)
+- [`ObservableIdentity.property_factors_implies_constant`](CausalSeed/ObservableIdentity.lean)
+- [`ObservableIdentity.underdetermination`](CausalSeed/ObservableIdentity.lean)
 
 Not formalized, in addition to the list at the end of Section XI: the sharp
 coefficient $`(1-4\varepsilon)\log_2\log_2 m`$, a matching local upper bound for
@@ -1727,7 +1756,11 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
   statement about human invulnerability. Theorem 60 is the deterministic
   quotient, the finite selection bound $`n\le K`$, and the symmetry facts in
   the questions note. It is not Fano's inequality and not a lumpable
-  stochastic transcript law.
+  stochastic transcript law. Theorem 61 is the synthesis of observable identity,
+  event preservation, the invariant-region criterion, and the fiber-constancy
+  criterion for property identifiability. It is not a claim about consciousness
+  transfer, an afterlife, or human invulnerability, and it does not re-prove the
+  Gaussian Fourier fixed point.
   A countable seed when $`\sum p`$ converges,
   and finite entropy when $`\sum h_2`$ converges, are not formalized.
 

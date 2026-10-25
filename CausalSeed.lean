@@ -9,3 +9,4 @@ import CausalSeed.CapacityScale
 import CausalSeed.LinearLocal
 import CausalSeed.ClosureScale
 import CausalSeed.EventFidelity
+import CausalSeed.QuestionStructure

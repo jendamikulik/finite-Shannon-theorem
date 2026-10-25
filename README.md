@@ -1351,6 +1351,44 @@ Exact decoding does not imply that orbit statement, and one missed orbit does
 not set the mass of the missed event to zero. Neither statement is a theorem
 about human invulnerability.
 
+**Theorem 60 (questions, structure, and finite selection).** A response map
+factors uniquely through the quotient by equal answers. A smaller question set
+induces a surjection on classes, and no questions at all give one class on a
+nonempty carrier. Future observations are the largest equivalence that preserves
+the present observation and every transition. Every exact deterministic quotient
+factors uniquely and surjectively onto that behavioral quotient, preserves
+observations and transitions, and, when finite, has at least as many states.
+An observation-based policy has the same transcript on the quotient. On a finite
+nonempty state set, responses to words of length at most $`k`$ agree with
+behavioral equivalence for some $`k<|S|`$. Equal present responses need not be a
+congruence: on $`\{0,1,2\}`$ with $`o(0)=o(1)`$, $`o(2)`$ different, and
+$`F(0)=0`$, $`F(1)=F(2)=2`$, one step separates $`0`$ from $`1`$.
+
+If $`x`$ reaches $`y`$, every transition invariant agrees on them. Universal
+reachability makes every invariant constant. Invariants are exactly the maps
+constant on the undirected graph of the transitions. The sink $`F(0)=F(1)=1`$
+on $`\{0,1\}`$ has only constant invariants, but $`1`$ does not reach $`0`$.
+Universal reachability passes to the behavioral quotient. The converse fails
+when the observation is constant and there are no actions. There is one map out
+of the empty set and its image is empty. Maps out of a singleton are the
+elements of the codomain. No point of a two-element set is fixed by every
+bijection, so no choice of a point in every nonempty type is equivariant. A
+permutation-invariant real weighting of an $`n`$-element set, $`n>0`$, which
+sums to one, is uniform. Any nonnegative seed pushed forward onto that law has
+Shannon entropy at least $`\log_2 n`$, and the uniform law attains the bound.
+No summable real law on $`\mathbb{N}`$ which sums to one is invariant under
+every permutation. Iterating $`X\cup R[X]`$ from $`\emptyset`$ stays empty; a
+chosen source set need not. A finite product of independent laws, each summing
+to one, has those laws as its coordinate marginals. If a finite set of control
+transcripts of cardinality at most $`K`$ selects $`n`$ targets exactly, then
+$`n\le K`$. The action that names its target reaches every state in one step.
+Extending the state by a hidden coordinate does not change the observation
+transcript of an observation-based policy.
+
+Theorem 60 does not include an adaptive transcript law for a lumpable
+stochastic kernel, agreement of one-seed costs, countable-seed existence,
+atomic capacity, or Fano's inequality. It is not claimed to be new.
+
 [`Vanishing.LastEvent.last_event_entropy_bounds`](CausalSeed/VanishingBridge.lean)
 and [`Vanishing.Approximation.uniform_policy_event_bound`](CausalSeed/VanishingBridge.lean)
 are finite interfaces for the wholeness and approximation notes: the last-success
@@ -1383,6 +1421,22 @@ Lean:
 - [`EventFidelity.unreachable_of_invariant`](CausalSeed/EventFidelity.lean)
 - [`EventFidelity.exactness_does_not_give_unreachability`](CausalSeed/EventFidelity.lean)
 - [`EventFidelity.missed_orbit_does_not_zero_mass`](CausalSeed/EventFidelity.lean)
+- [`QuestionStructure.obs_factor`](CausalSeed/QuestionStructure.lean)
+- [`QuestionStructure.behav_largest`](CausalSeed/QuestionStructure.lean)
+- [`QuestionStructure.behavFactor_surjective`](CausalSeed/QuestionStructure.lean)
+- [`QuestionStructure.behav_natCard_le`](CausalSeed/QuestionStructure.lean)
+- [`QuestionStructure.rollout_quotient`](CausalSeed/QuestionStructure.lean)
+- [`QuestionStructure.refine_stabilizes`](CausalSeed/QuestionStructure.lean)
+- [`QuestionStructure.PresentNotCong.not_behav`](CausalSeed/QuestionStructure.lean)
+- [`QuestionStructure.inv_iff_eqvGen`](CausalSeed/QuestionStructure.lean)
+- [`QuestionStructure.Sink.not_reach`](CausalSeed/QuestionStructure.lean)
+- [`QuestionStructure.reach_descends`](CausalSeed/QuestionStructure.lean)
+- [`QuestionStructure.exact_selection_bound`](CausalSeed/QuestionStructure.lean)
+- [`QuestionStructure.perm_invariant_uniform`](CausalSeed/QuestionStructure.lean)
+- [`QuestionStructure.uniform_seed_entropy`](CausalSeed/QuestionStructure.lean)
+- [`QuestionStructure.no_perm_invariant_nat`](CausalSeed/QuestionStructure.lean)
+- [`QuestionStructure.product_marginal`](CausalSeed/QuestionStructure.lean)
+- [`QuestionStructure.hidden_extension_transcript`](CausalSeed/QuestionStructure.lean)
 
 Not formalized, in addition to the list at the end of Section XI: the sharp
 coefficient $`(1-4\varepsilon)\log_2\log_2 m`$, a matching local upper bound for
@@ -1394,7 +1448,12 @@ the total-variation distance of $`Q_v`$ from the local set, and the realization
 $`\mathrm{atomQ}=a`$, $`C_n\sim f(n)`$. Theorem 58 does not include a quantum
 instrument, atomic capacity of an infinite-path law, or Borel--Cantelli.
 Theorem 59 is the pushforward identity and one invariant orbit. It is not a
-theorem about human invulnerability.
+theorem about human invulnerability. Theorem 60 is the observable quotient,
+the deterministic behavioral quotient, finite word-length stabilization,
+reachability of invariants, the empty-input and symmetry facts, the uniform
+seed bound, the product marginal, the support bound $`n\le K`$, and hidden
+extensions. It is not a lumpable stochastic transcript law, not atomic
+capacity, and not Fano's inequality.
 
 ## Verification
 
@@ -1408,8 +1467,9 @@ The development is the import closure of
 [`CausalSeed/LocalSeparation.lean`](CausalSeed/LocalSeparation.lean),
 [`CausalSeed/CapacityScale.lean`](CausalSeed/CapacityScale.lean),
 [`CausalSeed/LinearLocal.lean`](CausalSeed/LinearLocal.lean) and
-[`CausalSeed/ClosureScale.lean`](CausalSeed/ClosureScale.lean) and
-[`CausalSeed/EventFidelity.lean`](CausalSeed/EventFidelity.lean),
+[`CausalSeed/ClosureScale.lean`](CausalSeed/ClosureScale.lean),
+[`CausalSeed/EventFidelity.lean`](CausalSeed/EventFidelity.lean) and
+[`CausalSeed/QuestionStructure.lean`](CausalSeed/QuestionStructure.lean),
 imported by [`CausalSeed.lean`](CausalSeed.lean) and not by `Main`. Pinned toolchain:
 
 - Lean `4.35.0-rc3` ([`lean-toolchain`](lean-toolchain))
@@ -1588,6 +1648,11 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 - `EventFidelity`: exact decoding preserves event probabilities, and an
   invariant set keeps its orbit out of a disjoint set (Theorem 59). Not human
   invulnerability. The two statements do not imply each other.
+- `QuestionStructure`: observable and behavioral quotients, finite word-length
+  stabilization, reachability of invariants, empty and symmetric inputs, the
+  uniform seed bound, product marginals, the support bound $`n\le K`$, and
+  hidden extensions (Theorem 60). Not a lumpable stochastic transcript law,
+  not atomic capacity, and not Fano's inequality.
 
 **Mathematical expositions** (LaTeX/PDF at the repository root)
 - `bellman_square_root`: the square-root asymptotic.
@@ -1618,9 +1683,12 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
   Theorem 48, whose entropy is $`h_2(p)+2p`$. The perturbation, preservation of
   atomic mass, and the uniform-positivity lower bound $`nh_{\min}`$ are not
   Lean theorems.
-- `questions_structure_causal_simulation.pdf`: not formalized. Observable
-  quotients, behavioral reduction, lumpability, the selection bound
-  $`\log_2 N`$, empty inputs, and hidden extensions are not Lean theorems.
+- `questions_structure_causal_simulation.pdf`: Theorem 60 is the observable
+  quotient, the deterministic behavioral quotient and its transcripts, finite
+  stabilization, the reachability obstruction, empty and symmetric inputs, the
+  uniform seed bound, independent finite marginals, the support bound
+  $`n\le K`$, and hidden extensions. Not the adaptive lumpability law, not
+  agreement of one-seed costs or atomic capacity, and not Fano's inequality.
   Theorem 59 is the separate pushforward identity and one invariant orbit,
   not this note.
 - The sharp locality coefficient $`(1-4\varepsilon)\log_2\log_2 m`$ is not formalized.
@@ -1656,7 +1724,10 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
   equivalence. Theorem 58 is the finite record identity and the scalar
   contraction, not a quantum instrument and not an infinite-path capacity.
   Theorem 59 is the pushforward identity and one invariant orbit, not a
-  statement about human invulnerability.
+  statement about human invulnerability. Theorem 60 is the deterministic
+  quotient, the finite selection bound $`n\le K`$, and the symmetry facts in
+  the questions note. It is not Fano's inequality and not a lumpable
+  stochastic transcript law.
   A countable seed when $`\sum p`$ converges,
   and finite entropy when $`\sum h_2`$ converges, are not formalized.
 

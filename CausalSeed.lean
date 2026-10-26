@@ -11,3 +11,5 @@ import CausalSeed.ClosureScale
 import CausalSeed.EventFidelity
 import CausalSeed.QuestionStructure
 import CausalSeed.ObservableIdentity
+import CausalSeed.Sharing
+import CausalSeed.Stillness

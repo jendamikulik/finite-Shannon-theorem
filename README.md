@@ -1411,6 +1411,32 @@ invulnerability. It is a synthesis of the constructions already present in
 Theorems 59 and 60, together with the fiber-constancy criterion for
 identifiability.
 
+**Theorem 62 (exact sharing criterion).** For one prescribed finite joint law
+$`\mu`$ on a product of two finite alphabets, every exact shared seed costs at
+least $`H(\mu)`$, and the bound is attained by using $`\mu`$ itself as the seed
+with the two coordinate projections as decoders. A deterministic function of a
+finite law cannot increase its entropy. Two positive masses cost strictly more
+apart than together.
+
+Theorem 62 is the entropy identity for one fixed joint law. It does not
+re-prove the chain rule, so the difference of the two minima is not identified
+here with a conditional entropy, and the Fano upper bound is not re-proved. It
+does not produce a causal shared seed for a family of adaptive transcript laws.
+Changing the prescribed law is not an exact simulation of the original one.
+
+**Theorem 63 (predictive stability is not small seed cost).** Total variation
+on a finite alphabet is a pseudometric and is invariant under a bijection of
+the alphabet. One-step predictive agreement is an equivalence relation; the
+update by a common action and outcome descends to the quotient whenever the
+kernel of an extension is determined by the kernel of its prefix. A kernel
+that ignores its history identifies every pair of histories. The constant
+kernel that emits a fair bit is completely stable, and the exact seed cost of
+that one step is one bit.
+
+Theorem 63 does not include the imported bound $`L(T_n)\le C(T_n)\le L(T_n)+c_\star`$,
+an $`n`$-step product entropy, or any empirical claim about stillness. It is
+not a statement about consciousness.
+
 [`Vanishing.LastEvent.last_event_entropy_bounds`](CausalSeed/VanishingBridge.lean)
 and [`Vanishing.Approximation.uniform_policy_event_bound`](CausalSeed/VanishingBridge.lean)
 are finite interfaces for the wholeness and approximation notes: the last-success
@@ -1466,6 +1492,15 @@ Lean:
 - [`ObservableIdentity.exactness_does_not_imply_invariance`](CausalSeed/ObservableIdentity.lean)
 - [`ObservableIdentity.property_factors_implies_constant`](CausalSeed/ObservableIdentity.lean)
 - [`ObservableIdentity.underdetermination`](CausalSeed/ObservableIdentity.lean)
+- [`Sharing.sharing_criterion`](CausalSeed/Sharing.lean)
+- [`Sharing.sharing_attained`](CausalSeed/Sharing.lean)
+- [`Sharing.entropy_of_function`](CausalSeed/Sharing.lean)
+- [`Sharing.entTerm_add_lt`](CausalSeed/Sharing.lean)
+- [`Stillness.tv_triangle`](CausalSeed/Stillness.lean)
+- [`Stillness.tv_bijection`](CausalSeed/Stillness.lean)
+- [`Stillness.update_well_defined`](CausalSeed/Stillness.lean)
+- [`Stillness.ignore_history_stable`](CausalSeed/Stillness.lean)
+- [`Stillness.fair_stable_not_free`](CausalSeed/Stillness.lean)
 
 Not formalized, in addition to the list at the end of Section XI: the sharp
 coefficient $`(1-4\varepsilon)\log_2\log_2 m`$, a matching local upper bound for
@@ -1760,7 +1795,14 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
   event preservation, the invariant-region criterion, and the fiber-constancy
   criterion for property identifiability. It is not a claim about consciousness
   transfer, an afterlife, or human invulnerability, and it does not re-prove the
-  Gaussian Fourier fixed point.
+  Gaussian Fourier fixed point. Theorem 62 is the entropy identity for one
+  finite joint law: the minimum exact shared-seed entropy equals the entropy
+  of the law. It does not re-prove the chain rule or the Fano upper bound, and
+  it is not a causal shared seed. Theorem 63 is predictive equivalence,
+  invariance of total variation under a bijection, and the fair-bit
+  counterexample that stability does not force a small seed cost. It does not
+  include the bound $`L\le C\le L+c_\star`$ and it is not a statement about
+  consciousness.
   A countable seed when $`\sum p`$ converges,
   and finite entropy when $`\sum h_2`$ converges, are not formalized.
 

@@ -18,8 +18,10 @@ Proved here, with no `sorry`:
 * an invariant region disjoint from a forbidden set is never entered;
 * exact decoding does not by itself yield the invariant-region statement;
 * if a property factors through the response profile, then it is constant on
-  the fibers (the "only if" direction of the identifiability criterion);
-* identical profiles with different property values are underdetermination.
+  the fibers, and conversely fiber constancy produces a factor;
+* identical profiles with different property values are underdetermination;
+* an invariant region for every action is never entered by any finite action
+  word.
 
 The Gaussian fixed-point statement is recorded as a comment. The classical
 differentiation-under-the-integral argument is not re-proved (Schwartz-space
@@ -32,10 +34,11 @@ or the claim that any of the above statements implies any of the others.
 
 import CausalSeed.QuestionStructure
 import CausalSeed.EventFidelity
+import Mathlib.MeasureTheory.Measure.Map
+
+open MeasureTheory QuestionStructure EventFidelity
 
 namespace ObservableIdentity
-
-open QuestionStructure EventFidelity
 
 /-! ### Observable identity -/
 
@@ -128,15 +131,51 @@ noncomputable def gaussian (x : ℝ) : ℝ := Real.exp (- Real.pi * x ^ 2)
 
 /-! ### Underdetermination -/
 
+/-- An invariant region for every action, disjoint from a forbidden set, is
+never entered by any finite action word. Every adaptively chosen word is some
+finite word, so the same obstruction applies to adaptive policies. -/
+theorem actions_stay_outside {X Act : Type*} (F : Act → X → X) {x0 : X}
+    {S B : Set X} (hx : x0 ∈ S) (hinv : ∀ a x, x ∈ S → F a x ∈ S)
+    (hsep : ∀ x, x ∈ S → x ∉ B) (w : List Act) :
+    QuestionStructure.run F w x0 ∉ B := by
+  have hmem : ∀ x, x ∈ S → QuestionStructure.run F w x ∈ S := by
+    induction w with
+    | nil =>
+        intro x hx
+        simpa [QuestionStructure.run] using hx
+    | cons a w ih =>
+        intro x hx
+        simpa [QuestionStructure.run] using ih (F a x) (hinv a x hx)
+  exact hsep _ (hmem x0 hx)
+
 /-- If a property factors through the response profile, then it is constant on
 the fibers. (The "only if" direction of the identifiability criterion.) -/
 theorem property_factors_implies_constant {S Act Y V : Type*}
     (o : S → Y) (F : Act → S → S) (P0 : S → V)
-    (P̂ : (List Act → Y) → V)
-    (hfact : ∀ s, P0 s = P̂ (responseProfile o F s))
+    (Phat : (List Act → Y) → V)
+    (hfact : ∀ s, P0 s = Phat (responseProfile o F s))
     {s s' : S} (heq : responseProfile o F s = responseProfile o F s') :
     P0 s = P0 s' := by
   rw [hfact s, hfact s', heq]
+
+/-- A property of states factors through the response profile if and only if it
+is constant on the fibers. The factor is defined on every profile, using an
+arbitrary value of `V` off the image. -/
+theorem property_factors_iff {S Act Y V : Type*} [Nonempty V]
+    (o : S → Y) (F : Act → S → S) (P0 : S → V) :
+    (∃ Phat : (List Act → Y) → V, ∀ s, P0 s = Phat (responseProfile o F s)) ↔
+      (∀ s s', responseProfile o F s = responseProfile o F s' → P0 s = P0 s') := by
+  constructor
+  · intro ⟨Phat, hfact⟩ s s' heq
+    exact property_factors_implies_constant o F P0 Phat hfact heq
+  · intro hconst
+    classical
+    refine ⟨fun r => if h : ∃ s, responseProfile o F s = r then
+        P0 (Classical.choose h) else Classical.choice ‹Nonempty V›, ?_⟩
+    intro s
+    have hs : ∃ t, responseProfile o F t = responseProfile o F s := ⟨s, rfl⟩
+    simp only [hs, dite_true]
+    exact hconst s (Classical.choose hs) (Classical.choose_spec hs).symm
 
 /-- Identical profiles with different property values are underdetermination:
 the profiles alone cannot determine the property. -/
@@ -144,8 +183,8 @@ theorem underdetermination {S Act Y V : Type*}
     (o : S → Y) (F : Act → S → S) (P0 : S → V) (s s' : S)
     (hsame : responseProfile o F s = responseProfile o F s')
     (hdiff : P0 s ≠ P0 s') :
-    ¬ ∃ P̂ : (List Act → Y) → V, ∀ t, P0 t = P̂ (responseProfile o F t) := by
-  rintro ⟨P̂, hfact⟩
-  exact hdiff (property_factors_implies_constant o F P0 P̂ hfact hsame)
+    ¬ ∃ Phat : (List Act → Y) → V, ∀ t, P0 t = Phat (responseProfile o F t) := by
+  rintro ⟨Phat, hfact⟩
+  exact hdiff (property_factors_implies_constant o F P0 Phat hfact hsame)
 
 end ObservableIdentity

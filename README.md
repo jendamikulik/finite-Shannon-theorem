@@ -1414,28 +1414,39 @@ identifiability.
 **Theorem 62 (exact sharing criterion).** For one prescribed finite joint law
 $`\mu`$ on a product of two finite alphabets, every exact shared seed costs at
 least $`H(\mu)`$, and the bound is attained by using $`\mu`$ itself as the seed
-with the two coordinate projections as decoders. A deterministic function of a
-finite law cannot increase its entropy. Two positive masses cost strictly more
-apart than together.
+with the two coordinate projections as decoders. A joint bijection of the
+alphabet does not change that cost. The chain rule
+$`H(\mu)=H(X)+H(Y\mid X)`$ holds, so the extra seed cost over the first
+marginal is exactly the conditional entropy. That extra cost is zero if and
+only if the second coordinate is a deterministic function of the first, almost
+surely. Copying one outcome costs $`H`$; an independent pair costs the sum;
+$`n`$ i.i.d. copies cost $`nH`$. A deterministic function of a finite law
+cannot increase its entropy.
 
-Theorem 62 is the entropy identity for one fixed joint law. It does not
-re-prove the chain rule, so the difference of the two minima is not identified
-here with a conditional entropy, and the Fano upper bound is not re-proved. It
-does not produce a causal shared seed for a family of adaptive transcript laws.
-Changing the prescribed law is not an exact simulation of the original one.
+Theorem 62 is the entropy identity for one fixed joint law. The Fano upper
+bound is not re-proved. It does not produce a causal shared seed for a family
+of adaptive transcript laws. Changing the prescribed law is not an exact
+simulation of the original one.
 
 **Theorem 63 (predictive stability is not small seed cost).** Total variation
-on a finite alphabet is a pseudometric and is invariant under a bijection of
-the alphabet. One-step predictive agreement is an equivalence relation; the
-update by a common action and outcome descends to the quotient whenever the
-kernel of an extension is determined by the kernel of its prefix. A kernel
-that ignores its history identifies every pair of histories. The constant
-kernel that emits a fair bit is completely stable, and the exact seed cost of
-that one step is one bit.
+on a finite alphabet is a pseudometric, is at most one for a pair of
+probabilities, and is invariant under a bijection of the alphabet. One-step
+predictive agreement is an equivalence relation; the update by a common action
+and outcome descends to the quotient whenever the kernel of an extension is
+determined by the kernel of its prefix. Along a chain of experiments, the
+endpoints differ by at most the sum of the successive distances, and never by
+more than one. A kernel that ignores its history identifies every pair of
+histories. The constant kernel that emits a fair bit is completely stable, and
+the exact seed cost of that one step is one bit. The history-free quiet kernel
+(report bias $`\eta`$, response bias $`p`$ or $`1-p`$) is predictively trivial,
+reports quiet with probability $`1-\eta`$, separates the two probes by
+$`1-2p`$ when $`p\le 1/2`$, and each single step costs $`h_2(\eta)+h_2(p)`$;
+$`n`$ neutral steps cost $`n`$ times that.
 
 Theorem 63 does not include the imported bound $`L(T_n)\le C(T_n)\le L(T_n)+c_\star`$,
-an $`n`$-step product entropy, or any empirical claim about stillness. It is
-not a statement about consciousness.
+and it does not identify the causal seed cost of the quiet kernel under every
+adaptive policy (only the neutral transcript and the one-step cost are
+identified). It is not a statement about consciousness.
 
 [`Vanishing.LastEvent.last_event_entropy_bounds`](CausalSeed/VanishingBridge.lean)
 and [`Vanishing.Approximation.uniform_policy_event_bound`](CausalSeed/VanishingBridge.lean)
@@ -1490,17 +1501,20 @@ Lean:
 - [`ObservableIdentity.event_preservation`](CausalSeed/ObservableIdentity.lean)
 - [`ObservableIdentity.invariant_region_criterion`](CausalSeed/ObservableIdentity.lean)
 - [`ObservableIdentity.exactness_does_not_imply_invariance`](CausalSeed/ObservableIdentity.lean)
-- [`ObservableIdentity.property_factors_implies_constant`](CausalSeed/ObservableIdentity.lean)
+- [`ObservableIdentity.property_factors_iff`](CausalSeed/ObservableIdentity.lean)
+- [`ObservableIdentity.actions_stay_outside`](CausalSeed/ObservableIdentity.lean)
 - [`ObservableIdentity.underdetermination`](CausalSeed/ObservableIdentity.lean)
 - [`Sharing.sharing_criterion`](CausalSeed/Sharing.lean)
-- [`Sharing.sharing_attained`](CausalSeed/Sharing.lean)
-- [`Sharing.entropy_of_function`](CausalSeed/Sharing.lean)
-- [`Sharing.entTerm_add_lt`](CausalSeed/Sharing.lean)
-- [`Stillness.tv_triangle`](CausalSeed/Stillness.lean)
-- [`Stillness.tv_bijection`](CausalSeed/Stillness.lean)
-- [`Stillness.update_well_defined`](CausalSeed/Stillness.lean)
-- [`Stillness.ignore_history_stable`](CausalSeed/Stillness.lean)
+- [`Sharing.chain_rule`](CausalSeed/Sharing.lean)
+- [`Sharing.zero_extra_cost_iff`](CausalSeed/Sharing.lean)
+- [`Sharing.copy_cost`](CausalSeed/Sharing.lean)
+- [`Sharing.indep_cost`](CausalSeed/Sharing.lean)
+- [`Sharing.iid_cost`](CausalSeed/Sharing.lean)
+- [`Stillness.drift_bound`](CausalSeed/Stillness.lean)
 - [`Stillness.fair_stable_not_free`](CausalSeed/Stillness.lean)
+- [`Stillness.quiet_step_cost`](CausalSeed/Stillness.lean)
+- [`Stillness.quietSeedN_entropy`](CausalSeed/Stillness.lean)
+- [`Stillness.quiet_discrimination`](CausalSeed/Stillness.lean)
 
 Not formalized, in addition to the list at the end of Section XI: the sharp
 coefficient $`(1-4\varepsilon)\log_2\log_2 m`$, a matching local upper bound for
@@ -1796,12 +1810,14 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
   criterion for property identifiability. It is not a claim about consciousness
   transfer, an afterlife, or human invulnerability, and it does not re-prove the
   Gaussian Fourier fixed point. Theorem 62 is the entropy identity for one
-  finite joint law: the minimum exact shared-seed entropy equals the entropy
-  of the law. It does not re-prove the chain rule or the Fano upper bound, and
-  it is not a causal shared seed. Theorem 63 is predictive equivalence,
-  invariance of total variation under a bijection, and the fair-bit
-  counterexample that stability does not force a small seed cost. It does not
-  include the bound $`L\le C\le L+c_\star`$ and it is not a statement about
+  finite joint law, the chain rule, and the criterion that the extra seed cost
+  is zero exactly on deterministic dependence. Copying costs $`H`$; independent
+  copies cost the sum. It does not re-prove the Fano upper bound, and it is
+  not a causal shared seed. Theorem 63 is predictive equivalence, the finite
+  drift bound, the fair-bit counterexample, and the quiet kernel: one step
+  costs $`h_2(\eta)+h_2(p)`$ and $`n`$ neutral steps cost $`n`$ times that. It
+  does not include the bound $`L\le C\le L+c_\star`$, and it does not identify
+  the adaptive causal cost of that kernel. It is not a statement about
   consciousness.
   A countable seed when $`\sum p`$ converges,
   and finite entropy when $`\sum h_2`$ converges, are not formalized.

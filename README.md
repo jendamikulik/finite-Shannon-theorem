@@ -1448,6 +1448,26 @@ and it does not identify the causal seed cost of the quiet kernel under every
 adaptive policy (only the neutral transcript and the one-step cost are
 identified). It is not a statement about consciousness.
 
+**Theorem 64 (observable writer and readout-dependent cancellation).** For a
+finite-support deposit vector and the sum-and-moment writer, any interface that
+includes the running sum admits an exact causal seed of entropy equal to the
+joint deposit entropy. The bound is attained by using the deposits themselves:
+one admissible policy recovers them by successive differences, so the transcript
+and the deposits determine one another and have equal entropy; every exact seed
+produces that transcript by a deterministic decoder and therefore costs at least
+as much. In the two-deposit cancellation $Z_1=W$, $Z_2=-W$ with $x_1\neq x_2$,
+the terminal sum is identically zero (optimal seed entropy 0) while the terminal
+first moment is an injective function of $W$ (optimal seed entropy $H(W)$). The
+cost therefore depends on the observation interface, not on the writer dynamics.
+A constant readout can coexist with arbitrarily large finite information
+accessible through another readout.
+
+Theorem 64 does not claim physiological interpretation, quantum consciousness,
+subjective experience, or physical energy consumption. It does not extend the
+companion sandwich $L\le C\le L+c_\star$ to zero-probability branches, nor does
+it assert that every silent readout conceals information. The general controlled-tree
+theorem is contextual only.
+
 [`Vanishing.LastEvent.last_event_entropy_bounds`](CausalSeed/VanishingBridge.lean)
 and [`Vanishing.Approximation.uniform_policy_event_bound`](CausalSeed/VanishingBridge.lean)
 are finite interfaces for the wholeness and approximation notes: the last-success
@@ -1516,6 +1536,9 @@ Lean:
 - [`Stillness.quiet_step_cost`](CausalSeed/Stillness.lean)
 - [`Stillness.quietSeedN_entropy`](CausalSeed/Stillness.lean)
 - [`Stillness.quiet_discrimination`](CausalSeed/Stillness.lean)
+- [`Writer.observable_writer_cost`](CausalSeed/Writer.lean)
+- [`Writer.readout_dependent_cost`](CausalSeed/Writer.lean)
+- [`Writer.writer_chain`](CausalSeed/Writer.lean)
 
 Not formalized, in addition to the list at the end of Section XI: the sharp
 coefficient $`(1-4\varepsilon)\log_2\log_2 m`$, a matching local upper bound for

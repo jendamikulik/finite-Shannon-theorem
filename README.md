@@ -1470,6 +1470,28 @@ Addresses are integers. A finite group that has torsion still needs an
 injectivity hypothesis for the address gap. No physiological, energetic, or
 consciousness reading is claimed.
 
+**Theorem 65 (safety is not simulation cost).** On a finite controlled tree,
+with nonnegative kernels and a forbidden set $B$, the least probability
+$V(h)$ of visiting $B$ before the horizon ends obeys the standard backward
+recursion. The minimum over actions is attained. For a nonterminal history
+outside $B$,
+
+```math
+V(h)=0\iff \exists a\,\forall y,\; p(y\mid h,a)>0 \Rightarrow V(hay)=0.
+```
+
+Equivalently, $V(h)=0$ if and only if some policy has hit probability zero,
+and every policy has hit probability at least $V(h)$. The hit probability of
+a fixed policy is a function of that policy and the kernels, so an exact
+simulator, which reproduces those kernels, reproduces it. Preventability is
+$V(\varnothing)=0$. The cost of simulating the environment is $C(T)$. These
+are separate questions.
+
+Theorem 65 does not compute the optimal seed cost when exactness is required
+only for the safe policies. That is the research question. The recursion is
+the usual dynamic-programming identity, not a new discovery. It is not a
+statement about consciousness, will, or a physical safety mechanism.
+
 [`Vanishing.LastEvent.last_event_entropy_bounds`](CausalSeed/VanishingBridge.lean)
 and [`Vanishing.Approximation.uniform_policy_event_bound`](CausalSeed/VanishingBridge.lean)
 are finite interfaces for the wholeness and approximation notes: the last-success
@@ -1550,6 +1572,11 @@ Lean:
 - [`Writer.readout_dependent_cost`](CausalSeed/Writer.lean)
 - [`Writer.moment_gap_cost`](CausalSeed/Writer.lean)
 - [`Writer.writer_chain`](CausalSeed/Writer.lean)
+- [`Safety.V_zero_iff`](CausalSeed/Safety.lean)
+- [`Safety.V_attained`](CausalSeed/Safety.lean)
+- [`Safety.preventable_iff`](CausalSeed/Safety.lean)
+- [`Safety.hit_ge_V`](CausalSeed/Safety.lean)
+- [`Safety.hit_depends_on_kernel`](CausalSeed/Safety.lean)
 
 Not formalized, in addition to the list at the end of Section XI: the sharp
 coefficient $`(1-4\varepsilon)\log_2\log_2 m`$, a matching local upper bound for

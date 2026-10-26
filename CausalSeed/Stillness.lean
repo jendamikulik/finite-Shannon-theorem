@@ -223,13 +223,13 @@ theorem quiet_stable {η p : ℝ} {Hist : Type*} (h h' : Hist) :
   rfl
 
 /-- Quiet-report probability under the neutral action `false`. -/
-theorem quiet_report {η p : ℝ} :
-    (∑ r, bernoulli η r * (if r = false then (1 : ℝ) else 0)) = 1 - η := by
-  have hpair : (univ : Finset Bool) = {false, true} := by
-    ext b; cases b <;> decide
-  rw [hpair, Finset.sum_pair (by decide : false ≠ true)]
-  unfold bernoulli
-  simp
+theorem quiet_report_prob {η p : ℝ} :
+    (∑ b, quietStep η p false (false, b)) = 1 - η := by
+  have hstep : ∀ b, quietStep η p false (false, b) = bernoulli η false * bernoulli p b := by
+    intro b
+    simp [quietStep]
+  simp_rw [hstep, ← Finset.mul_sum, bernoulli_total, mul_one]
+  simp [bernoulli]
 
 theorem quiet_response_true {η p : ℝ} (b : Bool) :
     (∑ r, quietStep η p true (r, b)) = bernoulli (1 - p) b := by

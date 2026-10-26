@@ -1512,6 +1512,7 @@ Lean:
 - [`Sharing.iid_cost`](CausalSeed/Sharing.lean)
 - [`Stillness.drift_bound`](CausalSeed/Stillness.lean)
 - [`Stillness.fair_stable_not_free`](CausalSeed/Stillness.lean)
+- [`Stillness.quiet_report_prob`](CausalSeed/Stillness.lean)
 - [`Stillness.quiet_step_cost`](CausalSeed/Stillness.lean)
 - [`Stillness.quietSeedN_entropy`](CausalSeed/Stillness.lean)
 - [`Stillness.quiet_discrimination`](CausalSeed/Stillness.lean)

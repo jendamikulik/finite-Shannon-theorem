@@ -1449,28 +1449,26 @@ adaptive policy (only the neutral transcript and the one-step cost are
 identified). It is not a statement about consciousness.
 
 **Theorem 64 (observable writer and readout-dependent cancellation).** On any
-additive group, successive differences invert partial sums, and conversely.
-The two-deposit cancellation $Z_1=W$, $Z_2=-W$ has terminal sum identically
-zero and terminal moment $(x_1-x_2)\cdot W$, with integer addresses. On a
-finite additive alphabet, the exact one-seed cost of the always-sum transcript
-equals the joint deposit entropy, attained by seeding with the deposits and
-decoding by partial sums. Every deterministic readout of those deposits,
-including a moment probe, costs at most that entropy. The sum-only terminal
-interface therefore costs $0$. An injective moment readout costs $H(W)$; in
-particular this holds for the address gap whenever multiplication by
-$x_1-x_2$ is injective. Independent deposits cost $n$ times one coordinate.
-The chain rule for one joint is the two-step form of the same entropy.
+additive group, successive differences invert partial sums. The two-deposit
+cancellation $Z_1=W$, $Z_2=-W$ has terminal sum identically zero and terminal
+moment $(x_1-x_2)\cdot W$, with integer addresses. On a torsion-free additive
+group a nonzero address gap acts injectively. On a finite additive alphabet,
+one deposit seed and one decoder — a function of the seed, the time, and the
+current probe — reproduce every adaptive policy that at each step asks for the
+running sum or the running moment. The exact cost of that interface equals the
+joint deposit entropy, because the always-sum policy recovers the deposits and
+the deposit seed meets every policy. Every deterministic readout costs at most
+that entropy, so the sum-only terminal interface costs $0$ and an injective
+moment costs $H(W)$. Independent deposits cost $n$ times one coordinate.
 
-Theorem 64 represents a finite-support law by a finite additive alphabet, so
-the transcript labels that occur are elements of that alphabet. It does not
-build a general controlled tree for kernels that are not functions of one
-deposit vector, and it does not extend the companion sandwich
-$L\le C\le L+c_\star$ to zero branches. Addresses are integers, not arbitrary
-reals. Injectivity of the address gap is a hypothesis, not a theorem about
-$\mathbb{C}$. No physiological, energetic, or consciousness reading is claimed.
-A constant readout can coexist with an injective readout of arbitrarily large
-finite entropy; the formalization does not say that every silent readout
-conceals information.
+Theorem 64 represents a finite-support law by a finite additive alphabet.
+The policy may use the answer history; the constructed decoder does not need
+it, since the deposits already determine both running readouts. It does not
+build a controlled tree for a kernel that is not a function of one deposit
+vector, and it does not extend $L\le C\le L+c_\star$ to zero branches.
+Addresses are integers. A finite group that has torsion still needs an
+injectivity hypothesis for the address gap. No physiological, energetic, or
+consciousness reading is claimed.
 
 [`Vanishing.LastEvent.last_event_entropy_bounds`](CausalSeed/VanishingBridge.lean)
 and [`Vanishing.Approximation.uniform_policy_event_bound`](CausalSeed/VanishingBridge.lean)
@@ -1540,7 +1538,10 @@ Lean:
 - [`Stillness.quiet_step_cost`](CausalSeed/Stillness.lean)
 - [`Stillness.quietSeedN_entropy`](CausalSeed/Stillness.lean)
 - [`Stillness.quiet_discrimination`](CausalSeed/Stillness.lean)
-- [`Writer.differences_partialSums`](CausalSeed/Writer.lean)
+- [`Writer.gap_injective`](CausalSeed/Writer.lean)
+- [`Writer.adaptive_interface_cost`](CausalSeed/Writer.lean)
+- [`Writer.transcript_alwaysSum`](CausalSeed/Writer.lean)
+- [`Writer.moment_gap_cost_torsionFree`](CausalSeed/Writer.lean)
 - [`Writer.partialSums_differences`](CausalSeed/Writer.lean)
 - [`Writer.observable_writer_cost`](CausalSeed/Writer.lean)
 - [`Writer.independent_writer_cost`](CausalSeed/Writer.lean)

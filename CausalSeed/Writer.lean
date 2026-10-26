@@ -12,7 +12,9 @@ Proved here, with no `sorry`:
 * every deterministic readout of those deposits costs at most that entropy;
 * the sum-only terminal interface of the cancellation costs `0`; an injective
   moment readout costs `H(W)`;
-* independent deposits cost `n` times one deposit.
+* on a torsion-free group, a nonzero integer address gap acts injectively;
+* one decoder on the deposit seed reproduces every adaptive sum-or-moment
+  policy, and the exact interface cost equals the joint deposit entropy.
 
 Not proved here: a general controlled-tree simulator for kernels that are not
 functions of one deposit vector, the companion sandwich on zero branches,
@@ -25,6 +27,7 @@ import CausalSeed.Sharing
 import CausalSeed.Penalty
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Algebra.BigOperators.Ring.Finset
+import Mathlib.Algebra.Group.Torsion
 import Mathlib.Data.Fin.Basic
 
 noncomputable section
@@ -171,6 +174,64 @@ def sumEquiv {n : ℕ} : (Fin n → β) ≃ (Fin n → β) where
 theorem partialSums_injective {n : ℕ} :
     Function.Injective (partialSums : (Fin n → β) → Fin n → β) :=
   sumEquiv.injective
+
+/-- On a torsion-free additive group a nonzero integer acts injectively.
+A finite nontrivial group need not be torsion-free; the entropy statements
+below therefore keep injectivity as a hypothesis unless this instance is
+present. -/
+theorem gap_injective [HasUniqueDiv β] {x1 x2 : ℤ} (h : x1 ≠ x2) :
+    Function.Injective (fun w : β => (x1 - x2) • w) :=
+  zsmul_right_injective (sub_ne_zero.mpr h)
+
+/-! ### Adaptive probes
+
+One decoder reads the deposit seed. A policy only chooses, at each time and
+history, whether the answer is the running sum or the running moment.
+-/
+
+inductive Probe
+  | sum
+  | moment
+  deriving DecidableEq
+
+instance : Fintype Probe where
+  elems := {Probe.sum, Probe.moment}
+  complete := by
+    intro p
+    cases p <;> simp
+
+abbrev Policy (n : ℕ) (β : Type) := (t : Fin n) → (Fin t.val → β) → Probe
+
+def step {n : ℕ} (x : Fin n → ℤ) (z : Fin n → β) (t : Fin n) : Probe → β
+  | .sum => partialSums z t
+  | .moment => moments x z t
+
+def writerDecode {n : ℕ} (x : Fin n → ℤ) :
+    (Fin n → β) → (t : Fin n) → Probe → β :=
+  fun z t p => step x z t p
+
+/-- Replay a decoder under an adaptive policy. The recursive call is only the
+strictly shorter history. -/
+def run {n : ℕ} {σ : Type} (decode : σ → (t : Fin n) → Probe → β)
+    (choose : Policy n β) (s : σ) (t : Fin n) : β :=
+  decode s t (choose t (fun i =>
+    run decode choose s ⟨i.val, Nat.lt_trans i.isLt t.isLt⟩))
+termination_by t.val
+
+def alwaysSum {n : ℕ} : Policy n β := fun _ _ => .sum
+
+def transcript {n : ℕ} (x : Fin n → ℤ) (choose : Policy n β) (z : Fin n → β) :
+    Fin n → β :=
+  fun t => run (writerDecode x) choose z t
+
+theorem run_writer_alwaysSum {n : ℕ} (x : Fin n → ℤ) (z : Fin n → β) (t : Fin n) :
+    run (writerDecode x) alwaysSum z t = partialSums z t := by
+  rw [run, alwaysSum, writerDecode, step]
+
+theorem transcript_alwaysSum {n : ℕ} (x : Fin n → ℤ) (z : Fin n → β) :
+    transcript x alwaysSum z = partialSums z := by
+  funext t
+  exact run_writer_alwaysSum x z t
 
 /-! ### Cancellation -/
 
@@ -392,6 +453,71 @@ theorem moment_gap_cost (μ : β → ℝ) (h0 : ∀ w, 0 ≤ μ w) (htot : ∑ w
     exact cancel_terminal_moment x1 x2 w
   rw [heq]
   exact injective_readout_cost μ h0 htot (fun w => (x1 - x2) • w) hinj
+
+theorem moment_gap_cost_torsionFree [HasUniqueDiv β]
+    (μ : β → ℝ) (h0 : ∀ w, 0 ≤ μ w) (htot : ∑ w, μ w = 1)
+    {x1 x2 : ℤ} (hgap : x1 ≠ x2) :
+    oneCost (push μ (fun w =>
+      moments (fun t : Fin 2 => if t.val = 0 then x1 else x2) (cancelZ w) ⟨1, by decide⟩)) =
+      H μ :=
+  moment_gap_cost μ h0 htot x1 x2 (gap_injective hgap)
+
+/-! ### One seed for every adaptive policy -/
+
+structure WriterSeed {n : ℕ} (x : Fin n → ℤ) (μ : (Fin n → β) → ℝ) where
+  Seed : Type
+  fin : Fintype Seed
+  decEq : DecidableEq Seed
+  law : Seed → ℝ
+  nonneg : ∀ s, 0 ≤ law s
+  total : ∑ s, law s = 1
+  decode : Seed → (t : Fin n) → Probe → β
+  exact : ∀ choose : Policy n β, ∀ y : Fin n → β,
+    (∑ s, if (fun t => run decode choose s t) = y then law s else 0) =
+      (∑ z, if transcript x choose z = y then μ z else 0)
+
+attribute [instance] WriterSeed.fin WriterSeed.decEq
+
+def interfaceCost {n : ℕ} (x : Fin n → ℤ) (μ : (Fin n → β) → ℝ) : ℝ :=
+  sInf { H r.law | r : WriterSeed x μ }
+
+def depositSeed {n : ℕ} (x : Fin n → ℤ) (μ : (Fin n → β) → ℝ)
+    (h0 : ∀ z, 0 ≤ μ z) (htot : ∑ z, μ z = 1) : WriterSeed x μ where
+  Seed := Fin n → β
+  fin := inferInstance
+  decEq := inferInstance
+  law := μ
+  nonneg := h0
+  total := htot
+  decode := writerDecode x
+  exact := fun _ _ => rfl
+
+theorem writerSeed_entropy_ge {n : ℕ} (x : Fin n → ℤ) {μ : (Fin n → β) → ℝ}
+    (r : WriterSeed x μ) : H μ ≤ H r.law := by
+  let f : r.Seed → (Fin n → β) := fun s t => run r.decode alwaysSum s t
+  have hpush : push r.law f = push μ partialSums := by
+    funext y
+    have hexact := r.exact alwaysSum y
+    simp only [push, f, transcript_alwaysSum] at hexact ⊢
+    exact hexact
+  have hle : H (push μ partialSums) ≤ H r.law := by
+    simpa [hpush] using entropy_push_le r.law r.nonneg f
+  simpa [entropy_push_injective μ partialSums partialSums_injective] using hle
+
+/-- **Observable writer, adaptive interface.** One deposit seed and one decoder
+serve every policy, at entropy `H(Z)`. Every exact interface seed costs at
+least that, because the always-sum policy recovers the deposits. -/
+theorem adaptive_interface_cost {n : ℕ} (x : Fin n → ℤ) (μ : (Fin n → β) → ℝ)
+    (h0 : ∀ z, 0 ≤ μ z) (htot : ∑ z, μ z = 1) :
+    interfaceCost x μ = H μ := by
+  apply le_antisymm
+  · refine csInf_le ?_ ⟨depositSeed x μ h0 htot, rfl⟩
+    use 0
+    rintro z ⟨r, rfl⟩
+    exact H_nonneg r.nonneg fun s => prob_le_one r.nonneg r.total s
+  · refine le_csInf ⟨H μ, depositSeed x μ h0 htot, rfl⟩ ?_
+    rintro z ⟨r, rfl⟩
+    exact writerSeed_entropy_ge x r
 
 end Writer
 

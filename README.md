@@ -1448,25 +1448,29 @@ and it does not identify the causal seed cost of the quiet kernel under every
 adaptive policy (only the neutral transcript and the one-step cost are
 identified). It is not a statement about consciousness.
 
-**Theorem 64 (observable writer and readout-dependent cancellation).** For a
-finite-support deposit vector and the sum-and-moment writer, any interface that
-includes the running sum admits an exact causal seed of entropy equal to the
-joint deposit entropy. The bound is attained by using the deposits themselves:
-one admissible policy recovers them by successive differences, so the transcript
-and the deposits determine one another and have equal entropy; every exact seed
-produces that transcript by a deterministic decoder and therefore costs at least
-as much. In the two-deposit cancellation $Z_1=W$, $Z_2=-W$ with $x_1\neq x_2$,
-the terminal sum is identically zero (optimal seed entropy 0) while the terminal
-first moment is an injective function of $W$ (optimal seed entropy $H(W)$). The
-cost therefore depends on the observation interface, not on the writer dynamics.
-A constant readout can coexist with arbitrarily large finite information
-accessible through another readout.
+**Theorem 64 (observable writer and readout-dependent cancellation).** On any
+additive group, successive differences invert partial sums, and conversely.
+The two-deposit cancellation $Z_1=W$, $Z_2=-W$ has terminal sum identically
+zero and terminal moment $(x_1-x_2)\cdot W$, with integer addresses. On a
+finite additive alphabet, the exact one-seed cost of the always-sum transcript
+equals the joint deposit entropy, attained by seeding with the deposits and
+decoding by partial sums. Every deterministic readout of those deposits,
+including a moment probe, costs at most that entropy. The sum-only terminal
+interface therefore costs $0$. An injective moment readout costs $H(W)$; in
+particular this holds for the address gap whenever multiplication by
+$x_1-x_2$ is injective. Independent deposits cost $n$ times one coordinate.
+The chain rule for one joint is the two-step form of the same entropy.
 
-Theorem 64 does not claim physiological interpretation, quantum consciousness,
-subjective experience, or physical energy consumption. It does not extend the
-companion sandwich $L\le C\le L+c_\star$ to zero-probability branches, nor does
-it assert that every silent readout conceals information. The general controlled-tree
-theorem is contextual only.
+Theorem 64 represents a finite-support law by a finite additive alphabet, so
+the transcript labels that occur are elements of that alphabet. It does not
+build a general controlled tree for kernels that are not functions of one
+deposit vector, and it does not extend the companion sandwich
+$L\le C\le L+c_\star$ to zero branches. Addresses are integers, not arbitrary
+reals. Injectivity of the address gap is a hypothesis, not a theorem about
+$\mathbb{C}$. No physiological, energetic, or consciousness reading is claimed.
+A constant readout can coexist with an injective readout of arbitrarily large
+finite entropy; the formalization does not say that every silent readout
+conceals information.
 
 [`Vanishing.LastEvent.last_event_entropy_bounds`](CausalSeed/VanishingBridge.lean)
 and [`Vanishing.Approximation.uniform_policy_event_bound`](CausalSeed/VanishingBridge.lean)
@@ -1536,8 +1540,14 @@ Lean:
 - [`Stillness.quiet_step_cost`](CausalSeed/Stillness.lean)
 - [`Stillness.quietSeedN_entropy`](CausalSeed/Stillness.lean)
 - [`Stillness.quiet_discrimination`](CausalSeed/Stillness.lean)
+- [`Writer.differences_partialSums`](CausalSeed/Writer.lean)
+- [`Writer.partialSums_differences`](CausalSeed/Writer.lean)
 - [`Writer.observable_writer_cost`](CausalSeed/Writer.lean)
+- [`Writer.independent_writer_cost`](CausalSeed/Writer.lean)
+- [`Writer.cancel_terminal_sum`](CausalSeed/Writer.lean)
+- [`Writer.cancel_terminal_moment`](CausalSeed/Writer.lean)
 - [`Writer.readout_dependent_cost`](CausalSeed/Writer.lean)
+- [`Writer.moment_gap_cost`](CausalSeed/Writer.lean)
 - [`Writer.writer_chain`](CausalSeed/Writer.lean)
 
 Not formalized, in addition to the list at the end of Section XI: the sharp

@@ -1833,6 +1833,26 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
   not this note.
 - The sharp locality coefficient $`(1-4\varepsilon)\log_2\log_2 m`$ is not formalized.
 
+### Joint protection
+
+**Robust invariance, not a Shannon theorem.** Each participant `i` declares a floor `d_i`. The jointly protected set is `K = {x | ∀ i, d_i(x) ≥ 0}`. A floor being nonnegative is a declared minimum standard, not a measure of a person's worth. Assumption (A) is a nonempty `V ⊆ K` such that, at every `x ∈ V`, some action chosen *before* the circumstance keeps the next state in `V` for every circumstance. Any adaptive policy that keeps choosing such an action, and any sequence of circumstances, stays in `V`. Hence every floor stays met.
+
+The quantifier order is essential: `order_matters` is a two-point system in which an action exists once the circumstance is known, and none exists before it. `wish_is_not_an_action` is a system whose protected set is everything and whose action set is empty, so no viable `V` exists. Existence of `V` for an arbitrary system is not a theorem. A wish does not produce a safe action.
+
+If a finite controlled tree `T` is supplied separately, the sandwich already proved for every such tree applies to it:
+
+```math
+L(T)\;\le\;C(T)\;\le\;L(T)+c_\star .
+```
+
+That bound is the entropy of an exact causal simulation. It does not construct `V`, it does not produce a safe action, and it does not price help.
+
+Lean:
+- [`NobodyLeft.nobody_left`](CausalSeed/NobodyLeft.lean#L101)
+- [`NobodyLeft.order_matters`](CausalSeed/NobodyLeft.lean#L123)
+- [`NobodyLeft.wish_is_not_an_action`](CausalSeed/NobodyLeft.lean#L149)
+- [`NobodyLeft.supplied_tree_sandwich`](CausalSeed/NobodyLeft.lean#L158)
+
 ## Scope and open problems
 
 **Scope.**
@@ -1883,6 +1903,9 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
   consciousness.
   A countable seed when $`\sum p`$ converges,
   and finite entropy when $`\sum h_2`$ converges, are not formalized.
+  Constructing a viable protected set for a concrete system of people is
+  not a theorem of this repository. The joint-protection section is the
+  invariance principle only.
 
 **Hypotheses of Theorem 16.** Parts 1 and 2 require a reference action whose law has two
 distinct values and whose variance (and, for part 2, third moment) every action shares.

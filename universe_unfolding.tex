@@ -1,0 +1,417 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,margin=26mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,microtype}
+\microtypesetup{expansion=false}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\HH}{\mathrm H}
+\newcommand{\Law}{\mathrm{Law}}
+\newcommand{\F}{\mathcal F}
+\newcommand{\cstar}{c_\star}
+\title{Universe Unfolding\\[4pt]\large Exact Causal Realization, Observable Information,\\and Fourier-Sector Memory}
+\author{Jan Mikul\'ik\\\small Mathematical synthesis prepared with ChatGPT}
+\date{28 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We study how prescribed observable laws admit a single deterministic realization
+driven by a random seed, uniformly over adaptive choices. Exact reconstruction
+under one admissible policy fixes the optimal seed entropy. We apply this
+principle to sum-and-moment memory and to sequential observation of Fourier
+sectors. A constant or vanishing readout can conceal arbitrarily large finite
+entropy, while access to a reconstructing sequence of readouts recovers its exact
+simulation cost. We also prove an exact reduction of almost-surely safe-policy
+simulation to a viable subtree. These elementary results organize a common
+framework; no historical priority is claimed. The title denotes unfolding an
+interaction history, not a derivation of cosmology. A companion causal Shannon
+bound is stated conditionally on its hypotheses and is not reproved here.
+\end{abstract}
+
+\section{Scope and the distinction that matters}
+Three objects must be kept separate: a state or seed, the laws it realizes, and
+the interface through which it is observed. Equal observable laws need not mean
+equal hidden states. A zero readout need not mean zero information in a different
+readout. Conversely, hidden structure cannot be inferred merely because an
+output is zero.
+
+Our main results are finite probabilistic statements. Signal labels may belong
+to an infinite-dimensional function space, but every random signal considered
+below has finite support. Thus its Shannon entropy is discrete entropy, not
+differential entropy, signal energy, thermodynamic entropy, or description length
+of an arbitrary real number. Exact arithmetic and computation time are separate
+resources.
+
+\section{A single seed for an adaptive interface}
+Let $T$ be a finite tree of complete histories. At a nonterminal history $h$,
+an experimenter chooses $a\in A(h)$ from a finite nonempty set and observes
+$y\in Y(h,a)$ from a finite nonempty set, with probability $p(y\mid h,a)$.
+These probabilities are nonnegative and sum to one. A deterministic policy
+$\pi$ selects actions using only the observed history. It does not inspect the
+hidden seed.
+
+\begin{definition}[Exact realization]
+A finite seed $S\sim\mu$ and a deterministic decoder $f$ realize a class
+$\Pi$ of policies if
+\[
+ A_t=\pi(H_{t-1}),\quad Y_t=f(S,H_{t-1},A_t),\quad
+ H_t=H_{t-1}\mathbin{\|}(A_t,Y_t),\quad H_0=\varnothing,
+\]
+induce the prescribed transcript law for every $\pi\in\Pi$.
+The law $\mu$ and the decoder $f$ are fixed independently of the selected policy.
+Write
+\[
+ C_\Pi(T)=\inf_{(\mu,f)\,\text{exact for }\Pi}\HH(S),
+ \qquad C(T)=C_{\text{all deterministic policies}}(T).
+\]
+\end{definition}
+The shared decoder enforces agreement at shared histories. The quantifiers are
+$\exists(\mu,f)\ \forall\pi$, not a separate simulator chosen for each policy.
+A finite realization always exists: pre-sample independently one output for every
+history--action pair. Along any trajectory, the next table entry is fresh
+relative to the entries determining the past. This reproduces the conditional
+laws by induction.
+
+In the language of the companion project~\cite{repo}, let $I_\pi$ denote
+the transcript information $-\log_2P_T^\pi(H_n)$ on positive-mass transcripts.
+The lower CDF envelope is
+\[
+ G_T(u)=\min_\pi\Pr(I_\pi\le u),\qquad
+ L(T)=\int_0^\infty[1-G_T(u)]\,du.
+\]
+The companion finite causal Shannon theorem states, on its applicable class,
+\begin{equation}\label{eq:sandwich}
+ L(T)\le C(T)\le L(T)+\cstar,
+ \qquad \cstar=\frac{1+\log_2e}{2}.
+\end{equation}
+Equation~\eqref{eq:sandwich} is an imported result, not a premise needed for
+the direct identities proved below. The latter allow zero probabilities.
+No general infinite-horizon extension is established in this paper.
+
+\section{Exact reconstruction and observational compression}
+For a finite-valued random variable $X$ and deterministic $q$, the chain rule gives
+\begin{equation}\label{eq:loss}
+ \HH(X)=\HH(q(X))+\HH(X\mid q(X)).
+\end{equation}
+Hence $q$ preserves entropy precisely when $X$ is recoverable from $q(X)$ almost
+surely. The decoder can be defined arbitrarily on values outside the support.
+A nonzero output alone does not guarantee recoverability.
+
+\begin{theorem}[Reconstructing-policy principle]\label{thm:reconstruct}
+Suppose a finite-support random variable $Z$ drives a deterministic causal
+interface exact for all $\pi\in\Pi$. If one policy $\pi_0$ produces a transcript
+$X$ from which $Z$ is almost surely recoverable, then
+\[
+ \boxed{C_\Pi=\HH(Z).}
+\]
+The minimum is attained by the seed $S=Z$.
+\end{theorem}
+\begin{proof}
+The given interface with seed $Z$ gives the upper bound. Since $X$ is a function
+of $Z$ and conversely $Z$ is recoverable from $X$, their entropies agree.
+Under $\pi_0$, every competing exact simulator produces a transcript $X'$ with
+the same law as $X$, deterministically from its seed $U$. Thus
+$\HH(U)\ge\HH(X')=\HH(X)=\HH(Z)$.
+\end{proof}
+
+\begin{proposition}[Restriction and recoding]
+If $\Pi_1\subseteq\Pi_2$, then $C_{\Pi_1}\le C_{\Pi_2}$.
+Invertible relabelings of actions and outputs that respect histories preserve
+the optimal seed cost.
+\end{proposition}
+\begin{proof}
+An exact simulator for the larger class also serves the smaller one.
+For an invertible relabeling, translate policies and decoder outputs in each
+direction. This gives simulators of identical seed entropy in both directions.
+\end{proof}
+An unused independent seed component changes no observable law, while increasing
+seed entropy. Therefore the hidden realization is generally not identifiable;
+the optimum is an operational resource quantity.
+
+\section{Memory that survives cancellation}
+Fix real addresses $x_1,\ldots,x_n$ and complex deposits
+$Z=(Z_1,\ldots,Z_n)$ with an arbitrary finite-support joint law. Define
+\[
+ S_0=M_0=0,\qquad S_t=S_{t-1}+Z_t,\qquad
+ M_t=M_{t-1}+x_tZ_t.
+\]
+At time $t$ the observer may request $S_t$ or $M_t$. Observation is passive:
+it does not change the deposits or their law.
+
+\begin{corollary}[Observable writer]
+The optimal common seed entropy is
+\[
+ C_n=\HH(Z_1,\ldots,Z_n)
+ =\sum_{t=1}^n\HH(Z_t\mid Z_1,\ldots,Z_{t-1}).
+\]
+\end{corollary}
+\begin{proof}
+Always requesting the sum reconstructs $Z_t=S_t-S_{t-1}$. Apply
+Theorem~\ref{thm:reconstruct} and the chain rule.
+\end{proof}
+The update algebra is the writer used in the supplied ONE manuscript
+\cite{one}; the probability law and observation interface are additional inputs.
+This use of the writer is not an endorsement of the manuscript's cosmological
+claims.
+
+For two deposits $Z_1=W$, $Z_2=-W$ and $x_1\ne x_2$,
+\[
+ S_2=0,\qquad M_2=(x_1-x_2)W.
+\]
+With terminal-only observation, the sum interface has cost zero, whereas the
+interface offering either sum or moment has cost $\HH(W)$. A constant seed
+suffices for the first; seed $W$ suffices for the second and its injective moment
+readout gives the matching lower bound. This is not true of the sum interface
+if the earlier sum $S_1=W$ is also observable.
+
+\section{Fourier sectors as an exact observation interface}
+Use the Fourier convention
+\[
+ (\F f)(\xi)=\int_{\mathbb R}f(x)e^{-2\pi i x\xi}\,dx.
+\]
+The integral is first defined on Schwartz functions; Plancherel's theorem
+extends it unitarily to $L^2(\mathbb R)$. Let $h_n$ be the normalized Hermite
+basis in this convention, so $h_0(x)=2^{1/4}e^{-\pi x^2}$ and
+\[
+ \F h_n=(-i)^nh_n,\qquad \F^4=I.
+\]
+These are classical facts, not new consequences of the causal seed theorem.
+Euler's identity alone is not a proof of them.
+
+For $\Lambda=\{1,-i,-1,i\}$ define
+\[
+ P_\lambda=\frac14\sum_{j=0}^3\lambda^{-j}\F^j.
+\]
+Applying this polynomial to $h_n$ gives $h_n$ if $(-i)^n=\lambda$ and zero
+otherwise, by the finite geometric-sum identity. Completeness of the Hermite
+basis consequently yields
+\[
+ P_\lambda P_\nu=\mathbf1_{\lambda=\nu}P_\lambda,
+ \quad P_\lambda^*=P_\lambda,\quad
+ \sum_{\lambda\in\Lambda}P_\lambda=I.
+\]
+In particular, $P_1$ is a projection onto the Fourier-fixed subspace, not a
+universal lossless representation. For example $P_1h_1=0$.
+
+\begin{theorem}[Sequential Fourier-sector reconstruction]\label{thm:sectors}
+Let $Z$ be an $L^2(\mathbb R)$-valued random signal with finite support. In a
+four-round passive interface, each action requests one of the outputs
+$P_\lambda Z$, and repeated requests are allowed. The optimal seed entropy
+for all adaptive policies is exactly $\HH(Z)$.
+If only $P_1$ is available, the optimal seed entropy is $\HH(P_1Z)$.
+The difference is
+\[
+ \boxed{\HH(Z)-\HH(P_1Z)=\HH(Z\mid P_1Z).}
+\]
+\end{theorem}
+\begin{proof}
+The fixed policy requesting each of the four sectors recovers
+$Z=\sum_\lambda P_\lambda Z$. The seed $Z$ supplies every adaptive sequence
+of requests. Theorem~\ref{thm:reconstruct} proves the first claim. If only
+$P_1$ is available, the first output has entropy $\HH(P_1Z)$ and all repeated
+outputs equal it. Taking this output itself as seed proves the second claim.
+Equation~\eqref{eq:loss} gives the difference.
+\end{proof}
+
+\begin{corollary}[A fixed readout with arbitrarily large accessible entropy]
+Let $W$ be a finite real random variable and $Z=h_0+Wh_1$. Then
+\[
+ P_1Z=h_0,\qquad P_{-i}Z=Wh_1.
+\]
+The fixed-sector interface costs zero; the interface allowing either of these
+two sectors costs $\HH(W)$, even in a single round.
+\end{corollary}
+\begin{proof}
+The first readout is constant; the second uniquely identifies $W$ because
+$h_1\ne0$. Seed $W$ generates both readouts, and the second gives the lower bound.
+\end{proof}
+Uniform $W$ on $m$ values gives a gap of $\log_2m$. The hidden information
+resides in $Z$, not in the constant output $h_0$.
+
+\paragraph{Why sequential access is essential.}
+Joint reconstructability of a list of queries is not sufficient if only one
+query can ever be asked. Let $U,V$ be independent fair bits and
+$Z=Uh_0+Vh_1$. One round allowing either sector query costs only one bit: a
+single fair seed $B$ can answer $Bh_0$ or $Bh_1$ as requested. The separate
+marginals are correct, though this seed does not reproduce their joint
+independence. Two rounds allowing both queries require two bits, because
+the fixed policy requesting both reconstructs $(U,V)$. This demonstrates why
+the experimental interface, including its horizon, belongs in the theorem.
+
+\section{Safety and the viable subtree}
+In a finite controlled tree, let $B$ be a set of forbidden histories closed under
+extension. Define $V(h)$ as the minimum probability of visiting $B$ before
+termination in the continuation tree rooted at $h$. Backward induction gives
+\[
+ V(h)=\begin{cases}
+ 1,&h\in B,\\
+ 0,&h\notin B\text{ is terminal},\\
+ \min_a\sum_y p(y\mid h,a)V(hay),&\text{otherwise}.
+ \end{cases}
+\]
+Call $h$ viable if $V(h)=0$. At a viable nonterminal history retain
+\[
+ A_0(h)=\{a:\ p(y\mid h,a)>0\Rightarrow V(hay)=0\text{ for all }y\}.
+\]
+This set is nonempty. If the root is viable, let $T_0$ be the tree reached
+using these actions and positive-probability edges. Let $\Pi_0$ contain all
+policies of the original tree with zero failure probability.
+
+\begin{theorem}[Exact safety restriction]
+Under these assumptions,
+\[
+ \boxed{C_{\Pi_0}(T)=C(T_0).}
+\]
+\end{theorem}
+\begin{proof}
+Every policy on $T_0$ extends arbitrarily outside $T_0$ to a safe policy on $T$.
+Restricting a simulator exact for all safe policies therefore gives a simulator
+on $T_0$. If its decoder assigns a deleted output at an unused seed--history
+pair, replace that output by any retained output: exactness guarantees the
+replacement changes no positive-probability run of any restricted policy.
+There are only finitely many policies and histories. Seed entropy is unchanged.
+Thus $C(T_0)\le C_{\Pi_0}(T)$.
+
+Conversely, extend a decoder on $T_0$ arbitrarily to the remaining interfaces of
+$T$. Fix a safe policy $\pi$. Every history it reaches with positive probability
+has a zero-risk continuation. Hence at each such nonterminal history its action
+lies in $A_0(h)$. Define a policy on $T_0$ agreeing there with $\pi$, and choose
+arbitrary retained actions elsewhere. Induction on the horizon shows that its
+target law equals that of $\pi$. Run both decoders with the same seed. They
+agree until a first departure from those histories; exactness of the restricted
+run makes the probability of such a departure zero. The extension is therefore
+exact for $\pi$. Since this holds for every safe policy, taking infima gives
+the reverse inequality.
+\end{proof}
+This is an operational restriction, not a change to the full original laws.
+For example, a one-step tree with a deterministic safe action and a second
+action uniform on $m$ forbidden outcomes has $C(T)=\log_2m$ but
+$C_{\Pi_0}(T)=0$. If the root is not viable, no safe policy exists.
+When the companion bound applies to $T_0$, it implies
+$L(T_0)\le C_{\Pi_0}(T)\le L(T_0)+\cstar$.
+
+\section{Invariants, quantum measurements, and the physical boundary}
+For a smooth controlled system $\dot x=F_a(x)$, a differentiable quantity $U$
+is conserved along every fixed-action trajectory when
+$dU_x(F_a(x))=0$ for every action and state. An intervention $\Theta_a$
+preserves that quantity only when $U\circ\Theta_a=U$ is separately established.
+Commuting with the flow is insufficient: scaling the harmonic oscillator state
+by two commutes with its flow but multiplies $q^2+p^2$ by four. Such conservation
+identities alone do not specify a probability law or a seed entropy.
+
+For quantum experiments, a precise bridge can be specified at the level of
+instruments. Let $\rho_h$ be the conditional density operator and let
+$\{\mathcal I_{a,y}\}_y$ be completely positive trace-nonincreasing maps
+whose sum is trace preserving. Then
+\[
+ p(y\mid h,a)=\mathrm{tr}\,\mathcal I_{a,y}(\rho_h),\qquad
+ \rho_{hay}=\frac{\mathcal I_{a,y}(\rho_h)}{p(y\mid h,a)}
+ \quad\text{when }p(y\mid h,a)>0.
+\]
+Finite action and outcome alphabets and a finite horizon produce a finite
+controlled tree. State updates incorporate measurement back-action; a passive
+writer does not automatically implement them. Probabilities on unreachable
+zero-probability histories require a specified convention if they are retained.
+
+For a normalized two-path joint state
+$|\Psi\rangle=|\psi_1\rangle|d_1\rangle+|\psi_2\rangle|d_2\rangle$,
+with normalized detector states, tracing out the detector gives
+\[
+ p(x)=|\psi_1(x)|^2+|\psi_2(x)|^2+
+ 2\operatorname{Re}\!\left(\psi_1(x)\overline{\psi_2(x)}
+ \langle d_2|d_1\rangle\right).
+\]
+This is standard quantum mechanics~\cite{feynman,nc}, not a consequence of
+Shannon entropy. A finite detector partitions positions into recorded outcomes.
+Exact simulation refers to those outcome laws, not automatically to a complete
+continuous quantum field.
+
+The defensible direction is therefore
+\[
+ \text{physical model and experimental protocol}
+ \ \longrightarrow\ p(y\mid h,a)\ \longrightarrow\ T
+ \ \longrightarrow\ C(T).
+\]
+A displayed Lagrangian alone omits the preparation and measurement specification.
+No Lagrangian, Born rule, gravitational dynamics, or consciousness mechanism is
+derived here. Classical centralized simulation of a temporal interface does not
+establish spatially local hidden variables or efficient computation.
+
+\section{A conditional estimate is not a proof of RH}
+The supplied Fourier manuscript also proposes a conditional bound of the form
+\[
+ \frac{Q(\tau,L)-E_0L}{L}\ge A\tau^4-B\tau^3-D,
+ \qquad A>0,\quad B,D\ge0,
+\]
+valid uniformly for $L\ge1$ and $\tau\ge\tau_0$. Define
+\[
+ \tau_\star=\max\left\{\tau_0,1,\frac{2B}{A},
+                         \left(\frac{4D}{A}\right)^{1/4}\right\}.
+\]
+Then for $\tau\ge\tau_\star$ the right side is strictly positive: it is at
+least $A\tau^4/2-D$, which is at least $D>0$ if $D>0$, and is positive if
+$D=0$. This is a valid elementary implication. It does not prove the assumed
+bridge or quartic coercivity estimates. Fourier-sector decomposition and seed
+entropy do not supply those estimates. No proof of the Riemann hypothesis is
+claimed in this synthesis.
+
+\section{Conclusions and the remaining mathematical question}
+The precise content of ``unfolding'' is a sequence of choices and responses
+whose complete history is generated by one common seed and decoder. Reconstruction
+turns an entropy lower bound into an exact optimum. Fourier sectors give a
+concrete family of observation interfaces, and safety gives a concrete
+restriction of the policies to be supported.
+
+The main operational identities established here are
+\[
+ \boxed{\begin{aligned}
+ C_{\text{reconstructing interface}}&=\HH(Z),\\
+ C_{\text{four sequential sectors}}-C_{\text{fixed sector}}
+     &=\HH(Z\mid P_1Z),\\
+ C_{\text{safe policies}}(T)&=C(T_0).
+ \end{aligned}}
+\]
+Each equality has its stated finite-model assumptions. None equates information
+with matter, probability with physical energy, or entropy with computational
+time. In particular, no implication $P=NP$ follows. Love, intention, and
+metaphysical potential can motivate a question but are not variables identified
+by these proofs.
+
+A concrete further problem is the cost of supporting all policies with failure
+probability at most $\varepsilon>0$. This class can couple choices across
+branches through a global risk budget, so a fixed local pruning rule need not
+describe it. A sharp structural characterization and corresponding entropy
+bounds remain research targets, not results of this paper.
+
+\paragraph{Proof and attribution status.}
+The finite proofs above are mathematical arguments, not a new Lean certificate.
+The Hermite and entropy ingredients are classical. The synthesis and examples
+are not accompanied by a comprehensive priority search, and no claim that they
+are previously unknown is made. A previous inspection of repository commit
+\texttt{f54c6e6} found the writer formalization weaker than the full adaptive
+claim; this manuscript does not audit subsequent revisions. The companion
+bound~\eqref{eq:sandwich} remains explicitly separated from the direct proofs.
+
+\begin{thebibliography}{9}
+\bibitem{repo} J. Mikul\'ik, \emph{Finite Shannon Theorem}, companion repository,
+\url{https://github.com/jendamikulik/finite-Shannon-theorem}.
+\bibitem{ct} T. M. Cover and J. A. Thomas, \emph{Elements of Information Theory},
+2nd edition, Wiley, 2006.
+\bibitem{stein} E. M. Stein and R. Shakarchi, \emph{Fourier Analysis:
+An Introduction}, Princeton University Press, 2003.
+\bibitem{puterman} M. L. Puterman, \emph{Markov Decision Processes}, Wiley, 1994.
+\bibitem{nc} M. A. Nielsen and I. L. Chuang, \emph{Quantum Computation and
+Quantum Information}, Cambridge University Press, 2010.
+\bibitem{feynman} R. P. Feynman, R. B. Leighton and M. Sands,
+\emph{The Feynman Lectures on Physics}, Vol. III, Ch. 3,
+\url{https://www.feynmanlectures.caltech.edu/III_03.html}.
+\bibitem{one} S. L. Onweller, \emph{ONE}, supplied edition
+\texttt{ONE\_E24\_Gabriels\_Horn\_Integrated\_Pass7.pdf}, writer updates in
+Theorem PS.1, printed p. 17. Cited only for the specified update construction.
+\end{thebibliography}
+\end{document}

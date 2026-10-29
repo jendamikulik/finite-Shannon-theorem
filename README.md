@@ -1853,6 +1853,26 @@ Lean:
 - [`NobodyLeft.wish_is_not_an_action`](CausalSeed/NobodyLeft.lean#L149)
 - [`NobodyLeft.supplied_tree_sandwich`](CausalSeed/NobodyLeft.lean#L158)
 
+### Skepsis 2.0
+
+**Do not decide by a certainty we do not have.** Four operational clauses.
+
+A claim `Q` is guaranteed relative to a class of models compatible with data precisely when every model in that class satisfies it. The class itself remains a hypothesis. The empty class guarantees nothing: emptiness signals a bad class or a bad compatibility criterion, not a proof.
+
+A safe action under model uncertainty is an action chosen before the model and the disturbance, such that every compatible model and every disturbance it admits lands back in `V`. If `V ⊆ P_D(V)`, the true model is in the class, and the policy picks such an action, the run stays in `V`. Existence of such a `V` is not a theorem. An empty action set is a system in which no viable `V` exists.
+
+Two models are separated by an interface when some policy makes their transcript laws differ. Agreement on every available policy means this interface does not separate them. The formalization does not construct a separating policy, and one sample is not certainty.
+
+The sandwich already proved for a supplied finite tree gives `0 ≤ C(T) - L(T) ≤ c⋆`. The relation is non-strict. It prices an exact simulation. It does not measure doubt, and it does not produce a safe action.
+
+Lean:
+- [`Skepsis.guaranteed`](CausalSeed/Skepsis.lean)
+- [`Skepsis.empty_guarantees_nothing`](CausalSeed/Skepsis.lean)
+- [`Skepsis.stays`](CausalSeed/Skepsis.lean)
+- [`Skepsis.wish_is_not_an_action`](CausalSeed/Skepsis.lean)
+- [`Skepsis.agreement_does_not_separate`](CausalSeed/Skepsis.lean)
+- [`Skepsis.realization_gap`](CausalSeed/Skepsis.lean)
+
 ## Scope and open problems
 
 **Scope.**

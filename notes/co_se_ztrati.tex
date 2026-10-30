@@ -1,0 +1,86 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[czech]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=3cm]{geometry}
+\usepackage{lmodern}
+\newtheorem{theorem}{Věta}
+\title{Co se ztratí, když přestaneme rozlišovat}
+\author{}
+\date{}
+\begin{document}
+\maketitle
+\begin{center}
+\itshape
+S láskou tomu, kdo se bojí,\\
+že spolu se vzpomínkou zmizí i její význam.
+\end{center}
+\paragraph{Model.}
+Nechť $X$ je náhodná veličina s konečným nosičem
+a $Y=f(X)$ její pozorování.
+Shannonova entropie splňuje
+\[
+\boxed{H(X)=H(Y)+H(X\mid Y).}
+\]
+Člen $H(X\mid Y)$ vyjadřuje nejistotu o původním
+stavu, která zbývá po znalosti pozorování.
+\begin{proof}
+Protože $Y$ je funkcí $X$, platí $H(Y\mid X)=0$.
+Řetězové pravidlo tedy dává
+\[
+H(X)=H(X,Y)=H(Y)+H(X\mid Y).
+\]
+\end{proof}
+\paragraph{Rozlišení a hodnota.}
+Zaveďme zvlášť funkci
+\[
+v:\operatorname{supp}(X)\longrightarrow\mathbb R,
+\]
+která jednotlivým stavům přiřazuje hodnotu.
+Je to další předpoklad modelu; entropie ji neurčuje.
+\begin{theorem}
+Z konstantního pozorování neplyne nulová hodnota:
+\[
+H(Y)=0
+\quad\not\Longrightarrow\quad
+v(X)=0.
+\]
+\end{theorem}
+\begin{proof}
+Nechť $X$ nabývá dvou hodnot $a,b$, každé
+s pravděpodobností $1/2$. Položme
+\[
+f(a)=f(b)=y_0,
+\qquad
+v(a)=v(b)=1.
+\]
+Potom
+\[
+H(Y)=0,\qquad H(X\mid Y)=1,
+\qquad v(X)=1.
+\]
+Pozorování nerozlišuje žádnou z obou možností,
+ale hodnota je v obou případech nenulová.
+To je protipříklad k uvedené implikaci.
+\end{proof}
+\paragraph{Hranice tvrzení.}
+Tento příklad nedokazuje, že láska vždy přetrvá.
+Dokazuje pouze, že ztráta rozlišení sama
+logicky neimplikuje lhostejnost.
+Lidské city nejsou v tomto modelu popsány.
+\bigskip
+\begin{center}
+\itshape
+Nevím, co zůstane po ztrátě.\\
+Z toho, že něco nedokážu rozlišit,\\
+však neplyne, že na ničem nezáleží.
+\medskip
+Matematika zde končí.\\
+A člověku můžeme zůstat nablízku.
+\medskip
+A tak tu stojím na konci věků\\
+a čekám na ostatní,\\
+protože nikdo nechce být sám.
+\end{center}
+\end{document}

@@ -22,3 +22,4 @@ import CausalSeed.ImmersionGap
 import CausalSeed.RecordDream
 import CausalSeed.LogicNonsense
 import CausalSeed.ValueGap
+import CausalSeed.RecursiveDream

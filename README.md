@@ -1853,6 +1853,45 @@ Lean:
 - [`NobodyLeft.wish_is_not_an_action`](CausalSeed/NobodyLeft.lean#L149)
 - [`NobodyLeft.supplied_tree_sandwich`](CausalSeed/NobodyLeft.lean#L158)
 
+### Immersion and observer gap
+
+Two points of one fiber, one image, a deterministic step that separates
+them. The observer who sees only the image has binary entropy; the one
+who sees the state has zero. Formalization of the information half of
+the Klein-bottle argument. The geometry stays in the note. No claim that
+the immersion creates randomness.
+
+- [`ImmersionGap.entropy_of_future`](CausalSeed/ImmersionGap.lean)
+- [`ImmersionGap.entropy_given_state`](CausalSeed/ImmersionGap.lean)
+- [`ImmersionGap.observer_gap`](CausalSeed/ImmersionGap.lean)
+
+### Record and dream
+
+The consent step and the two-outcome record, in one module. An admitted
+action lands in care by definition, so a trajectory of admitted actions
+stays in care; existence of an admission is assumed. The record has
+binary entropy, and reading the same record has conditional entropy
+zero. The measurement operator and the question of which single outcome
+occurs are not formalized.
+
+- [`DreamStay.remains`](CausalSeed/RecordDream.lean)
+- [`Record.entropy_of_record`](CausalSeed/RecordDream.lean)
+- [`Record.entropy_after_reading`](CausalSeed/RecordDream.lean)
+- [`Record.record_gap`](CausalSeed/RecordDream.lean)
+
+### Greatest safe core
+
+The operator `P` and its iteration from the protected set, from
+"Společná pravidla a bezpečná volba". On a finite state space the
+iterates stabilize; the stable set is a fixed point of `P` and the
+greatest self-safe set. Nonemptiness for an arbitrary system is not
+proved. The core is what the definition keeps, not a choice.
+
+- [`Core.pred`](CausalSeed/Core.lean)
+- [`Core.V_stabilizes`](CausalSeed/Core.lean)
+- [`Core.core_fixed`](CausalSeed/Core.lean)
+- [`Core.core_greatest`](CausalSeed/Core.lean)
+
 ### Skepsis 2.0
 
 **Do not decide by a certainty we do not have.** Four operational clauses.

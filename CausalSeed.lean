@@ -23,3 +23,6 @@ import CausalSeed.RecordDream
 import CausalSeed.LogicNonsense
 import CausalSeed.ValueGap
 import CausalSeed.RecursiveDream
+import CausalSeed.FocusStep
+import CausalSeed.CoreFin
+import CausalSeed.Focus

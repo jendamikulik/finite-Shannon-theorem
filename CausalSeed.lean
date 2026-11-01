@@ -27,3 +27,4 @@ import CausalSeed.FocusStep
 import CausalSeed.CoreFin
 import CausalSeed.Focus
 import CausalSeed.Will
+import CausalSeed.Paradox

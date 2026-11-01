@@ -1913,6 +1913,33 @@ None of this produces `W`, a person, or a zero of `ξ`.
 - [`Will.Step.can_hear_no`](CausalSeed/Will.lean)
 - [`Will.Step.own_step_is_not_the_world`](CausalSeed/Will.lean)
 
+### `0 = 1` without explosion
+
+From "Rovnost 0=1 bez logické exploze". Three models, kept apart.
+
+In `ZMod 1`, `0 = 1`, and in any unital semiring that equality collapses
+every element. In `ℕ`, `0 ≠ 1`. The two classical claims about `ℕ` cannot
+hold together.
+
+Dunn–Belnap evidence records positive and negative support separately.
+`{P, ¬P}` does not entail an independent atom. The glutty atom read as
+"zero equals one" does not rewrite equality on `ℕ`.
+
+A constant realization identifies images and leaves the states distinct.
+For the uniform state, `H(X) = 1`, `H(WX) = 0`, and `H(X | WX) = 1`.
+The state is not a function of the image.
+
+Not proved: a nonclassical calculus of identity and causality, a physical
+will, or anything about the zeros of `ξ`.
+
+- [`Paradox.literal_collapse`](CausalSeed/Paradox.lean)
+- [`Paradox.zmod_one_zero_eq_one`](CausalSeed/Paradox.lean)
+- [`Paradox.nonexplosion`](CausalSeed/Paradox.lean)
+- [`Paradox.evidence_does_not_rewrite_nat`](CausalSeed/Paradox.lean)
+- [`Paradox.two_levels`](CausalSeed/Paradox.lean)
+- [`Paradox.constant_map_hides_the_bit`](CausalSeed/Paradox.lean)
+- [`Paradox.not_lossless`](CausalSeed/Paradox.lean)
+
 ### Skepsis 2.0
 
 **Do not decide by a certainty we do not have.** Four operational clauses.

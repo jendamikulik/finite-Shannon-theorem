@@ -1892,6 +1892,27 @@ proved. The core is what the definition keeps, not a choice.
 - [`Core.core_fixed`](CausalSeed/Core.lean)
 - [`Core.core_greatest`](CausalSeed/Core.lean)
 
+### Will, and responsibility for a step
+
+From "operator je ta vůle" and "Odpovědnost s láskou". `0` is a possibility
+not yet realized, `1` is that possibility realized. The model takes
+`W` to be the constant map to `1`, so `W ∘ W = W` and the two states have
+one image. In the quotient, `[0] = [1]`. In `Fin 2`, `0 ≠ 1`. The
+constant value is assumed: another operator leaves `0` unrealized.
+
+A shared step is an action in every participant's set. One's own step
+is one's own set. It can be nonempty while the intersection is empty,
+and while no action is acceptable at every state. Where the intersection
+is nonempty, an action taken from it remains acceptable to the other.
+None of this produces `W`, a person, or a zero of `ξ`.
+
+- [`Will.under_will`](CausalSeed/Will.lean)
+- [`Will.quotient_is_not_arithmetic`](CausalSeed/Will.lean)
+- [`Will.realization_is_assumed`](CausalSeed/Will.lean)
+- [`Will.Step.common_step_iff`](CausalSeed/Will.lean)
+- [`Will.Step.can_hear_no`](CausalSeed/Will.lean)
+- [`Will.Step.own_step_is_not_the_world`](CausalSeed/Will.lean)
+
 ### Skepsis 2.0
 
 **Do not decide by a certainty we do not have.** Four operational clauses.

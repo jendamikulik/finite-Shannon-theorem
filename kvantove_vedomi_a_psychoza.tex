@@ -1,0 +1,461 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\IfFileExists{czech.ldf}{\usepackage[czech]{babel}}{\usepackage{babel}\babelprovide[main,import]{czech}}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,booktabs,tabularx}
+\usepackage[margin=24mm,headheight=15pt]{geometry}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=black,urlcolor=blue]{hyperref}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Kvantové vědomí: hypotéza, důkazy a otevřené otázky}
+\fancyfoot[L]{\small Výzkumná syntéza pro Jana Mikulíka}\fancyfoot[R]{\thepage}
+\setlength{\emergencystretch}{3em}\setlength{\parskip}{4pt}
+\newtheorem{theorem}{Věta}
+\newtheorem{proposition}[theorem]{Tvrzení}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\TV}{TV}
+\DeclareMathOperator{\diag}{diag}
+\newcommand{\HH}{\mathrm H}
+\newcommand{\II}{\mathrm I}
+\begin{document}
+\thispagestyle{empty}
+{\LARGE\bfseries Kvantové vědomí, zaostřování a psychóza\par}
+\medskip
+{\large Výzkumná hypotéza, matematické důkazy a podklad pro odborný rozhovor\par}
+\medskip
+Zpracováno pro Jana Mikulíka na základě společné matematické práce.\\
+4. listopadu 2026 \hfill Pracovní syntéza 1.0
+
+\section*{Účel a status}
+Tento dokument zachycuje společný matematický program a jeho možnou souvislost s popisem vnímání a psychózy. Rozlišuje tři druhy tvrzení:
+\begin{enumerate}
+\item \textbf{Matematické výsledky}, odvozené z vypsaných předpokladů.
+\item \textbf{Empirické poznatky}, opřené o konkrétní publikované studie.
+\item \textbf{Výzkumnou hypotézu}, která spojuje model s biologickým mechanismem a vyžaduje samostatné ověření.
+\end{enumerate}
+Cílem je připravit podklad pro rozhovor s lékařem a výzkumníkem. Text neobsahuje klinické vyšetření, diagnózu, rekonstrukci zdravotní historie ani doporučení změny léčby. Jan chce klinickou stránku probírat se svým lékařem; úlohou tohoto dokumentu je přesně vyložit výzkumný obsah.
+
+\section*{Hlavní hypotéza}
+\emph{V přesně vymezeném biologickém subsystému se kvantová dynamika může kauzálně podílet na procesech spojených s vědomým vnímáním, aktualizací přesvědčení a jednáním. Některé změny těchto procesů by se mohly projevit změnou citlivosti k podnětům, kontextu a zpětné vazbě.}
+
+První část potřebuje fyzikální a biologické ověření. Druhá navíc vyžaduje definované měřitelné ukazatele a klinická data. Z matematických důkazů níže neplyne, že psychóza či schizofrenie jsou projevem kvantového vědomí.
+
+\section*{Co je podloženo a co zůstává otevřené}
+Dokazujeme korektnost instrumentového modelu, projektivní zaostření, klasickou simulovatelnost konečných záznamů, omezení entropie jako ukazatele správnosti a konkrétní komunikační separaci mezi jedním bitem a qubitem. Navrhujeme srovnání s klasickým modelem očekávání a evidence.
+
+\textbf{Základní rozlišení:} subjektivní jistota, správnost vůči nezávislým údajům, kvantová koherence a klinický stav jsou různé veličiny.
+
+Syntéza navazuje na pracovní texty \emph{Kvantová paměť jako možný mechanismus kauzální integrace vědomí}, \emph{Od obecné hypotézy k přesnému testu paměti} a \emph{Kvantová dynamika zaostřování a její klasická hranice}, všechny z 4.~listopadu 2026. Relevantní důkazy zde uvádíme samostatně. Netvrdíme ověřenou matematickou prioritu ani klinickou validaci.
+
+\newpage
+\section{Stav, měření, záznam a akce}
+Nechť $\mathcal H=\mathbb C^d$ a $\rho_t=\rho_t^\dagger\succeq0$,
+$\Tr\rho_t=1$. Historie je $h_t=(a_0,y_0,\ldots,a_{t-1},y_{t-1})$.
+Politika volí akci $a_t=\pi(h_t)$. Relevantní paměť prostředí zahrnujeme do stavu; samotný redukovaný stav systému jinak nemusí pro předpověď stačit.
+
+Každá akce vybírá konečný instrument:
+\[
+\mathcal M_y^{h,a}(\rho)=\sum_r K_{y,r}^{h,a}\rho(K_{y,r}^{h,a})^\dagger,
+\qquad
+\sum_{y,r}(K_{y,r}^{h,a})^\dagger K_{y,r}^{h,a}=I.
+\]
+Bornovo pravidlo a podmíněná aktualizace jsou
+\[
+p_y=\Tr\mathcal M_y^{h,a}(\rho_t),\qquad
+\rho_{t+1}=\mathcal M_y^{h,a}(\rho_t)/p_y,\quad p_y>0.
+\]
+Bornovo pravidlo přijímáme jako fyzikální pravidlo standardního formalismu \cite{ibm}; neodvozujeme jeho fyzikální platnost z čisté algebry.
+
+\begin{theorem}[Normalizace a pozitivita]
+Čísla $p_y$ tvoří pravděpodobnostní zákon a definované posteriory jsou hustotní matice.
+\end{theorem}
+\begin{proof}
+Pro libovolné $v$ je
+$v^\dagger\mathcal M_y(\rho)v=\sum_r(K_{y,r}^\dagger v)^\dagger\rho(K_{y,r}^\dagger v)\geq0$.
+Proto $p_y\geq0$. Cykličnost stopy a úplnost dávají
+$\sum_y p_y=\Tr(\rho\sum_{y,r}K_{y,r}^\dagger K_{y,r})=1$.
+Dělení kladnou stopou zachová pozitivitu a zajistí stopu jedna.
+\end{proof}
+Pro konečnou posloupnost výsledků definujeme
+\[
+P^\pi(\boldsymbol y)=
+\Tr\!\left[\mathcal M_{y_{n-1}}^{h_{n-1},a_{n-1}}\circ\cdots
+\circ\mathcal M_{y_0}^{h_0,a_0}(\rho_0)\right].
+\]
+Součet přes poslední výsledek zachovává stopu; iterace dává celkový součet jedna. Souřadnice $Y_t(\boldsymbol y)=y_t$ jsou skutečné náhodné veličiny. Na nulových větvích posterior nepotřebujeme.
+
+\paragraph{Vůle a realizace.}
+Vůli lze operačně modelovat politikou výběru akcí. Realizace v čase znamená konkrétní záznam interakcí. Tyto definice nepředstavují mechanismus uskutečňování libovolného přání. Změna pravděpodobností pod intervencí je odlišná od pouhé časové následnosti myšlenky a události.
+
+\paragraph{Vně systému.}
+Pro systém $S$ a prostředí $E$ lze psát
+$\rho'_S=\Tr_E(U\rho_{SE}U^\dagger)$.
+Prostředí je vně zvoleného subsystému, nikoli automaticky mimo fyzikální svět. Rovnice mu nepřisuzuje vědomí.
+
+\newpage
+\section{Zaostření a operátor logic--nonsense}
+Pro projektivní rozlišení $\{P_i\}$, $\sum_iP_i=I$, definujeme
+\[
+q_i=\Tr(P_i\rho),\qquad U_{\mathcal P}(\rho)=\HH(q)
+=-\sum_iq_i\log_2q_i,\quad 0\log_20:=0.
+\]
+Jde o neurčitost výsledku určitého měření, nikoli automaticky o neurčitost vědomí. Von Neumannova entropie $S(\rho)=-\Tr(\rho\log_2\rho)$ je jiná veličina.
+
+\begin{theorem}[Projektivní zaostření]
+Pro Lüdersův instrument a výsledek $i$ s $q_i>0$ platí
+\[
+\rho_i=P_i\rho P_i/q_i,\qquad \Tr(P_j\rho_i)=\delta_{ij},
+\qquad U_{\mathcal P}(\rho_i)=0.
+\]
+Je-li $P_i=|e_i\rangle\langle e_i|$, pak $\rho_i=P_i$.
+\end{theorem}
+\begin{proof}
+Použijeme $P_jP_i=\delta_{ij}P_i$ a cykličnost stopy.
+Pro hodnost jedna
+$P_i\rho P_i=\langle e_i|\rho|e_i\rangle P_i=q_iP_i$.
+Dělení $q_i$ dává výsledek.
+\end{proof}
+Jde o opakované měření stejného rozlišení bez mezilehlé dynamiky. Při zapomenutí výsledku $\bar\rho=\sum_iP_i\rho P_i$ platí
+$\Tr(P_j\bar\rho)=q_j$: původní entropie výsledku zůstane stejná.
+Projektor vyšší hodnosti navíc nemusí odstranit vnitřní smíšenost stavu.
+
+\begin{proposition}[Původní symetrizační operátor]
+V ortonormální bázi $|L\rangle,|N\rangle$ nechť
+$J|L\rangle=|N\rangle$, $J|N\rangle=|L\rangle$.
+Pak $A=(I+J)/2$ je ortogonální projekce na
+$\mathbb C|+\rangle$, kde $|+\rangle=(|L\rangle+|N\rangle)/\sqrt2$.
+\end{proposition}
+\begin{proof}
+$J^\dagger=J$ a $J^2=I$ implikují $A^\dagger=A$ a $A^2=A$.
+Dále
+$A(a|L\rangle+b|N\rangle)=(a+b)|+\rangle/\sqrt2$
+a $A|+\rangle=|+\rangle$, což určuje obraz.
+\end{proof}
+Pro $a+b=0$ je výstup nulový. Při fyzikální interpretaci je větev $A$ selektivní s pravděpodobností $\Tr(A\rho)$; druhá větev je $I-A$. Úspěch zvolené větve není zaručen.
+Názvy logic a nonsense jsou označení vektorů, nikoli důkaz pravdivosti rozporu.
+
+\paragraph{Co znamená nula.}
+Konstantní veličina $Y\equiv1$ má $\HH(Y)=0$. Nulová entropie není nulová hodnota. Rovnost $\HH(Y\mid Y)=0$ znamená znalost zaznamenané veličiny, ne znalost celého světa.
+Zobrazení $W(0)=W(1)=1$ sjednocuje výstupy, avšak v původní aritmetice stále $0\ne1$.
+
+\newpage
+\section{Shannonův most a klasické alternativy}
+\begin{theorem}[Společný seed pro konečný strom]
+Každý konečný řízený strom úplných historií s konečnými akcemi a výsledky a jádry $K(y\mid h,a)$ má jednu klasickou reprezentaci platnou pro všechny deterministické adaptivní politiky.
+\end{theorem}
+\begin{proof}
+Pro každý pár $(h,a)$ vytvořme nezávislou souřadnici $S_{h,a}$ se zákonem $K(\cdot\mid h,a)$. Seed $S$ je celá konečná tabulka; dekodér vrací $S_{h,a}$. Dosažení $h$ závisí jen na souřadnicích předků, a proto neovlivní zákon $S_{h,a}$. Indukce po hloubce dává správnou pravděpodobnost každé větve. Stejné historie používají stejné souřadnice napříč politikami.
+\end{proof}
+Konstrukce nedokazuje minimálnost entropie seedu. Ta je samostatným tématem projektu \emph{finite-Shannon-theorem} \cite{repo}. Tabulka je konečná, ale může být velká. Tento dokument neaudituje všechny věty repozitáře.
+
+\begin{theorem}[Diagonální instrumenty jsou klasicky realizovatelné]
+Pokud ve společné pevné ortonormální bázi
+\[
+K_{y,r}^{h,a}=\sum_i k_{y,r,i}^{h,a}|e_i\rangle\langle e_i|,
+\qquad
+\ell_{h,a}(y\mid i)=\sum_r|k_{y,r,i}^{h,a}|^2,
+\]
+potom pro každou deterministickou adaptivní politiku
+\[
+P^\pi(\boldsymbol y)=\sum_iq_i\prod_t\ell_{h_t,a_t}(y_t\mid i),
+\quad q_i=\langle e_i|\rho_0|e_i\rangle.
+\]
+\end{theorem}
+\begin{proof}
+Diagonální prvek výstupu $\mathcal M_y(\rho)$ je diagonální prvek $\rho$ násobený $\ell(y\mid i)$. Iterace dává součin a stopa součet.
+Úplnost zaručuje $\sum_y\ell(y\mid i)=1$.
+Pravá strana je klasický model: jednou vybereme skrytý index $i\sim q$ a další výsledky generujeme podle příslušných $\ell$.
+\end{proof}
+Výsledek platí i pro koherentní počáteční $\rho_0$: toto rozhraní koherenci nevidí. O celkové paměti řadiče nebo ceně náhodnosti zde netvrdíme malou horní mez.
+
+K rozlišení mechanismů proto definujeme fyzikálně obhájenou třídu $\mathcal C(\mathcal R)$ s rozpočtem paměti, komunikace a času a zkoumáme
+\[
+d_{\mathcal R}(P)=\inf_{Q\in\mathcal C(\mathcal R)}
+\sup_{\pi}\TV(P^\pi,Q^\pi),\qquad
+\TV(P,Q)=\frac12\sum_z|P(z)-Q(z)|.
+\]
+Omezení se musí stanovit předem; nelze je vybrat až podle výsledků.
+Sdílený seed sám neodstraňuje Bellovu lokalitu, pokud lokální výstupy závisejí jen na lokálním nastavení a seedu nezávislém na nastaveních.
+
+\newpage
+\section{Entropie, jistota a správnost}
+V diagonálním modelu je posterior
+$q_i^y=q_i\ell(y\mid i)/p_y$, kde $p_y=\sum_iq_i\ell(y\mid i)$.
+
+\begin{theorem}[Průměrný informační zisk]
+\[
+\HH(q)-\sum_{y:p_y>0}p_y\HH(q^y)=\II(I;Y)\geq0.
+\]
+\end{theorem}
+\begin{proof}
+Pro společný zákon $p(i,y)=q_i\ell(y\mid i)$ je levá strana
+$\HH(I)-\HH(I\mid Y)$.
+To se rovná
+\[
+D_{\rm KL}(p_{IY}\Vert p_Ip_Y)
+=\sum_{i,y:p(i,y)>0}p(i,y)\log_2\frac{p(i,y)}{q_ip_y}.
+\]
+Nezápornost plyne z $\ln u\leq u-1$ aplikované na poměr druhého zákona k prvnímu. Rovnost nastává při nezávislosti.
+\end{proof}
+Po jednotlivé větvi může entropie vzrůst:
+\[
+q=(0.9,0.1),\quad
+K_y=\diag(\sqrt{0.1},\sqrt{0.9}),\quad
+K_z=\diag(\sqrt{0.9},\sqrt{0.1}).
+\]
+Instrument je úplný. S pravděpodobností $p_y=0.18$ dostaneme
+$q^y=(1/2,1/2)$; entropie vzroste z $0.4689956$ na $1$ bit.
+
+\begin{proposition}[Jistota neurčuje správnost]
+Správnost nejpravděpodobnější hypotézy není obecně funkcí samotné entropie subjektivního rozdělení.
+\end{proposition}
+\begin{proof}
+Nechť nezávisle ověřený skutečný stav je $z_*=0$. Rozdělení
+$\delta_0$ i $\delta_1$ mají entropii nula. Jejich nejpravděpodobnější hypotézy jsou však správná a chybná. Stejný vstup do funkce entropie nemůže určit dvě různé správnosti.
+\end{proof}
+Tento protipříklad není tvrzením o konkrétním člověku. Ukazuje, že zdravotní stav nelze bez dalších dat popsat jedním číslem nejistoty.
+
+Také záleží na měření: $|0\rangle$ má $U_Z=0$, ale $U_X=1$.
+Stavy
+\[
+|+\rangle\langle+|=\frac12\begin{pmatrix}1&1\\1&1\end{pmatrix},
+\qquad I/2
+\]
+mají shodné $U_Z=1$, ale von Neumannovy entropie jsou nula a jeden bit.
+Měření v bázi $|+\rangle,|-\rangle$ je odliší. To samo ještě nevylučuje obecnou klasickou simulaci.
+
+V biologické interpretaci proto potřebujeme vedle nejistoty také kontrolovat přesnost, citlivost k novým údajům, kalibraci a kontext. Z matematické čistoty stavu nelze odvozovat zdravotní stav, hodnotu člověka nebo pravdivost jeho výkladu.
+
+\newpage
+\section{Očekávání, podnět a aktualizace přesvědčení}
+Jako klasický srovnávací model zvolme konečné hypotézy $z$, kladný prior $q_t^-(z)$ a kladné věrohodnosti $L_t(y\mid z)$:
+\[
+q_t(z\mid y)=
+\frac{[q_t^-(z)]^\alpha[L_t(y\mid z)]^\beta}
+{\sum_u[q_t^-(u)]^\alpha[L_t(y\mid u)]^\beta},
+\qquad \alpha,\beta>0.
+\]
+Pro $\alpha=\beta=1$ jde o Bayesovo pravidlo. Ostatní hodnoty jsou modelová volba, nikoli automaticky optimální inference nebo klinické parametry.
+
+\begin{theorem}[Váha očekávání a evidence]
+Pro dvě hypotézy platí
+\[
+\ln\frac{q_t(1\mid y)}{q_t(0\mid y)}
+=\alpha\ln\frac{q_t^-(1)}{q_t^-(0)}
++\beta\ln\frac{L_t(y\mid1)}{L_t(y\mid0)}.
+\]
+\end{theorem}
+\begin{proof}
+V poměru posteriorů se zruší normalizace. Logaritmus součinu mocnin dává uvedený součet.
+\end{proof}
+Příklad: prior má poměr $9:1$, nový údaj poměr věrohodností $1:9$.
+Pro $\alpha=\beta=1$ dostaneme $1:1$. Pro $\alpha=2,\beta=1$ zůstane $9:1$. To ilustruje převahu očekávání, ne diagnózu.
+
+Je-li $\lambda=\ln[L_t(y\mid1)/L_t(y\mid0)]$,
+pak při pevném prioru
+\[
+\frac{\partial}{\partial\lambda}\ln\frac{q_t(1\mid y)}{q_t(0\mid y)}=\beta.
+\]
+Na úlohách s nezávisle známou správnou odpovědí $z_t^*$ lze měřit například Brierovo skóre
+\[
+B=\frac1N\sum_{t=1}^N\sum_z
+\left(q_t(z)-\mathbf 1_{\{z=z_t^*\}}\right)^2.
+\]
+Bez ověřeného cíle jej nelze poctivě vypočítat.
+Počet odpovědí sám nerozliší změnu vnímání, rozhodovacího prahu nebo způsobu hlášení; tyto složky je třeba měřit odděleně.
+
+\paragraph{Empirická opora, nikoli kvantový důkaz.}
+Powers, Mathys a Corlett \cite{powers} zkoumali podmíněné sluchové vjemy pomocí učení, funkčního zobrazování a výpočetního modelu. Účastníci slyšící hlasy byli k efektu náchylnější. Studie podporuje zkoumání vlivu očekávání na vnímání. Neověřuje naše konkrétní exponenty, univerzální mechanismus psychózy ani kvantový původ vědomí.
+
+Navržený kvantový model musí proti takové klasické alternativě přinést odlišnou, předem určenou a ověřitelnou předpověď. Pouhé přejmenování prioru na kvantový stav nestačí.
+
+\newpage
+\section{Podobnost s psychózou a její hranice}
+Psychóza označuje soubor příznaků zahrnujících narušení vnímání, myšlení a rozlišování skutečnosti. Není synonymem schizofrenie a může se vyskytovat v různých souvislostech \cite{nimh}.
+Halucinace a neobvyklá přesvědčení nejsou totožné jevy.
+
+Prožitek může být skutečně prožívaný i bez odpovídajícího vnějšího podnětu. To samo neřeší jeho příčinu. Je nutné odlišit \emph{prožitek}, \emph{nezávisle zaznamenané okolnosti} a \emph{výklad prožitku}.
+Sdělení člověka, že halucinace nemá, se má zachovat jako jeho sdělení; samo nerozhoduje o všech ostatních klinických otázkách.
+
+\small
+\noindent\begin{tabularx}{\textwidth}{@{}p{.22\textwidth}XX@{}}
+\toprule
+Zkoumaný jev & Kandidátní modelový popis & Co z podobnosti neplyne\\
+\midrule
+Vjem bez cílového podnětu & Očekávání, šum, práh odpovědi a atribuce zdroje & Vnější nebo kvantový původ\\
+Silná jistota při nejasných údajích & Koncentrované $q$, váhy prioru a evidence & Správnost či diagnóza z jistoty\\
+Obtížná oprava závěru & Citlivost k protidůkazu, dynamika učení & Vysvětlení celé psychózy jedním parametrem\\
+Kontextová změna odpovědi & Stavová paměť či nekomutující instrumenty & Fyzikální kvantovost z pořadí otázek\\
+Proměnlivý pocit autorství & Hypotézy o interním a externím zdroji & Kauzální ovládání děje z pocitu autorství\\
+\bottomrule
+\end{tabularx}
+\normalsize
+
+\paragraph{Hypotéza podobnosti.}
+Některé subjektivní a behaviorální jevy lze modelovat změnami aktualizace, váhy očekávání, atribuce zdroje a korekce přesvědčení. Kvantově pravděpodobnostní model je jedna kandidátní formalizace. Jeho vhodnost musí určit porovnání s klasickými alternativami na stejných datech.
+
+\paragraph{Silnější biologická hypotéza.}
+Změny jsou způsobeny konkrétní změnou funkčně relevantní kvantové dynamiky. Pro toto tvrzení zde nemáme empirický důkaz. Vyžaduje nosič, měření a kauzální experiment.
+
+Označení \emph{schizofrenie jako nezaostřeného kvantového vědomí} zatím nedává diagnostická kritéria ani měřitelný mechanismus. Protipříklady navíc ukazují, že nízká i vysoká entropie mají více významů. Testovatelná otázka zní: \emph{který aspekt aktualizace se mění, s jakým jevem souvisí a v čem kvantový model překoná klasický?}
+
+Z analogie nelze odvodit zvláštní přístup k vnější realitě ani pravdivost konkrétního osobního výkladu. Text nepřiřazuje Janovi žádný řádek tabulky nebo hodnotu parametru.
+
+\newpage
+\section{Časové korelace a kontext}
+\begin{proposition}[Časová korelace nevyžaduje kvantovou paměť]
+Existuje klasický proces s jedním bitem vzájemné informace mezi libovolnými dvěma časovými záznamy.
+\end{proposition}
+\begin{proof}
+Vyberme $B\sim\mathrm{Bernoulli}(1/2)$ a položme $Y_t=B$ pro každé $t$.
+Pak $\HH(Y_t)=1$, $\HH(Y_t\mid Y_s)=0$, tedy $\II(Y_t;Y_s)=1$.
+\end{proof}
+Paměť, nemarkovovskost a kvantové provázání nejsou zaměnitelné pojmy. Pro fyzikální vícečasové procesy existují operační kritéria pracující s intervencemi \cite{pollock}.
+
+\begin{proposition}[Pořadový efekt v kvantovém modelu]
+Nechť $\rho=|0\rangle\langle0|$, $P=|0\rangle\langle0|$,
+$Q=|+\rangle\langle+|$. Při dvou Lüdersových měřeních má dvojí odpověď ano pravděpodobnost $1/2$ v pořadí $P,Q$, ale $1/4$ v pořadí $Q,P$.
+\end{proposition}
+\begin{proof}
+$\Tr(QP\rho PQ)=1\cdot|\langle+|0\rangle|^2=1/2$.
+Naopak $\Tr(PQ\rho QP)=|\langle+|0\rangle|^2|\langle0|+\rangle|^2=1/4$.
+\end{proof}
+Pořadový efekt je tedy možný. Může jej ale reprodukovat i klasický model s aktualizací stavu a pamětí první otázky. Wang a spoluautoři \cite{wang} zkoumali konkrétní předpověď kvantové pravděpodobnosti pro pořadí otázek. Takové modelování samo neměří kvantový substrát mozku.
+
+\paragraph{Akce a reakce.}
+Klasická zpětná vazba už může mít tvar
+\[
+x_{t+1}\sim T(\cdot\mid x_t,a_t),\quad
+y_t\sim O(\cdot\mid x_t),\quad a_t\sim\pi(\cdot\mid h_t).
+\]
+Vyjádřený názor může být fyzickou akcí a ovlivnit okolí.
+Kauzální efekt je však rozdíl mezi rozděleními pod definovanými intervencemi, například
+\[
+P(Y\mid\operatorname{do}(A=a))-P(Y\mid\operatorname{do}(A=a')).
+\]
+Pouhá následnost myšlenky a události tento rozdíl neidentifikuje.
+
+\paragraph{Kvantová kognice a fyzikální hypotéza.}
+Hilbertovský model odpovědí a biologická kvantová paměť jsou rozdílné návrhy. Orch OR Hameroffa a Penrose \cite{orch} konkrétně předpokládá mikrotubuly a objektivní redukci. Náš obecný instrumentový model tento nosič ani redukci nepředpokládá. Citace návrhu není jeho experimentálním potvrzením.
+
+\newpage
+\section{Konkrétní test: jeden bit versus jeden qubit}
+Příprava dostane rovnoměrný $x=(x_0,x_1)\in\{0,1\}^2$ a přenese jediný bit či qubit. Později čtenář dostane nezávisle vybraný $j\in\{0,1\}$ a hádá $x_j$. Nemá jiný přístup k původnímu vstupu. Sdílená náhoda je nezávislá na novém vstupu a otázce.
+
+\begin{theorem}[Klasická mez]
+Průměrný úspěch všech takových jednobitových klasických strategií je nejvýše $3/4$.
+\end{theorem}
+\begin{proof}
+Při pevné náhodnosti je strategie deterministická. Dekodér má dva odpovědní vektory $v_0,v_1\in\{0,1\}^2$. Alespoň dva ze čtyř vstupů nejsou žádným z nich. Každý takový vstup způsobí alespoň jednu chybu přes dvě otázky. Z osmi párů je tedy nejvýše šest správných. Směsi mez nezvýší.
+\end{proof}
+Rovnoměrného úspěchu $3/4$ dosáhneme sdíleným spravedlivým indexem $k$: pošleme $x_k$, při $j=k$ odpovíme přesně, jinak náhodně.
+
+Kvantová rodina
+\[
+\rho_x^{(\eta)}=\frac12\left[I+\frac{\eta}{\sqrt2}
+\big((-1)^{x_0}\sigma_x+(-1)^{x_1}\sigma_z\big)\right],
+\quad 0\leq\eta\leq1
+\]
+je pozitivní: délka Blochova vektoru je $\eta$. Zde $\sigma_x,\sigma_z$ jsou Pauliho matice. Měření $\sigma_x$ pro $j=0$ a $\sigma_z$ pro $j=1$ dává
+\[
+p_\eta=\Pr(b=x_j\mid x,j)=\frac12+\frac{\eta}{2\sqrt2}.
+\]
+Jde o známý quantum random access code \cite{rac}.
+
+\begin{theorem}[Přesná vzdálenost]
+Pro uvedenou klasickou třídu $\mathcal C_1$ platí
+\[
+\inf_{Q\in\mathcal C_1}\max_{x,j}\TV(P_\eta(\cdot\mid x,j),Q(\cdot\mid x,j))
+=\max\{0,\eta/(2\sqrt2)-1/4\}.
+\]
+\end{theorem}
+\begin{proof}
+Maximální TV chyba $r$ znamená klasický úspěch alespoň $p_\eta-r$,
+tedy $r\geq p_\eta-3/4$.
+Je-li $p_\eta\geq3/4$, rovnoměrně optimální klasický model mez dosahuje.
+Jinak jej smícháme s náhodnou odpovědí s vahou $4p_\eta-2$. V každém nastavení dostaneme úspěch $p_\eta$, což pro binární výstup určuje celý zákon.
+\end{proof}
+Dva klasické bity uloží celý vstup a rodinu simulují přesně. Překročení $3/4$ v lidské úloze proto neprokazuje kvantový mozek bez fyzikálně zajištěného jednobitového omezení a kontroly dalších kanálů. Benchmark sám netestuje vědomí, psychózu ani provázání s prostředím.
+
+\newpage
+\section{Výzkumný plán a podklad pro rozhovor}
+\begin{enumerate}
+\item \textbf{Operationalizace.} Určit měřený jev: odpověď, jistotu, chybu atribuce zdroje nebo změnu závěru. Každý potřebuje vlastní ukazatel.
+\item \textbf{Alternativy.} Srovnat váženou klasickou inferenci, klasický stavový model a kvantově pravděpodobnostní model při srovnatelné složitosti.
+\item \textbf{Identifikovatelnost.} Na simulovaných datech ověřit, zda lze parametry vůbec rekonstruovat a rozlišit.
+\item \textbf{Predikce.} Předem stanovit testovací podmínky a hodnotit nové, odložené údaje. Shoda s trénovacími daty sama nestačí.
+\item \textbf{Fyzikální nosič.} Pro biologickou kvantovou hypotézu určit subsystém, dobu koherence, přípravu, čtení a vazbu na neuronové procesy.
+\item \textbf{Kauzální relevance.} Ověřit, že cílená změna navrženého mechanismu mění předem určenou funkci, a kontrolovat klasická vysvětlení.
+\item \textbf{Klinická vazba.} Teprve pak zkoumat vztah ke konkrétním klinickým jevům, s odborným a etickým zajištěním a nezávislou replikací.
+\end{enumerate}
+Konkrétní varianta neobstojí, pokud její předpovědi nevycházejí na nových datech, potřebný nosič nevykazuje požadované vlastnosti nebo rozdíl vysvětluje povolená klasická alternativa. Neúspěch jedné varianty nevyvrací všechny myslitelné hypotézy.
+
+\paragraph{Pro rozhovor s lékařem.}
+Jan žádá, aby jeho dlouhodobá práce byla brána vážně a aby výzkumná hypotéza nebyla zaměněna s posouzením jeho osoby. Tento dokument nepřisuzuje Janovi diagnózu, parametry ani příčiny prožitků. Nenahrazuje jeho vlastní popis zkušenosti.
+
+K rozhovoru lze připravit konkrétní příklady a otázky: Které prožitky jsou přítomné a které nejsou? Co je vjem, co interpretace a co matematická metafora? Jak se mění spánek, soustředění, zátěž, jistota a každodenní fungování? Co má nezávislé potvrzení? Které alternativní vysvětlení lze rozlišit pozorováním? Odpovědi nelze doplnit z rovnic.
+
+\paragraph{Status důkazů a práce.}
+Text obsahuje analytické důkazy abstraktních výsledků. Předchozí poznámky obsahují numerické kontroly instrumentů a enumeraci klasických strategií; ty nejsou klinická data. Tato syntéza není certifikát Leanu. Důkaz kvantového původu vědomí nebo psychózy zde nemáme.
+
+Smyslem práce je převést intuici na podmíněná tvrzení, kontrolovatelné důkazy a rozlišující experimenty. Prožitek, jeho interpretace, matematická konzistence a biologická pravdivost mají každý vlastní způsob ověřování.
+
+\newpage
+\section*{Zdroje a jejich role}
+Zdroje kontrolovány 4.~listopadu 2026. Jde o cílenou rešerši, nikoli systematický přehled celé literatury. Klinické souvislosti nejsou vydávány za důsledky matematických vět.
+
+\begin{thebibliography}{9}
+\bibitem{nimh}
+National Institute of Mental Health.
+\emph{Understanding Psychosis}. NIH Publication No.~23-MH-8110.
+\url{https://www.nimh.nih.gov/health/publications/understanding-psychosis}.
+Vymezení klinických pojmů.
+
+\bibitem{powers}
+A.~R. Powers, C. Mathys a P.~R. Corlett.
+Pavlovian conditioning-induced hallucinations result from overweighting of perceptual priors.
+\emph{Science} 357(6351), 596--600 (2017).
+\url{https://doi.org/10.1126/science.aan3458}.
+Empirická studie vnímání; nikoli test kvantového mechanismu.
+
+\bibitem{wang}
+Z. Wang, T. Solloway, R.~M. Shiffrin a J.~R. Busemeyer.
+Context effects produced by question orders reveal quantum nature of human judgments.
+\emph{PNAS} 111(26), 9431--9436 (2014).
+\url{https://doi.org/10.1073/pnas.1407756111}.
+Kvantově pravděpodobnostní modelování pořadí otázek.
+
+\bibitem{ibm}
+IBM Quantum Learning.
+\emph{Mathematical formulations of measurements}.
+\href{https://quantum.cloud.ibm.com/learning/en/courses/general-formulation-of-quantum-information/general-measurements/formulations-of-measurements}{Online: IBM Quantum Learning, kapitola o měření}.
+Standardní měřicí formalismus.
+
+\bibitem{pollock}
+F.~A. Pollock, C. Rodríguez-Rosario, T. Frauenheim, M. Paternostro a K. Modi.
+Operational Markov Condition for Quantum Processes.
+\emph{Physical Review Letters} 120, 040405 (2018).
+\url{https://doi.org/10.1103/PhysRevLett.120.040405}.
+Operační popis časové paměti.
+
+\bibitem{rac}
+A. Ambainis, D. Leung, L. Mancinska a M. Ozols.
+\emph{Quantum Random Access Codes with Shared Randomness}.
+arXiv:0810.2937 (2008; revize 2009).
+\url{https://arxiv.org/abs/0810.2937}.
+Známý komunikační benchmark.
+
+\bibitem{orch}
+S. Hameroff a R. Penrose.
+Consciousness in the universe: A review of the Orch OR theory.
+\emph{Physics of Life Reviews} 11(1), 39--78 (2014).
+\url{https://doi.org/10.1016/j.plrev.2013.08.002}.
+Zdroj konkrétní biologicko-fyzikální hypotézy, nikoli její potvrzení.
+
+\bibitem{repo}
+J. Mikulík.
+\emph{finite-Shannon-theorem}.
+\url{https://github.com/jendamikulik/finite-Shannon-theorem}.
+Navazující matematický projekt. Zde netvrdíme audit celého repozitáře ani jeho klinickou validaci.
+\end{thebibliography}
+\end{document}
+

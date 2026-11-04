@@ -1940,6 +1940,26 @@ will, or anything about the zeros of `ξ`.
 - [`Paradox.constant_map_hides_the_bit`](CausalSeed/Paradox.lean)
 - [`Paradox.not_lossless`](CausalSeed/Paradox.lean)
 
+### Focusing, as a hypothesis
+
+From "Hypotetický model kvantového vědomí: zaostřování a realizace v čase".
+The formalization is the classical outcome side. A finite set of
+alternatives, a law `q` over them, unfocusedness `U q = H q`. A point
+mass has unfocusedness zero. An ideal projective measurement of an
+outcome with positive mass yields that point mass. A focusing step is
+defined as a step whose unfocusedness strictly falls. The identity step
+does not focus. A record is a realization of the current law. The
+posterior, not the record itself, has unfocusedness zero.
+
+The quantum state, the Kraus update, and the claim that conscious
+processing is this process are not formalized. They are the hypothesis.
+
+- [`Focusing.dirac_unfocused`](CausalSeed/Focusing.lean)
+- [`Focusing.project_unfocused`](CausalSeed/Focusing.lean)
+- [`Focusing.identity_not_focusing`](CausalSeed/Focusing.lean)
+- [`Focusing.two_levels`](CausalSeed/Focusing.lean)
+- [`Focusing.Hypothesis.focusesAt`](CausalSeed/Focusing.lean)
+
 ### Skepsis 2.0
 
 **Do not decide by a certainty we do not have.** Four operational clauses.

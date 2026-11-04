@@ -1960,6 +1960,40 @@ processing is this process are not formalized. They are the hypothesis.
 - [`Focusing.two_levels`](CausalSeed/Focusing.lean)
 - [`Focusing.Hypothesis.focusesAt`](CausalSeed/Focusing.lean)
 
+### From a quantum state to a classical record
+
+From `research.pdf`. The instrument is taken as already reduced to a
+classical outcome law, or to a finite controlled tree. The record law is
+that outcome law, so its Shannon entropy is `H`. One shared seed, read at
+the history actually reached, reproduces a two-step kernel, and the
+decoder ignores the name of the policy. Any supplied finite tree of those
+records obeys the sandwich already proved for every such tree,
+`L ≤ C ≤ L + (1 + log₂ e) / 2`. This file does not reprove the overhead.
+
+Cesàro means of a linear step have defect `(Φᴺρ₀ − ρ₀) / N`. If two
+states are at most `2` apart in `ℓ₁`, the defect is at most `2 / N`.
+Existence of a convergent subsequence is not proved. A fixed averaged
+state is not a repeated record: the swap channel fixes the uniform law
+and flips a trajectory. If every unsuccessful history still succeeds with
+probability at least `ε > 0`, the failure tail is at most `(1 − ε)ⁿ` and
+tends to zero. One positive step does not give a uniform `ε`.
+
+Not proved: complete positivity, the partial trace, existence of a fixed
+density operator, a local implementation of the seed, or that any of
+these objects is conscious processing.
+
+- [`RecordLoop.register_entropy`](CausalSeed/RecordLoop.lean)
+- [`RecordLoop.conditional_is_kernel`](CausalSeed/RecordLoop.lean)
+- [`RecordLoop.policy_name_irrelevant`](CausalSeed/RecordLoop.lean)
+- [`RecordLoop.record_tree_bound`](CausalSeed/RecordLoop.lean)
+- [`RecordLoop.shannonOverhead_paper`](CausalSeed/RecordLoop.lean)
+- [`RecordLoop.cesaro_telescope`](CausalSeed/RecordLoop.lean)
+- [`RecordLoop.cesaro_defect_le`](CausalSeed/RecordLoop.lean)
+- [`RecordLoop.fixed_state_is_not_repeated_record`](CausalSeed/RecordLoop.lean)
+- [`RecordLoop.failure_tail`](CausalSeed/RecordLoop.lean)
+- [`RecordLoop.failure_vanishes`](CausalSeed/RecordLoop.lean)
+- [`RecordLoop.one_positive_step_is_not_uniform`](CausalSeed/RecordLoop.lean)
+
 ### Skepsis 2.0
 
 **Do not decide by a certainty we do not have.** Four operational clauses.

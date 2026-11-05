@@ -2080,3 +2080,17 @@ The additive constant and the nonlinear diffusion profile have antecedents in th
 literature. This repository does not claim originality or priority. Its purpose is to
 state the causal simulation results precisely and to provide formal proofs.
 Comparison with prior work is a separate task.
+
+## Golden sphere
+
+`CausalSeed/GoldenSphere.lean` formalizes the admissible set from the note
+"Zlatá sféra". A wish opens actions, an action changes the state, each
+affected agent has a consent boundary, and a care set collects states that
+satisfy the chosen conditions. The sphere offers a next state only when the
+action is opened, lies in every consent boundary, and lands in the care set.
+A trajectory that always chooses from the offered set and starts in the care
+set remains in it. An empty offered set is silence. The definition contains
+no clause that replaces a missing consent by another agent's sacrifice.
+
+Not proved: that a wish exists, that the boundaries are the right ones, that
+the care set is nonempty, or that the sphere speaks.

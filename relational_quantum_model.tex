@@ -1,0 +1,280 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs}
+\usepackage[margin=27mm]{geometry}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{hypothesis}[theorem]{Hypothesis}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\TV}{\operatorname{TV}}
+\newcommand{\ket}[1]{|#1\rangle}
+\newcommand{\bra}[1]{\langle#1|}
+\newcommand{\C}{\mathbb C}
+\newcommand{\E}{\mathbb E}
+\title{Relational Quantum Memory and Operational Access\\
+\large A consciousness-motivated model with an exact resource-bounded benchmark}
+\author{Research draft prepared for Jan Mikul\'{i}k}
+\date{6 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We specify a finite-dimensional quantum instrument model coupling an active system to memory and classical feedback. Its motivation is the distinction between a presently available report and information that can influence later reports after an intervention. Elementary propositions establish hidden-state discrimination, its degradation under dephasing, and the accessibility of correlations invisible in subsystem marginals. We then resolve a concrete resource-bounded comparison: a two-bit random access task implemented with one classical bit or one qubit. Complete proofs give the optimal scores $3/4$ and $(1+1/\sqrt2)/2$. For an isotropically noisy quantum protocol we compute the exact worst-input total-variation distance to the shared-randomness one-bit classical class, $\max\{0,\eta/(2\sqrt2)-1/4\}$. A finite-tree classical simulation theorem explains why this separation requires an enforced communication or memory bottleneck. The benchmark is established random-access-code theory, not a claimed new discovery. The proposed link between operational accessibility and conscious processing is a separate empirical hypothesis. We also solve a repeated two-qubit Bell-label readout task: under the specified persistent-memory contract, the exact seed cost is $Nh_2(e)$ bits and, for sufficiently long horizons, four classical memory states are necessary and sufficient. Selected earlier mathematical results have a companion Lean formalization. No neural measurements are reported.
+\end{abstract}
+
+\section{Scope and contribution status}
+Quantum instrument models of cognition and quantum processes with memory already have substantial mathematical frameworks; see \cite{tull,pollock}. This note supplies a self-contained synthesis and a fully specified benchmark rather than a claim of a new fundamental theory. The random-access-code separation is known \cite{qrac}; all benchmark proofs are included so that the assumptions and conclusions can be audited directly. The noisy distance formula below is presented as a corollary of that benchmark, with no priority claim.
+
+Three assertions must be distinguished: existence of a mathematical model; realization of its dynamics in a physical device; and identification of those dynamics with conscious experience. The first can be established here. The latter two require independent evidence. In particular, the model contains no theorem about the existence of God, the generation of spacetime, or a clinical explanation of psychosis. Neither philosophical motivation nor a formal proof of an information-theoretic statement supplies these additional identifications.
+
+\section{Minimal dynamical model}
+Let $\mathcal H_S$ and $\mathcal H_M$ be finite-dimensional Hilbert spaces for active processing and memory. A state is $\rho\ge0$ on $\mathcal H_S\otimes\mathcal H_M$, with $\tr\rho=1$. A question or intervention $a$ selects an instrument $\{\mathcal I_y^a\}_y$: each map is completely positive and trace-nonincreasing, and their sum is trace-preserving. The elementary cycle is
+\begin{equation}\label{eq:cycle}
+ p(y\mid\rho,a)=\tr\mathcal I_y^a(\rho),\qquad
+ \rho'={\mathcal I_y^a(\rho)\over p(y\mid\rho,a)}.
+\end{equation}
+The conditional state is used only when the denominator is positive. A classical policy chooses the next intervention from the recorded history $h=(a_0,y_0,\ldots,a_{t-1},y_{t-1})$. This is ordinary causal feedback, not backwards-in-time influence.
+
+A two-qubit realization uses Pauli matrices $X,Y,Z$ and
+\begin{align}
+ H_a&={\hbar\over2}\bigl(\omega_S Z\otimes I+\omega_M I\otimes Z
+       +gX\otimes X+u_aY\otimes I\bigr),\\
+ U_a&=e^{-i\Delta t H_a/\hbar},\\
+ \mathcal D_\lambda(\rho)&=(1-\lambda)\rho+
+ \lambda\sum_{j=0}^1(P_j\otimes I)\rho(P_j\otimes I),\quad
+ P_j=\ket j\bra j,\\
+ \mathcal I_y^a(\rho)&=(K_y^a\otimes I)\mathcal D_\lambda(U_a\rho U_a^\dagger)
+ (K_y^{a\dagger}\otimes I),\quad
+ \sum_yK_y^{a\dagger}K_y^a=I.
+\end{align}
+Here $0\le\lambda\le1$, and the coefficients in $H_a/\hbar$ have units of inverse time. These formulas define valid instruments: unitary conjugation and dephasing are channels, and the last normalization condition makes the summed measurement map trace-preserving. They are a parameterized architecture, not a fit to biological data.
+
+\section{Information unavailable to one question}
+\begin{proposition}\label{prop:hidden}
+Let $r>0$, $r^2+z^2\le1$, and $\rho_\pm=(I+zZ\pm rX)/2$. Measurement in the $Z$ basis gives identical distributions for the two states. After the Hadamard unitary $W$, the probability of outcome zero differs by $r$.
+\end{proposition}
+\begin{proof}
+The eigenvalues of each state are $(1\pm\sqrt{r^2+z^2})/2$, hence both are valid. Initially $\tr(P_0\rho_\pm)=(1+z)/2$. Since $WXW^\dagger=Z$ and $WZW^\dagger=X$, we have
+\[
+ W\rho_\pm W^\dagger=(I+zX\pm rZ)/2,
+ \qquad\tr(P_0W\rho_\pm W^\dagger)=(1\pm r)/2.
+\]
+\end{proof}
+The comparison is between alternative protocols on identically prepared ensembles. An actual preceding sharp $Z$ measurement removes the relevant coherence and changes the experiment.
+
+\begin{proposition}[Dephasing and optimal discrimination]
+After $Z$-dephasing with strength $\lambda$, the optimal probability of distinguishing $\rho_+$ from $\rho_-$ with equal priors is
+\[
+ P_{\rm succ}={1+(1-\lambda)r\over2}.
+\]
+\end{proposition}
+\begin{proof}
+The state difference becomes $\Delta=(1-\lambda)rX$. A binary measurement with effect $0\le E\le I$ has success probability $[1+\tr(E\Delta)]/2$. The eigenvalues of $\Delta$ are $\pm(1-\lambda)r$; its positive eigenspace maximizes the trace and attains the stated value.
+\end{proof}
+
+\begin{proposition}[Information in relations]
+There are orthogonal joint states with identical marginals on both subsystems that a joint operation converts into distinguishable local records.
+\end{proposition}
+\begin{proof}
+Take $\ket{\Phi_\pm}=(\ket{00}\pm\ket{11})/\sqrt2$. Each marginal is $I/2$. The unitary $V=(W\otimes I)\operatorname{CNOT}$ sends these states to $\ket{00}$ and $\ket{10}$, respectively. Measurement of the first qubit distinguishes them perfectly.
+\end{proof}
+These are familiar quantum-information effects. They establish what the model can do, not that a brain implements the model.
+
+\section{Operational accessibility and the consciousness hypothesis}
+\begin{definition}
+For a specified family of allowed finite protocols $\Pi$, define
+\[
+ \mathcal A_\Pi(\rho,\sigma)=\sup_{\pi\in\Pi}
+ \|P_\rho^\pi-P_\sigma^\pi\|_{\TV},\qquad
+ \|p-q\|_{\TV}={1\over2}\sum_y|p(y)-q(y)|.
+\]
+Here $P_\rho^\pi$ is the distribution of the full classical record under protocol $\pi$.
+\end{definition}
+Proposition~\ref{prop:hidden} gives $\mathcal A_{\{Z\}}=0$ and $\mathcal A_{\{W\to Z\}}=r$ for its pair of states. The quantity depends on the preparations and allowed access, not solely on an intrinsic property of one state.
+
+\begin{hypothesis}[Relational accessibility]
+Some experimentally identified features of conscious processing may be predicted by the ability to convert distinctions stored in system--memory relations into records usable for subsequent control.
+\end{hypothesis}
+This is deliberately weaker than identifying consciousness with a density matrix. To test it, one must independently specify behavioral or physiological endpoints, a mapping from interventions to instruments, parameter-estimation procedures, and competing models. Prediction of those endpoints on held-out data is required. The scalar $\mathcal A_\Pi$ is not by definition a consciousness measure.
+
+\section{Classical records and the Shannon interface}
+For a history $h$ and action $a$, the instrument model induces a classical kernel $K(y\mid h,a)$. Shannon entropy measures uncertainty in records, e.g.
+\[
+ H(Y_t\mid h,a)=-\sum_yK(y\mid h,a)\log_2K(y\mid h,a).
+\]
+A deterministic answer has zero entropy even if internal states remain different. Thus zero report entropy does not imply zero memory, zero coherence, or zero subjective value.
+
+\begin{theorem}[Finite-tree universal classical realization]\label{thm:seed}
+Fix a finite tree of full histories with finite action and outcome sets and a kernel at every history--action pair. There is a single finite classical random seed and deterministic causal decoder reproducing the prescribed record law under every deterministic adaptive policy, with the same decoder at shared histories.
+\end{theorem}
+\begin{proof}
+Independently sample $S_{h,a}\sim K(\cdot\mid h,a)$ for every history--action pair, including arbitrary specified kernels on otherwise unreachable branches. Let $S$ be the resulting finite table. At $(h,a)$ output $S_{h,a}$. Reaching this pair depends only on earlier table entries, so its entry retains its specified conditional law. Multiplication of these conditional laws yields the prescribed probability of every transcript. The table and lookup rule do not depend on the policy.
+\end{proof}
+This construction assumes a global decoder that can consult the full history and an unrestricted table. It supplies existence, not optimal seed entropy. Optimizing $H(S)$ under simultaneous causal compatibility is a separate causal-seed problem; no sharp entropy theorem from an external Lean repository is assumed in the proofs here.
+
+For distributions $P,Q$ on finite transcripts, assume $Q(x)>0$ whenever $P(x)>0$. Write $Q(x_{1:n})=\prod_tQ_t(x_t\mid x_{<t})$. Then
+\begin{align}
+ R_n&=\log_2{P(X_{1:n})\over Q(X_{1:n})},\\
+ \E_PR_n&=D_{\rm KL,2}(P\|Q)
+ =\sum_{t=1}^n\E_P D_{\rm KL,2}
+ \bigl(P(\cdot\mid X_{<t})\|Q_t(\cdot\mid X_{<t})\bigr).
+\end{align}
+The identity follows by factoring both joint laws, taking logarithms, and conditioning each summand on the past. Individual realized $R_n$ can be negative; its expectation is nonnegative. It is expected ideal code-length excess in bits, not automatically thermodynamic energy or the communication cost of repairing a simulator. Such a repair claim needs an additional operational theorem.
+
+\section{A complete resource-bounded separation}
+\subsection{Task and resource contract}
+An encoder receives $x=(x_1,x_2)$ uniformly from $\{0,1\}^2$. After encoding, an independent query $j\in\{1,2\}$ is given to a decoder. The decoder outputs $b$ and succeeds when $b=x_j$. Its mean score is
+\[
+ s(P)={1\over8}\sum_{x,j}P(b=x_j\mid x,j).
+\]
+The classical class $\mathcal C_1$ permits one transmitted bit, unlimited computation, and arbitrary shared randomness independent of $x,j$. The query is unavailable to the encoder. The decoder has no input-dependent side channel or retained copy of $x$. Private randomness is allowed. The quantum class replaces the one-bit message by one qubit and permits arbitrary binary decoding POVMs. No preshared entanglement is allowed. Shared classical randomness is allowed.
+
+Equivalently, this is a temporal memory task if the message is the only input-dependent state retained across the encoding/query boundary. In that interpretation the one-bit restriction applies to \emph{all} input-dependent retained information. A two-qubit system is not automatically subject to this one-qubit benchmark; it must be restricted or reset so that only the permitted carrier crosses the boundary.
+
+\begin{theorem}[Optimal classical score]\label{thm:classical}
+Every $Q\in\mathcal C_1$ satisfies $s(Q)\le3/4$, and equality is attainable.
+\end{theorem}
+\begin{proof}
+Condition on all random coins, which are independent of the inputs. The strategy is then deterministic. Each message $m\in\{0,1\}$ determines a predicted pair $c_m=(g(m,1),g(m,2))$. For input $x$, at least $\min_m d_H(x,c_m)$ coordinates are wrong even with the optimal encoding. With at most two distinct codewords among four input strings, at least two strings are not codewords and each has distance at least one. The total number of errors over the eight equiprobable pairs $(x,j)$ is at least two. Thus the score is at most $6/8$. Averaging over the coins preserves the bound. Transmitting $x_1$ and guessing $x_2$ achieves $3/4$.
+\end{proof}
+
+\begin{theorem}[Optimal one-qubit score]\label{thm:quantum}
+Under the above resource contract, the maximum quantum score is
+\[
+ p_*={1+1/\sqrt2\over2}=\cos^2(\pi/8)>3/4.
+\]
+\end{theorem}
+\begin{proof}
+For achievability, encode
+\[
+ \rho_x={1\over2}\left(I+{(-1)^{x_1}X+(-1)^{x_2}Z\over\sqrt2}\right).
+\]
+The Bloch vector has unit norm. Measure $X$ for $j=1$ and $Z$ for $j=2$, identifying eigenvalue $(-1)^b$ with output $b$. Each input/query pair succeeds with probability $p_*$.
+
+For optimality, any binary POVM defines an observable $A_j=E_{0|j}-E_{1|j}=\alpha_j I+\boldsymbol a_j\cdot\boldsymbol\sigma$ with $-I\le A_j\le I$, hence $\|\boldsymbol a_j\|\le1$. Write $\rho_x=(I+\boldsymbol r_x\cdot\boldsymbol\sigma)/2$ with $\|\boldsymbol r_x\|\le1$. Uniform averaging cancels the $\alpha_j$ terms and gives
+\begin{align*}
+ s&={1\over2}+{1\over16}\sum_x
+ \boldsymbol r_x\cdot\left((-1)^{x_1}\boldsymbol a_1+(-1)^{x_2}\boldsymbol a_2\right)\\
+ &\le {1\over2}+{\|\boldsymbol a_1+\boldsymbol a_2\|+
+ \|\boldsymbol a_1-\boldsymbol a_2\|\over8}
+ \le {1\over2}+{\sqrt2\over4}.
+\end{align*}
+The final inequality is Cauchy--Schwarz followed by the parallelogram identity:
+$(\|a+b\|+\|a-b\|)^2\le4(\|a\|^2+\|b\|^2)\le8$.
+Shared randomness only mixes strategies and cannot improve the bound.
+\end{proof}
+This separation is a standard random access code result \cite{qrac}. It does not assert that one qubit permits recovery of both bits in one trial.
+
+\subsection{Noise and an exact distance to the classical class}
+Apply depolarization $\mathcal N_\eta(\rho)=\eta\rho+(1-\eta)I/2$, $0\le\eta\le1$, to the displayed quantum encoding. Let $P_\eta$ denote the resulting conditional behavior. Each input/query pair has success probability
+\[
+ p_\eta={1+\eta/\sqrt2\over2}.
+\]
+This isotropic noise parameter is distinct from the earlier basis-specific dephasing parameter $\lambda$.
+
+\begin{theorem}[Exact operational distance]\label{thm:distance}
+Define $d(P,\mathcal C_1)=\inf_{Q\in\mathcal C_1}\max_{x,j}
+\|P(\cdot\mid x,j)-Q(\cdot\mid x,j)\|_{\TV}$. Then
+\[
+ \boxed{d(P_\eta,\mathcal C_1)=
+ \max\left\{0,{\eta\over2\sqrt2}-{1\over4}\right\}.}
+\]
+\end{theorem}
+\begin{proof}
+For any $Q\in\mathcal C_1$, the difference in probabilities of the success event at each input is bounded by conditional total variation. Averaging and using Theorem~\ref{thm:classical} yields
+\[
+ \max_{x,j}\|P_\eta-Q\|_{\TV}\ge s(P_\eta)-s(Q)\ge p_\eta-3/4.
+\]
+For the matching construction, use shared randomness to choose $k\in\{1,2\}$ uniformly, send $x_k$, answer exactly when $j=k$, and otherwise output a fair bit. This classical strategy has success probability $3/4$ for \emph{every} $(x,j)$. For binary outputs, its conditional total-variation distance to $P_\eta$ is $|p_\eta-3/4|$. This attains the lower bound when $p_\eta\ge3/4$. If $1/2\le p_\eta\le3/4$, mix this strategy with input-independent fair guessing, with weight $q=4(p_\eta-1/2)\in[0,1]$. The mixture matches $P_\eta$ exactly at every input. Thus the distance is zero in this case.
+\end{proof}
+
+\begin{corollary}
+This behavior violates the classical one-bit bound exactly when $\eta>1/\sqrt2$. In the ideal case,
+\[
+ d(P_1,\mathcal C_1)={\sqrt2-1\over4}\approx0.103553.
+\]
+\end{corollary}
+The exact classical simulation below threshold concerns the tested input/output behavior, not equality of quantum and classical internal states for all conceivable experiments.
+
+\subsection{Compatibility with a universal classical seed}
+Theorem~\ref{thm:seed} and Theorem~\ref{thm:distance} concern different feasible sets. A global table decoder can retain the full preparation input and answer later queries using it. Such access violates the one-bit contract. With two transmitted classical bits, the decoder can retain $x$ and reproduce $P_\eta$ by flipping the requested bit with probability $1-p_\eta$. Thus the separation certifies a restricted resource advantage, not impossibility of unrestricted classical simulation. Seed entropy, persistent memory size, and communication capacity must not be identified without proof.
+
+\section{A falsifiable experimental protocol}
+Use fresh independent uniform $x,j$ on every trial. Enforce the preparation/query boundary and audit every input-dependent carrier, including device memory, timing, classical labels, and postselection. Record every trial, including losses under a predefined scoring rule. Fix the sample size and analysis before collecting data.
+
+Let $Z_t$ be the success indicator. If the classical resource contract holds conditionally on every past history, then $\E[Z_t\mid\mathcal F_{t-1}]\le3/4$. The exponential bounded-difference argument gives
+\[
+ \Pr\left\{{1\over N}\sum_{t=1}^NZ_t\ge3/4+\epsilon\right\}
+ \le e^{-2N\epsilon^2}.
+\]
+Indeed, conditional Hoeffding's lemma bounds the moment-generating function of each centered $Z_t$ by $e^{u^2/8}$; iteration and Markov's inequality give $e^{-uN\epsilon+Nu^2/8}$, minimized at $u=4\epsilon$. For a fixed observed excess $\epsilon$, $N\ge\ln(1/\alpha)/(2\epsilon^2)$ is sufficient for this null-tail bound to be at most $\alpha$. This is a significance bound, not a guarantee of statistical power. Optional stopping requires a separately valid sequential procedure.
+
+An observed excess can reflect either violation of the classical bound under the contract or failure of the contract itself. A human remembering two presented bits is not constrained to a one-bit internal memory merely because the final answer is one bit. Consequently, ordinary cognitive random-access performance alone does not establish quantum neural dynamics.
+
+\section{A two-qubit architecture with exact resource accounting}
+We now answer a different question: how much randomness and persistent memory suffice for \emph{one} simulator of all adaptive questions to the same pair of qubits? We solve one specified instrument family, not the unrestricted optimization over all two-qubit controls.
+
+\paragraph{Task.} Encode two bits $x=(x_1,x_2)$ in a simultaneous eigenstate of the commuting observables $B_1=X\otimes X$ and $B_2=Z\otimes Z$, with eigenvalues $(-1)^{x_j}$. The four Bell states supply precisely these four eigenvalue pairs: for example $(I\otimes X^{x_2}Z^{x_1})\ket{\Phi_+}$ has the stated signs. At each step the policy queries either observable. Use its projective instrument and flip the reported bit independently with probability $0\le e<1/2$. Explicitly, writing $P_{j,b}=(I+(-1)^b B_j)/2$, the reported instrument is
+\[
+ \mathcal J^j_y(\rho)=(1-e)P_{j,y}\rho P_{j,y}
+                  + e P_{j,1-y}\rho P_{j,1-y}.
+\]
+This is a specialization of the instrument framework, without claiming these joint instruments are generated by the illustrative Hamiltonian. Each prepared state survives every measurement: the physical outcome is always $x_j$. Only the recorded bit is noisy. Both one-qubit marginals are maximally mixed for every label.
+
+\paragraph{Classical resource contract.} An encoder sees $x$ once, before the first query. The only input-dependent carrier crossing this boundary is a message in $K$ possible states. A discrete global seed $S$, independent of $x$ and the policy, includes \emph{all} random choices. Processing is deterministic given $S$. The decoder may access the clock and its own subsequent public transcript, but neither $x$ nor another input-dependent carrier. Policies may adapt to reported bits; exactness is required for every input and deterministic policy over $N$ rounds. Write $h_2(e)=-e\log_2 e-(1-e)\log_2(1-e)$ with $0\log 0=0$.
+
+\begin{theorem}[Sharp seed cost and eventual sharp persistent memory]
+The minimum seed entropy without a cap on $K$ is $Nh_2(e)$; four states attain it. For any odd $m$ with $2m\le N$, put
+\[
+ u_m(e)=\sum_{k=0}^{(m-1)/2}{m\choose k}e^k(1-e)^{m-k}.
+\]
+Every exact simulator obeys $K\ge\lceil4u_m(e)^2\rceil$. Thus if $u_m(e)^2>3/4$, the joint resource pair $K=4$, $H(S)=Nh_2(e)$ is optimal in both coordinates. For every fixed $e<1/2$ this condition eventually holds.
+\end{theorem}
+\begin{proof}
+For achievability, retain $x$ and draw a single tape $S=(E_1,\ldots,E_N)$ of independent Bernoulli$(e)$ bits. At step $t$ answer $x_{j_t}\mathbin{\oplus}E_t$. Conditioning on the past leaves the next tape bit independent even when the question is chosen adaptively. The same tape and decoder therefore work for every policy. The entropy equals $Nh_2(e)$. Conversely fix $x$ and ask only question 1. The transcript is a deterministic function of $S$ and has entropy $Nh_2(e)$, proving the lower bound.
+
+For the memory bound, now choose the label uniformly. Query each coordinate $m$ times and reconstruct both bits by separate majorities. The success probability for recovering the entire label equals $u_m(e)^2$. For a fixed seed, the composition of encoding, questioning, and guessing factors through the $K$ messages. Consequently at most $K$ of the four labels can be correctly guessed: each message produces just one guess. Average over the independent seed to obtain $u_m(e)^2\le K/4$. Finally the law of large numbers gives $u_m(e)\to1$.
+\end{proof}
+
+\paragraph{Checks and limits.} At $e=0$, two different questions suffice: $K=4$ yet $H(S)=0$. At $e=1/4$, five repetitions per coordinate give $u_5=459/512$ and $u_5^2>3/4$, hence $K=4$ for $N\ge10$. Even unlimited independent shared randomness cannot replace a missing memory state at this horizon. This commuting subfamily has an exact classical realization: it illustrates independent costs for memory and randomness, not a quantum advantage over two classical bits. The finite-horizon lower bound need not be sharp before its four-state threshold. No priority or Lean certification is claimed for this extension. Noncommuting interventions with the same total resource contract remain open.
+
+\section{A prospective test of the cognitive hypothesis}
+A concrete contrast can be specified before data collection. In independently randomized trials, assign one of two preparations, labelled $+$ or $-$; select either direct readout or a prespecified basis-changing intervention followed by readout. These are alternative trials, not two consecutive sharp measurements. Fit $r$ and $\lambda$ on a separate calibration set and freeze the mapping from physical stimuli to model operations before inspecting the test set. The model predicts a zero between-preparation difference for direct readout and a signed difference $(1-\lambda)r$ after the intervention. Test both: use a preregistered equivalence margin for the first contrast and a prediction interval incorporating calibration uncertainty for the second. A sign reversal or a discrepancy outside the calibrated tolerances counts against this specification.
+
+To investigate awareness, collect a separately specified indicator, for example ratings of perceptual visibility on matched trials, not the very response used to estimate the contrast. Prespecify whether and how the calibrated contrast should covary with this indicator across visibility conditions; test the prespecified direction on held-out participants. Match or measure attention, task difficulty, response bias and order. Compare predictive log loss against a classical latent-state model with matched access to history and a defensible memory budget, and against a less restricted classical baseline. Report uncertainty and failures as well as successes. A successful fit would support predictive usefulness for those endpoints; a resource witness would additionally require independent enforcement of its bottleneck. Neither a visibility rating nor this calculation identifies a neural qubit. Concrete stimuli, a justified biological mapping, powered sampling and empirical data remain to be supplied.
+
+\section*{Verification and provenance}
+The companion Lean source is pinned to
+\href{https://github.com/jendamikulik/finite-Shannon-theorem/blob/0efa7d8/CausalSeed/RelationalAccess.lean}{\texttt{CausalSeed/RelationalAccess.lean}, commit \texttt{0efa7d8}}.
+The author reports successful compilation without proof placeholders. We inspected the source declarations; this revision does not report an independent rebuild. In namespace \texttt{CausalSpectrum.RelationalAccess}, the following names identify representative checks:
+
+\setlength{\emergencystretch}{1em}
+\begin{description}
+\item[Bloch access.] \texttt{z\_statistics\_agree}, \texttt{hadamard\_gap}, \texttt{dephasing\_optimal}: coordinate statements and the optimal discrimination bound.
+\item[Bell states.] \texttt{phiPlus\_marginalA}, \texttt{phiMinus\_marginalB}, \texttt{bell\_to\_computational}: marginal identities and the decoding circuit in amplitude coordinates.
+\item[Scores.] \texttt{classical\_score\_le}, \texttt{mixture\_preserves}, \texttt{racScore\_le}, \texttt{quantum\_success}: finite strategies, mixtures, the Bloch-vector bound and attainability. Independent enumeration of the 256 deterministic pairs gave maximum $6/8$.
+\item[Noisy distance.] \texttt{distance\_formula}, \texttt{worst\_gap\_ge}, \texttt{mixture\_matches}, \texttt{violates\_iff}: algebraic, lower-bound and constructive components of the operational proof, not an assertion that every measure-theoretic formulation is formalized verbatim.
+\item[Shannon and tails.] \texttt{lookup} implements a policy-independent lookup; the tree argument uses kernel products rather than a formal product-measure construction. \texttt{chain\_two} covers two binary steps under its stated support assumptions. \texttt{hoeffding\_minimizer} and \texttt{tail\_threshold} verify the exponential optimization, not the conditional moment bound.
+\end{description}
+The general instrument construction, arbitrarily long KL chain rule, repeated-query theorem and empirical hypothesis are not certified by this Lean module. Entropy-optimal causal simulation on arbitrary trees is a separate problem. No biological data were collected. The manuscript was prepared with AI assistance for author review.
+
+\begin{thebibliography}{9}
+\bibitem{qrac} A. Ambainis, D. Leung, L. Mancinska, and M. Ozols.
+\emph{Quantum Random Access Codes with Shared Randomness}.
+arXiv:0810.2937, 2008, revised 2009.
+\url{https://arxiv.org/abs/0810.2937}.
+\bibitem{pollock} F. A. Pollock, C. Rodr\'{i}guez-Rosario, T. Frauenheim,
+M. Paternostro, and K. Modi.
+\emph{Operational Markov Condition for Quantum Processes}.
+Physical Review Letters \textbf{120}, 040405 (2018).
+\url{https://doi.org/10.1103/PhysRevLett.120.040405}.
+\bibitem{tull} S. Tull and M. Ozawa.
+\emph{Quantum-like Cognition in Process Theories: An Analysis}.
+arXiv:2604.08604 (2026), preprint.
+\url{https://arxiv.org/abs/2604.08604}.
+\end{thebibliography}
+\end{document}

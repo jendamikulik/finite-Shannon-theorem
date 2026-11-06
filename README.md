@@ -2094,3 +2094,42 @@ no clause that replaces a missing consent by another agent's sacrifice.
 
 Not proved: that a wish exists, that the boundaries are the right ones, that
 the care set is nonempty, or that the sphere speaks.
+
+## Relational access
+
+`CausalSeed/RelationalAccess.lean` formalizes the mathematical content of the
+note "Relational Quantum Memory and Operational Access" (5 November 2026).
+The benchmark is the known one-bit versus one-qubit random access code
+(Ambainis–Leung–Mancinska–Ozols), not a new discovery.
+
+Proved, with no `sorry`: a Bloch vector with `r² + z² ≤ 1` is a state;
+`ρ± = (I + zZ ± rX)/2` agree on a Z measurement and differ by `r` after the
+Hadamard swap; Z-dephasing of strength `λ` has optimal success
+`(1 + (1-λ)r)/2`; the Bell states `Φ±` have marginals `I/2` and
+`(H ⊗ I) ∘ CNOT` sends them to `|00⟩` and `|10⟩`; every one-bit classical
+strategy scores at most `3/4`, including all `16 × 16` deterministic
+encoder/decoder pairs, and sending the first bit attains `3/4`; every
+one-qubit strategy scores at most `(1 + 1/√2)/2 = cos²(π/8)`, and the
+equatorial encoding attains it; after depolarization of strength `η` the
+worst-input total-variation distance to the one-bit class is
+`max{0, η/(2√2) − 1/4}`, hence positive exactly when `η > 1/√2`; two
+classical bits reproduce any success probability `p`; a deterministic report
+has binary entropy zero and can still hide a bit; on a two-step binary
+transcript with full support the expected log likelihood ratio is the
+marginal KL plus the expected conditional KL, and that expectation is
+nonnegative while a single ratio can be negative; the Hoeffding exponent at
+`u = 4ε` is `-2Nε²`, that choice of `u` is minimal, and
+`N ≥ log(1/α)/(2ε²)` makes the exponential tail at most `α`.
+
+Not proved: that a device, a brain, or conscious processing implements the
+model; that the accessibility functional measures consciousness; existence of
+God, generation of spacetime, or a clinical account of psychosis; that the
+Hamiltonian and instrument formulas (2)--(5) are completely positive maps on
+a Hilbert space; a sharp entropy bound for the universal classical seed; the
+moment-generating inequality inside Hoeffding's lemma; the chain rule for a
+transcript longer than two binary steps. Theorem 5.1 is present as
+policy-independent lookup and as the product of kernel values along a
+transcript, not as a product measure on a probability space. An observed
+excess on a cognitive task does not, by these theorems, establish quantum
+neural dynamics.
+

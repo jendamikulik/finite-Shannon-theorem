@@ -2164,3 +2164,23 @@ four-state threshold; noncommuting questions under the same contract; the
 Hamiltonian instruments on a Hilbert space; consciousness, neural data, or a
 clinical account of psychosis. The one-bit versus one-qubit scores remain the
 known random-access-code bounds in `RelationalAccess.lean`.
+
+## One seed, two friends
+
+`CausalSeed/ManyFriends.lean` is the example in the note "One Seed, Many
+Friends". The tree asks one shared fair question and then one of two private
+actions, each with deterministic output zero.
+
+Proved, with no `sorry`: every transcript has surprisal `1`, so
+`L(T) = 1`; the two shared answers, each of mass `1/2`, are an exact causal
+seed of entropy `1`, so `C(T) = 1` and the ordinary minimum is `1` as well;
+every strategy gives both friends the same first bit; the anti-correlated
+pair matches each prescribed marginal and is not the run of any strategy.
+The gap on this tree is zero. The obstruction is causal agreement, not a
+cheaper coupling.
+
+Not proved: anything about electrons or a single worldline; that every tree
+is this sharp. The general overhead `(1 + log₂ e) / 2` remains the greedy
+theorem in `Entropy.lean`. It is not rederived here, and it does not follow
+from coupling the two terminal laws.
+

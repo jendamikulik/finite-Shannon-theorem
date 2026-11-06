@@ -2133,3 +2133,34 @@ transcript, not as a product measure on a probability space. An observed
 excess on a cognitive task does not, by these theorems, establish quantum
 neural dynamics.
 
+
+## Bell-label readout
+
+`CausalSeed/BellReadout.lean` formalizes the repeated two-qubit Bell-label
+task from the 6 November 2026 revision of "Relational Quantum Memory and
+Operational Access". The questions `X⊗X` and `Z⊗Z` commute, so this family
+has an exact classical tape. It is not a quantum advantage, and it is not a
+claim about consciousness.
+
+Proved, with no `sorry`: a length-`N` Bernoulli(`e`) tape has Shannon entropy
+`N h₂(e)` bits; after any positive-weight past the next bit still flips with
+probability `e`; a reported bit differs from the stored label with probability
+`e`; if one question's transcript is a function of the seed and equals the
+tape law, the seed entropy is at least `N h₂(e)`; four states can name the
+four labels; the binomial majority weights sum to `uₘ(e)`, and two independent
+coordinates recover the label with probability `uₘ(e)²`; a guess that factors
+through `K` messages is correct for at most `K` of the four labels, so every
+mixture of those frequencies is at most `K/4`, and `K ≥ ⌈4v⌉` whenever that
+mixture equals `v`; `u₅(1/4) = 459/512` and `u₅(1/4)² > 3/4`, hence any
+simulator identified with that success probability needs `K ≥ 4`; at `e = 0`
+the entropy is `0` and `⌈4 u₁(0)²⌉ = 4`; for every fixed `e < 1/2` some odd
+`m` has `uₘ(e)² > 3/4`, by a finite Chernoff bound rather than an appeal to
+the law of large numbers.
+
+Not proved: that an arbitrary instrument, as opposed to the Bernoulli tape,
+has majority success exactly `uₘ(e)²` — that identification is the hypothesis
+of `memory_of_identification`; that the bound on `K` is sharp before the
+four-state threshold; noncommuting questions under the same contract; the
+Hamiltonian instruments on a Hilbert space; consciousness, neural data, or a
+clinical account of psychosis. The one-bit versus one-qubit scores remain the
+known random-access-code bounds in `RelationalAccess.lean`.

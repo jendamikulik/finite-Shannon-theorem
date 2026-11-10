@@ -2197,4 +2197,23 @@ product. A certain step contributes `0`. A fair step contributes `1`.
 Not proved: that the reading is physical time. The order of the steps is
 assumed. The groove, the turntable and the listener are outside the statement.
 
+## One whole for every playback
+
+`CausalSeed/OneWhole.lean` is the note on the image
+`BUILD_ON_TITANS_OF_ACADEMIA`. A finite tree carries a kernel at every full
+history and every action. The cells are drawn independently. That finite table
+is the seed, and reading the cell of the history actually reached is the
+decoder. The table is built from the tree alone.
+
+Proved, with no `sorry`: two playbacks that meet at the same history and
+choose the same action read the same cell; for every playback, the law of the
+transcript is the prescribed product of the kernels along the path taken; the
+sum of the table is `1`. Two different records can share every single-groove
+law. On one, setting the needle beside a tone always repeats it. On the other,
+it never does.
+
+Not proved: that the table is the cheapest seed, that it is a physical
+singularity, or that the law of each playback determines the whole. The
+information clock is not this relation. Nothing here is spacetime.
+
 

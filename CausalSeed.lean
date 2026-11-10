@@ -35,3 +35,4 @@ import CausalSeed.RelationalAccess
 import CausalSeed.BellReadout
 import CausalSeed.ManyFriends
 import CausalSeed.LetItBe
+import CausalSeed.OneWhole

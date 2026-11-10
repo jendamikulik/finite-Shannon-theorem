@@ -2184,3 +2184,17 @@ is this sharp. The general overhead `(1 + log₂ e) / 2` remains the greedy
 theorem in `Entropy.lean`. It is not rederived here, and it does not follow
 from coupling the two terminal laws.
 
+## An information clock
+
+`CausalSeed/LetItBe.lean` is the note "Let It Be". A clock on probabilities in
+`(0, 1]` never runs backward, is unchanged when a passage is cut in two, and
+counts one outcome of a fair toss as one bit.
+
+Proved, with no `sorry`: there is exactly one such clock, `d(p) = -log₂ p`.
+On a finite list of steps the reading is the sum, hence `-log₂` of the
+product. A certain step contributes `0`. A fair step contributes `1`.
+
+Not proved: that the reading is physical time. The order of the steps is
+assumed. The groove, the turntable and the listener are outside the statement.
+
+

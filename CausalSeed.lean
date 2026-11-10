@@ -39,3 +39,4 @@ import CausalSeed.OneWhole
 import CausalSeed.FrozenLight
 import CausalSeed.TheGap
 import CausalSeed.Canvas
+import CausalSeed.Attraction

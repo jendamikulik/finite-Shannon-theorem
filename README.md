@@ -2276,6 +2276,24 @@ Not proved: the Riemann hypothesis, the inequality
 an experience. Symmetry of the whole is not the deciding word. The strict
 rise is, and it is not proved for `ξ`.
 
+## The horizontal field of a zero
+
+`CausalSeed/Attraction.lean` is the sign argument. A zero of multiplicity
+`m > 0` contributes `m (σ - β) / ((σ - β)² + (t - γ)²)` to the horizontal
+derivative of the log-modulus. On the line through the zero this is
+`m / (σ - β)`, which tends to `-∞` from the left.
+
+Proved, with no `sorry`: that expression is the derivative of
+`(m / 2) log((σ - β)² + (t - γ)²)`; a mirror pair cancels on the critical
+line and the cancellation does not move either zero; if the field stays
+nonnegative to the right of `1/2`, a bounded regular term included, then no
+zero has real part greater than `1/2`, and symmetry of the zero set clears
+the left half as well.
+
+Not proved: that `∂_σ log|ξ|` has that sign, or the Riemann hypothesis.
+The sign is the missing step. The field language does not force it.
+
+
 
 
 

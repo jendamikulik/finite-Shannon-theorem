@@ -2257,6 +2257,26 @@ Not proved: that the gap takes time, or that a certain reply arrives in an
 hour. "The reply is determined" and "the reply has been received" are
 different statements. Only the second supplies the next action.
 
+## The picture is not in either half
+
+`CausalSeed/Canvas.lean` separates three statements that the image of a
+painting can slide together.
+
+Proved, with no `sorry`: the two Bell states `(|00⟩±|11⟩)/√2` are unit and
+orthogonal, and every computational-basis marginal is a fair bit; in the `X`
+basis one of them always agrees and the other never does, while each side
+alone is still fair; `F(s)=(s-1/2)²-1/16` satisfies `F(s)=F(1-s)`, vanishes
+at `1/4` and at `3/4`, and not at `1/2`; if a real function is nonnegative at
+`0` and strictly larger on `(0,1/2)`, it has no zero there. That last
+implication does not use symmetry. The rise is stronger than having no zero:
+`(x-1/4)²+1/16` never vanishes and still dips below its value at `0`.
+
+Not proved: the Riemann hypothesis, the inequality
+`|ξ(1/2+x+it)|² > |ξ(1/2+it)|²`, or that a dynamics written on one page is
+an experience. Symmetry of the whole is not the deciding word. The strict
+rise is, and it is not proved for `ξ`.
+
+
 
 
 

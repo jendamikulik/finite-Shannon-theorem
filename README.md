@@ -2344,6 +2344,23 @@ function. For that function, strict horizontal increase of the modulus on
 `σ > 1/2` is equivalent to the hypothesis (Sondow–Dumitrescu, 2010). It is
 not proved here.
 
+## The reserve
+
+`CausalSeed/Reserve.lean` is the counterexample to a tunneling intuition.
+
+Proved, with no `sorry`: for a fixed `a > 0`,
+`F_a(z) = (cosh z + cosh a) cosh(2z)` is at least `1 + cosh a` on the whole
+real axis, and that floor is strictly positive. The same function is zero at
+`a + iπ`. Strict positivity on every real input, with a reserve, does not by
+itself protect a function from a complex zero.
+
+Not proved: an identity, read off the Riemann kernel alone, that would force
+a zero of `ξ` to mean zero transport at some real energy, while the equations
+of that transport model independently forbid zero transport. A barrier that
+something can pass through is not the missing piece. That identity is. It is
+not proved here, and neither is the Riemann hypothesis.
+
+
 
 
 

@@ -2239,5 +2239,24 @@ A tachyon, an electron and a worldline are outside the statement. Unfolding
 does not determine `L(T)`. The sandwich with `(1 + log₂ e) / 2` stays in
 `Entropy.lean`.
 
+## The gap between action and reaction
+
+`CausalSeed/TheGap.lean` names the intermediate the record leaves blank.
+At a node the policy has already chosen an action. The reply is already a
+cell of the seed. The continuation is still a function of that reply, so
+the next action is not yet a value.
+
+Proved, with no `sorry`: on every node the transcript's action is the
+policy's action and its reply is the seed's cell; on the two-friend tree
+one rule, fixed beforehand, sends the two replies to two different next
+actions, and the transcript follows the reply it actually receives; a
+certain reply contributes `0` to the information clock. The clock has no
+argument for a duration.
+
+Not proved: that the gap takes time, or that a certain reply arrives in an
+hour. "The reply is determined" and "the reply has been received" are
+different statements. Only the second supplies the next action.
+
+
 
 

@@ -32,6 +32,9 @@ over all policies, and its mean $`L`$. Results:
 Every result listed below is checked by the Lean kernel, with no `sorry` and no
 axioms beyond Lean's standard three.
 
+An English preface for an academic reader, separating the theorem from the
+image used to read it, is in [PREFACE.md](PREFACE.md).
+
 ## Contents
 
 1. [Setting and notation](#setting-and-notation)
@@ -2215,5 +2218,26 @@ it never does.
 Not proved: that the table is the cheapest seed, that it is a physical
 singularity, or that the law of each playback determines the whole. The
 information clock is not this relation. Nothing here is spacetime.
+
+## Frozen light, two grooves
+
+`CausalSeed/FrozenLight.lean` is the two-groove calculation behind the image
+of a record prepared before the needle drops. One record stores a single fair
+bit and plays it in both grooves. The other stores two independent fair bits.
+
+Proved, with no `sorry`: the shared record has entropy `1` and the product
+has entropy `2`; each groove, under either record, is a fair bit; any finite
+seed with a fair left groove has entropy at least `1`; on the shared record
+the two grooves agree on every atom, while on the product they agree on mass
+`1/2` and the joints differ; the two-friend tree attains the same one bit,
+`L(T) = C(T) = 1`.
+
+Not proved: that the record is Bohm's implicate order, that the finite causal
+Shannon theorem is only a reinterpretation of that image, or that free will
+is this entropy. The needle is a choice of groove, not a bit of the seed.
+A tachyon, an electron and a worldline are outside the statement. Unfolding
+does not determine `L(T)`. The sandwich with `(1 + log₂ e) / 2` stays in
+`Entropy.lean`.
+
 
 

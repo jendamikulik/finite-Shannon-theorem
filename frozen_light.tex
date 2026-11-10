@@ -1,0 +1,100 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,margin=26mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,microtype}
+\microtypesetup{expansion=false}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\HH}{\mathrm H}
+\title{Frozen Light, Two Grooves\\[4pt]\large A note on what Bohm's image does not determine}
+\author{Jan Mikul\'ik}
+\date{10 November 2026}
+\begin{document}
+\maketitle
+
+\begin{center}
+\emph{A peer view in the spirit of David Bohm.\\
+Two friends may ask different questions.
+If they witness the same toss, one bit must do for both.}
+\end{center}
+
+\medskip
+Bohm explained the implicate order with a drop of dye in glycerine.
+Stretched, the drop disappears; the motion reversed, it reappears.
+The order was put into the whole in advance. He warned that the experiment,
+like a hologram, catches only part of the idea: the order is inserted beforehand,
+whereas his deeper question was how stable parts arise in a whole.
+
+The finite causal Shannon theorem is not that experiment, and it is not
+``only'' a reinterpretation of it. The image says how a prepared whole
+unfolds one appearance. The theorem asks how much randomness the whole must
+carry so that one decoder serves every admissible appearance at once.
+Unfolding alone does not answer that question.
+
+\medskip
+\noindent
+\textbf{Dictionary, not an identification.}
+The record is a finite seed $S$. The frozen rule is a decoder $D(S,g)$.
+The needle is the groove $g$, chosen without reading $S$.
+The unfolded history is the answer $D(S,g)$.
+Nothing in the dictionary is an electron, a tachyon, or a worldline.
+Free will is not defined. If the will is the needle, it is chosen after the
+record is frozen and it is not a bit of $\HH(S)$. If the will is the draw of
+$S$, it is one draw, made before either friend asks. Those are different arrows.
+
+\begin{theorem}[Two grooves]
+\label{thm:grooves}
+Let each groove be required to return a fair bit.
+\begin{enumerate}
+\item The shared record $S\in\{0,1\}$ with $D(S,\mathrm{left})=D(S,\mathrm{right})=S$
+and $\Pr(S=0)=\Pr(S=1)=1/2$ has $\HH(S)=1$.
+Both grooves are fair, and they agree on every atom.
+\item The product record $(L,R)$ of two independent fair bits, with
+$D((L,R),\mathrm{left})=L$ and $D((L,R),\mathrm{right})=R$, has
+$\HH(L,R)=2$. Each groove is fair. The grooves agree with probability $1/2$.
+\item The two records induce the same law on each groove separately,
+and $\HH(S)=\HH(L,R)/2$. The joint laws differ:
+the shared record puts mass $0$ on $(\mathrm{left},\mathrm{right})=(0,1)$.
+\item If a finite seed answers the left groove by a deterministic function
+of the seed and that answer is fair, then the seed has entropy at least $1$.
+The shared record attains the bound.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+A uniform bit has entropy $-\log_2(1/2)=1$.
+Four atoms of mass $1/4$ have entropy $2$.
+Pushing the shared bit to either groove, or either coordinate of the product,
+yields the uniform law on two points.
+Data processing gives the lower bound: the entropy of a seed is at least the
+entropy of a deterministic function of it, and a fair bit has entropy $1$.
+The off-diagonal check is immediate from the supports.
+A companion formalization is \texttt{CausalSeed/FrozenLight.lean}.
+\end{proof}
+
+The same one bit is the two-friend tree of the note \emph{One Seed, Many Friends}:
+one shared fair question, then a private action with deterministic output zero.
+There $L(T)=C(T)=1$. An anti-correlated pairing matches each friend's transcript
+law and is not the run of any shared decoder. Peer view is that obstruction.
+It is not a claim that the friends saw a physical toss.
+
+\begin{remark}
+For a finite tree $T$ the companion theorem supplies a seed $S_G$ with
+\[
+L(T)\le C(T)\le \HH(S_G)\le L(T)+\frac{1+\log_2 e}{2}.
+\]
+The additive constant is about $1.22135$ bits. Theorem~\ref{thm:grooves}
+shows why the image of unfolding cannot be asked to produce this estimate:
+two wholes can unfold the same grooves and still differ by a bit.
+\end{remark}
+
+What would remain, past the mathematics, is a question nature can refuse.
+Matching a replayed history does not identify the record.
+Two listeners who can play different grooves can tell the shared toss from
+the product. That distinction lives inside the model.
+It is not, by itself, a trace in a detector.
+
+\end{document}

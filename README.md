@@ -2360,12 +2360,23 @@ of that transport model independently forbid zero transport. A barrier that
 something can pass through is not the missing piece. That identity is. It is
 not proved here, and neither is the Riemann hypothesis.
 
+## The mirror, and the even difference
 
+`CausalSeed/Mirror.lean` drops the circle. Symmetry and a count with
+multiplicity are enough.
 
+Proved, with no `sorry`: `s ↦ 1 - conj s` is an involution, and its fixed
+set is the line `re = 1/2`. A horizontal strip is invariant because the map
+preserves height. For any finite set closed under the map, counted with
+multiplicity,
+`N - N₀ = 2 N₊`.
+The difference is nonnegative and even. If it is strictly less than `2`,
+it is zero. `(4 : ℕ)` and `6` have the same remainder modulo `2` and are
+not equal, so the congruence read off a circle is weaker than equality.
+`π` does not occur.
 
-
-
-
-
-
+Not proved: that `N₊ = 0` for the zeros of Riemann's `ξ`. The equation
+explains the axis. It does not put every zero on it. Mathlib has
+`Λ(1 - s) = Λ(s)` for the completed zeta; that identity is not the missing
+arithmetic exclusion of the first mirror pair, and it is not used here.
 

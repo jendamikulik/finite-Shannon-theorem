@@ -41,3 +41,4 @@ import CausalSeed.TheGap
 import CausalSeed.Canvas
 import CausalSeed.Attraction
 import CausalSeed.Modes
+import CausalSeed.Interference

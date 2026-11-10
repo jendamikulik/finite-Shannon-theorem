@@ -2310,6 +2310,24 @@ not. For the genuine `ξ`, strict horizontal increase of the modulus on
 `σ > 1/2` is equivalent to the hypothesis (Sondow–Dumitrescu, 2010), so it
 cannot be assumed along the way.
 
+## Interference, and the freedom to ask
+
+`CausalSeed/Interference.lean` separates the two ways of adding modes.
+
+Proved, with no `sorry`: at `z = a + iπ`, the coherent sum
+`(1/2) cosh z + cosh(a) cosh(2z) + (1/2) cosh(3z)` is `0`, while the sum of
+the three intensities is strictly positive. Convolving that symmetric atomic
+measure with a centered Gaussian of variance `v > 0` multiplies the bilateral
+Laplace transform by `exp(v z² / 2)`. The smoothed density is positive, even
+and analytic, and the same zero survives, because the exponential factor
+never vanishes.
+
+Not proved: any property of Riemann's kernel that would forbid the
+cancellation. Positivity, symmetry and analytic smoothness, taken together,
+do not. The freedom here is the choice of observable. It is not a claim
+about human free will, and it is not a proof of the Riemann hypothesis.
+
+
 
 
 

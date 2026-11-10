@@ -2327,6 +2327,24 @@ cancellation. Positivity, symmetry and analytic smoothness, taken together,
 do not. The freedom here is the choice of observable. It is not a claim
 about human free will, and it is not a proof of the Riemann hypothesis.
 
+## The quantifier
+
+`CausalSeed/Quantifier.lean` records the last distinction on the page.
+
+Proved, with no `sorry`: for every real `a`, the three terms of `F_a` at
+`a + iπ` are real, with signs `−, +, −`, and none is zero. Their sum is zero,
+because `cosh(a + iπ) = −cosh a`. If `0 < a < 1/2`, the real part of that
+zero is `a`, so it sits at distance `a` from the axis, strictly inside the
+strip. The middle weight is `cosh a`. On `[0, ∞)` the hyperbolic cosine is
+injective, so two different distances do not share that weight.
+
+Not proved: that one fixed kernel, the kernel of `ξ`, excludes every such
+zero. The statement above is `∀ a, ∃ F_a`. The Riemann xi function is one
+function. For that function, strict horizontal increase of the modulus on
+`σ > 1/2` is equivalent to the hypothesis (Sondow–Dumitrescu, 2010). It is
+not proved here.
+
+
 
 
 

@@ -2293,6 +2293,24 @@ the left half as well.
 Not proved: that `∂_σ log|ξ|` has that sign, or the Riemann hypothesis.
 The sign is the missing step. The field language does not force it.
 
+## One mode, then several
+
+`CausalSeed/Modes.lean` separates a single distorted pair from a sum of them.
+
+Proved, with no `sorry`:
+`|cosh(u(x+it))|² = sinh²(ux) + cos²(ut)`, so one mode with `u ≠ 0` stays
+alive for every `x ≠ 0`, and its modulus is at least `|sinh(ux)|`. The sum
+`cosh z + cosh a` vanishes at `a + iπ`. Multiplied by `cosh(2z)` that zero
+is `(1/2) cosh z + cosh(a) cosh(2z) + (1/2) cosh(3z)`, all three coefficients
+positive, and none of the three modes is zero at that point.
+
+Not proved: the Riemann hypothesis, or a property of Riemann's kernel that
+would stop different modes from cancelling. Positivity of the weights does
+not. For the genuine `ξ`, strict horizontal increase of the modulus on
+`σ > 1/2` is equivalent to the hypothesis (Sondow–Dumitrescu, 2010), so it
+cannot be assumed along the way.
+
+
 
 
 

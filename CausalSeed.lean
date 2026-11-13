@@ -50,4 +50,5 @@ import CausalSeed.GapAccess
 import CausalSeed.Whole
 import CausalSeed.Multiply
 import CausalSeed.Interface
+import CausalSeed.Connect
 

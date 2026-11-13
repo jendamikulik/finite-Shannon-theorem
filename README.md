@@ -2476,3 +2476,19 @@ finite sheet. Zero report entropy does not imply zero memory. The module
 does not identify a mind with the sheet, does not exclude others from
 reading the public mathematics, and says nothing about noncommuting
 observables or the zeros of `ξ`.
+
+## One seed, many zeros
+
+`CausalSeed/Connect.lean` joins the finite Shannon account to the
+`F_a` example.
+
+One seed is sampled once. Many policies read it. The unique interface
+admits only the matching probe. The transform `F_a` vanishes at
+`a + iπ` while no individual mode vanishes: two outer contributions
+balance the middle one. The zero is a cancellation, not a death.
+
+This blocks an entropy shortcut from the seed bound to a ferromagnetic
+coupling. It constructs no arithmetic ferromagnet. It makes no
+assertion about the zeros of `ξ`. An approximation of the Lee–Yang law
+by finite arithmetic ferromagnets, with control of exponential tails,
+remains a separate theorem.

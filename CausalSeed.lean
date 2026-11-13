@@ -38,6 +38,7 @@ import CausalSeed.LetItBe
 import CausalSeed.OneWhole
 import CausalSeed.FrozenLight
 import CausalSeed.TheGap
+import CausalSeed.Synthesis
 import CausalSeed.Canvas
 import CausalSeed.Attraction
 import CausalSeed.Modes

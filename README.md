@@ -2522,3 +2522,17 @@ logarithmically whenever `m ≠ 0`.
 
 That infinity is the divergent integral, not a source of extractable
 physical energy. Nothing here is a claim about the zeros of `ξ`.
+
+## Exact causal simulation and informational limits
+
+`CausalSeed/Synthesis.lean` records the synthesis of 13 November 2026.
+
+The overhead constant is already proved: `cStar = (1 + log₂ e) / 2`.
+The module adds the elementary stability inequality (product deficit
+at most the sum, for factors in `[0, 1]`), the positivity of the
+revelation lower bound `(2 η ln 2)(σ/ε)^{2/3}`, and the fact that a
+fair binary probe has one bit of Shannon entropy.
+
+Continuous Gaussian channels, Hilbert-space instruments, and
+gravitational geometry are not formalized. Nothing here selects a
+physics or identifies hidden entropy with a horizon.

@@ -2401,3 +2401,27 @@ the record, anything about noncommuting observables, or anything about
 the zeros of `ξ`.
 
 
+
+## Exclusive access to the gap
+
+`CausalSeed/GapAccess.lean` is the protocol in which the missing bit is
+released only with the probe that was sealed.
+
+Proved, with no `sorry`: the sheet is public. On the fixed sheet whose
+two entries differ, a fair probe reads a coordinate whose conditional
+entropy is zero, while an outsider who sees only the sheet keeps exactly
+one bit. A claimed answer that is not the coordinate of the sealed probe
+is rejected. Two probes that arrive at the same sheet share the first
+recorded coordinate; the later probe does not rewrite it.
+
+Structural analogy, not a physical claim: the Higgs field has a vacuum
+expectation present everywhere (the public sheet). A particle acquires
+its mass only by coupling to that field (the private probe). The boson
+is the excitation detected when the probe is applied. An observer who
+sees only the field does not read the excitation. The module does not
+identify the information gap with the Higgs mechanism, and it says
+nothing about particle masses or the zeros of `ξ`.
+
+Not proved: that a mind is this sheet, that a commitment hides the probe
+from a computationally bounded adversary, or that the Higgs field is
+this construction.

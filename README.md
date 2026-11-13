@@ -2380,3 +2380,24 @@ explains the axis. It does not put every zero on it. Mathlib has
 `Λ(1 - s) = Λ(s)` for the completed zeta; that identity is not the missing
 arithmetic exclusion of the first mirror pair, and it is not used here.
 
+## The all-knowing now
+
+`CausalSeed/AllKnowing.lean` is the sheet, the loop, and the question that
+is not on the sheet.
+
+Proved, with no `sorry`: the now is the finite answer sheet. Each
+coordinate is a function of that sheet, so its conditional entropy is
+zero, and reading the sheet again costs nothing. A loop appends answers
+of the same world. On the uniform two-bit sheet the conditional entropy
+is `2` before any question, `1` after the first bit, and `0` after both.
+The later of two continuations can change while the first coordinate
+stays fixed. An independent choice of coordinate is not a function of the
+sheet: `H(N, C) = H(N) + H(C)` and `H(C | N) = 1`, while
+`H(Z | N, C) = 0`. On a fixed sheet whose two entries differ, that
+missing bit is exactly one.
+
+Not proved: that a mind is this sheet, that a later choice already sits in
+the record, anything about noncommuting observables, or anything about
+the zeros of `ξ`.
+
+

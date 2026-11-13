@@ -2492,3 +2492,19 @@ coupling. It constructs no arithmetic ferromagnet. It makes no
 assertion about the zeros of `ξ`. An approximation of the Lee–Yang law
 by finite arithmetic ferromagnets, with control of exponential tails,
 remains a separate theorem.
+
+## The palm and the sketch
+
+`CausalSeed/OffE.lean` records two additions.
+
+On the palm, `∀ x, 1/x = 0 → x = 0` is true in this library: division by
+zero is zero, and away from zero the reciprocal does not vanish. The
+antecedent holds only at zero, where the consequent holds. This is a
+convention plus a vacuous case.
+
+On the sketch, `π` marks the height where `F_a` balances to zero. No
+mode dies there. The mark is the height of the balance, not a new seed.
+
+`off e` remains the scale step of the quadratic account around a zero.
+The sketch does not compute that cost. Nothing here is a claim about
+the zeros of `ξ`.

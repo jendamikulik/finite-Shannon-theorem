@@ -52,4 +52,5 @@ import CausalSeed.Multiply
 import CausalSeed.Interface
 import CausalSeed.Connect
 import CausalSeed.OffE
+import CausalSeed.RingEnergy
 

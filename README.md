@@ -2508,3 +2508,17 @@ mode dies there. The mark is the height of the balance, not a new seed.
 `off e` remains the scale step of the quadratic account around a zero.
 The sketch does not compute that cost. Nothing here is a claim about
 the zeros of `ξ`.
+
+## Infinite energy, one finite ring at a time
+
+`CausalSeed/RingEnergy.lean` records the normalized quadratic account
+around a model zero `z^m`.
+
+Between radii `ε` and `R` the energy is `(m^2 / 2) log(R/ε)`. Each
+halving of the inner radius adds exactly `(m^2 / 2) log 2`. Each ring
+from `r` to `e r` adds exactly `m^2 / 2`. Every individual ring is
+finite. As the inner radius tends to zero the integral diverges
+logarithmically whenever `m ≠ 0`.
+
+That infinity is the divergent integral, not a source of extractable
+physical energy. Nothing here is a claim about the zeros of `ξ`.

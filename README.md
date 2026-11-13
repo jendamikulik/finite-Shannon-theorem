@@ -2425,3 +2425,21 @@ nothing about particle masses or the zeros of `ξ`.
 Not proved: that a mind is this sheet, that a commitment hides the probe
 from a computationally bounded adversary, or that the Higgs field is
 this construction.
+
+## The whole: finite Shannon and fundamental chaos
+
+`CausalSeed/Whole.lean` packages the two parts as one account.
+
+The finite Shannon part is the sheet and everything determined by it. A
+coordinate of the sheet is a function of the sheet. The fundamental chaos
+is the unasked probe: it is not a coordinate of the sheet, and on the
+fixed non-constant sheet its entropy is one. The whole is the pair. The
+set of wholes is the product of the set of sheets and the set of probes.
+Supplying the chaos to the sheet yields the answer; without the chaos the
+gap remains exactly one bit. Two accounts that share the sheet share
+every coordinate of it. Two probes that arrive at the same shared record
+do not change its first coordinate.
+
+Not proved: that a mind is this pair, that the chaos is free will, that
+this construction is the physical world, anything about noncommuting
+observables, or anything about the zeros of `ξ`.

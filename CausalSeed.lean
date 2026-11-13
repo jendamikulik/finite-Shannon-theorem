@@ -47,4 +47,5 @@ import CausalSeed.Reserve
 import CausalSeed.Mirror
 import CausalSeed.AllKnowing
 import CausalSeed.GapAccess
+import CausalSeed.Whole
 

@@ -2458,3 +2458,21 @@ the first coordinate; a later probe does not rewrite it.
 The readings multiply. The memory does not. Not proved: that a mind is
 this sheet, that a reading is consciousness, anything about noncommuting
 observables, or anything about the zeros of `ξ`.
+
+## The unique interface
+
+`CausalSeed/Interface.lean` is the finale of the account: the sheet is
+public, the interface is the sealed probe, and a mismatched probe is
+refused.
+
+A unique interface is a sheet together with one seal. The holder of the
+matching probe is admitted and receives the coordinate. A party who
+presents a different probe receives nothing. Two interfaces on the same
+sheet with different seals do not open each other. A successful report
+has conditional entropy zero. The sheet is unchanged.
+
+This is the Shannon interface of the relational note, specialized to the
+finite sheet. Zero report entropy does not imply zero memory. The module
+does not identify a mind with the sheet, does not exclude others from
+reading the public mathematics, and says nothing about noncommuting
+observables or the zeros of `ξ`.

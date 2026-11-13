@@ -2443,3 +2443,18 @@ do not change its first coordinate.
 Not proved: that a mind is this pair, that the chaos is free will, that
 this construction is the physical world, anything about noncommuting
 observables, or anything about the zeros of `ξ`.
+
+## Unique information, many readings
+
+`CausalSeed/Multiply.lean` records the structural content of multiplying
+readings in time without loss of memory.
+
+Information is unique: one public sheet. A reading is a probe applied to
+that sheet. Many probes may be applied. Each reading, given the sheet and
+its own probe, has conditional entropy zero. The sheet is unchanged by
+being read. Two probes that arrive at the same shared record agree on
+the first coordinate; a later probe does not rewrite it.
+
+The readings multiply. The memory does not. Not proved: that a mind is
+this sheet, that a reading is consciousness, anything about noncommuting
+observables, or anything about the zeros of `ξ`.

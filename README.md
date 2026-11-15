@@ -2536,3 +2536,19 @@ fair binary probe has one bit of Shannon entropy.
 Continuous Gaussian channels, Hilbert-space instruments, and
 gravitational geometry are not formalized. Nothing here selects a
 physics or identifies hidden entropy with a horizon.
+
+## UNITY
+
+`CausalSeed/Unity.lean` joins the conditional framework of 15 November 2026.
+
+The three displayed phases lie on the unit circle. Equal moduli do not
+force equal values, and a sum of unit values need not vanish. A
+trajectory offered by the golden sphere stays in the care set; a
+permitted step is not asserted to exist. `n` halvings cost
+`n · (m² / 2) · ln 2`. An additive clock on depths counts bits. The
+constant map `true` is idempotent by substitution only. The same total
+cost can be booked inside or outside.
+
+Hypothesis 9 is not a theorem. No intention is identified with an
+instrument, and no external supplier is exhibited.
+

@@ -67,12 +67,23 @@ theorem unit_sum_not_always_zero :
 /-! ### Golden sphere -/
 
 /-- Theorem 2 of the note: an offered trajectory stays in the care set.
-Existence of a permitted step is not asserted. -/
+A permitted step exists exactly when a witness action is supplied:
+opened by the wish, inside every consent boundary, landing in K.
+See `GoldenSphere.step_exists_iff` and `GoldenSphere.run_step`.
+The sphere does not produce the witness. -/
 theorem stays {X Ω W N : Type*}
     (S : GoldenSphere.Sphere X Ω W N) (w : ℕ → W) (x : ℕ → X)
     (h0 : x 0 ∈ S.K) (hstep : ∀ t, x (t + 1) ∈ GoldenSphere.G S (w t) (x t)) :
     ∀ t, x t ∈ S.K :=
   GoldenSphere.stays_in_K S w x h0 hstep
+
+/-- The missing premise, named. A step exists at `(w, x)` if and only if
+some action is admissible and lands in the care set. -/
+theorem step_iff {X Ω W N : Type*}
+    (S : GoldenSphere.Sphere X Ω W N) (w : W) (x : X) :
+    (∃ y, y ∈ GoldenSphere.G S w x) ↔
+      ∃ a, a ∈ S.I w x ∧ (∀ i, a ∈ S.C i x) ∧ S.F x a ∈ S.K :=
+  GoldenSphere.step_exists_iff S w x
 
 /-! ### Rings -/
 

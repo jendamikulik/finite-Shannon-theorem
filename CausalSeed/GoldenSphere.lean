@@ -84,5 +84,67 @@ theorem G_requires_all_consent (S : Sphere X Ω W N) (w : W) (x : X)
     a ∉ admissible S w x :=
   outside_consent_not_admissible S w x i a ha
 
+/-! ### When a permitted step exists -/
+
+/-- A permitted step exists exactly when some action is opened by the
+wish, accepted by every consent boundary, and lands in the care set.
+This is an extra hypothesis. The preceding definitions do not produce it. -/
+theorem step_exists_iff (S : Sphere X Ω W N) (w : W) (x : X) :
+    (∃ y, y ∈ G S w x) ↔
+      ∃ a, a ∈ S.I w x ∧ (∀ i, a ∈ S.C i x) ∧ S.F x a ∈ S.K := by
+  constructor
+  · rintro ⟨y, a, ha, hy, hk⟩
+    exact ⟨a, ha.1, ha.2, hy ▸ hk⟩
+  · rintro ⟨a, hI, hC, hK⟩
+    exact ⟨S.F x a, a, ⟨hI, hC⟩, rfl, hK⟩
+
+/-- Given a witness action, the transition is a permitted next state. -/
+theorem step_of_witness (S : Sphere X Ω W N) (w : W) (x : X) (a : Ω)
+    (hI : a ∈ S.I w x) (hC : ∀ i, a ∈ S.C i x) (hK : S.F x a ∈ S.K) :
+    S.F x a ∈ G S w x :=
+  ⟨a, ⟨hI, hC⟩, rfl, hK⟩
+
+/-- A picker supplies, at every time and every cared state, one witness
+action. It is an extra datum. The sphere does not produce it. -/
+def Picker (S : Sphere X Ω W N) (w : ℕ → W) : Type _ :=
+  ∀ (t : ℕ) (x : X), x ∈ S.K →
+    { a : Ω // a ∈ S.I (w t) x ∧ (∀ i, a ∈ S.C i x) ∧ S.F x a ∈ S.K }
+
+/-- Trajectory and membership, built together from a picker. -/
+noncomputable def runPair (S : Sphere X Ω W N) (w : ℕ → W)
+    (pick : Picker S w) (x0 : X) (h0 : x0 ∈ S.K) : ℕ → { x : X // x ∈ S.K }
+  | 0 => ⟨x0, h0⟩
+  | t + 1 =>
+    let prev := runPair S w pick x0 h0 t
+    let a := pick t prev.1 prev.2
+    ⟨S.F prev.1 a.1, a.2.2.2⟩
+
+/-- The state component of the joint run. -/
+noncomputable def run (S : Sphere X Ω W N) (w : ℕ → W)
+    (pick : Picker S w) (x0 : X) (h0 : x0 ∈ S.K) (t : ℕ) : X :=
+  (runPair S w pick x0 h0 t).1
+
+theorem run_zero (S : Sphere X Ω W N) (w : ℕ → W)
+    (pick : Picker S w) (x0 : X) (h0 : x0 ∈ S.K) :
+    run S w pick x0 h0 0 = x0 := rfl
+
+theorem run_mem (S : Sphere X Ω W N) (w : ℕ → W)
+    (pick : Picker S w) (x0 : X) (h0 : x0 ∈ S.K) (t : ℕ) :
+    run S w pick x0 h0 t ∈ S.K :=
+  (runPair S w pick x0 h0 t).2
+
+/-- Every step of the run is a permitted step. Existence of the step is
+the picker, which is supplied, not derived. -/
+theorem run_step (S : Sphere X Ω W N) (w : ℕ → W)
+    (pick : Picker S w) (x0 : X) (h0 : x0 ∈ S.K) (t : ℕ) :
+    run S w pick x0 h0 (t + 1) ∈ G S (w t) (run S w pick x0 h0 t) := by
+  let prev := runPair S w pick x0 h0 t
+  let a := pick t prev.1 prev.2
+  change S.F prev.1 a.1 ∈ G S (w t) prev.1
+  exact step_of_witness S (w t) prev.1 a.1 a.2.1 a.2.2.1 a.2.2.2
+
 end GoldenSphere
 end CausalSpectrum
+
+
+

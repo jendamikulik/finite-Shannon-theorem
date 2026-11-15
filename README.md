@@ -2543,8 +2543,11 @@ physics or identifies hidden entropy with a horizon.
 
 The three displayed phases lie on the unit circle. Equal moduli do not
 force equal values, and a sum of unit values need not vanish. A
-trajectory offered by the golden sphere stays in the care set; a
-permitted step is not asserted to exist. `n` halvings cost
+trajectory offered by the golden sphere stays in the care set. A
+permitted step exists exactly when a witness action is supplied: opened
+by the wish, inside every consent boundary, and landing in the care set
+(`GoldenSphere.step_exists_iff`, `GoldenSphere.run_step`). The sphere
+does not produce that witness. `n` halvings cost
 `n · (m² / 2) · ln 2`. An additive clock on depths counts bits. The
 constant map `true` is idempotent by substitution only. The same total
 cost can be booked inside or outside.

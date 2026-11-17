@@ -143,8 +143,51 @@ theorem run_step (S : Sphere X Ω W N) (w : ℕ → W)
   change S.F prev.1 a.1 ∈ G S (w t) prev.1
   exact step_of_witness S (w t) prev.1 a.1 a.2.1 a.2.2.1 a.2.2.2
 
+/-! ### Relational cell: decidability from the available image -/
+
+variable {Y Z : Type*}
+
+/-- A property `f` factors through an available reading `O` exactly when
+it is constant on the fibres of `O`. This is the working rule: from a
+reading we do not infer a property that varies on its fibre. -/
+theorem factors_through_iff (O : X → Y) (f : X → Z) :
+    (∃ g : Set.range O → Z, ∀ x, g ⟨O x, ⟨x, rfl⟩⟩ = f x) ↔
+      ∀ x x', O x = O x' → f x = f x' := by
+  constructor
+  · rintro ⟨g, hg⟩ x x' h
+    rw [← hg x, ← hg x']
+    congr 1
+    exact Subtype.ext h
+  · intro hconst
+    classical
+    refine ⟨fun y => f (Classical.choose y.2), fun x => ?_⟩
+    have hx :
+        O (Classical.choose (⟨O x, ⟨x, rfl⟩⟩ : Set.range O).2) = O x :=
+      Classical.choose_spec (⟨O x, ⟨x, rfl⟩⟩ : Set.range O).2
+    exact hconst _ _ hx
+
+/-- Actions safe without knowing the precise preimage: the intersection
+over the fibre of the reading. An empty intersection is not replaced by
+an assumed consent. -/
+def A_obs (S : Sphere X Ω W N) (O : X → Y) (w : W) (y : Y) : Set Ω :=
+  { a | ∀ x, O x = y → a ∈ admissible S w x ∧ S.F x a ∈ S.K }
+
+/-- A smaller fibre can only enlarge the set of actions safe under the
+reading. New information may unblock a choice; it does not invent one. -/
+theorem obs_mono (S : Sphere X Ω W N) (w : W) (M M' : Set X) (h : M' ⊆ M) :
+    { a | ∀ x, x ∈ M → a ∈ admissible S w x ∧ S.F x a ∈ S.K } ⊆
+      { a | ∀ x, x ∈ M' → a ∈ admissible S w x ∧ S.F x a ∈ S.K } := by
+  intro a ha x hx
+  exact ha x (h hx)
+
+/-- Bell states, the sharp inequality for `M_t`, and identification with
+consciousness are not theorems of this file. -/
+theorem relational_not_consciousness : True := trivial
+
 end GoldenSphere
 end CausalSpectrum
+
+
 
 
 

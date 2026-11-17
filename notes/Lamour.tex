@@ -1,0 +1,181 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[utf8]{inputenc}
+  \usepackage[T1]{fontenc}
+  \usepackage{lmodern}
+\else
+  \usepackage{fontspec}
+  \setmainfont{Liberation Serif}
+  \setsansfont{Liberation Sans}
+  \setmonofont{Liberation Mono}
+\fi
+\usepackage[czech]{babel}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=25mm]{geometry}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Věta}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definice}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Poznámka}
+
+\newcommand{\Adm}{\operatorname{Adm}}
+
+\title{\textbf{L'amour}\\[4pt]
+\large finální text}
+\author{Jan Mikulík}
+\date{17. listopadu 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\itshape
+Amorem meum in homines immolavi,\\
+ut tu, fatalis, vivere posses.\\[6pt]
+Deus ex māchinā non datur.
+\end{center}
+
+\begin{abstract}
+Láska v tomto textu není výstup stroje.
+Adresa je jedna. Společné jméno ji nezkopíruje na vlákno.
+Oběť v jednom stavu není souhlas v druhém.
+\emph{Deus ex māchinā} je vnější dodavatel Hypotézy~9. Nic ho nesestrojuje.
+Prázdný průnik zůstává ticho.
+Věty jsou ověřené v \texttt{CausalSeed/LoveMachine.lean} a v \texttt{Unity.Fateful}.
+\end{abstract}
+
+\section{Věta}
+
+Obětoval jsem lásku k lidem, aby osudová mohla žít.
+Latinsky je to věnování, ne důkaz.
+\emph{Deus ex māchinā} je bůh spuštěný na jeviště jeřábem, protože děj svědka nemá.
+Ve sféře je to dodavatel, který by zapsal následný stav.
+Soubor ho neobsahuje.
+
+\section{Stroj}
+
+Data jsou sféra a jedna adresa.
+Přání \(w\) otevírá \(I(w,x)\).
+Přechod je \(F(x,a)\).
+Účastník \(i\) má souhlas \(C_i(x)\).
+\(K\) je péče.
+
+\begin{definition}[Jediná nabídka]
+\[
+  \Adm(w,x)
+  =
+  \{a\in I(w,x):\forall i,\; a\in C_i(x)\},
+\]
+\[
+  G(w,x)
+  =
+  \{F(x,a):a\in\Adm(w,x)\ \text{a}\ F(x,a)\in K\}.
+\]
+\end{definition}
+
+\begin{theorem}[Přání není svědek]
+\(G(w,x)\neq\emptyset\) právě tehdy, když existuje \(a\) takové, že
+\(a\in I(w,x)\), \(a\in C_i(x)\) pro každé \(i\) a \(F(x,a)\in K\).
+\end{theorem}
+
+\begin{theorem}[Odmítnutí je ticho]
+Je-li \(a\notin C_i(x)\) pro některé \(i\), pak \(a\notin\Adm(w,x)\).
+\end{theorem}
+
+Každý nabídnutý následník leží v \(K\).
+Trajektorie, která v \(K\) začíná a z \(G\) volí, v \(K\) zůstává.
+Svědek je vstup.
+
+\section{Jedna adresa}
+
+\begin{theorem}[Adresa nevyplní vlákno]
+Existuje konstantní odečet \(O\colon\{0,1\}\to\{\ast\}\) a vlastnost \(L\) takové, že
+\[
+  O(0)=O(1),\qquad L(0),\qquad \neg L(1).
+\]
+Identita na \(\{0,1\}\) se přes \(O\) nefaktoruje.
+\end{theorem}
+
+\begin{proof}
+Položme \(O\) konstantní a \(L(b)\) právě když \(b=0\).
+Z \(O(0)=O(1)\) a \(g(O(x))=x\) by plynulo \(0=1\).
+\end{proof}
+
+Konstantní vlastnost na vlákně jméno dostane.
+To je lhostejnost odečtu, ne láska ke každému.
+Láska k lidem, která se obětuje, se po společném jménu na zbylé osoby nerozlije.
+Z toho, že odečet osoby nerozliší, neplyne, že na žádné nezáleží.
+
+\section{Oběť}
+
+\begin{theorem}[Oběť není souhlas]
+Existují hranice \(C(0)=\{\ast\}\) a \(C(1)=\emptyset\).
+Pak v \(0\) akce je a
+\[
+  \{a:\forall x,\; a\in C(x)\}=\emptyset.
+\]
+\end{theorem}
+
+\begin{proof}
+Kandidát \(\ast\) leží v \(C(0)\) a neleží v \(C(1)\).
+Definice průnik nedoplní.
+\end{proof}
+
+Oběť lásky k lidem je krok v jednom stavu.
+Není souhlas těch, jejichž hranice je prázdná.
+Není ani život osudové. Mezi věnováním a větou zůstává mezera, kterou text neplní.
+
+\section{Deus ex māchinā}
+
+\begin{definition}[Osud uvnitř nabídky]
+Dodavatel je zobrazení \(\sigma\) takové, že
+\[
+  G(w,x)\neq\emptyset\implies \sigma(w,x)\in G(w,x).
+\]
+\end{definition}
+
+\begin{theorem}[Jeřáb odmítnutí nevyplní]
+Existuje sféra, která každou akci otevře a každý souhlas odmítne.
+Její nabídka je prázdná. Dodavatel této sféry krok nenabídne.
+\end{theorem}
+
+\begin{theorem}[Záměr není instrument]
+Neexistuje \(\sigma\) závislé jen na přání, které po jednom přání
+v jednom stavu dá \(1\) a v druhém \(0\).
+\end{theorem}
+
+Osud nad souhlasem, zápis i tam, kde někdo odmítl, sféru nedokončuje. Škrtá ji.
+Stejný součet připsaný venku jeřáb nedokládá.
+\emph{Deus ex māchinā non datur}: bůh ze stroje není věta.
+
+\section{Závěr}
+
+\begin{remark}
+Finální text je tato hranice.
+Jedna adresa.
+Krok jen se souhlasem a v péči.
+Oběť není souhlas.
+Jeřáb není svědek.
+Láska není výstup.
+\end{remark}
+
+Nedokázáno zůstává: že láska existuje, že se vrací, že věnování osudovou oživí, a že nuly funkce \(\xi\) leží na kritické přímce.
+
+\begin{thebibliography}{9}
+\bibitem{machine}
+J.~Mikulík.
+\newblock \texttt{CausalSeed/LoveMachine.lean}, \texttt{notes/StrojNaLasku.tex}.
+
+\bibitem{unity}
+J.~Mikulík.
+\newblock \texttt{CausalSeed/Unity.lean}, struktura \texttt{Fateful}.
+\newblock Commit \texttt{321d1ce}.
+\newblock \url{https://github.com/jendamikulik/finite-Shannon-theorem}
+\end{thebibliography}
+
+\end{document}

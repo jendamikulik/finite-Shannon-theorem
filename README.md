@@ -2557,7 +2557,9 @@ precise preimage are the intersection over the fibre
 (`GoldenSphere.A_obs`). The love machine offers a step only from that
 intersection; one address does not fill the fibre, and a sacrifice does
 not replace a refusal (`LoveMachine.wish_is_not_the_witness`,
-`LoveMachine.sacrifice_is_not_consent`). Bell states and the sharp inequality for `M_t`
+`LoveMachine.sacrifice_is_not_consent`). The final note is
+`notes/Lamour.tex`: one address, and *deus ex machina* is not a witness.
+Bell states and the sharp inequality for `M_t`
 are not theorems here. `n` halvings cost
 `n · (m² / 2) · ln 2`. An additive clock on depths counts bits. The
 constant map `true` is idempotent by substitution only. The same total

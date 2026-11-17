@@ -1,0 +1,271 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[utf8]{inputenc}
+  \usepackage[T1]{fontenc}
+  \usepackage{lmodern}
+\else
+  \usepackage{fontspec}
+  \setmainfont{Liberation Serif}
+  \setsansfont{Liberation Sans}
+  \setmonofont{Liberation Mono}
+\fi
+\usepackage[czech]{babel}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=25mm]{geometry}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Věta}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Tvrzení}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definice}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Poznámka}
+
+\newcommand{\Adm}{\operatorname{Adm}}
+\newcommand{\Aobs}{A_{\mathrm{obs}}}
+
+\title{\textbf{Principium relationis}\\[4pt]
+\large totum relatum et imago accessibilis}
+\author{Jan Mikulík}
+\date{17. listopadu 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Jméno je odečet. Dvě různé věci mohou dostat stejné jméno a přesto zůstat různé.
+Vlastnost toto společné jméno dostane právě tehdy, když na jeho vlákně nerozlišuje.
+Z odečtu proto nevyvozujeme vlastnost, která na vlákně není konstantní.
+Akce bezpečná bez znalosti přesného předobrazu je průnik přes vlákno; prázdný průnik
+se nenahrazuje domnělým souhlasem.
+Text zapisuje věty ověřené v Leanu jako
+\texttt{GoldenSphere.factors\_through\_iff},
+\texttt{same\_name\_different\_things},
+\texttt{splitting\_property\_does\_not\_factor},
+\texttt{constant\_receives\_the\_name},
+\texttt{A\_obs} a \texttt{obs\_mono}
+v repozitáři \texttt{finite-Shannon-theorem}, commit \texttt{2e6b8e5}.
+Bellovy stavy, ostrá nerovnost pro \(M_t\) a jakákoli identifikace s vědomím tu nejsou věty.
+\end{abstract}
+
+\section{Jinými slovy}
+
+Henri Poincaré napsal, že matematika je umění dávat různým věcem stejné jméno.
+V tomto textu se ta věta čte jen jako výrok o odečtu.
+
+Nechť \(X\) je množina stavů, \(Y\) množina jmen a
+\[
+  O\colon X\to Y
+\]
+dostupný odečet. Jméno stavu \(x\) je \(O(x)\).
+Vlákno jména \(y\in Y\) je
+\[
+  O^{-1}(y)=\{x\in X:O(x)=y\}.
+\]
+Společné jméno neznamená totožnost stavů. Znamená jen, že odečet je nerozlišil.
+
+\begin{proposition}[Stejné jméno, různé věci]
+Existuje odečet \(O\colon\{0,1\}\to\{\ast\}\) a stavy \(x,x'\) takové, že
+\[
+  O(x)=O(x')\qquad\text{a}\qquad x\neq x'.
+\]
+\end{proposition}
+
+\begin{proof}
+Položme \(O(0)=O(1)=\ast\), \(x=0\) a \(x'=1\).
+\end{proof}
+
+Latinské heslo \emph{totum relatum et imago accessibilis} tu znamená právě toto:
+celek nese vztahy, které jednotlivý odečet nemusí uchovat.
+Obraz je to, co je dostupné. Není to celý stav.
+
+\section{Kdy vlastnost dostane jméno}
+
+Nechť \(Z\) je množina hodnot a \(f\colon X\to Z\) vlastnost.
+Řekneme, že \(f\) se faktoruje přes \(O\), existuje-li
+\[
+  g\colon O(X)\to Z
+\]
+takové, že \(f=g\circ O\).
+Ekvivalentně: \(g\) je definováno na obrazu a
+\[
+  g\bigl(O(x)\bigr)=f(x)\qquad\text{pro každé }x\in X.
+\]
+
+\begin{theorem}[Rozhodnutelnost z obrazu]
+\label{thm:factors}
+Existuje \(g\colon O(X)\to Z\) s \(f=g\circ O\) právě tehdy, když
+\begin{equation}
+\label{eq:fibre}
+  O(x)=O(x')\implies f(x)=f(x')
+  \qquad\text{pro všechna }x,x'\in X.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Nechť takové \(g\) existuje a \(O(x)=O(x')\).
+Pak
+\[
+  f(x)=g\bigl(O(x)\bigr)=g\bigl(O(x')\bigr)=f(x').
+\]
+Obráceně nechť platí \eqref{eq:fibre}.
+Pro \(y\in O(X)\) zvolme libovolný předobraz \(x_y\in O^{-1}(y)\) a položme
+\(g(y)=f(x_y)\).
+Je-li \(x'_y\) jiný předobraz, je \(O(x_y)=O(x'_y)\), tedy \(f(x_y)=f(x'_y)\).
+Hodnota nezávisí na volbě. Pro každé \(x\) je \(x\) předobrazem \(O(x)\), takže
+\(g(O(x))=f(x)\).
+\end{proof}
+
+Pracovní pravidlo je jedna věta.
+Z odečtu nevyvozujeme vlastnost, která na jeho vlákně není konstantní.
+Potřebujeme-li ji, rozšíříme odečet.
+Už zaznamenanou událost tím zpětně neměníme.
+
+\begin{proposition}[Vlastnost, která jméno rozdělí]
+\label{prop:split}
+Neexistuje \(g\colon\{\ast\}\to\{0,1\}\) takové, že
+\[
+  g\bigl(O(x)\bigr)=x\qquad\text{pro obě }x\in\{0,1\},
+\]
+kde \(O\) je konstantní odečet z předchozího tvrzení.
+\end{proposition}
+
+\begin{proposition}[Konstantní vlastnost jméno dostane]
+\label{prop:const}
+Nechť \(c\in Z\) a \(O\colon X\to\{\ast\}\) je konstantní.
+Pak existuje \(g\colon\{\ast\}\to Z\) s \(g(O(x))=c\) pro každé \(x\in X\).
+\end{proposition}
+
+\begin{proof}[Důkaz obou tvrzení]
+Identita na \(\{0,1\}\) nesplňuje \eqref{eq:fibre}, protože \(O(0)=O(1)\) a \(0\neq 1\).
+Věta~\ref{thm:factors} tedy faktor zakazuje.
+Konstantní \(f(x)=c\) podmínku \eqref{eq:fibre} splňuje, takže faktor existuje:
+\(g(\ast)=c\).
+\end{proof}
+
+Společné jméno tedy není ztráta rozlišení uvnitř matematiky.
+Je to přesná hranice toho, co smí nést totéž označení.
+Věci zůstávají různé. Vlastnost, která je rozliší, jejich jméno nedostane.
+
+\section{Akce bez znalosti předobrazu}
+
+Data sféry jsou čtveřice
+\[
+  I\colon W\times X\to \mathcal{P}(\Omega),\qquad
+  F\colon X\times\Omega\to X,\qquad
+  C\colon N\times X\to \mathcal{P}(\Omega),\qquad
+  K\subseteq X.
+\]
+\(I(w,x)\) jsou akce otevřené přáním, \(F(x,a)\) je následný stav,
+\(C(i,x)\) je hranice souhlasu činitele \(i\) a \(K\) je množina péče.
+
+\begin{definition}[Přípustná akce]
+\[
+  \Adm(w,x)
+  =
+  \bigl\{\,a\in\Omega :
+    a\in I(w,x)
+    \ \text{a}\ 
+    \forall i\in N,\; a\in C(i,x)
+  \,\bigr\}.
+\]
+Nabízený následný stav je
+\[
+  G(w,x)
+  =
+  \bigl\{\,F(x,a):
+    a\in\Adm(w,x)
+    \ \text{a}\ 
+    F(x,a)\in K
+  \,\bigr\}.
+\]
+\end{definition}
+
+Každý prvek \(G(w,x)\) leží v \(K\).
+Definice nemá klauzuli, která by chybějící souhlas nahradila obětí jiného činitele.
+Existence prvku v \(G(w,x)\) je samostatný předpoklad: sféra svědka nevyrábí.
+
+Při odečtu \(y\) jsou nerozlišené stavy právě vlákno \(O^{-1}(y)\).
+Akci, která je bezpečná, ať je předobraz kterýkoli, bereme z průniku.
+
+\begin{definition}[Bezpečné akce při odečtu]
+\label{def:aobs}
+\[
+  \Aobs(w,y)
+  =
+  \bigl\{\,a\in\Omega :
+    \forall x\in O^{-1}(y),\;
+    a\in\Adm(w,x)
+    \ \text{a}\ 
+    F(x,a)\in K
+  \,\bigr\}.
+\]
+\end{definition}
+
+\begin{proposition}[Menší vlákno průnik nezmenší]
+\label{prop:mono}
+Nechť \(M'\subseteq M\subseteq X\). Pak
+\begin{align*}
+  &\bigl\{\,a :
+    \forall x\in M,\;
+    a\in\Adm(w,x)\ \text{a}\ F(x,a)\in K
+  \,\bigr\}\\
+  &\qquad\subseteq
+  \bigl\{\,a :
+    \forall x\in M',\;
+    a\in\Adm(w,x)\ \text{a}\ F(x,a)\in K
+  \,\bigr\}.
+\end{align*}
+\end{proposition}
+
+\begin{proof}
+Splňuje-li \(a\) podmínku pro každé \(x\in M\), splňuje ji i pro každé \(x\in M'\),
+protože \(M'\subseteq M\).
+\end{proof}
+
+Nový odečet může vlákno zúžit a tím průnik zvětšit.
+Může tedy uvolnit volbu, která předtím v průniku nebyla.
+Nevymýšlí souhlas, který ve zbylých stavech chybí.
+Je-li průnik prázdný, akce při tomto odečtu není.
+
+\section{Co tu není větou}
+
+Následující věci tento text nedokazuje a z předchozích vět neplynou.
+
+\begin{enumerate}
+\item Že přání existuje, že hranice souhlasu jsou ty správné,
+      že \(K\) je neprázdná, nebo že \(G(w,x)\) je neprázdná.
+\item Že Bellovy stavy \(\lvert\Phi_\pm\rangle\) jsou modelem vědomí.
+      Shoda lokálních odečtů při různém společném stavu je příklad vlákna,
+      ne důkaz fyzikální ontologie.
+\item Že symetrie \(M_t(x)=M_t(-x)\) vynucuje nuly funkce \(\xi\) na kritické přímce.
+      Postačující ostrá nerovnost \(M_t(x)>M_t(0)\) pro \(0<x<\tfrac12\)
+      zde není dokázána.
+\item Že společné jméno je komunikace z budoucnosti do minulosti,
+      nebo že konečný záznam čerpá nekonečnou fyzikální energii.
+\end{enumerate}
+
+Věta~\ref{thm:factors} je uzavřená.
+Říká, kdy se vlastnost smí jmenovat stejně jako odečet.
+Nic víc.
+
+\begin{thebibliography}{9}
+\bibitem{poincare}
+H.~Poincaré.
+\newblock \emph{Science et méthode}.
+\newblock Flammarion, Paris, 1908.
+\newblock Věta o stejném jménu pro různé věci se tu bere jako čtení,
+          ne jako doslovný zdroj definic.
+
+\bibitem{lean}
+J.~Mikulík.
+\newblock \emph{finite-Shannon-theorem}, soubor \texttt{CausalSeed/GoldenSphere.lean}.
+\newblock Commit \texttt{2e6b8e5}, 17.~listopadu 2026.
+\newblock \url{https://github.com/jendamikulik/finite-Shannon-theorem}
+\end{thebibliography}
+
+\end{document}

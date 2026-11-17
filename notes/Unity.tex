@@ -1,0 +1,290 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[utf8]{inputenc}
+  \usepackage[T1]{fontenc}
+  \usepackage{lmodern}
+\else
+  \usepackage{fontspec}
+  \setmainfont{Liberation Serif}
+  \setsansfont{Liberation Sans}
+  \setmonofont{Liberation Mono}
+\fi
+\usepackage[czech]{babel}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=25mm]{geometry}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Věta}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definice}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Poznámka}
+
+\newcommand{\Adm}{\operatorname{Adm}}
+\newcommand{\Aobs}{A_{\mathrm{obs}}}
+
+\title{\textbf{UNITY}\\[4pt]
+\large výsledný text podmíněného rámce}
+\author{Jan Mikulík}
+\date{17. listopadu 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Tento text spojuje to, co je v knihovně dokázáno, a nic dalšího.
+Tři uvedené fáze leží na jednotkové kružnici.
+Stejný modul nezaručí stejnou hodnotu a součet jednotkových hodnot nemusí být nula.
+Trajektorie, která zůstává v nabídce sféry, zůstává v péči.
+Krok existuje právě tehdy, když je dodán svědek.
+Vlastnost se faktoruje přes odečet právě tehdy, když je konstantní na vláknech.
+Stroj nabídne jen takový krok.
+Jedna adresa vlákno nevyplní a oběť nenahradí odmítnutí.
+\(n\) půlení stojí \(n\cdot(m^2/2)\ln 2\).
+Aditivní hodiny na hloubce počítají bity.
+Konstantní zobrazení na \(\mathrm{true}\) je idempotentní substitucí.
+Stejný součet lze účtovat uvnitř, nebo venku.
+Hypotéza~9, vědomí, láska jako operátor a poloha nul funkce \(\xi\) tu nejsou věty.
+Ověření je v \texttt{CausalSeed/Unity.lean} a v modulech, které cituje.
+\end{abstract}
+
+\section{Fáze}
+
+Pro reálné \(\theta\) platí
+\[
+  \bigl\lvert e^{i\theta}\bigr\rvert = 1.
+\]
+Tři fáze poznámky jsou
+\[
+  \theta_1=\pi,
+  \qquad
+  \theta_2=e\ln\pi,
+  \qquad
+  \theta_3=\frac{\pi^2 e}{2}.
+\]
+
+\begin{theorem}[Jednotkový modul]
+\[
+  \lvert e^{i\theta_1}\rvert
+  =
+  \lvert e^{i\theta_2}\rvert
+  =
+  \lvert e^{i\theta_3}\rvert
+  =1.
+\]
+\end{theorem}
+
+\begin{proof}
+Každé \(\theta_k\) je reálné a \(\lvert e^{i\theta}\rvert=1\) pro každé reálné \(\theta\).
+\end{proof}
+
+\begin{theorem}[Stejný modul není stejná hodnota]
+\(\lvert 1\rvert=\lvert -1\rvert\) a přesto \(1\neq -1\).
+Součet tří jednotkových čísel nemusí zmizet:
+\(\lvert 1\rvert=1\) a \(1+1+1\neq 0\).
+\end{theorem}
+
+Stejná délka tedy není stejná fáze.
+Zmizení součtu je další podmínka, ne důsledek modulu.
+
+\section{Sféry a svědek}
+
+Data sféry jsou \(I\), \(F\), \((C_i)_{i\in N}\) a \(K\subseteq X\).
+
+\begin{definition}
+\[
+  \Adm(w,x)
+  =
+  \bigl\{a\in I(w,x):\forall i,\; a\in C_i(x)\bigr\},
+\]
+\[
+  G(w,x)
+  =
+  \bigl\{F(x,a):a\in\Adm(w,x)\ \text{a}\ F(x,a)\in K\bigr\}.
+\]
+\end{definition}
+
+\begin{theorem}[Existence kroku]
+\(G(w,x)\neq\emptyset\) právě tehdy, když existuje \(a\) takové, že
+\[
+  a\in I(w,x),
+  \qquad
+  \forall i\ (a\in C_i(x)),
+  \qquad
+  F(x,a)\in K.
+\]
+\end{theorem}
+
+\begin{theorem}[Péče]
+Je-li \(x_0\in K\) a \(x_{t+1}\in G(w_t,x_t)\) pro každé \(t\), pak \(x_t\in K\) pro každé \(t\).
+\end{theorem}
+
+\begin{proof}
+Z definice je \(G(w,x)\subseteq K\). Indukce přes \(t\).
+Svědek v předpokladu kroku je dodán. Sféry ho nevyrábí.
+Chybí-li souhlas jednoho \(i\), akce v \(\Adm(w,x)\) není.
+\end{proof}
+
+\section{Jméno}
+
+\begin{theorem}[Rozhodnutelnost z obrazu]
+Nechť \(O\colon X\to Y\) a \(f\colon X\to Z\).
+Existuje \(g\colon O(X)\to Z\) s \(f=g\circ O\) právě tehdy, když
+\[
+  O(x)=O(x')\implies f(x)=f(x')
+  \qquad\text{pro všechna }x,x'\in X.
+\]
+\end{theorem}
+
+\begin{proof}
+Složení dává implikaci ihned.
+Obráceně se \(g(O(x))\) položí rovno \(f(x)\).
+Předpoklad říká, že hodnota nezávisí na předobrazu.
+\end{proof}
+
+\begin{theorem}[Stejné jméno, různé věci]
+Existuje \(O\colon\{0,1\}\to\{\ast\}\) s \(O(0)=O(1)\) a \(0\neq 1\).
+Identita na \(\{0,1\}\) se přes toto \(O\) nefaktoruje.
+Konstantní vlastnost se faktoruje.
+\end{theorem}
+
+Při neznámém předobrazu jsou bezpečné jen akce z průniku přes vlákno:
+\[
+  \Aobs(w,y)
+  =
+  \bigl\{a:
+    \forall x\in O^{-1}(y),\;
+    a\in\Adm(w,x)
+    \ \text{a}\ 
+    F(x,a)\in K
+  \bigr\}.
+\]
+Je-li \(M'\subseteq M\), průnik přes \(M\) je podmnožinou průniku přes \(M'\).
+Menší vlákno volbu může uvolnit. Prázdný průnik se nenahrazuje domnělým souhlasem.
+
+\section{Stroj}
+
+Stroj je sféra s jednou adresou.
+Nabídka stroje je \(G(w,x)\).
+
+\begin{theorem}[Adresa nevyplní vlákno]
+Existuje konstantní \(O\colon\{0,1\}\to\{\ast\}\) a vlastnost \(L\) tak, že
+\(L(0)\) a \(\neg L(1)\).
+\end{theorem}
+
+\begin{theorem}[Oběť není souhlas]
+Existují hranice \(C(0)=\{\ast\}\) a \(C(1)=\emptyset\).
+Pak \(C(0)\) je neprázdná a
+\[
+  \{a:\forall x,\; a\in C(x)\}=\emptyset.
+\]
+\end{theorem}
+
+Přání je záznam. Láska není výstup stroje.
+Jedna adresa se po společném jménu nezkopíruje.
+Krok v jednom stavu není souhlas ve všech.
+Kde průnik chybí, stroj mlčí.
+
+\section{Prstence a hodiny}
+
+Pro \(m\in\mathbb{R}\) a \(0<\varepsilon\le R\) položme
+\[
+  E(m,\varepsilon,R)=\frac{m^2}{2}\ln\frac{R}{\varepsilon}.
+\]
+
+\begin{theorem}[Půlení]
+Pro \(R>0\) a \(n\in\mathbb{N}\)
+\[
+  E\Bigl(m,\frac{R}{2^n},R\Bigr)
+  =
+  n\cdot\frac{m^2}{2}\cdot\ln 2.
+\]
+Pro \(r>0\) je cena jednoho prstence v poměru \(e\)
+\[
+  E(m,r,er)=\frac{m^2}{2}.
+\]
+\end{theorem}
+
+\begin{proof}
+\(\ln(R/(R/2^n))=n\ln 2\).
+\(\ln(er/r)=1\).
+\end{proof}
+
+\begin{theorem}[Hodiny]
+Nechť \(d\colon\mathbb{N}\to\mathbb{R}\) splňuje \(d(n+m)=d(n)+d(m)\) a \(d(1)=1\).
+Pak \(d(n)=n\) pro každé \(n\).
+\end{theorem}
+
+\begin{proof}
+Z \(d(0)=d(0)+d(0)\) plyne \(d(0)=0\).
+Indukce: \(d(n+1)=d(n)+d(1)=n+1\).
+\end{proof}
+
+\(n\) půlení a \(n\) bitů tu počítají tutéž hloubku.
+Nepřevádějí bity na jouly a nevyrábějí energii.
+
+\section{Kde se účtuje}
+
+\begin{definition}
+Vnitřní účet hodnoty \(c\) je \((c,0)\).
+Vnější účet téže hodnoty je \((0,c)\).
+\end{definition}
+
+\begin{theorem}[Stejný součet, jiné místo]
+Pro každé \(c\)
+\[
+  c+0=0+c.
+\]
+Je-li \(c\neq 0\), první složka vnitřního účtu není první složka vnějšího.
+\end{theorem}
+
+Stejná celková cena tedy neříká, kde byla připsána.
+Nulová podmíněná entropie odečtu je výrok o dekodéru.
+Není to vnější dodavatel.
+Divergence prstence při \(\varepsilon\to 0\) je reálná limita, ne výkon.
+
+\section{Co zůstává předpokladem}
+
+Následující věci tento text nedokazuje.
+
+\begin{enumerate}
+\item Hypotézu~9. Záměr není ztotožněn s instrumentem a není doložen vnější dodavatel.
+\item Že láska je operátor, že existuje, nebo že adresovaná osoba odpoví.
+\item Že přání, verš nebo oběť vyrobí svědka.
+\item Že Bellův stav, symetrie \(M_t(x)=M_t(-x)\), nebo společné jméno určí polohu nul \(\xi\).
+      Postačující ostrá nerovnost \(M_t(x)>M_t(0)\) pro \(0<x<\tfrac12\) zde není dokázána.
+\item Že konečný záznam čerpá nekonečnou fyzikální energii, nebo že hodiny jsou vědomí.
+\end{enumerate}
+
+\begin{remark}[Výsledná věta]
+Rámec je podmíněný.
+Co je dokázáno, je spočteno výše.
+Co je hypotéza, hypotézou zůstává.
+Stejné jméno není stejná věc.
+Stejný modul není stejná fáze.
+Stejný součet není stejné místo účtu.
+Prázdný průnik není souhlas.
+\end{remark}
+
+\begin{thebibliography}{9}
+\bibitem{unity}
+J.~Mikulík.
+\newblock \texttt{CausalSeed/Unity.lean}.
+\newblock Podmíněný rámec, 15.--17.~listopadu 2026.
+\newblock \url{https://github.com/jendamikulik/finite-Shannon-theorem}
+
+\bibitem{sphere}
+J.~Mikulík.
+\newblock \texttt{CausalSeed/GoldenSphere.lean}, \texttt{LoveMachine.lean},
+          \texttt{RingEnergy.lean}.
+
+\bibitem{notes}
+J.~Mikulík.
+\newblock \emph{Principium relationis}. \emph{Stroj}.
+\newblock \texttt{notes/PrincipiumRelationis.tex}, \texttt{notes/StrojNaLasku.tex}.
+\end{thebibliography}
+
+\end{document}

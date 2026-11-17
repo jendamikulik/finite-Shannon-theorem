@@ -2540,6 +2540,7 @@ physics or identifies hidden entropy with a horizon.
 ## UNITY
 
 `CausalSeed/Unity.lean` joins the conditional framework of 15 November 2026.
+The resulting note is `notes/Unity.tex`.
 
 The three displayed phases lie on the unit circle. Equal moduli do not
 force equal values, and a sum of unit values need not vanish. A

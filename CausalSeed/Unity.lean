@@ -152,8 +152,81 @@ theorem charge_sits_elsewhere (c : ℝ) (hc : c ≠ 0) :
 
 /-- A zero conditional reading entropy is a statement about a decoder.
 It does not exhibit an external supplier. The ring limit is a real
-divergence, not a wattage. Hypothesis 9 is not a theorem of this file. -/
+divergence, not a wattage. The fateful form of Hypothesis 9 is stated
+below and is not a theorem of this file. -/
 theorem not_a_supplier : True := trivial
+
+/-! ### Hypothesis 9, the fateful reading
+
+Fate, if it were a theorem, would be an external supplier: a map that
+writes the next state and thereby controls the outcome. Two readings
+are not the same hypothesis.
+
+* Inside the offer: the supplier may choose only from `G`. Then it is
+  a picker. It still has to be supplied. Silence stays silence.
+* Above consent: the supplier writes a state where some consent
+  refuses. That is not a completion of the sphere. It deletes it.
+
+Identifying the intention with the instrument would make the outcome
+depend on the wish alone. Two nonempty offers under one wish can
+demand two different states. The wish does not decide them.
+An external booking of a cost is not such a supplier.
+-/
+
+/-- Hypothesis 9 in the form that still respects the sphere.
+A supplier controls the next state only where an offer exists.
+Nothing here constructs the supplier. -/
+structure Fateful {X Ω W N : Type*} (S : GoldenSphere.Sphere X Ω W N) where
+  supplier : W → X → X
+  controls :
+    ∀ w x, (GoldenSphere.G S w x).Nonempty →
+      supplier w x ∈ GoldenSphere.G S w x
+
+/-- A sphere that opens every action and refuses every consent. -/
+def silentSphere : GoldenSphere.Sphere Unit Unit Unit Unit where
+  I := fun _ _ => Set.univ
+  F := fun _ a => a
+  C := fun _ _ => ∅
+  K := Set.univ
+
+theorem silent_offer (w x : Unit) :
+    GoldenSphere.G silentSphere w x = ∅ := by
+  ext y
+  constructor
+  · rintro ⟨a, ha, _, _⟩
+    exact (ha.2 ()).elim
+  · intro hy
+    exact hy.elim
+
+/-- A fateful supplier does not fill a refusal. The controlled step
+is never offered, because nothing is offered. -/
+theorem fate_does_not_fill_silence (F : Fateful silentSphere) (w x : Unit) :
+    F.supplier w x ∉ GoldenSphere.G silentSphere w x := by
+  simpa [silent_offer] using (show F.supplier w x ∉ (∅ : Set Unit) from fun h => h.elim)
+
+/-- Where a fateful supplier does control a step, the step lies in care.
+Fate inside the offer does not leave `K`. -/
+theorem fate_inside_stays {X Ω W N : Type*}
+    (S : GoldenSphere.Sphere X Ω W N) (F : Fateful S) (w : W) (x : X)
+    (h : (GoldenSphere.G S w x).Nonempty) :
+    F.supplier w x ∈ S.K :=
+  GoldenSphere.G_subset_K S w x (F.controls w x h)
+
+/-- One wish, two required outcomes. The intention is not the instrument. -/
+theorem intention_is_not_the_instrument :
+    ¬ ∃ σ : Unit → Bool → Bool,
+        σ () true = true ∧ σ () false = false ∧
+          ∀ x, σ () x = σ () true := by
+  intro ⟨σ, ht, hf, honly⟩
+  have : false = true := hf.symm.trans ((honly false).trans ht)
+  exact Bool.false_ne_true this
+
+/-- Booking the same total outside does not exhibit a supplier. -/
+theorem external_charge_is_not_a_supplier (c : ℝ) (hc : c ≠ 0) :
+    (internal c).1 + (internal c).2 = (external c).1 + (external c).2 ∧
+      (internal c).1 ≠ (external c).1 :=
+  ⟨same_total c, charge_sits_elsewhere c hc⟩
 
 end Unity
 end CausalSpectrum
+

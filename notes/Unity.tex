@@ -246,12 +246,51 @@ Nulová podmíněná entropie odečtu je výrok o dekodéru.
 Není to vnější dodavatel.
 Divergence prstence při \(\varepsilon\to 0\) je reálná limita, ne výkon.
 
+\section{Hypotéza 9, osudová}
+
+Osud by byl vnější dodavatel: zobrazení, které zapíše následný stav a tím výsledek ovládne.
+V tomto rámci má dvě čtení a nejsou to tatáž hypotéza.
+
+\begin{definition}[Osud uvnitř nabídky]
+Dodavatel sféry je zobrazení \(\sigma\), které smí volit jen tam, kde nabídka existuje:
+\[
+  G(w,x)\neq\emptyset\implies \sigma(w,x)\in G(w,x).
+\]
+\end{definition}
+
+\begin{theorem}[Osud v odmítnutí nic nenabídne]
+Existuje sféra, která každou akci otevře a každý souhlas odmítne.
+Její nabídka je prázdná. Žádný dodavatel této sféry tedy nenabídne krok.
+\end{theorem}
+
+\begin{theorem}[Osud uvnitř péče zůstává]
+Leží-li \(\sigma(w,x)\) v \(G(w,x)\), leží v \(K\).
+\end{theorem}
+
+\begin{proof}
+\(G\subseteq K\). Dodavatel, který nabídku respektuje, z péče nevystoupí.
+Jeho existence se z prázdné nabídky, z odečtu ani ze stejného součtu nekonstruuje.
+\end{proof}
+
+\begin{theorem}[Záměr není instrument]
+Neexistuje \(\sigma\) závislé jen na přání takové, že po jednom přání
+má v jednom stavu dát \(1\) a v druhém \(0\).
+\end{theorem}
+
+\begin{proof}
+Závislost jen na přání nutí oba výstupy ke stejné hodnotě.
+Požadavky \(0\) a \(1\) se vylučují.
+\end{proof}
+
+Osud nad souhlasem, který zapíše stav i tam, kde některý souhlas chybí, sféru nedokončuje.
+Škrtá ji. Stejný součet připsaný venku dodavatele nedokládá.
+
 \section{Co zůstává předpokladem}
 
 Následující věci tento text nedokazuje.
 
 \begin{enumerate}
-\item Hypotézu~9. Záměr není ztotožněn s instrumentem a není doložen vnější dodavatel.
+\item Hypotézu~9 jako existenci dodavatele. Uvnitř nabídky je to picker, který je třeba dodat. Nad souhlasem to není věta tohoto rámce.
 \item Že láska je operátor, že existuje, nebo že adresovaná osoba odpoví.
 \item Že přání, verš nebo oběť vyrobí svědka.
 \item Že Bellův stav, symetrie \(M_t(x)=M_t(-x)\), nebo společné jméno určí polohu nul \(\xi\).

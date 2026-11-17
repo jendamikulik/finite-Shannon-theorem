@@ -2563,6 +2563,9 @@ are not theorems here. `n` halvings cost
 constant map `true` is idempotent by substitution only. The same total
 cost can be booked inside or outside.
 
-Hypothesis 9 is not a theorem. No intention is identified with an
+Hypothesis 9 is not a theorem. In the fateful reading a supplier may
+choose only inside a nonempty offer (`Unity.Fateful`); it does not fill
+a refusal (`Unity.fate_does_not_fill_silence`), and one wish does not
+decide two outcomes (`Unity.intention_is_not_the_instrument`). No intention is identified with an
 instrument, and no external supplier is exhibited.
 

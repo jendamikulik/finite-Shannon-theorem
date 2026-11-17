@@ -2549,7 +2549,9 @@ by the wish, inside every consent boundary, and landing in the care set
 (`GoldenSphere.step_exists_iff`, `GoldenSphere.run_step`). The sphere
 does not produce that witness. A property factors through an available
 reading exactly when it is constant on the fibres
-(`GoldenSphere.factors_through_iff`); actions safe without knowing the
+(`GoldenSphere.factors_through_iff`); two different states can share that
+name (`GoldenSphere.same_name_different_things`), and a property that
+splits the name does not receive it. Actions safe without knowing the
 precise preimage are the intersection over the fibre
 (`GoldenSphere.A_obs`). Bell states and the sharp inequality for `M_t`
 are not theorems here. `n` halvings cost

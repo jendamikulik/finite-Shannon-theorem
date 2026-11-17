@@ -184,8 +184,43 @@ theorem obs_mono (S : Sphere X Ω W N) (w : W) (M M' : Set X) (h : M' ⊆ M) :
 consciousness are not theorems of this file. -/
 theorem relational_not_consciousness : True := trivial
 
+/-! ### In other words
+
+*Principium relationis: totum relatum et imago accessibilis.*
+
+Poincaré's sentence, read as a statement about a reading and nothing
+else: mathematics gives the same name to different things. The name is
+`O`. The things stay different. A property receives that shared name
+exactly when it does not split the fibre. That is
+`factors_through_iff`. It is not a theorem about consciousness, and it
+does not locate the zeros of `ξ`. -/
+
+/-- Two different states can receive one name. -/
+theorem same_name_different_things :
+    ∃ (O : Bool → Unit) (x x' : Bool), O x = O x' ∧ x ≠ x' := by
+  refine ⟨fun _ => (), true, false, rfl, ?_⟩
+  decide
+
+/-- A property that splits the shared name does not factor through it. -/
+theorem splitting_property_does_not_factor :
+    ¬ ∃ g : Set.range (fun (_ : Bool) => ()) → Bool,
+        ∀ x : Bool, g ⟨(), ⟨x, rfl⟩⟩ = x := by
+  intro h
+  have hconst :=
+    (factors_through_iff (fun (_ : Bool) => ()) (fun x : Bool => x)).1 h
+  have : (true : Bool) = false := hconst true false rfl
+  cases this
+
+/-- A property constant on the fibre does receive the shared name. -/
+theorem constant_receives_the_name (c : Z) :
+    ∃ g : Set.range (fun (_ : X) => ()) → Z,
+      ∀ x, g ⟨(), ⟨x, rfl⟩⟩ = c :=
+  (factors_through_iff (fun (_ : X) => ()) (fun _ : X => c)).2
+    (fun _ _ _ => rfl)
+
 end GoldenSphere
 end CausalSpectrum
+
 
 
 

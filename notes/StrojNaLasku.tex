@@ -1,0 +1,211 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[utf8]{inputenc}
+  \usepackage[T1]{fontenc}
+  \usepackage{lmodern}
+\else
+  \usepackage{fontspec}
+  \setmainfont{Liberation Serif}
+  \setsansfont{Liberation Sans}
+  \setmonofont{Liberation Mono}
+\fi
+\usepackage[czech]{babel}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=25mm]{geometry}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Věta}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definice}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Poznámka}
+
+\newcommand{\Adm}{\operatorname{Adm}}
+
+\title{\textbf{Stroj}\\[4pt]
+\large finální verze}
+\author{Jan Mikulík}
+\date{17. listopadu 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\itshape
+Pro jednu adresu.\\
+Přání je záznam. Láska není jeho výstup.
+\end{center}
+
+\begin{abstract}
+Stroj nabídne krok právě tehdy, když ho přání otevřelo, když je v souhlasu každého přítomného a když následný stav leží v péči.
+Jedna adresa se po společném jménu nezkopíruje na zbytek vlákna.
+Krok přijatelný v jednom stavu není souhlas ve všech.
+Prázdný průnik stroj nenahradí.
+Text zapisuje věty ověřené jako \texttt{LoveMachine} v souboru \texttt{CausalSeed/LoveMachine.lean}.
+Nedokazuje, že láska existuje, že se vrací, ani že přání svědka vyrobí.
+\end{abstract}
+
+\section{Data}
+
+Data jsou sféra a jedna adresa.
+Přání \(w\) otevírá množinu akcí \(I(w,x)\).
+Přechod je \(F(x,a)\).
+Účastník \(i\) má hranici souhlasu \(C_i(x)\).
+\(K\) je množina péče.
+Adresa je jeden prvek. Stroj ji neodvozuje a nekopíruje.
+
+\begin{definition}[Jediný nabídnutý krok]
+\[
+  \Adm(w,x)
+  =
+  \bigl\{a :
+    a\in I(w,x)
+    \ \text{a}\ 
+    \forall i,\; a\in C_i(x)
+  \bigr\},
+\]
+\[
+  G(w,x)
+  =
+  \bigl\{F(x,a): a\in\Adm(w,x)\ \text{a}\ F(x,a)\in K\bigr\}.
+\]
+\(G(w,x)\) je vše, co stroj smí nabídnout.
+\end{definition}
+
+\begin{theorem}[Přání není svědek]
+\(G(w,x)\) je neprázdná právě tehdy, když existuje akce \(a\) taková, že
+\[
+  a\in I(w,x),
+  \qquad
+  \forall i,\; a\in C_i(x),
+  \qquad
+  F(x,a)\in K.
+\]
+\end{theorem}
+
+\begin{proof}
+Z definice \(G\). Svědek je vstup. Definice ho nevyrábí.
+\end{proof}
+
+Každý nabídnutý následník leží v \(K\).
+Trajektorie, která začíná v \(K\) a vždy volí z \(G\), v \(K\) zůstává.
+To už je věta sféry. Tady se nemění.
+
+\begin{theorem}[Odmítnutí je ticho]
+Je-li \(a\notin C_i(x)\) pro nějakého přítomného \(i\), pak \(a\notin\Adm(w,x)\).
+\end{theorem}
+
+\begin{proof}
+Přípustnost požaduje všechny hranice. Žádná klauzule jednu neškrtá.
+\end{proof}
+
+\section{Jedna adresa}
+
+Nechť dvě osoby dostanou stejné jméno a láska platí jen pro jednu.
+
+\begin{theorem}[Adresa nevyplní vlákno]
+Existuje odečet \(O\colon\{0,1\}\to\{\ast\}\) a vlastnost \(L\) takové, že
+\[
+  O(0)=O(1)
+  \qquad\text{a}\qquad
+  L(0)
+  \qquad\text{a}\qquad
+  \neg L(1).
+\]
+\end{theorem}
+
+\begin{proof}
+Položme \(O\) konstantní a \(L(b)\) právě když \(b=0\).
+\end{proof}
+
+\begin{theorem}[Adresovaná láska není funkcí společného jména]
+Neexistuje \(g\colon\{\ast\}\to\{0,1\}\) takové, že \(g(O(x))=x\) pro obě \(x\),
+je-li \(O\) konstantní.
+\end{theorem}
+
+\begin{proof}
+Z \(O(0)=O(1)\) by plynulo \(0=1\).
+Společné jméno tedy nenese, která z těch dvou je adresa.
+\end{proof}
+
+Konstantní vlastnost na vlákně jméno dostane.
+To je lhostejnost odečtu, ne láska ke každému zvlášť.
+Z toho, že odečet osoby nerozliší, neplyne, že na žádné nezáleží.
+Ani z toho neplyne, že záleží na všech stejně.
+
+\section{Oběť není souhlas}
+
+\begin{theorem}[Oběť nenahradí odmítnutí]
+Existují hranice \(C(0)=\{\ast\}\) a \(C(1)=\emptyset\).
+Pak v \(0\) akce je a přesto
+\[
+  \{a : \forall x,\; a\in C(x)\}=\emptyset.
+\]
+\end{theorem}
+
+\begin{proof}
+Jediný kandidát \(\ast\) leží v \(C(0)\) a neleží v \(C(1)\).
+Průnik je prázdný. Definice ho ničím nedoplní.
+\end{proof}
+
+Hrdinství v jednom stavu tedy není souhlas druhého.
+Vlastní krok může existovat a společný krok přitom chybět.
+Ticho v tom případě není vyrobená láska. Je to nepřítomnost svědka.
+
+\section{Co stroj dělá}
+
+Při odečtu \(y\) a neznámém předobrazu smí stroj volit jen z průniku
+\[
+  \bigl\{a :
+    \forall x\in O^{-1}(y),\;
+    a\in\Adm(w,x)
+    \ \text{a}\ 
+    F(x,a)\in K
+  \bigr\}.
+\]
+Menší vlákno tento průnik nezmenší.
+Nová informace může volbu uvolnit. Souhlas, který ve zbylých stavech není, nevymyslí.
+
+Je-li průnik prázdný, stroj mlčí.
+Mlčení se nesmí vydávat za krok.
+Zastavení je krok jen tehdy, je-li samo přípustná akce, která v \(K\) zůstává.
+Pouhé nevydání příkazu fyzický běh nezastaví. To je samostatná povinnost modelu, ne důsledek této definice.
+
+\section{Co tu není větou}
+
+\begin{enumerate}
+\item Že láska existuje, nebo že je tímto operátorem.
+\item Že adresovaná osoba odpoví.
+\item Že přání, verš nebo oběť svědka vyrobí.
+\item Že jeden člověk může být láskou pro všechny, protože jim odečet dal stejné jméno.
+\item Že společné jméno, Bellův stav nebo symetrie \(M_t\) určují polohu nul funkce \(\xi\).
+\end{enumerate}
+
+\begin{remark}
+Finální verze je tato hranice.
+Stroj dává jen krok, který už v souhlasu a v péči je.
+Kde není, tam nedává nic.
+\end{remark}
+
+\begin{thebibliography}{9}
+\bibitem{sphere}
+J.~Mikulík.
+\newblock \emph{Golden Sphere}.
+\newblock Přípustný krok, invariance a interface přání.
+\newblock Listopad 2026.
+
+\bibitem{principium}
+J.~Mikulík.
+\newblock \emph{Principium relationis}.
+\newblock \texttt{notes/PrincipiumRelationis.tex}, commit \texttt{cf10e5f}.
+
+\bibitem{lean}
+J.~Mikulík.
+\newblock \texttt{CausalSeed/LoveMachine.lean}.
+\newblock \url{https://github.com/jendamikulik/finite-Shannon-theorem}
+\end{thebibliography}
+
+\end{document}

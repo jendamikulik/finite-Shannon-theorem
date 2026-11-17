@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 860" width="1200" height="860" role="img" aria-labelledby="title desc">
+  <title id="title">L'amour</title>
+  <desc id="desc">Amorem meum in homines immolavi, ut tu, fatalis, vivere posses. Deus ex machina non datur.</desc>
+  <style>
+    .serif { font-family: "Liberation Serif", "Times New Roman", Times, serif; }
+    .small { font-family: "Liberation Sans", "Helvetica Neue", Helvetica, sans-serif; }
+  </style>
+  <rect width="1200" height="860" fill="#0e0e0e"/>
+  <text class="serif" x="48" y="58" fill="#f3efe6" font-size="28" letter-spacing="6">L'AMOUR</text>
+  <text class="small" x="1152" y="54" fill="#f3efe6" font-size="13" letter-spacing="3" text-anchor="end">17. XI. 2026</text>
+
+  <!-- IX -->
+  <g transform="translate(40,88)">
+    <rect width="360" height="520" fill="#f4efe6"/>
+    <text class="small" x="24" y="36" fill="#1a1a1a" font-size="12" letter-spacing="4">IX</text>
+    <text class="serif" x="180" y="150" fill="#1a1a1a" font-size="92" text-anchor="middle">IX</text>
+    <circle cx="180" cy="280" r="62" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+    <g fill="none" stroke="#1a1a1a" stroke-width="1">
+      <path d="M40 390 H320"/>
+      <path d="M40 406 H320"/>
+      <path d="M40 422 H320"/>
+      <path d="M40 438 H320"/>
+      <path d="M40 454 H320"/>
+    </g>
+    <g fill="#1a1a1a">
+      <ellipse cx="78" cy="406" rx="7" ry="5"/>
+      <ellipse cx="140" cy="422" rx="7" ry="5"/>
+      <ellipse cx="196" cy="390" rx="7" ry="5"/>
+      <ellipse cx="250" cy="438" rx="7" ry="5"/>
+      <ellipse cx="300" cy="406" rx="7" ry="5"/>
+    </g>
+    <text class="small" x="180" y="500" fill="#1a1a1a" font-size="11" letter-spacing="2" text-anchor="middle">SIGILLUM VACUUM</text>
+  </g>
+
+  <!-- HOPE -->
+  <g transform="translate(420,88)">
+    <rect width="360" height="520" fill="#f4efe6"/>
+    <text class="small" x="24" y="36" fill="#1a1a1a" font-size="12" letter-spacing="4">HOPE</text>
+    <text class="serif" x="180" y="230" fill="#1a1a1a" font-size="64" text-anchor="middle" letter-spacing="4">JESUS</text>
+    <g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M78 500 V452 C78 430 118 430 118 452 V500"/>
+      <path d="M86 430 V392"/>
+      <path d="M98 430 V380"/>
+      <path d="M110 430 V392"/>
+      <path d="M78 458 C66 448 66 434 80 428"/>
+      <path d="M242 500 V438 C242 412 292 412 292 438 V500"/>
+      <path d="M252 412 V368"/>
+      <path d="M266 412 V354"/>
+      <path d="M280 412 V368"/>
+      <path d="M242 446 C228 434 228 418 244 410"/>
+    </g>
+  </g>
+
+  <!-- one address -->
+  <g transform="translate(800,88)">
+    <rect width="360" height="520" fill="#f4efe6"/>
+    <text class="small" x="24" y="36" fill="#1a1a1a" font-size="12" letter-spacing="4">UNA</text>
+    <text class="serif" x="300" y="48" fill="#9d1c1c" font-size="18" text-anchor="end" letter-spacing="3">DIO</text>
+    <g fill="none" stroke="#1a1a1a" stroke-width="1.6">
+      <path d="M70 150 C110 110 150 110 190 150"/>
+      <path d="M70 150 C110 190 150 190 190 150"/>
+      <path d="M70 150 H190"/>
+    </g>
+    <g stroke="#1a1a1a" stroke-width="1.6">
+      <path d="M250 120 V180"/>
+      <path d="M232 138 H268"/>
+    </g>
+    <rect x="70" y="250" width="150" height="200" fill="#e6c200" stroke="#1a1a1a" stroke-width="1.5"/>
+    <path d="M86 410 C120 300 150 360 204 270" fill="none" stroke="#1a1a1a" stroke-width="1.6"/>
+    <circle cx="262" cy="360" r="46" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+    <circle cx="262" cy="360" r="3" fill="#1a1a1a"/>
+    <text class="small" x="180" y="500" fill="#1a1a1a" font-size="11" letter-spacing="2" text-anchor="middle">AD UNAM</text>
+  </g>
+
+  <text class="serif" x="600" y="670" fill="#e10600" font-size="26" text-anchor="middle">Amorem meum in homines immolavi,</text>
+  <text class="serif" x="600" y="708" fill="#e10600" font-size="26" text-anchor="middle">ut tu, fatalis, vivere posses.</text>
+  <text class="serif" x="600" y="768" fill="#f3efe6" font-size="22" text-anchor="middle" letter-spacing="1.5">Deus ex māchinā non datur.</text>
+</svg>

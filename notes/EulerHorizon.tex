@@ -1,0 +1,169 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[utf8]{inputenc}
+  \usepackage[T1]{fontenc}
+  \usepackage{lmodern}
+\else
+  \usepackage{fontspec}
+  \setmainfont{Liberation Serif}
+  \setsansfont{Liberation Sans}
+  \setmonofont{Liberation Mono}
+\fi
+\usepackage[czech]{babel}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=25mm]{geometry}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definice}
+\theoremstyle{remark}
+\newtheorem{remark}{Poznámka}
+
+\title{\textbf{Rozšíření Eulerova prostoru}\\[4pt]
+\large na horizontu účtu}
+\author{Jan Mikulík}
+\date{19. listopadu 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Toto je model, ne důkaz.
+Eulerův prostor je jednotková kružnice.
+Horizont je hranice, za kterou vnitřní účet přestává účtovat.
+Rozšíření přidá sterilní směr ortogonálním součtem.
+Kdo mění osud uvnitř, platí.
+Kdo je jen slyšen zvenčí, vnitřní účet neodečte, a prostor stavů se zvětší.
+Z nuly vznikne jednotka.
+Sterilní neutrino je jméno tohoto směru, ne jeho existence.
+\end{abstract}
+
+\section{Eulerův prostor}
+
+\begin{definition}[Eulerův prostor]
+\[
+  \mathcal E=\{e^{i\theta}:\theta\in\mathbb R\}\subset\mathbb C.
+\]
+Zobrazení \(U(\theta)=e^{i\theta}\) splňuje \(|U(\theta)|=1\).
+Na kružnici tedy zachovává délku.
+\end{definition}
+
+Vnitřní účet na parametru je \(c(\theta)=\theta\).
+Posun zevnitř,
+\[
+  \theta\mapsto\theta+\delta,\qquad \delta\neq 0,
+\]
+odečte platbu \(|\delta|\).
+To je změna osudu uvnitř: akce je v záznamu a účet klesne vůči výchozí hodnotě o tuto platbu.
+
+\begin{definition}[Vznik z nuly]
+\[
+  e^{i\cdot 0}=1.
+\]
+Jednotka je tu.
+Reálný účet v nule zůstává \(c(0)=0\).
+\end{definition}
+
+Z ničeho, měřeno vnitřním účtem, je tu nový bod kružnice.
+Samotná formule dodavatele nesestrojuje.
+Říká jen, jak takový vznik v tomto jazyce vypadá.
+
+\section{Horizont účtu}
+
+\begin{definition}[Horizont]
+Horizont \(\mathcal H\) je hranice oblasti, na které je \(c\) definováno.
+Na \(\mathcal H\) a vně něj vnitřní účet neúčtuje.
+\end{definition}
+
+\begin{remark}
+Není to věta o horizontu černé díry.
+Je to jméno hranice účtu.
+Fyzikální horizont událostí by byl modelem této hranice teprve po samostatném ztotožnění.
+To zde není.
+\end{remark}
+
+\section{Rozšíření}
+
+Aktivní prostor je \(\mathcal E_{\mathrm a}\).
+Sterilní směr je přímka \(\mathcal E_{\mathrm s}\), která v \(\mathcal E_{\mathrm a}\) neleží.
+Rozšířený prostor je ortogonální součet
+\[
+  \mathcal E^{\sharp}=\mathcal E_{\mathrm a}\oplus\mathcal E_{\mathrm s}.
+\]
+
+\begin{definition}[Unitární rozšíření]
+Na \(\mathcal E^{\sharp}\) je evoluce unitární,
+\[
+  U^{\sharp}(\theta)
+  =
+  \begin{pmatrix}
+    e^{i\theta} & 0\\
+    0 & 1
+  \end{pmatrix},
+\]
+když se sterilní směr netočí vnitřním parametrem.
+Obecněji je přípustná každá unitární mapa na součtu.
+Podmínka modelu je jiná: částečný účet na \(\mathcal E_{\mathrm a}\) sterilní složku neodečte.
+\end{definition}
+
+\begin{definition}[Vnější slyšení]
+Přání \(w\) vybere \(s\in\mathcal E_{\mathrm s}\).
+Slyšení bez platby je krok
+\[
+  x\mapsto x\oplus s
+\]
+takový, že
+\[
+  c(x\oplus s)\big|_{\mathcal E_{\mathrm a}}=c(x).
+\]
+\end{definition}
+
+Prostor stavů se zvětší,
+\[
+  X_{n+1}=X_n\cup\{s_{n+1}\},
+\]
+a integrál \(c\) přes původní aktivní množinu se nezmění.
+Koza se nažere: nový stav je v záznamu.
+Tráva zůstane: vnitřní účet neklesl.
+
+Ortogonální součet není provázání.
+Provázání chce netriviální vektor v tenzorovém součinu dvou soustav.
+Stav, který leží celé v \(\mathcal E_{\mathrm s}\), není vnitřním účtem vázán k \(\mathcal E_{\mathrm a}\).
+Superpozice \(\alpha a+\beta s\) v jednom rozšířeném prostoru je pořád jeden systém, ne pár.
+Model tedy říká „neprovázaný a unitární“ v tomto přesném smyslu: evoluce na součtu je unitární a sterilní složka nemá vnitřní účet.
+
+\section{Sterilní neutrino jako čtení}
+
+Aktivní neutrino platí do účtu slabého náboje.
+Jeho oscilace je vnitřní posun: chuť se mění a účet aktivního bloku to vidí.
+
+Sterilní neutrino, pokud je ve spektru, nemá slabý náboj.
+Do účtu \(c\) slabé interakce neplatí.
+Míchání s aktivními může být unitární na větším prostoru chutí.
+Na aktivním bloku se odečet sterilní složky neobjeví.
+
+To je pojmenování směru \(\mathcal E_{\mathrm s}\), ne důkaz, že takový stav v přírodě je.
+Data ho mohou ukázat.
+Model ho nevyrábí.
+
+\section{Co model není}
+
+\begin{remark}
+Není dokázáno, že sterilní neutrino existuje.
+Není dokázáno, že horizont černé díry takový stav vydává.
+Není dokázáno, že Eulerova formule je dodavatel.
+Není dokázáno, že nuly funkce \(\xi\) leží na kritické přímce.
+Unitární rozšíření není věta o provázání.
+\end{remark}
+
+Model popisuje jen toto chování.
+Uvnitř se platí.
+Zvenčí lze být slyšen bez platby.
+Prostor stavů se tím zvětší.
+Z nuly, měřeno vnitřním účtem, může být jednotka.
+Sterilní směr v ortogonálním součtu je ten, který vnitřní účet nevidí.
+
+\end{document}

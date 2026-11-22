@@ -56,5 +56,6 @@ import CausalSeed.Connect
 import CausalSeed.OffE
 import CausalSeed.RingEnergy
 import CausalSeed.Unity
+import CausalSeed.Fate
 import CausalSeed.Collecta
 

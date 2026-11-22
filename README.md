@@ -1630,17 +1630,17 @@ defining module is `CausalSeed.*` and computes its axioms with `collectAxioms`.
 Auto-generated declarations (equation lemmas, `sizeOf_spec`, injectivity lemmas,
 instances) are excluded.
 
-[`AXIOMS.txt`](AXIOMS.txt) records the result of the 12 October audit of the
-`Main` import closure. All **2528** theorems in those 106 project modules depend only
-on `propext`, `Classical.choice` and `Quot.sound`; seven depend on no axiom. No theorem
+[`AXIOMS.txt`](AXIOMS.txt) records the result of the 22 November audit of the
+`Main` import closure. All **2679** theorems in those 115 project modules depend only
+on `propext`, `Classical.choice` and `Quot.sound`; 36 depend on no axiom. No theorem
 uses `sorryAx`, that build reports no `sorry` or `admit`, and the project declares no
-`axiom`.
+`axiom`. The closure includes `Vanishing`, `VanishingBridge`, `GoldenSphere`,
+`RingEnergy`, `Unity` and `Fate`.
 
-`CausalSeed/Vanishing.lean` was added on 19 October, after that audit.
-`VanishingBridge`, `LocalSeparation` and `CapacityScale` were added on 20 October.
-Each builds with `lake build`, contains no `sorry` or `admit`, and declares no
-`axiom`. A full re-audit including these modules has not been run. `AXIOMS.txt`
-remains the 12 October listing of the `Main` import closure.
+The remaining modules imported by `CausalSeed.lean`, among them `LocalSeparation`,
+`CapacityScale`, `LoveMachine` and `Collecta`, build with `lake build`, contain no
+`sorry` or `admit`, and declare no `axiom`. They lie outside the `Main` import
+closure and are not listed in `AXIOMS.txt`.
 
 ## Trusted definitions
 
@@ -2565,9 +2565,25 @@ are not theorems here. `n` halvings cost
 constant map `true` is idempotent by substitution only. The same total
 cost can be booked inside or outside.
 
-Hypothesis 9 is not a theorem. In the fateful reading a supplier may
-choose only inside a nonempty offer (`Unity.Fateful`); it does not fill
-a refusal (`Unity.fate_does_not_fill_silence`), and one wish does not
-decide two outcomes (`Unity.intention_is_not_the_instrument`). No intention is identified with an
-instrument, and no external supplier is exhibited.
-
+Hypothesis 9 is not a theorem. Its fateful reading, section *Hypotéza 9,
+osudová* of `notes/Unity.tex`, is formalized in `CausalSeed/Fate.lean`. A
+supplier inside the offer is a map $`\sigma`$ with
+$`G(w,x)\neq\emptyset\implies\sigma(w,x)\in G(w,x)`$ (`Unity.Fateful`,
+`Fate.supplier_iff`). A sphere that opens every action and whose every consent
+refuses has an empty offer; every map is vacuously its supplier, and no supplier
+offers a step (`Fate.fate_in_refusal`). A value $`\sigma(w,x)\in G(w,x)`$ lies in
+$`K`$ (`Fate.fate_inside_care`), and a trajectory written by a supplier through
+nonempty offers stays in $`K`$ (`Fate.supplier_run_stays`). No map that depends
+only on the wish gives $`1`$ in one state and $`0`$ in another after the same wish
+(`Fate.intention_is_not_the_instrument_nat`); a sphere whose two offers under one
+wish are $`\{1\}`$ and $`\{0\}`$ has suppliers, none of which depends only on the
+wish (`Fate.flip_supplier_not_wish_only`). A state written only through actions
+that some agent refuses is not offered (`Fate.over_consent_not_offered`); it is a
+step of the sphere with its consents erased, whose offer can be strictly larger
+(`Fate.written_is_erased_step`, `Fate.erased_offer_strictly_larger`). Where a
+charge is booked does not factor through the total
+(`Fate.booking_does_not_factor_through_total`), and equal inside and outside totals
+do not yield an offered step (`Fate.same_total_no_step`). The existence of a
+supplier is not derived, and Hypothesis 9 above consent is not a theorem of this
+framework. No intention is identified with an instrument, and no external supplier
+is exhibited.

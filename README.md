@@ -1598,6 +1598,81 @@ seed bound, the product marginal, the support bound $`n\le K`$, and hidden
 extensions. It is not a lumpable stochastic transcript law, not atomic
 capacity, and not Fano's inequality.
 
+### XIII. Exact decoding of a prescribed seed
+
+Given rational probability vectors $`w=(w_0,\dots,w_n)`$ and $`q=(q_0,\dots,q_m)`$,
+the exact-decoding problem asks whether a decoder $`d:\{0,\dots,n\}\to\{0,\dots,m\}`$
+exists with $`\sum_{i:d(i)=j}w_i=q_j`$ for every $`j`$. The problem is NP-complete,
+and strongly NP-complete when the number of outputs is part of the input. The
+complexity statement is proved in prose; Lean checks the reduction identities.
+The decoded mass of an output is the subset sum of its preimage
+(`ExactDecoding.outMass_eq`, through `seedMass_eq_subsetSum`).
+
+**Theorem 66 (binary reduction from Subset Sum).** Let $`a_1,\dots,a_n`$ be
+nonnegative integers with $`A=\sum_i a_i>0`$, and put $`w_i=a_i/A`$. A decoder
+sends mass $`B/A`$ to output $`1`$ exactly when $`\sum_{i:d(i)=1}a_i=B`$, and an
+exact decoder to the law $`(1-B/A,\,B/A)`$ exists exactly when some subset of the
+$`a_i`$ has sum $`B`$. With a heavy atom $`w_0=1-\varepsilon`$, light atoms
+$`\varepsilon a_i/A`$ and target $`(1-\varepsilon B/A,\,\varepsilon B/A)`$, the
+same equivalence holds whenever $`\varepsilon>0`$ and
+$`\varepsilon B<(1-\varepsilon)A`$, in particular for every
+$`0<\varepsilon<1/2`$ when $`B\le A`$. The size condition is needed: for
+$`a=(1,3)`$, $`B=2`$ and $`\varepsilon=2/3`$ the heavy atom alone fills output
+$`1`$, an exact decoder exists, and no subset has sum $`2`$.
+
+**Theorem 67 (strong reduction from 3-Partition).** Let $`a_1,\dots,a_{3m}`$ be
+positive integers, $`m,B>0`, $`w_0=q_0=1-\varepsilon`$,
+$`w_i=\varepsilon a_i/(mB)`$ and $`q_j=\varepsilon/m`$ for $`j=1,\dots,m`$. For
+every $`\varepsilon>0`$ with $`\varepsilon/m<1-\varepsilon`$, an exact decoder
+exists exactly when the $`a_i`$ split into $`m`$ classes of sum $`B`$: the heavy
+atom cannot enter an output $`j\ge1`$, so it fills output $`0`$, no light atom
+joins it, and every other output receives sum $`B`$. If $`B/4<a_i<B/2`$ for all
+$`i`$, every class has exactly three elements, so the decoder exists exactly when
+the 3-Partition instance is a yes-instance. The choice
+$`\varepsilon=(3m+1)^{-2}`$ satisfies the condition. When
+$`\sum_i a_i=mB`$, both $`w`$ and $`q`$ are probability vectors.
+
+**Theorem 68 (entropy of the reduction seeds).** For $`0\le\varepsilon`$ and a
+probability vector $`u`$ on $`n\ge1`$ points, the seed
+$`(1-\varepsilon,\varepsilon u_1,\dots,\varepsilon u_n)`$ has Shannon entropy
+
+```math
+H(w)=h_2(\varepsilon)+\varepsilon H(u)\le h_2(\varepsilon)+\varepsilon\log_2 n
+```
+
+in bits, with $`h_2(\varepsilon)=\mathrm{binEntropy}(\varepsilon)/\ln 2`$. A
+probability vector on $`n`$ points has at most $`\log_2 n`$ bits. Hence the
+3-Partition seed has entropy at most $`h_2(\varepsilon)+\varepsilon\log_2(3m)`$,
+and the heavy-atom binary seed at most $`h_2(\varepsilon)+\varepsilon\log_2 n`$.
+For $`\varepsilon=(3m+1)^{-2}`$ the bound tends to $`0`$ as $`m\to\infty`$, so the
+hard instances have seeds of vanishing entropy; that limit is argued in prose.
+
+**Theorem 69 (free seed law).** If the seed law may be chosen, every law is
+decoded exactly from itself by the identity, and two atoms realise every binary
+target $`(1-p,p)`$.
+
+Lean:
+- [`ExactDecoding.outMass_eq`](CausalSeed/ExactDecoding.lean)
+- [`ExactDecoding.binary_mass_iff`](CausalSeed/ExactDecoding.lean)
+- [`ExactDecoding.binary_iff`](CausalSeed/ExactDecoding.lean)
+- [`ExactDecoding.heavy_binary_iff`](CausalSeed/ExactDecoding.lean)
+- [`ExactDecoding.heavy_binary_iff_of_lt_half`](CausalSeed/ExactDecoding.lean)
+- [`ExactDecoding.heavy_binary_not_iff`](CausalSeed/ExactDecoding.lean)
+- [`ExactDecoding.card_eq_three`](CausalSeed/ExactDecoding.lean)
+- [`ExactDecoding.three_partition_iff`](CausalSeed/ExactDecoding.lean)
+- [`ExactDecoding.three_partition_iff_triples`](CausalSeed/ExactDecoding.lean)
+- [`ExactDecoding.three_partition_iff_eps`](CausalSeed/ExactDecoding.lean)
+- [`ExactDecoding.tpSeed_sum`](CausalSeed/ExactDecoding.lean), [`ExactDecoding.tpTarget_sum`](CausalSeed/ExactDecoding.lean)
+- [`ExactDecoding.heavy_entropy`](CausalSeed/ExactDecoding.lean)
+- [`ExactDecoding.pmfEntropy_le_logb`](CausalSeed/ExactDecoding.lean)
+- [`ExactDecoding.heavy_entropy_le`](CausalSeed/ExactDecoding.lean)
+- [`ExactDecoding.tp_entropy_le`](CausalSeed/ExactDecoding.lean), [`ExactDecoding.binary_entropy_le`](CausalSeed/ExactDecoding.lean)
+- [`ExactDecoding.free_law`](CausalSeed/ExactDecoding.lean), [`ExactDecoding.free_law_two_atoms`](CausalSeed/ExactDecoding.lean)
+
+Not formalized: polynomial time, membership in NP, the encoding length of the
+rational inputs, and NP-hardness of Subset Sum and 3-Partition. The prose
+argument is in `notes/ExactDecoding.tex`.
+
 ## Verification
 
 The development is the import closure of
@@ -1631,11 +1706,11 @@ Auto-generated declarations (equation lemmas, `sizeOf_spec`, injectivity lemmas,
 instances) are excluded.
 
 [`AXIOMS.txt`](AXIOMS.txt) records the result of the 22 November audit of the
-`Main` import closure. All **2679** theorems in those 115 project modules depend only
+`Main` import closure. All **2714** theorems in those 116 project modules depend only
 on `propext`, `Classical.choice` and `Quot.sound`; 36 depend on no axiom. No theorem
 uses `sorryAx`, that build reports no `sorry` or `admit`, and the project declares no
 `axiom`. The closure includes `Vanishing`, `VanishingBridge`, `GoldenSphere`,
-`RingEnergy`, `Unity` and `Fate`.
+`RingEnergy`, `Unity`, `Fate` and `ExactDecoding`.
 
 The remaining modules imported by `CausalSeed.lean`, among them `LocalSeparation`,
 `CapacityScale`, `LoveMachine` and `Collecta`, build with `lake build`, contain no
@@ -1692,6 +1767,7 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 - `Note`: constants and finite numerical facts ($`c_{\star}`$, $`\theta_\alpha`$, $`\log_2(8/5)`$).
 - `SecondOrder`: Gaussian integrals for the profile mean.
 - `Probe`: policy extensions used by the lower bounds.
+- `ExactDecoding`: exact decoding of a prescribed seed; the Subset Sum and 3-Partition reductions and the entropy of their seeds.
 
 **Couplings, penalty and rigidity**
 - `Penalty`: couplings, ordinary and causal optima, $`G_{\ast}`$, the penalized problem.

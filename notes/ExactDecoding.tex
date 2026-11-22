@@ -1,0 +1,165 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[utf8]{inputenc}
+  \usepackage[T1]{fontenc}
+  \usepackage{lmodern}
+\fi
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=25mm]{geometry}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{\textbf{Exact Decoding of a Prescribed Seed is NP-Complete}}
+\author{Jan Mikulík}
+\date{22 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Given a finite seed law \(w\) and a target law \(q\), deciding whether some
+deterministic decoder pushes \(w\) exactly onto \(q\) is NP-complete, by a
+reduction from Subset Sum, and strongly NP-complete, by a reduction from
+3-Partition. The hard seeds may be taken with a single heavy atom and entropy
+tending to zero. If the seed law is free, two atoms realise every binary target.
+The complexity statement is proved in prose; Lean checks the reduction
+identities in \texttt{CausalSeed/ExactDecoding.lean}.
+\end{abstract}
+
+\section{The problem}
+
+\begin{definition}
+\textsc{Exact Decoding}: given rational probability vectors
+\(w=(w_0,\dots,w_n)\) and \(q=(q_0,\dots,q_m)\), does a map
+\(d\colon\{0,\dots,n\}\to\{0,\dots,m\}\) exist with
+\[
+  \sum_{i:\,d(i)=j} w_i = q_j \qquad (j=0,\dots,m)?
+\]
+\end{definition}
+
+The mass decoded to \(j\) is the subset sum of \(w\) over \(d^{-1}(j)\).
+Membership in NP is immediate: \(d\) has \((n+1)\lceil\log_2(m+1)\rceil\) bits,
+and the \(m+1\) rational sums are checked in polynomial time.
+
+\section{Subset Sum}
+
+Let \(a_1,\dots,a_n\) be positive integers, \(A=\sum_i a_i\) and \(0\le B\le A\).
+
+\begin{theorem}[Binary reduction]
+Put \(w_i=a_i/A\) and \(p=B/A\). A decoder \(d\) into \(\{0,1\}\) sends mass \(p\)
+to output \(1\) if and only if \(\sum_{i\in d^{-1}(1)}a_i=B\). Hence an exact
+decoder to \((1-p,p)\) exists if and only if some subset of the \(a_i\) has
+sum \(B\).
+\end{theorem}
+
+\begin{proof}
+\(\sum_{i\in d^{-1}(1)}w_i=\frac1A\sum_{i\in d^{-1}(1)}a_i\). Output \(0\) receives
+the complement, so its mass is \(1-p\) automatically.
+\end{proof}
+
+\begin{theorem}[Heavy atom]
+Let \(\varepsilon>0\) with \(\varepsilon B<(1-\varepsilon)A\); for instance
+\(0<\varepsilon<\tfrac12\). Take \(w_0=1-\varepsilon\), \(w_i=\varepsilon a_i/A\)
+and the target \((1-\varepsilon B/A,\ \varepsilon B/A)\). An exact decoder exists
+if and only if some subset of the \(a_i\) has sum \(B\).
+\end{theorem}
+
+\begin{proof}
+If \(d(0)=1\), output \(1\) receives at least \(1-\varepsilon>\varepsilon B/A\).
+So \(d(0)=0\), and output \(1\) receives \(\frac{\varepsilon}{A}\sum_{i\in I}a_i\)
+with \(I=d^{-1}(1)\setminus\{0\}\). Conversely a subset of sum \(B\) gives a decoder.
+\end{proof}
+
+\begin{remark}
+The size condition cannot be dropped. For \(a=(1,3)\), \(B=2\) and
+\(\varepsilon=2/3\), the heavy atom alone has mass \(1/3=\varepsilon B/A\), so an
+exact decoder exists, but no subset of \(\{1,3\}\) has sum \(2\).
+\end{remark}
+
+\section{3-Partition}
+
+Let \(n=3m\), let \(a_1,\dots,a_n\) be positive integers with
+\(\sum_i a_i=mB\) and \(B/4<a_i<B/2\), and let \(\varepsilon>0\) with
+\(\varepsilon/m<1-\varepsilon\); the value \(\varepsilon=(n+1)^{-2}\) qualifies.
+Put
+\[
+  w_0=q_0=1-\varepsilon,\qquad
+  w_i=\frac{\varepsilon a_i}{mB},\qquad
+  q_j=\frac{\varepsilon}{m}\quad(j=1,\dots,m).
+\]
+
+\begin{lemma}[Exactly three]
+If \(S\) is a set of indices with \(\sum_{i\in S}a_i=B\), then \(|S|=3\).
+\end{lemma}
+
+\begin{proof}
+\(S\neq\emptyset\) since \(B>0\). Then \(|S|\,B/4<B<|S|\,B/2\), so \(2<|S|<4\).
+\end{proof}
+
+\begin{theorem}[Strong reduction]
+An exact decoder exists if and only if the \(a_i\) split into \(m\) triples of
+sum \(B\).
+\end{theorem}
+
+\begin{proof}
+The heavy atom has mass \(1-\varepsilon>\varepsilon/m\), so it cannot enter an
+output \(j\ge1\) and fills output \(0\). Since \(q_0=w_0\) and every light atom
+has positive mass, no light atom joins it. Output \(j\ge1\) receives
+\(\frac{\varepsilon}{mB}\sum_{i\in d^{-1}(j)}a_i=\frac{\varepsilon}{m}\), so its
+preimage has sum \(B\) and, by the lemma, three elements. Conversely, a
+partition into triples defines a decoder.
+\end{proof}
+
+All numerators and denominators are polynomial in \(n\) and \(\max_i a_i\), and
+3-Partition is strongly NP-complete, so \textsc{Exact Decoding} is strongly
+NP-complete when \(m\) is part of the input.
+
+\section{Entropy}
+
+\begin{theorem}
+For \(\varepsilon\ge0\) and a probability vector \(u\) on \(n\ge1\) points,
+the seed \(w=(1-\varepsilon,\varepsilon u_1,\dots,\varepsilon u_n)\) satisfies, in bits,
+\[
+  H(w)=h_2(\varepsilon)+\varepsilon H(u)\le h_2(\varepsilon)+\varepsilon\log_2 n .
+\]
+\end{theorem}
+
+\begin{proof}
+\(\varepsilon u_i\log\frac{1}{\varepsilon u_i}
+=\varepsilon u_i\log\frac1\varepsilon+\varepsilon\,u_i\log\frac1{u_i}\); sum over
+\(i\) and use \(\sum_i u_i=1\) and \(H(u)\le\log_2 n\).
+\end{proof}
+
+With \(u_i=a_i/(mB)\) and \(\varepsilon=(3m+1)^{-2}\) the bound tends to zero as
+\(m\to\infty\): exact decoding stays hard for seeds of vanishing entropy. The same
+holds for the heavy-atom binary seed.
+
+\section{A free seed law}
+
+If the seed law may be chosen, the identity decodes every law \(q\) from itself.
+In particular two atoms \((1-p,p)\) realise every binary target. The difficulty
+lies in the prescribed seed, not in the target.
+
+\section*{Verification}
+
+\texttt{CausalSeed/ExactDecoding.lean} proves the binary and heavy-atom
+equivalences (\texttt{binary\_iff}, \texttt{heavy\_binary\_iff},
+\texttt{heavy\_binary\_not\_iff}), the 3-Partition equivalence for every admissible
+\(\varepsilon\) and for \(\varepsilon=(3m+1)^{-2}\)
+(\texttt{three\_partition\_iff}, \texttt{three\_partition\_iff\_eps}), the lemma
+\texttt{card\_eq\_three}, the entropy identity and bound
+(\texttt{heavy\_entropy}, \texttt{heavy\_entropy\_le}, \texttt{tp\_entropy\_le}),
+and the free-law statement (\texttt{free\_law\_two\_atoms}). Polynomial time,
+membership in NP, encoding lengths and the limit of the entropy bound are
+argued in prose and are not formalized.
+
+\end{document}

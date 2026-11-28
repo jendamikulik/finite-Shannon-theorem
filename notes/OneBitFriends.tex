@@ -1,0 +1,103 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[utf8]{inputenc}
+  \usepackage[T1]{fontenc}
+  \usepackage{lmodern}
+\fi
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=25mm]{geometry}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{\textbf{The Theorem of One Bit and Two Friends}}
+\author{Jan Mikul\'ik}
+\date{27 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Two friends start from the same history and ask the same first question; the
+prescribed answer is a fair bit. Each may then choose a second question from the
+first answer; the prescribed answer to every further question is \(0\). One fair
+bit is an exact causal seed of entropy \(1\), and every exact seed has entropy
+at least \(1\). A coupling with the correct marginals need not be the joint of a
+shared causal decoder. Lean checks the identities in
+\texttt{CausalSeed/OneBitFriends.lean}.
+\end{abstract}
+
+\section{The family}
+
+A deterministic adaptive policy \(\pi\) maps the first reply \(b\in\{0,1\}\) to
+a second question \(\pi(b)\) in a set \(A\) of actions. The prescribed
+transcript of \(\pi\) on first reply \(b\) is \((b,\pi(b),0)\). The prescribed
+law places mass \(1/2\) on each of the two transcripts
+\((0,\pi(0),0)\) and \((1,\pi(1),0)\).
+
+A finite seed \(\mu\) on a type \(\alpha\), together with a first-reply map
+\(\varphi:\alpha\to\{0,1\}\), induces, under a policy \(\pi\), the transcript
+\((\varphi(s),\pi(\varphi(s)),0)\) on each atom \(s\). The pair \((\mu,\varphi)\)
+is \emph{exact} on \(A\) when this law equals the prescribed law of every
+policy. Later replies are the constant \(0\).
+
+\section{Sufficiency}
+
+\begin{theorem}
+The fair bit \(S\) with the shared decoder that returns \(S\) on the first
+question and \(0\) thereafter is an exact causal seed. For every policy
+\(\pi\), the transcript \(X_\pi=(S,\pi(S),0)\) has the prescribed law. The seed
+has Shannon entropy \(H(S)=1\). Every realized transcript of every policy has
+surprisal \(1\), so the expected surprisal of every policy is \(1\), and the
+envelope is \(L=1\).
+\end{theorem}
+
+\section{Necessity}
+
+\begin{theorem}
+Let \(A\) be nonempty. If a finite nonnegative seed \(\mu\) and a first-reply
+map \(\varphi\) are exact on \(A\), then the first reply \(B'=\varphi(S')\) is a
+fair bit. The entropy of a function is at most the entropy of the seed, so
+\(H(S')\ge H(B')=1\). Together with the previous theorem, the causal cost is
+\(C=1\).
+\end{theorem}
+
+\begin{remark}
+The hypothesis that \(A\) is nonempty is used only to produce a policy, so that
+exactness can be evaluated and the first-reply law identified with the fair bit.
+The lower bound \(H(S')\ge 1\) itself holds for every finite nonnegative seed
+whose first reply is a fair bit.
+\end{remark}
+
+The quantities \(L=1\) and \(C=1\) are the expected surprisal of every policy
+and the exact-seed entropy characterization of this family. The equality
+\(L(T)=C(T)=1\) on the two-friend tree is already proved in
+\texttt{CausalSeed/ManyFriends.lean}.
+
+\section{Correct marginals}
+
+\begin{theorem}
+Let one friend ask a constant action \(a\) and the other a constant action
+\(b\neq a\). The anti-coupling that records \((U,a,0)\) for the first friend and
+\((1-U,b,0)\) for the second, with \(U\) a fair bit, has both prescribed
+marginals. No shared causal decoder induces this joint: a shared decoder returns
+the same first reply, at the same history, on every seed atom, whereas the
+anti-coupling places mass \(1/2\) on a pair of opposite first replies.
+\end{theorem}
+
+\begin{remark}
+The hypothesis \(b\neq a\) is part of the stated scene of two distinct second
+questions. The contradiction uses only that the anti-coupling has opposite first
+replies.
+\end{remark}
+
+Not formalized: a general tree, and the greedy overhead.
+
+\end{document}

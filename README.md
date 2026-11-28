@@ -1673,6 +1673,63 @@ Not formalized: polynomial time, membership in NP, the encoding length of the
 rational inputs, and NP-hardness of Subset Sum and 3-Partition. The prose
 argument is in `notes/ExactDecoding.tex`.
 
+### XIV. The theorem of one bit and two friends
+
+Two friends start from the same history and ask the same first question; the
+prescribed answer is a fair bit. Each may then choose a second question from the
+first answer; the prescribed answer to every further question is $`0`$, and the
+conversation ends. A deterministic adaptive policy $`\pi`$ maps the first reply
+to the second question. The prescribed law of $`\pi`$ places mass $`1/2`$ on
+each of the transcripts $`(0,\pi(0),0)`$ and $`(1,\pi(1),0)`$. A finite seed
+$`\mu`$ with a first-reply map $`\varphi`$ is exact, on an action type $`A`$,
+when every policy receives its prescribed transcript law; later replies are the
+constant $`0`$.
+
+**Theorem 70 (one fair bit suffices).** The fair bit $`S`$ with the shared
+decoder that returns $`S`$ on the first question and $`0`$ thereafter is an
+exact causal seed. For every policy $`\pi`$, the transcript
+$`X_\pi=(S,\pi(S),0)`$ has the prescribed law, each of the two atoms of mass
+$`1/2`$. The seed has Shannon entropy $`H(S)=1`$. Every realized transcript of
+every policy has surprisal $`1`$, so the expected surprisal of every policy is
+$`1`$, and the envelope is $`L=1`$.
+
+**Theorem 71 (one bit is necessary).** Let $`A`$ be nonempty. If a finite
+nonnegative seed $`\mu`$ and a first-reply map $`\varphi`$ are exact on $`A`$,
+then the first reply $`B'=\varphi(S')`$ is a fair bit. The entropy of a function
+is at most the entropy of the seed, so $`H(S')\ge H(B')=1`$. Together with
+Theorem 70, the causal cost is $`C=1`$.
+
+**Theorem 72 (correct marginals do not imply a shared realization).** Let one
+friend ask a constant action $`a`$ and the other a constant action $`b\neq a`$.
+The anti-coupling that records $`(U,a,0)`$ for the first friend and
+$`(1-U,b,0)`$ for the second, with $`U`$ a fair bit, has both prescribed
+marginals. No shared causal decoder induces this joint: a shared decoder returns
+the same first reply, at the same history, on every seed atom, whereas the
+anti-coupling places mass $`1/2`$ on a pair of opposite first replies.
+
+Lean:
+- [`OneBitFriends.induced_fair`](CausalSeed/OneBitFriends.lean), [`OneBitFriends.fair_exact`](CausalSeed/OneBitFriends.lean)
+- [`OneBitFriends.fair_entropy`](CausalSeed/OneBitFriends.lean)
+- [`OneBitFriends.surprisal_one`](CausalSeed/OneBitFriends.lean), [`OneBitFriends.L_eq_one`](CausalSeed/OneBitFriends.lean)
+- [`OneBitFriends.firstLaw_of_exact`](CausalSeed/OneBitFriends.lean)
+- [`OneBitFriends.entropy_ge_firstReply`](CausalSeed/OneBitFriends.lean)
+- [`OneBitFriends.entropy_ge_one_of_fair_reply`](CausalSeed/OneBitFriends.lean)
+- [`OneBitFriends.one_bit_necessary`](CausalSeed/OneBitFriends.lean), [`OneBitFriends.C_eq_one`](CausalSeed/OneBitFriends.lean)
+- [`OneBitFriends.anti_marginal_A`](CausalSeed/OneBitFriends.lean), [`OneBitFriends.anti_marginal_B`](CausalSeed/OneBitFriends.lean)
+- [`OneBitFriends.shared_first_replies`](CausalSeed/OneBitFriends.lean)
+- [`OneBitFriends.anti_not_shared`](CausalSeed/OneBitFriends.lean), [`OneBitFriends.marginals_not_shared`](CausalSeed/OneBitFriends.lean)
+
+The necessity lower bound uses that $`A`$ is nonempty, so that a policy exists,
+and that the seed is a nonnegative mass function on a finite type. The
+hypothesis $`b\neq a`$ is part of the stated scene of two distinct second
+questions; the contradiction itself uses only that the anti-coupling has
+opposite first replies. The quantities $`L=1`$ and $`C=1`$ are the expected
+surprisal of every policy and the exact-seed entropy characterization of this
+family; they are not the library operations $`\mathrm{envelopeMean}`$ and
+$`\mathrm{causalMin}`$. The equality $`L(T)=C(T)=1`$ on the two-friend tree is
+the earlier theorem of `ManyFriends.lean`. Not formalized: a general tree, and
+the greedy overhead. The prose argument is in `notes/OneBitFriends.tex`.
+
 ## Verification
 
 The development is the import closure of
@@ -1705,12 +1762,12 @@ defining module is `CausalSeed.*` and computes its axioms with `collectAxioms`.
 Auto-generated declarations (equation lemmas, `sizeOf_spec`, injectivity lemmas,
 instances) are excluded.
 
-[`AXIOMS.txt`](AXIOMS.txt) records the result of the 22 November audit of the
-`Main` import closure. All **2714** theorems in those 116 project modules depend only
+[`AXIOMS.txt`](AXIOMS.txt) records the result of the 27 November audit of the
+`Main` import closure. All **2747** theorems in those 117 project modules depend only
 on `propext`, `Classical.choice` and `Quot.sound`; 36 depend on no axiom. No theorem
 uses `sorryAx`, that build reports no `sorry` or `admit`, and the project declares no
 `axiom`. The closure includes `Vanishing`, `VanishingBridge`, `GoldenSphere`,
-`RingEnergy`, `Unity`, `Fate` and `ExactDecoding`.
+`RingEnergy`, `Unity`, `Fate`, `ExactDecoding` and `OneBitFriends`.
 
 The remaining modules imported by `CausalSeed.lean`, among them `LocalSeparation`,
 `CapacityScale`, `LoveMachine` and `Collecta`, build with `lake build`, contain no
@@ -1768,6 +1825,7 @@ All modules are in [`CausalSeed/`](CausalSeed); `Main.lean` imports them all.
 - `SecondOrder`: Gaussian integrals for the profile mean.
 - `Probe`: policy extensions used by the lower bounds.
 - `ExactDecoding`: exact decoding of a prescribed seed; the Subset Sum and 3-Partition reductions and the entropy of their seeds.
+- `OneBitFriends`: the theorem of one bit and two friends; sufficiency, the necessity lower bound, and the anti-coupling obstruction.
 
 **Couplings, penalty and rigidity**
 - `Penalty`: couplings, ordinary and causal optima, $`G_{\ast}`$, the penalized problem.
@@ -2248,7 +2306,8 @@ known random-access-code bounds in `RelationalAccess.lean`.
 
 `CausalSeed/ManyFriends.lean` is the example in the note "One Seed, Many
 Friends". The tree asks one shared fair question and then one of two private
-actions, each with deterministic output zero.
+actions, each with deterministic output zero. A self-contained account of the
+same example, without the tree infrastructure, is Theorems 70, 71 and 72.
 
 Proved, with no `sorry`: every transcript has surprisal `1`, so
 `L(T) = 1`; the two shared answers, each of mass `1/2`, are an exact causal
